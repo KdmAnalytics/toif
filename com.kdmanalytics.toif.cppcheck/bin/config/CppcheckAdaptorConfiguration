@@ -1,0 +1,282 @@
+##
+#
+#http://sourceforge.net/apps/trac/cppcheck/wiki/ErrorMessages
+#
+##
+
+
+############################ Need cwes and sfps ##############################################################
+
+duplicateExpression=;SFP--1;CWE-710
+unsignedPositive=;SFP--1;CWE-710
+missingInclude=;SFP--1;CWE-710
+
+#(sizeArgumentAsChar, possible error) The size argument is given as a char constant
+sizeArgumentAsChar=;SFP-1;CWE-195
+
+#(virtualDestructor, error) Class Base which is inherited by class Derived does not have a virtual destructor
+virtualDestructor=;SFP--1;CWE-710
+
+#(operatorEqToSelf, possible style) 'operator=' should check for assignment to self
+operatorEqToSelfElement='#' should check for assignment to self
+operatorEqToSelf=;SFP--1;CWE-710
+
+#(functionConst, style) The function 'class::function' can be const
+functionConstElement=The function '#' can be const
+functionConst=;SFP--1;CWE-710
+
+#(mismatchSize, error) The given size sz is mismatching
+mismatchSizeElement=The given size # is mismatching
+mismatchSize=Memory Managemant;SFP--1;CWE-131
+
+#(udivError, error) Unsigned division. The result will be wrong.
+udivError=;SFP-1;CWE-195
+
+#(variableScope, style) The scope of the variable varname can be reduced
+variableScopeElement=The scope of the variable # can be reduced
+variableScope=;SFP--1;CWE-710
+
+#(constStatement, style) Redundant code: Found a statement that begins with type constant
+constStatement=;SFP--1;CWE-710
+
+#(syntaxError, error) Invalid number of character ( ) when these macros are defined: .
+syntaxErrorElement=when these macros are defined: '#'
+syntaxError=;SFP--1;CWE-710
+
+#(stlIfStrFind, possible style) Suspicious condition. string::find will return 0 if the string is found at position 0. If this is what you want to check then string::compare is a faster alternative because it doesn't scan through the string.
+stlIfStrFind=;SFP--1;CWE-710
+
+#(stlSize, possible style) Use list.empty() instead of list.size() to guarantee fast code. size() can take linear time but empty() is guaranteed to take constant time.
+stlSize=;SFP--1;CWE-710
+
+#(stlBoundries, error) container range check should use != and not &lt; since the order of the pointers isn't guaranteed
+stlBoundries=;SFP--1;CWE-710
+
+#(erase, error) Dangerous iterator usage. After erase the iterator is invalid so dereferencing it or comparing it with another iterator is invalid.
+erase=;SFP--1;CWE-710
+
+#(invalidIterator, error) After push_back|push_front|insert, the iterator 'iterator' may be invalid
+invalidIteratorElement=After push_back|push_front|insert, the iterator '#' may be invalid
+invalidIterator=;SFP--1;CWE-710
+
+#(invalidPointer, error) Invalid pointer 'pointer' after push_back / push_front
+invalidPointerElement=Invalid pointer '#' after push_back / push_front
+invalidPointer=;SFP--1;CWE-710
+
+#(strPlusChar, error) Unusual pointer arithmetic
+strPlusChar=;SFP-1;CWE-468
+
+#(postIncrementDecrement, possible style) Pre-Incrementing variable 'varname' is preferred to Post-Incrementing
+postIncrementDecrementElement=Pre-Incrementing variable '#' is preferred to Post-Incrementing
+postIncrementDecrement=;SFP--1;CWE-710
+
+#(iterators, error) Same iterator is used with both container1 and container2
+iterators=;SFP--1;CWE-710
+
+#(mismatchingContainers, error) mismatching containers
+mismatchingContainers=;SFP--1;CWE-710
+
+#(eraseDereference, error) Dereferenced iterator 'iter' has been erased
+eraseDereferenceElement=Dereferenced iterator '#' has been erased
+eraseDereference=;SFP--1;CWE-710
+
+
+####################################################################################################################
+
+
+#unreadVariable
+unreadVariable=;SFP-2;CWE-563
+
+#unassignedVariable
+unassignedVariable=;SFP-2;CWE-457
+
+#(autoVariables, error) Wrong assignment of an auto-variable to an effective parameter of a function
+autoVariables=;SFP-1;CWE-562
+
+#(returnLocalVariable, error) Returning pointer to local array variable
+returnLocalVariable=;SFP-1;CWE-562
+
+#(returnReference, error) Returning reference to auto variable
+returnReference=;SFP-1;CWE-562
+
+#(returnTempReference, error) Returning reference to temporary
+returnTempReference=;SFP-1;CWE-562
+
+#(returnAutocstr, error) Returning pointer to auto variable
+returnAutocstr=;SFP-1;CWE-562
+
+#(returnTempPointer, error) Returning pointer to temporary
+returnTempPointer=;SFP-1;CWE-562
+
+#(arrayIndexOutOfBounds, error) Array index out of bounds
+arrayIndexOutOfBounds=;SFP-8;CWE-118
+
+#(bufferAccessOutOfBounds, error) Buffer access out-of-bounds: buffer
+bufferAccessOutOfBounds=;SFP-8;CWE-120
+bufferAccessOutOfBoundsElement=Buffer access out-of-bounds: #
+
+#(dangerousStdCin, possible error) Dangerous usage of std::cin, possible buffer overrun
+dangerousStdCin=;SFP-3;CWE-676
+dangerousStdCinElement=Dangerous usage of #, possible buffer overrun
+
+#(strncatUsage, possible error) Dangerous usage of strncat. Tip: the 3rd parameter means maximum number of characters to append
+strncatUsage=;SFP-3;CWE-676
+strncatUsageElemnet=Dangerous usage of #. Tip: the 3rd parameter means maximum number of characters to append
+
+#(outOfBounds, error) index is out of bounds
+outOfBounds=;SFP-8;CWE-118
+
+#(terminateStrncpy, style) After a strncpy() the buffer should be zero-terminated
+terminateStrncpy=;SFP-11;CWE-170
+
+#(noConstructor, style) The class 'classname' has no constructor. Member variables not initialized.
+noConstructor=;SFP--1;CWE-710
+noConstructorElement=The class '#' has no constructor. Member variables not initialized.
+
+#(uninitVar, style) Member variable not initialized in the constructor 'classname::varname'
+uninitvar=;SFP--1;CWE-710
+uninitVarElement=Member variable not initialized in the constructor '#'
+
+#(operatorEqVarError, possible style) Member variable 'classname::' is not assigned a value in 'classname::operator='
+operatorEqVarErrorElement=Member variable '#' is not assigned a value in
+operatorEqVarError=;SFP--1;CWE-710
+
+#(unusedPrivateFunction, style) Unused private function 'classname::funcname'
+unusedPrivateFunctionElement=Unused private function '#'
+unusedPrivateFunction=;SFP-2;CWE-561
+
+#(memsetClass, error) Using 'memfunc' on class
+memsetClassElement=Using '#' on class
+memsetClass=;SFP--1;CWE-710
+
+#(memsetStruct, error) Using 'memfunc' on struct that contains a 'std::classname'
+memsetStructElement=Using '#' on struct that contains a 'std::classname'
+memsetStruct=;SFP--1;CWE-710
+
+#(operatorEq, style) 'operator=' should return something
+operatorEq=;SFP--1;CWE-710
+operatorEqElement='#' should return something
+
+#(thisSubtraction, possible style) Suspicious pointer subtraction
+thisSubtraction=;SFP--1;CWE-710
+
+#(operatorEqRetRefThis, style) 'operator=' should return reference to self
+operatorEq=;SFP--1;CWE-710
+operatorEqRetRefThisElement='#' should return reference to self
+
+#(dangerousFunctionmktemp, style) Found 'mktemp'. You should use 'mkstemp' instead
+dangerousFunctionmktemp=;SFP-16;CWE-73
+dangerousFunctionmktempElement=Found '#'. You should use 'mkstemp' instead
+
+#(dangerousFunctiongets, style) Found 'gets'. You should use 'fgets' instead
+dangerousFunctiongets=;SFP-3;CWE-676
+dangerousFunctiongetsElement=Found '#'. You should use 'fgets' instead
+
+#(dangerousFunctionscanf, style) Found 'scanf'. You should use 'fgets' instead
+dangerousFunctionscanf=;SFP-3;CWE-676
+dangerousFunctionscanfElement=Found '#'. You should use 'fgets' instead
+
+#(exceptThrowInDestructor, style) Throwing exception in destructor
+exceptThrowInDestructor=;SFP-14;CWE-401
+
+#(exceptNew, style) Upon exception there is memory leak: p
+exceptNewElement=Upon exception there is memory leak: #
+exceptNew=;SFP-14;CWE-401
+
+#(exceptRealloc, style) Upon exception p becomes a dead pointer
+exceptRealloc=;SFP-14;CWE-401
+exceptReallocElement=Upon exception # becomes a dead pointer
+
+#(exceptDeallocThrow, error) Throwing exception in invalid state, p points at deallocated memory
+exceptDeallocThrow=;SFP-15;CWE-416
+exceptDeallocThrowElement=Throwing exception in invalid state, # points at deallocated memory
+
+#(memleak, error) Memory leak: varname
+memleak=Resource Management;SFP-14;CWE-401
+memleakElement=Memory leak: #
+
+#(resourceLeak, error) Resource leak: varname
+resourceLeak=;SFP-14;CWE-404
+resourceLeakElement=Resource leak: #
+
+#(deallocDealloc, error) Deallocating a deallocated pointer: varname
+deallocDealloc=;SFP-12;CWE-415
+deallocDeallocElement=Deallocating a deallocated pointer: #
+
+#(deallocuse, error) Dereferencing 'varname' after it is deallocated / released
+deallocuse=;SFP-15;CWE-416
+deallocuseElement=Dereferencing '#' after it is deallocated / released
+
+#(mismatchAllocDealloc, error) Mismatching allocation and deallocation: varname
+mismatchAllocDealloc=;SFP-12;CWE-762
+mismatchAllocDeallocElement=Mismatching allocation and deallocation: #
+
+#(sprintfOverlappingData, error) Undefined behaviour: varname is used wrong in call to sprintf or snprintf. Quote: If copying takes place between objects that overlap as a result of a call to sprintf() or snprintf(), the results are undefined.
+sprintfOverlappingData=Other.Design;SFP--1;CWE-682
+sprintfOverlappingDataElement=Undefined behaviour: # is used wrong in call to sprintf or snprintf
+
+#(nullPointer, error) Possible null pointer dereference: pointer
+nullPointer=;SFP-7;CWE-476
+nullPointerElement=Possible null pointer dereference: #
+
+#(uninitstring, error) Dangerous usage of 'varname' (strncpy doesn't always 0-terminate it)
+uninitstringElement=Dangerous usage of '#' (strncpy doesn't always 0-terminate it)
+uninitstring=;SFP-11;CWE-170
+
+#(uninitdata, error) Data is allocated but not initialized: varname
+uninitdata=;SFP-1;CWE-456
+uninitdataElement=Data is allocated but not initialized: #
+
+#(uninitvar, error) Uninitialized variable: varname
+uninitvar=;SFP-1;CWE-457
+uninitvarElement=Uninitialized variable: #
+Passing value to () leads to undefined result
+#(zerodiv, error) Division by zero
+zerodiv=;SFP-1;CWE-369
+
+#(wrongmathcall, error) Passing value to () leads to undefined result
+wrongmathcall=;SFP--1;CWE-687
+wrongmathcallElement=Passing value to # leads to undefined result
+
+#(cstyleCast, style) C-style pointer casting
+cstyleCast=;SFP-1;CWE-704
+
+#(redundantIfDelete0, style) Redundant condition. It is safe to deallocate a NULL pointer
+redundantIfDelete0=;SFP--1;CWE-710
+
+#(redundantIfRemove, style) Redundant condition. The remove function in the STL will not do anything if element doesn't exist
+redundantIfRemove=;SFP--1;CWE-710
+
+#(dangerousUsageStrtol, error) Invalid radix in call to strtol or strtoul. Must be 0 or 2-36
+dangerousUsageStrtol=Other.Design;SFP--1;CWE-682
+
+#(udivWarning, possible style) Division with signed and unsigned operators
+udivWarning=Other.Design;SFP--1;CWE-682
+
+#(unusedStructMember, style) struct or union member 'structname::variable' is never used
+unusedStructMember=;SFP-2;CWE-563
+unusedStructMemberElement=struct or union member '#' is never used
+
+#(passedByValue, style) Function parameter 'parametername' is passed by value. It could be passed by reference instead.
+passedByValueElement=Function parameter '#' is passed by value. It could be passed by reference instead.
+passedByValue=;SFP-24;CWE-686
+
+#(charArrayIndex, style) Warning - using char variable as array index
+charArrayIndex=;SFP-1;CWE-195
+
+#(charBitOp, style) Warning - using char variable in bit operation
+charBitOp=Other.Design;SFP--1;CWE-682
+
+#(conditionAlwaysTrueFalse, style) Condition is always true/false
+conditionAlwaysTrueFalse=;SFP--1;CWE-398
+
+#(stlOutOfBounds, error) When i==foo.size(), foo[i] is out of bounds
+stlOutOfBounds=;SFP-8;CWE-125
+
+#(stlIfFind, style) Suspicious condition. The result of find is an iterator, but it is not properly checked.
+stlIfFind=;SFP--1;CWE-710
+
+#(unusedFunction, style) The function 'funcName' is never used
+unusedFunction=;SFP-2;CWE-561
+unusedFunctionElement=The function '#' is never used
+

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Findbugs
+Bundle-SymbolicName: com.kdmanalytics.toif.findbugs
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.kdmanalytics.toif.findbugs.Activator
+Bundle-Vendor: KDMANALYTICS
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.kdmanalytics.toif.framework;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

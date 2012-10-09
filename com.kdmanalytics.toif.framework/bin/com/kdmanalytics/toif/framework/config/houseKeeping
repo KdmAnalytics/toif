@@ -1,0 +1,44 @@
+###########################
+#		  Facts
+###########################
+
+TOIFSegmentIsRelatedToProject=project1
+TOIFSegmentIsProducedByOrganization=org1
+TOIFSegmentIsOwnedByOrganization=org2
+TOIFSegmentIsGeneratedByGenerator=generator1
+TOIFSegmentIsGeneratedByPerson=person1
+TOIFSegmentIsSupervisedByPerson=person2
+
+PersonIsInvolvedInProjectAsRole=person1;project1;role1
+OrganizationIsInvolvedInProjectAsRole=org1;project1;role2
+AdaptorSupportsGenerator=generator1
+AdaptorIsSuppliedByVendor=vendor1
+GeneratorIsSuppliedByVendor=generator1;vendor1
+OrganizationIsPartOfOrganizationAsRole=org1;org2;role2
+PersonIsEmployedByOrganizationAsRole=person1;org1;role1
+
+###########################
+#		Entities
+###########################
+
+#projectId=name;description
+project1=Test Project;The test project during development
+
+#generatorId=name;description;version
+generator1=jlint;java checking;2.3
+
+#personId=name;email;phone
+person1=Adam Nunn;adam@kdmanalytics.com;555-1234
+person2=Joe Bloggs;blogs@kdmanalytics.com;555-1234
+
+#organizationId=name;description;address;email;phone
+org1=KDM;Kdm Analytics;Richmond;kdm@kdmanalytics.com;555-5555
+
+#organizationId=name;description;address;email;phone
+org2=Acme;Acme Analytics;blah;thingamy@thingamy.com;555-5555
+
+#roleId=name;description
+role1=developer;programmer
+role2=company;employer
+
+vendor1=Me;Kdm Analytics;Richmond;kdm@kdmanalytics.com;555-5555

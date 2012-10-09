@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Slf4j
+Bundle-SymbolicName: org.slf4j
+Bundle-Version: 1.6.4
+Bundle-Vendor: kdm analytics
+Export-Package: org.slf4j,
+ org.slf4j.helpers,
+ org.slf4j.spi
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
