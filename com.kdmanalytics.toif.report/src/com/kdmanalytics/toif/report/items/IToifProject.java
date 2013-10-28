@@ -10,6 +10,7 @@ package com.kdmanalytics.toif.report.items;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
@@ -36,12 +37,18 @@ public interface IToifProject extends IReportItem
      */
     IProject getIProject();
     
+    
+    void setIProject(IProject iProject);
+    
     /**
      * get the repository this project is in
      * 
      * @return
      */
     Repository getRepository();
+    
+    
+    void setRepository(IFolder ifolder);
     
     /**
      * get the repository's connection

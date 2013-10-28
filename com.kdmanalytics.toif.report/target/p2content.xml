@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='com.kdmanalytics.toif.report' version='1.8.6'>
+    <update id='com.kdmanalytics.toif.report' range='[0.0.0,1.8.6)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='TOIF Report View'/>
+      <property name='org.eclipse.equinox.p2.provider' value='KDM Analytics Inc.'/>
+      <property name='maven-groupId' value='com.kdmanalytics.kdm.wb.plugins'/>
+      <property name='maven-artifactId' value='com.kdmanalytics.toif.report'/>
+      <property name='maven-version' value='1.8.6'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='com.kdmanalytics.toif.report' version='1.8.6'/>
+      <provided namespace='osgi.bundle' name='com.kdmanalytics.toif.report' version='1.8.6'/>
+      <provided namespace='java.package' name='com.kdmanalytics.toif.report.items' version='0.0.0'/>
+      <provided namespace='java.package' name='com.kdmanalytics.toif.report.util' version='0.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='13'>
+      <required namespace='osgi.bundle' name='com.google.guava' range='[14.0.1,15.0.0)'/>
+      <required namespace='osgi.bundle' name='org.apache.log4j' range='[1.2.15,2.0.0)'/>
+      <required namespace='osgi.bundle' name='org.openrdf.sesame' range='[2.4.0,2.5.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui' range='[3.7.0,4.2.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='[3.7.0,4.2.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='[3.7.0,4.2.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.filesystem' range='[1.3.100,1.4.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.expressions' range='[3.4.300,3.5.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='[3.7.0,4.2.0)'/>
+      <required namespace='osgi.bundle' name='org.apache.commons.lang3' range='[3.1.0,4.0.0)'/>
+      <required namespace='osgi.bundle' name='org.apache.commons.io' range='[2.4.0,3.0.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.jdt.core' range='[3.7.0,4.2.0)'/>
+      <required namespace='osgi.bundle' name='com.kdmanalytics.toif.ccr' range='[1.6.0,2.0.0)'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.report' version='1.8.6'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: com.kdmanalytics.toif.report;singleton:=true&#xA;Bundle-Version: 1.8.6&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

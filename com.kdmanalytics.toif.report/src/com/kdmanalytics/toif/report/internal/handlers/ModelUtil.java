@@ -8,6 +8,10 @@
 
 package com.kdmanalytics.toif.report.internal.handlers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -168,18 +172,72 @@ public class ModelUtil
         
         if (s instanceof IStructuredSelection)
         {
-            final IFolder folder = getFolderFromSelection((IStructuredSelection) s);
-            final boolean wbValue = inWorkbench;
-            if (folder != null)
+            IProject iProject = null;
+            
+            for (Object object : ((IStructuredSelection) s).toArray())
+            {
+                if (object instanceof IProject)
+                {
+                    iProject = (IProject) object;
+                }
+            }
+            
+            if (iProject != null)
             {
                 
-                IToifProject toifProject = view.getToifProject(folder);
-                if (toifProject != null)
-                {
-                    view.setReportInput(toifProject);
-                    return;
-                }
+                File file = new File(iProject.getLocation() + "/.toifProject.ser");
                 
+                if (file.exists())
+                {
+                    
+                    try
+                    {
+                        FileInputStream fileIn = new FileInputStream(file);
+                        ObjectInputStream in = new ObjectInputStream(fileIn);
+                        IToifProject project = (IToifProject) in.readObject();
+                        in.close();
+                        fileIn.close();
+                        
+                        if (project != null)
+                        {
+                            System.out.println("toif project deserialized");
+                            // view.getTableViewer().setInput(project);
+                            
+                            IFolder repoFolder = ensureKdmRepoFolderExists(iProject);
+                            project.setRepository(repoFolder);
+                            project.setIProject(repoFolder.getProject());
+                            // project.setIProject(iProject.getLocation());
+                            
+                            view.clearInput();
+                            view.updateInput(project);
+                            view.refresh();
+                            return;
+                        }
+                    }
+                    catch (IOException i)
+                    {
+                        i.printStackTrace();
+                        // return;
+                    }
+                    catch (ClassNotFoundException c)
+                    {
+                        System.out.println("IToifProject class not found");
+                        c.printStackTrace();
+                        // return;
+                    }
+                    catch (CoreException e)
+                    {
+                        System.out.println("repo folder could not be found");
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
+            final boolean wbValue = inWorkbench;
+            final IFolder folder = getFolderFromSelection((IStructuredSelection) s);
+            if (folder != null)
+            {
                 ProgressMonitorDialog dialog = new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
                 try
                 {
@@ -188,6 +246,7 @@ public class ModelUtil
                         @Override
                         public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                         {
+                            monitor.setTaskName("Populating TOIF View.");
                             final IToifProject project = ProjectFactory.createProjectModel(folder, wbValue, monitor);
                             
                             // have to set the input on the UI thread
@@ -196,17 +255,14 @@ public class ModelUtil
                                 @Override
                                 public void run()
                                 {
-                                    view.setToifProjects(folder, project);
                                     view.setReportInput(project);
                                 }
                             });
                             
                         }
-                        
                     };
                     
                     dialog.run(true, false, runnable);
-                    
                 }
                 catch (InvocationTargetException e)
                 {

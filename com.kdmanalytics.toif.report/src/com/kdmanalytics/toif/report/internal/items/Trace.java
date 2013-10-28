@@ -8,15 +8,21 @@
 
 package com.kdmanalytics.toif.report.internal.items;
 
+import java.io.Serializable;
+
 /**
  * a trace is additional line numbers for the location of a finding.
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
  * 
  */
-public class Trace
+public class Trace implements Serializable
 {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1373786791887348407L;
     private String lineNumber;
     
     /**

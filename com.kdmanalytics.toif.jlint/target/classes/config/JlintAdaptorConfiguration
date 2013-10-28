@@ -1,0 +1,144 @@
+# - No SFP or CWE found
+# - No CWE Found
+# - SFP and CWE Found
+
+####################################################
+#	http://www.garret.ru/jlint/ReadMe.htm
+####################################################
+
+#################################
+#	Synchronization
+#################################
+
+#Loop id:invocation of synchronized method name can cause deadlock
+sync_loopElement=invocation of synchronized method # can cause deadlock
+sync_loop=;SFP--1;CWE-833
+
+#Loop LoopId/PathId: invocation of method name forms the loop in class dependency graph
+loopElement=invocation of method # forms the loop in class dependency graph
+loop=;SFP--1;CWE-833
+
+#Lock a is requested while holding lock b, with other thread holding a and requesting lock b
+lockElement=Lock # is requested while holding lock
+lock=;SFP--1;CWE-833
+
+#Method wait() can be invoked with monitor of other object locked
+waitElement=Method # can be invoked with monitor of other object locked
+wait=;SFP--1;CWE-833
+
+#Call sequence to method name can cause deadlock in wait()
+wait_pathElement=Call sequence to method # can cause deadlock
+wait_path=;SFP--1;CWE-833
+
+#Synchronized method name is overridden by non-synchronized method of derived class name
+nosyncElement=Synchronized method # is overridden by non-synchronized method of derived class
+nosync=;SFP-19;CWE-662
+
+#Method name can be called from different threads and is not synchronized
+concurrent_callElement=Method # can be called from different threads and is not synchronized
+concurrent_call=;SFP-19;CWE-662
+
+#Field name of class name can be accessed from different threads and is not volatile
+concurrent_accessElement=Field # of class
+concurrent_access=;SFP-19;CWE-662
+
+#Method name implementing 'Runnable' interface is not synchronized
+run_nosyncElement=Method # implementing 'Runnable' interface is not synchronized
+run_nosync=;SFP-19;CWE-662
+
+#Value of lock .* is changed outside synchronization or constructor.;
+loop_assignElement=Value of lock # is changed
+loop_assign=;SFP-19;CWE-662
+
+#Method name.wait() is called without synchronizing on name.;
+wait_nosyncElement=Method # is called
+wait_nosync=;SFP-19;CWE-662
+
+#################################
+#	Inheritance
+#################################
+
+#Method name is not overridden by method with the same name of derived class name
+not_overriddenElement=Method # is not overridden by method
+not_overridden=;SFP--1;CWE-710
+
+#equals() was overriden but not hashcode()
+overridden=;SFP--1;CWE-581
+
+#Component name in class name shadows one in base class name
+field_redefinedElement=Component '#' in class
+field_redefined=;SFP--1;CWE-710
+
+#Local variable name shadows component of class name
+shadow_localElement=Local variable '#' shadows component of class
+shadow_local=;SFP--1;CWE-710
+
+#Method finalize() doesn't call super.finalize()
+super_finalize=;SFP-28;CWE-568
+
+#################################
+#	Data flow
+#################################
+
+#Method name can be invoked with NULL as number parameter and this parameter is used without check for null
+null_paramElement=Method # can be invoked with NULL
+null_param=;SFP-7;CWE-476
+
+#Value of referenced variable name may be NULL.
+null_varElement=Value of referenced variable # may be NULL
+null_var=;SFP-7;CWE-476
+
+#NULL reference can be used
+null_ptr=;SFP-7;CWE-476
+
+#Zero operand for operation
+zero_operand=;SFP--1;CWE-398
+
+#Result of operation is always 0
+zero_result=;SFP--1;CWE-398
+
+#Shift with count relation than integer
+#Shift count range [min,max] is out of domain
+shift_count=;SFP--1;CWE-682
+
+#Range of expression value has no intersection with target type domain
+conversion=;SFP-1;CWE-681
+
+#Data can be lost as a result of truncation to type
+truncation=;SFP-1;CWE-197
+
+#May be type cast is not correctly applied
+overflow=;SFP-1;CWE-704
+
+#Comparison always produces the same result
+same_result=;SFP--1;CWE-682
+
+#Compared operands can be equal only when both of them are 0
+disjoint_mask=;SFP--1;CWE-398
+
+#Reminder always equal to the first operand
+redundant=;SFP--1;CWE-398
+
+#Comparison of short with char
+short_char_cmp=;SFP-1;CWE-197
+
+#Compare strings as object references
+string_cmp=;SFP-1;CWE-597
+
+#Inequality comparison can be replaced with equality comparison
+weak_cmp=;SFP--1;CWE-710
+
+#Switch case constant integer can't be produced by switch expression
+incomp_case=;SFP-2;CWE-561
+
+#Array length [integer,integer] is less than zero
+neg_len=;SFP--1;CWE-131
+
+#Array length [integer,integer] is less than zero
+array_less_zero=;SFP-4;CWE-665
+
+#Index [integer,integer] may be out of array bounds
+maybe_bad_index=;SFP-8;CWE-118
+
+#Index [integer,integer] is out of array bounds
+out_of_bounds=;SFP-8;CWE-118

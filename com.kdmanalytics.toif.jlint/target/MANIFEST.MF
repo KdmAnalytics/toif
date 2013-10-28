@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Export-Package: com.kdmanalytics.toif.adaptor
+Require-Bundle: com.kdmanalytics.toif.framework;bundle-version="[1.6.0
+ ,2.0.0)",org.eclipse.ui,org.eclipse.core.runtime
+Bundle-Vendor: KDMANALYTICS
+Bundle-ActivationPolicy: lazy
+Bundle-Version: 1.8.6
+Bundle-Name: Jlint
+Bundle-Activator: com.kdmanalytics.toif.jlint.Activator
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.kdmanalytics.toif.jlint
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

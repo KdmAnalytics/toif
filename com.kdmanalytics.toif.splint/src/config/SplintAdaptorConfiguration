@@ -1,4 +1,5 @@
 syntax=Other.Implementation;SFP--1;CWE-398 
+sysunrecog=;SFP--1;CWE--1;
 
 #/*
 #  ** Null Dereferences (Manual Section 2)
@@ -233,6 +234,8 @@ predbool=;SFP-1;CWE-480
 #predboolptr and predboolothers)
 #Test expression type is not boolean.
 
+predboolothers=;SFP-1;CWE-480
+
 predboolint=;SFP-1;CWE-704
 #type of condition test (if, while or for) is an integral type
 #Test expression type is not boolean or int.
@@ -287,7 +290,7 @@ impabstract=;SFP--1;CWE--1
 #assume user type definitions are abstract (unless /*@concrete@*/ is used)
 
 
-
+charindex=;SFP-1;CWE-398
 
 
 #  /* 4.3.1 Access */
@@ -1812,11 +1815,11 @@ formattype=;SFP--1;CWE-628
 #type-mismatch in parameter corresponding to format code in a printf or scanf-like function
 #Type of parameter is not consistent with corresponding code in format string.
 
-formatconst=;SFP--1;CWE-687
+formatconst=;SFP--1;CWE-134
 #format parameter is not a string constant (hence variable arguments cannot be typechecked)
 #Format parameter is not known at compile-time.  This can lead to security vulnerabilities because the arguments cannot be type checked.
 
-formatcode=;SFP-24;CWE-687
+formatcode=;SFP-24;CWE-134
 #invalid format code in format string for printf or scanf-like function
 #Format code in a format string is not valid.
 

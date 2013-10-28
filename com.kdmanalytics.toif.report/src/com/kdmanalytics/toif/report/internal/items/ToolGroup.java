@@ -20,6 +20,11 @@ import java.util.List;
 public class ToolGroup extends ReportItem
 {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2194675981730565641L;
+
     String name;
     
     private List<FindingEntry> findings;
