@@ -8,10 +8,6 @@
 
 package com.kdmanalytics.toif.report.internal.items;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.core.runtime.PlatformObject;
@@ -26,13 +22,8 @@ import com.kdmanalytics.toif.report.items.IToifProject;
  * @author Adam Nunn <adam@kdmanalytics.com>
  * 
  */
-public abstract class ReportItem extends PlatformObject implements IReportItem, Serializable
+public abstract class ReportItem extends PlatformObject implements IReportItem
 {
-    
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8611788270468710322L;
     
     protected IReportItem parent = null;
     
@@ -42,8 +33,6 @@ public abstract class ReportItem extends PlatformObject implements IReportItem, 
     {
         
     }
-    
-    
     
     /*
      * (non-Javadoc)

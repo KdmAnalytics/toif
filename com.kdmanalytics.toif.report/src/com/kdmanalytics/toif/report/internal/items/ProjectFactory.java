@@ -81,10 +81,10 @@ public class ProjectFactory
     public static IToifProject createProjectModel(IFolder kdmRepoFolder, boolean workbenchPresent, IProgressMonitor monitor)
     {
         SubMonitor progress = SubMonitor.convert(monitor, 100);
-        
         // starting from scratch, so create a new project. the root of the
         // defect model.
         Project project = new Project(kdmRepoFolder, workbenchPresent);
+        RepositoryConnection repositoryConnection = project.getRepositoryConnection();
         
         try
         {
@@ -110,7 +110,8 @@ public class ProjectFactory
             
             // the connection will be used to query the repository to get the
             // file-groupings, the location-groupings, and the findings.
-            if (!project.getRepositoryConnection().isOpen())
+            
+            if (!repositoryConnection.isOpen())
             {
                 return project;
             }
@@ -127,13 +128,11 @@ public class ProjectFactory
             
             for (FileGroup fileGroup : fileGroupings)
             {
-                
                 // query for the location-groupings, add them to the project and
                 // return the results so that they can be use to query for its
                 // children.
                 for (LocationGroup locations : addLocationGroupings(project, fileGroup))
                 {
-                    progress.setTaskName("Processing findings for location: " + fileGroup.getName() + ":" + locations.getLineNumber());
                     // query for the findings based on the locations and add
                     // them to the project.
                     addFindings(project, locations);
@@ -155,6 +154,16 @@ public class ProjectFactory
             e.printStackTrace();
         }
         
+        try
+        {
+            repositoryConnection.close();
+            //project.getRepository().shutDown();
+        }
+        catch (RepositoryException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // return the root of the model which should now be populated.
         return project;
         
@@ -243,8 +252,6 @@ public class ProjectFactory
     {
         RepositoryConnection con = project.getRepositoryConnection();
         
-        List<String> fgroups = new ArrayList<String>();
-        
         if (con == null)
         {
             return new ArrayList<FileGroup>();
@@ -268,16 +275,12 @@ public class ProjectFactory
                 // get the binding set.
                 BindingSet bindingSet = result.next();
                 Value valueOfX = bindingSet.getValue("x");
-                if (!fgroups.contains(valueOfX.stringValue()))
-                {
-                    fgroups.add(valueOfX.stringValue());
-                    // create the filegroup.
-                    FileGroup files = new FileGroup(valueOfX.stringValue());
-                    files.setParent(project);
-                    
-                    // add the files to the project.
-                    project.AddFileGroup(files);
-                }
+                // create the filegroup.
+                FileGroup files = new FileGroup(valueOfX.stringValue());
+                files.setParent(project);
+                
+                // add the files to the project.
+                project.AddFileGroup(files);
             }
         }
         finally
@@ -594,18 +597,8 @@ public class ProjectFactory
         // (the segment) that contains this finding, it also contains another
         // element (the adaptor) with the type 'toif:Adaptor'. this adaptor has
         // a name 'name'.
-//         String adaptorQuery = "SELECT ?name WHERE { " +
-//         "?id <http://toif/contains> <" + finding + ">. " +
-//         "?id <http://toif/contains> ?adaptorId. "
-//         + "?adaptorId <http://toif/type> \"toif:Adaptor\". " +
-//         "?adaptorId <http://toif/name> ?name.}";
-        
-//        String adaptorQuery = "SELECT ?name WHERE { " + "?id <http://toif/contains> <" + finding + ">. "
-//                + "?id <http://toif:TOIFSegmentIsProcessedByAdaptor> ?adaptorId. " + "?adaptorId <http://toif/name> ?name.}";
-        
-        String adaptorQuery = "SELECT ?name WHERE { " + "?id <http://toif/contains> <" + finding + ">. "
-                + "?id <http://toif/toif:TOIFSegmentIsProcessedByAdaptor> ?adaptor. ?adaptor <http://toif/name> ?name}";
-        
+        String adaptorQuery = "SELECT ?name WHERE { " + "?id <http://toif/contains> <" + finding + ">. " + "?id <http://toif/contains> ?adaptorId. "
+                + "?adaptorId <http://toif/type> \"toif:Adaptor\". " + "?adaptorId <http://toif/name> ?name.}";
         TupleQuery adaptorTupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, adaptorQuery);
         
         // query the repository.
@@ -618,9 +611,9 @@ public class ProjectFactory
             // if there is one.
             while (queryResult.hasNext())
             {
-                
                 BindingSet adaptorSet = queryResult.next();
                 Value adaptorName = adaptorSet.getValue("name");
+                
                 // return the tool group since we have one.
                 return new ToolGroup(adaptorName.stringValue());
                 
@@ -743,7 +736,7 @@ public class ProjectFactory
         URI findingURI = factory.createURI(entry.getFindingId());
         try
         {
-            String isWeaknessQuery = "SELECT ?isWeakness WHERE {<" + entry.getValue() + "> <http://org.omg.kdm/isWeakness> ?isWeakness .}";
+            String isWeaknessQuery = "SELECT ?isWeakness WHERE {<" + entry.getValue() + "> <http://toif/isWeakness> ?isWeakness .}";
             TupleQuery isWeaknessTupleQuery = con.prepareTupleQuery(QueryLanguage.SPARQL, isWeaknessQuery);
             
             TupleQueryResult isWeaknessResults = isWeaknessTupleQuery.evaluate();

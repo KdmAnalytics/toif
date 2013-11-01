@@ -11,11 +11,9 @@
 
 package com.kdmanalytics.toif.framework.toolAdaptor;
 
-import com.lexicalscope.jewel.cli.ArgumentValidationException;
-import com.lexicalscope.jewel.cli.Cli;
-import com.lexicalscope.jewel.cli.CliFactory;
-
-
+import uk.co.flamingpenguin.jewel.cli.ArgumentValidationException;
+import uk.co.flamingpenguin.jewel.cli.Cli;
+import uk.co.flamingpenguin.jewel.cli.CliFactory;
 
 /**
  * creates the commands from the command line arguments.

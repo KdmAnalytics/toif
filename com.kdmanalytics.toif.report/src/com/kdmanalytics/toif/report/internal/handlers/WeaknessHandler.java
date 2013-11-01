@@ -30,67 +30,70 @@ import com.kdmanalytics.toif.report.items.IToifReportEntry;
  * @author Kyle Girard <kyle@kdmanalytics.com>
  * 
  */
-public class WeaknessHandler extends AbstractHandler
-{
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
-     * .ExecutionEvent)
-     */
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException
-    {
-        final IStructuredSelection s = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-        final ReportView view = (ReportView) HandlerUtil.getActivePart(event);
-        
-        final String target = event.getParameter("com.kdmanalytics.toif.report.weaknessState");
-        
-        boolean isWeakness = target.equals("isWeakness");
-        
-        Repository rep = view.getReportInput().getRepository();
-        for (Object obj : s.toArray())
-        {
-            if (obj instanceof IToifReportEntry)
-            {
-                IToifReportEntry toifReportEntry = (IToifReportEntry) obj;
-                IFindingEntry entry = toifReportEntry.getFindingEntry();
-                entry.setIsOk(!isWeakness);
-                setIsOkInRepository(rep, entry);
-            }
-        }
-        view.refresh();
-        return null;
-    }
-    
-    /**
-     * Sets the is ok in repository.
-     * 
-     * @param rep
-     *            the rep
-     * @param finding
-     *            the finding
-     */
-    private void setIsOkInRepository(Repository rep, IFindingEntry finding)
-    {
-        try
-        {
-            ValueFactory factory = rep.getValueFactory();
-            RepositoryConnection con = rep.getConnection();
-            
-            URI isWeaknessURI = factory.createURI("http://toif/isWeakness");
-            URI findingURI = factory.createURI(finding.getFindingId());
-            
-            con.remove(findingURI, isWeaknessURI, null);
-            
-            con.add(findingURI, isWeaknessURI, factory.createLiteral("true"));
-        }
-        catch (RepositoryException e)
-        {
-            System.err.println("Could not add or remove the trust statements in the repository: " + e);
-        }
-        
-    }
+public class WeaknessHandler extends AbstractHandler {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+	 * .ExecutionEvent)
+	 */
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		final IStructuredSelection s = (IStructuredSelection) HandlerUtil
+				.getCurrentSelection(event);
+		final ReportView view = (ReportView) HandlerUtil.getActivePart(event);
+
+		final String target = event
+				.getParameter("com.kdmanalytics.toif.report.weaknessState");
+
+		boolean isWeakness = target.equals("isWeakness");
+
+		Repository rep = view.getReportInput().getRepository();
+		for (Object obj : s.toArray()) {
+			if (obj instanceof IToifReportEntry) {
+				IToifReportEntry toifReportEntry = (IToifReportEntry) obj;
+				IFindingEntry entry = toifReportEntry.getFindingEntry();
+				entry.setIsOk(!isWeakness);
+				setIsOkInRepository(rep, entry, isWeakness);
+			}
+		}
+		view.refresh();
+		return null;
+	}
+
+	/**
+	 * Sets the is ok in repository.
+	 * 
+	 * @param rep
+	 *            the rep
+	 * @param finding
+	 *            the finding
+	 */
+	private void setIsOkInRepository(Repository rep, IFindingEntry finding,
+			Boolean isWeakness) {
+		try {
+			ValueFactory factory = rep.getValueFactory();
+			RepositoryConnection con = rep.getConnection();
+
+			URI isWeaknessURI = factory.createURI("http://toif/isWeakness");
+			URI findingURI = factory.createURI(finding.getFindingId());
+
+			con.remove(findingURI, isWeaknessURI, null);
+
+			if (isWeakness) {
+				con.add(findingURI, isWeaknessURI,
+						factory.createLiteral("true"));
+			} else {
+				con.add(findingURI, isWeaknessURI,
+						factory.createLiteral("false"));
+			}
+		} catch (RepositoryException e) {
+			System.err
+					.println("Could not add or remove the trust statements in the repository: "
+							+ e);
+		}
+
+	}
 }

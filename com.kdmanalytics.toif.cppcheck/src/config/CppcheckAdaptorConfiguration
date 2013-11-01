@@ -192,7 +192,7 @@ exceptDeallocThrow=;SFP-15;CWE-416
 exceptDeallocThrowElement=Throwing exception in invalid state, # points at deallocated memory
 
 #(memleak, error) Memory leak: varname
-memleak=Resource Management=;SFP-14;CWE-401
+memleak=Resource Management;SFP-14;CWE-401
 memleakElement=Memory leak: #
 
 #(resourceLeak, error) Resource leak: varname

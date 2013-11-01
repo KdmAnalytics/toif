@@ -8,14 +8,8 @@
  * //////////////////////////////
  * ////////////////////////////////////////////////////
  ******************************************************************************/
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.ToolAdaptor;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
-import com.lexicalscope.jewel.cli.ArgumentValidationException;
 
 /**
  * kick off the toif adaptor.
@@ -35,71 +29,14 @@ public class ToifAdaptor
     {
         
         ToolAdaptor toolAdaptor = new ToolAdaptor(args);
-                
-        // get the options provided to main.
-        try
-        {
-            toolAdaptor.setOptions(args);
-        }
-        catch (ArgumentValidationException e)
-        {
-            System.err.println("Invalid arguments");
-            //e.printStackTrace();
-        }
         
+        // get the options provided to main.
+        toolAdaptor.setOptions(args);
         
         // from options
         Class<?> adaptorClass = toolAdaptor.getAdaptorClass();
         
         toolAdaptor.setAdaptorImplementation(adaptorClass);
-        
-        toolAdaptor.createFacts(null);
-        
-        File file = toolAdaptor.createSegmentFile();
-        
-        // run the tool.
-        final Process process = toolAdaptor.runTool();
-        
-        if (process == null)
-        {
-            System.err.println("unable to run the scan tool, or no tool needs to be run.");
-        }
-        
-        toolAdaptor.getElementsFromParse(process, file);
-        
-        // construct the xml.
-        toolAdaptor.constructXml();
-        
-    }
-    
-    /**
-     * Main. Entry point for the Adaptor.
-     * 
-     * @param args
-     */
-    public static void run(AbstractAdaptor adaptor, List<String> arguments)
-    {
-        //spoof the adaptor option at the beginning.
-        arguments.add(0, "-a");
-        arguments.add(1, adaptor.getAdaptorName());
-        
-        
-        String[] args = arguments.toArray(new String[arguments.size()]);
-        
-        ToolAdaptor toolAdaptor = new ToolAdaptor(args);
-        
-        // get the options provided to main.
-        try
-        {
-            toolAdaptor.setOptions(args);
-        }
-        catch (ArgumentValidationException e)
-        {
-            System.err.println("Invalid arguments");
-            //e.printStackTrace();
-        }
-        
-        toolAdaptor.setAdaptor(adaptor);
         
         toolAdaptor.createFacts(null);
         

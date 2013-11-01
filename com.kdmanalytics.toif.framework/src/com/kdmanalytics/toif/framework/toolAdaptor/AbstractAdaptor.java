@@ -29,19 +29,6 @@ public abstract class AbstractAdaptor
 {
     
     /**
-     * get the language this adaptor works on.
-     */
-    public abstract String getLanguage();
-    
-    /**
-     * get the name to be run from the command line.
-     * 
-     * @return return the string of the name of the tool to be run from the
-     *         command line.
-     */
-    public abstract String getRuntoolName();
-    
-    /**
      * get the adaptor description for housekeeping
      * 
      * @return
@@ -187,12 +174,10 @@ public abstract class AbstractAdaptor
      * elements. These can be generated using the FindingCreator.
      * 
      * @param file
-     * @param validLines 
-     * @param unknownCWE 
      * 
      * @return
      */
-    public abstract ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE);
+    public abstract ArrayList<Element> parse(Process process, AdaptorOptions options, File file);
     
     /**
      * construct the command to run the vulnerability detection tool.
@@ -204,19 +189,5 @@ public abstract class AbstractAdaptor
      * @return The commands to run the tool as a String array.
      */
     public abstract String[] runToolCommands(AdaptorOptions options, String[] otherOpts);
-    
-    /**
-     * does this adaptor accept -D options.
-     * 
-     * @return true if this adaptor accepts -D options
-     */
-    public abstract boolean acceptsDOptions();
-    
-    /**
-     * does this adaptor accept -I options.
-     * 
-     * @return true if this adaptor accepts -I options.
-     */
-    public abstract boolean acceptsIOptions();
     
 }

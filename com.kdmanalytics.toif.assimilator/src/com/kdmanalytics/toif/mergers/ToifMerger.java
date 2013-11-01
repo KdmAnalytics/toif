@@ -57,7 +57,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.kdmanalytics.toif.assimilator.KdmXmlHandler;
 import com.kdmanalytics.toif.assimilator.toifRdfTypes.SeenStatement;
 import com.kdmanalytics.toif.assimilator.toifRdfTypes.ToifRdfBnode;
 import com.kdmanalytics.toif.assimilator.toifRdfTypes.ToifRdfFile;
@@ -133,7 +132,7 @@ public class ToifMerger
      */
     private RepositoryConnection con;
     
-    private String currentToolName;
+    private String currentParent;
     
     private final HashMap<String, ToifRdfResource> segments;
     
@@ -796,25 +795,18 @@ public class ToifMerger
         filterElements(segment, "fact");
         
         segment.setAttribute("id", Long.toString(0));
-        // segment.setAttribute("parent", currentParent);
-        
-        String fileName = currentFile.getName();
-        fileName = fileName.replace(".toif.xml", "");
-        String[] nameArray = fileName.split("[.]");
-        currentToolName = nameArray[nameArray.length - 1];
-        
-        segment.setAttribute("parent", currentToolName);
+        segment.setAttribute("parent", currentParent);
         
         clonedDoc.normalize();
         
         ToifRdfResource resource = new ToifRdfResource(segment, currentFile);
         
-        if (!segments.containsKey(currentToolName))
+        if (!segments.containsKey(currentParent))
         {
-            segments.put(currentToolName, resource);
+            segments.put(currentParent, resource);
         }
         
-        resource = segments.get(currentToolName);
+        resource = segments.get(currentParent);
         
         makeGlobal(resource);
         
@@ -933,17 +925,11 @@ public class ToifMerger
             
             float fraction = 100f / listSize;
             int percent = (int) Math.ceil(fraction * fileNum);
-            
-            if (percent > 100)
-            {
-                percent = 100;
-            }
-            
             System.out.print("\r" + file);
             System.out.print("\nprocessing TOIF... " + percent + "%");
             
             currentFile = file;
-            currentToolName = currentFile.getParent();
+            currentParent = currentFile.getParent();
             
             // initialize the local structures that only relate to this file.
             statements = new ArrayList<ToifStatement>();
@@ -1057,11 +1043,11 @@ public class ToifMerger
             System.err.println("Offset: " + offset);
             System.err.println("Current Segment: " + new ToifRdfResource(currentSegment, currentFile).getDetails());
             System.err.println("Current File: " + currentFile.getName());
-            System.err.println("Current Tool Name: " + currentToolName + "\n");
+            System.err.println("Current Parent: " + currentParent + "\n");
         }
         
         doc = getDocument(file);
-        
+                
         // just get all the elements.
         final NodeList nodeList = doc.getElementsByTagName("*");
         
@@ -1264,7 +1250,7 @@ public class ToifMerger
                 // if it has not been seen.
                 if (!seen)
                 {
-                    KdmXmlHandler.addOrWrite(output, con, subjectURI, predicateURI, objectURI);
+                    con.add(subjectURI, predicateURI, objectURI);
                 }
                 
             }
@@ -1274,7 +1260,7 @@ public class ToifMerger
                 boolean seen = seenStatement(subjectURI.stringValue(), predicateURI.stringValue(), valueURI.stringValue());
                 if (!seen)
                 {
-                    KdmXmlHandler.addOrWrite(output, con, subjectURI, predicateURI, valueURI);
+                    con.add(subjectURI, predicateURI, valueURI);
                 }
                 
             }
@@ -1291,7 +1277,7 @@ public class ToifMerger
                 if (!seen)
                 {
                     
-                    KdmXmlHandler.addOrWrite(output, con, subjectURI, predicateURI, objectURI);
+                    con.add(subjectURI, predicateURI, objectURI);
                 }
                 
             }
@@ -1315,7 +1301,7 @@ public class ToifMerger
                 
                 if (!seen)
                 {
-                    KdmXmlHandler.addOrWrite(output, con, subjectURI, predicateURI, objectURI);
+                    con.add(subjectURI, predicateURI, objectURI);
                 }
                 
             }

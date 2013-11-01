@@ -15,6 +15,8 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.kdmanalytics.toif.report.items.IToifProject;
+
 /**
  * Builds the defect model.
  * 
@@ -33,7 +35,7 @@ public class BuildDefectModelHandler extends AbstractHandler implements IHandler
         ISelection s = HandlerUtil.getCurrentSelection(event);
         if (s != null)
         {
-            ModelUtil.buildModel(s);
+           ModelUtil.buildModel(s);
         }
         return null;
     }

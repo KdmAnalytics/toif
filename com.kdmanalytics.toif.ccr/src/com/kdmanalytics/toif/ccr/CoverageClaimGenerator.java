@@ -129,9 +129,10 @@ public class CoverageClaimGenerator
      * @param objFactory
      * @param segment
      * @param repository
+     * @param segment 
      * @return
      */
-    private static Collection<? extends Rule> getRules(ObjectFactory objFactory, Value cwe, Repository repository)
+    private static Collection<? extends Rule> getRules(ObjectFactory objFactory, Value cwe, Repository repository, Value segment)
     {
         HashMap<String, Rule> ruleSet = new HashMap<String, CWECoverageClaimType.Claims.Claim.RuleSet.Rule>();
         RepositoryConnection con = null;
@@ -139,7 +140,7 @@ public class CoverageClaimGenerator
         {
             con = getRepositoryConnection(repository);
             
-            String adaptorQuery = "SELECT ?descriptionText WHERE {" + "?finding <http://toif/toif:FindingHasCWEIdentifier> <" + cwe + "> . "
+            String adaptorQuery = "SELECT ?descriptionText WHERE {<"+segment+"> <http://toif/contains> ?finding. ?finding <http://toif/toif:FindingHasCWEIdentifier> <" + cwe + "> . "
                     + "?finding <http://toif/toif:FindingIsDescribedByWeaknessDescription> ?description . "
                     + "?description <http://toif/description> ?descriptionText . }";
             
@@ -348,7 +349,7 @@ public class CoverageClaimGenerator
                 
                 Claim claim = claims.get(cweIdString);
                 RuleSet ruleSet = objFactory.createCWECoverageClaimTypeClaimsClaimRuleSet();
-                ruleSet.getRule().addAll(getRules(objFactory, cwe, repository));
+                ruleSet.getRule().addAll(getRules(objFactory, cwe, repository,segment));
                 claim.setRuleSet(ruleSet);
                 
             }

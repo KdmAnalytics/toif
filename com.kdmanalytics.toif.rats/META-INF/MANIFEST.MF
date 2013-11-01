@@ -2,13 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rats
 Bundle-SymbolicName: com.kdmanalytics.toif.rats
-Bundle-Version: 1.8.6.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.kdmanalytics.toif.rats.Activator
 Bundle-Vendor: KDMANALYTICS
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- com.kdmanalytics.toif.framework;bundle-version="[1.6.0,2.0.0)",
- org.apache.xerces;bundle-version="[2.11.0,3.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ com.kdmanalytics.toif.framework;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: com.kdmanalytics.toif.adaptor

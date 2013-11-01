@@ -23,11 +23,6 @@ import com.kdmanalytics.toif.report.items.IFileGroup;
 public class FileGroup extends ReportItem implements IFileGroup
 {
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1315272657743409326L;
-
     public static int locationCount = 0;
     
     private final List<LocationGroup> locations;

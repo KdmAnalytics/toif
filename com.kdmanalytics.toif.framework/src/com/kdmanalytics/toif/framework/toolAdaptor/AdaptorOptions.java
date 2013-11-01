@@ -1,21 +1,17 @@
 /*******************************************************************************
- * /////////////////////////////////////////////////////////////////////////////
- * ///// // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This
- * program and the // accompanying materials are made available under the terms
- * of the Open Source // Initiative OSI - Open Software License v3.0 which
- * accompanies this // distribution, and is available at
- * http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////
- * ////////////////////////////////////////////////////
+ * //////////////////////////////////////////////////////////////////////////////////
+ * // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
+ * // accompanying materials are made available under the terms of the Open Source
+ * // Initiative OSI - Open Software License v3.0 which accompanies this
+ * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ * //////////////////////////////////////////////////////////////////////////////////
  ******************************************************************************/
-
 package com.kdmanalytics.toif.framework.toolAdaptor;
 
 import java.io.File;
 
-import com.lexicalscope.jewel.cli.CommandLineInterface;
-import com.lexicalscope.jewel.cli.Option;
-import com.lexicalscope.jewel.cli.Unparsed;
+import uk.co.flamingpenguin.jewel.cli.CommandLineInterface;
+import uk.co.flamingpenguin.jewel.cli.Option;
 
 /**
  * Define the commands which can be used.
@@ -58,13 +54,5 @@ public interface AdaptorOptions
      */
     @Option(shortName = "h", description = "The location of the house-keeping file")
     File getHouseKeeping();
-    
-    @Option(shortName = "n", description = "Rename the file as this.")
-    String getRename();
-    boolean isRename();
-    
-    @Option
-    boolean getUnknownCWE();
-    boolean isUnknownCWE();
     
 }

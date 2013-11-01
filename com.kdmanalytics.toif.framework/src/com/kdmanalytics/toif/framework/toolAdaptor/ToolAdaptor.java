@@ -19,12 +19,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
+import uk.co.flamingpenguin.jewel.cli.ArgumentValidationException;
+import uk.co.flamingpenguin.jewel.cli.Cli;
+import uk.co.flamingpenguin.jewel.cli.CliFactory;
 
 import com.kdmanalytics.toif.framework.utils.ElementComparator;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Adaptor;
@@ -88,9 +91,6 @@ import com.kdmanalytics.toif.framework.xmlElements.facts.TOIFSegmentIsProducedBy
 import com.kdmanalytics.toif.framework.xmlElements.facts.TOIFSegmentIsRelatedToProject;
 import com.kdmanalytics.toif.framework.xmlElements.facts.TOIFSegmentIsSupervisedByPerson;
 import com.kdmanalytics.toif.framework.xmlElements.facts.TOIFSegmentReferencesFile;
-import com.lexicalscope.jewel.cli.ArgumentValidationException;
-import com.lexicalscope.jewel.cli.Cli;
-import com.lexicalscope.jewel.cli.CliFactory;
 
 /**
  * The main guts of the Adaptor. Creates much of the housekeeping and calls of
@@ -138,10 +138,6 @@ public class ToolAdaptor
      */
     private String[] otherOpts = null;
     
-    private java.io.File workingDirectory = null;
-    
-    private boolean[] validLines;
-    
     /**
      * Constructor of the adaptor. Takes the arguments from main, extracts the
      * options from it, generates the translation table, and runs the tool.
@@ -154,91 +150,6 @@ public class ToolAdaptor
         
     }
     
-    public boolean runToolAdaptor(String[] args)
-    {
-        // get the options provided to main.
-        try
-        {
-            setOptions(args);
-        }
-        catch (ArgumentValidationException e)
-        {
-            System.err.println("Incorrect arguments");
-            return false;
-        }
-        
-        // from options
-        Class<?> adaptorClass = getAdaptorClass();
-        
-        setAdaptorImplementation(adaptorClass);
-        
-        createFacts(null);
-        
-        File file = createSegmentFile();
-        
-        // run the tool.
-        final Process process = runTool();
-        
-        if (process == null)
-        {
-            System.err.println("unable to run the scan tool, or no tool needs to be run.");
-            return false;
-        }
-        
-        getElementsFromParse(process, file);
-        
-        // construct the xml.
-        constructXml();
-        
-        return true;
-    }
-    
-    public boolean runToolAdaptor(AbstractAdaptor adaptor, List<String> arguments, java.io.File workingDirectory, boolean[] validLines)
-    {
-        // spoof the adaptor option at the beginning.
-        arguments.add(0, "-a");
-        arguments.add(1, adaptor.getAdaptorName());
-        
-        this.validLines = validLines;
-        
-        this.workingDirectory = workingDirectory;
-        
-        String[] args = arguments.toArray(new String[arguments.size()]);
-        
-        // get the options provided to main.
-        try
-        {
-            setOptions(args);
-        }
-        catch (ArgumentValidationException e)
-        {
-            System.err.println("Incorrect arguments");
-            return false;
-        }
-        
-        setAdaptorImplementation(adaptor);
-        
-        createFacts(null);
-        
-        File file = createSegmentFile();
-        
-        // run the tool.
-        final Process process = runTool();
-        
-        if (process == null)
-        {
-            System.err.println("unable to run the scan tool, or no tool needs to be run.");
-            return false;
-        }
-        
-        getElementsFromParse(process, file);
-        
-        // construct the xml.
-        constructXml();
-        
-        return true;
-    }
-    
     /**
      * Get all the elements from the parsing of the input file by the adaptor.
      * 
@@ -249,14 +160,11 @@ public class ToolAdaptor
      */
     public void getElementsFromParse(Process process, File file)
     {
-        
         /*
          * put all the elements and facts generated from the parse phase into
          * the elements hashtable.
          */
-        ArrayList<Element> parse = parse(process, file);
-        
-        elements.addAll(parse);
+        elements.addAll(parse(process, file));
     }
     
     /**
@@ -290,12 +198,12 @@ public class ToolAdaptor
             if (options != null)
             {
                 System.err.println(options.getAdaptor().toString() + ": The house-keeping file is missing some properties. ");
-                // e.printStackTrace();
+                e.printStackTrace();
             }
             else
             {
                 System.err.println("The house-keeping file is missing some properties. ");
-                // e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -314,19 +222,14 @@ public class ToolAdaptor
         }
         catch (final InstantiationException e1)
         {
-            System.err.println(options.getAdaptor().toString() + ": Adaptor not found!");
+            System.err.println(options.getAdaptor().toString() + ": Adaptor not found! " + e1.getMessage());
             System.exit(1);
         }
         catch (final IllegalAccessException e1)
         {
-            System.err.println(options.getAdaptor().toString() + ": Adaptor not found!");
+            System.err.println(options.getAdaptor().toString() + ": Adaptor not found! " + e1.getMessage());
             System.exit(1);
         }
-    }
-    
-    public void setAdaptor(AbstractAdaptor adaptor)
-    {
-        adaptorImpl = adaptor;
     }
     
     /**
@@ -342,23 +245,16 @@ public class ToolAdaptor
     public Class<?> getAdaptorClass()
     {
         Class<?> adaptorClass = null;
-        String adaptor = null;
+        
+        // get the class name from the options.
         try
         {
-            // get the class name from the options.
-            adaptor = options.getAdaptor().toString();
-            
-            adaptorClass = Class.forName(adaptor);
+            adaptorClass = Class.forName(options.getAdaptor().toString());
             
         }
         catch (final ClassNotFoundException e1)
         {
-            System.err.println(adaptor + ": Adaptor not found!");
-            System.exit(1);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Error reading arguments.");
+            System.err.println(options.getAdaptor().toString() + ": Adaptor not found! " + e1.getMessage());
             System.exit(1);
         }
         return adaptorClass;
@@ -411,30 +307,16 @@ public class ToolAdaptor
      */
     public void constructXml()
     {
-        // String outDirPath = options.getOutputDirectory().getPath() +
-        // java.io.File.separator + adaptorImpl.getAdaptorName();
-        String outDirPath = options.getOutputDirectory().getPath();
+        String outDirPath = options.getOutputDirectory().getPath() + java.io.File.separator + adaptorImpl.getAdaptorName();
         java.io.File outDir = new java.io.File(outDirPath);
         outDir.mkdirs();
-        
-        java.io.File outFile = null;
-        
-        if (options.isRename())
-        {
-            outFile = new java.io.File(outDirPath, options.getRename() + "." + adaptorImpl.getRuntoolName() + ".toif.xml");
-        }
-        else
-        {
-            outFile = new java.io.File(outDirPath, options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName() + ".toif.xml");
-        }
+        java.io.File outFile = new java.io.File(outDirPath, options.getInputFile().getName() + ".toif.xml");
         java.io.File houseKeepingFile = new java.io.File(outDirPath, "GENERAL_INFORMATION.toif.xml");
         
         // change the hashtable to an arrayList inorder to sort them.
         final ArrayList<Element> results = new ArrayList<Element>(housekeepingElements.values());
-        // marshall(houseKeepingFile, results);
-        results.addAll(elements);
-        
-        marshall(outFile, results);
+        marshall(houseKeepingFile, results);
+        marshall(outFile, elements);
         // results.addAll(elements);
         
     }
@@ -1123,12 +1005,12 @@ public class ToolAdaptor
         }
         catch (final JAXBException e)
         {
-            System.err.println(options.getAdaptor().toString() + ": Failed to create XML output \n");
+            System.err.println(options.getAdaptor().toString() + ": Failed to create XML output \n" + e);
             System.exit(1);
         }
         catch (final FileNotFoundException e)
         {
-            System.err.println(options.getAdaptor().toString() + ": Not able to write to output file " + outFile);
+            System.err.println(options.getAdaptor().toString() + ": Not able to write to output file");
             System.exit(1);
         }
     }
@@ -1144,7 +1026,7 @@ public class ToolAdaptor
      */
     ArrayList<Element> parse(Process process, File file)
     {
-        return adaptorImpl.parse(process, options, file, validLines, options.getUnknownCWE());
+        return adaptorImpl.parse(process, options, file);
     }
     
     /**
@@ -1163,9 +1045,6 @@ public class ToolAdaptor
          */
         
         final String[] command = adaptorImpl.runToolCommands(options, otherOpts);
-        // final String[] command = adaptorImpl.runToolCommands(options,
-        // options.getAdditionalArgs().toArray(new
-        // String[options.getAdditionalArgs().size()]));
         
         if (command == null)
         {
@@ -1173,11 +1052,6 @@ public class ToolAdaptor
         }
         
         final ProcessBuilder process = new ProcessBuilder(command);
-        
-        if (workingDirectory != null)
-        {
-            process.directory(workingDirectory);
-        }
         
         try
         {
@@ -1249,7 +1123,7 @@ public class ToolAdaptor
      *            - The arguments from main. The tool, the source location, the
      *            output location.
      */
-    public void setOptions(String[] args) throws ArgumentValidationException
+    public void setOptions(String[] args)
     {
         // create the command line interface.
         final Cli<AdaptorOptions> CLI = CliFactory.createCli(AdaptorOptions.class);
@@ -1257,45 +1131,27 @@ public class ToolAdaptor
         // List<String> options = Arrays.asList(args);
         String[] adaptorOpts = {};
         
-        int argsLimit = 8;
-        
-        for (String string : args)
+        if (args.length >= 8)
         {
-            if ("--unknownCWE".equals(string))
-            {
-                argsLimit++;
-            }
-            if ("--rename".equals(string))
-            {
-                argsLimit += 2;
-            }
-            if ("-n".equals(string))
-            {
-                argsLimit += 2;
-            }
-            
+            adaptorOpts = Arrays.asList(args).subList(0, 8).toArray(new String[8]);
+            otherOpts = Arrays.asList(args).subList(8, args.length).toArray(new String[args.length - 8]);
         }
         
-        if (args.length >= argsLimit)
-        {
-            List<String> argList = Arrays.asList(args);
-            adaptorOpts = argList.subList(0, argsLimit).toArray(new String[argsLimit]);
-            List<String> argsublist = argList.subList(argsLimit, args.length);
-            otherOpts = argsublist.toArray(new String[args.length - argsLimit]);
-            for (int i = 0; i < otherOpts.length; i++)
-            {
-                String string = otherOpts[i];
-                
-                // string = "\"" + string + "\"";
-                
-                otherOpts[i] = string;
-            }
-        }
         // Collect the arguments
-
-        options = CLI.parseArguments(adaptorOpts);
-
-        
+        try
+        {
+            options = CLI.parseArguments(adaptorOpts);
+        }
+        catch (final ArgumentValidationException e)
+        {
+            System.out.println(CLI.getHelpMessage());
+            System.exit(1);
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println(CLI.getHelpMessage());
+            System.exit(1);
+        }
     }
     
     /**

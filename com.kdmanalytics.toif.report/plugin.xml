@@ -127,7 +127,13 @@
             <command
                   commandId="com.kdmanalytics.toif.report.BuildDefectModel"
                   icon="src/icons/bug.png"
-                  label="Populate TOIF View"
+                  label="(Re)Build Defect Model"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.kdmanalytics.toif.report.MergeTSV"
+                  icon="src/icons/merge.png"
+                  label="Merge SFP/CWE TSV Findings"
                   style="push">
             </command>
          </menu>

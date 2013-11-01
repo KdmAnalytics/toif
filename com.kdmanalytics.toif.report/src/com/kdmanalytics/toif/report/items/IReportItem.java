@@ -8,6 +8,7 @@
 
 package com.kdmanalytics.toif.report.items;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -21,7 +22,7 @@ import com.kdmanalytics.toif.report.internal.items.ReportItem;
  * @author Kyle Girard <kyle@kdmanalytics.com>
  * 
  */
-public interface IReportItem extends IAdaptable
+public interface IReportItem extends IAdaptable, Serializable
 {
     
     /**

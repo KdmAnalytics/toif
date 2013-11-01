@@ -6,7 +6,6 @@
  ******************************************************************************/
 package com.kdmanalytics.toif.assimilator;
 
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -48,7 +47,7 @@ class DelayedRelation
      * @param nodeNames
      * @throws RepositoryException
      */
-    public void commit(PrintWriter out, Repository repository, RepositoryConnection con, XMLNode root, Map<String, String> nodeNames) throws RepositoryException
+    public void commit(Repository repository, RepositoryConnection con, XMLNode root, Map<String, String> nodeNames) throws RepositoryException
     {
         if (debug)
         {
@@ -105,7 +104,7 @@ class DelayedRelation
                     System.err.println("repository: " + con.getRepository());
                 }
                 
-                KdmXmlHandler.addOrWrite(out, con, subject, predicate, object);
+                con.add(subject, predicate, object);
             }
         }
     }

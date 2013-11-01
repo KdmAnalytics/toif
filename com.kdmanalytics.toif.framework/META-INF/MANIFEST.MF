@@ -2,18 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Adaptor
 Bundle-SymbolicName: com.kdmanalytics.toif.framework
-Bundle-Version: 1.8.6.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.kdmanalytics.toif.framework.Activator
 Bundle-Vendor: KDMANALYTICS
-Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit,
- com.lexicalscope.jewelcli;bundle-version="[0.8.5,1.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.junit
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.lang3,
- org.apache.xerces.parsers
+ org.apache.xerces.parsers,
+ uk.co.flamingpenguin.jewel.cli
 Export-Package: com.kdmanalytics.toif.framework.parser,
  com.kdmanalytics.toif.framework.toolAdaptor,
  com.kdmanalytics.toif.framework.utils,

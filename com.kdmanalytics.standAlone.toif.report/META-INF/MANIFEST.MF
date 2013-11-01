@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Report
 Bundle-SymbolicName: com.kdmanalytics.standAlone.toif.report;singleton:=true
-Bundle-Version: 1.8.6.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.kdmanalytics.standalone.toif.report.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.eclipse.ui;bundle-version="[3.7.0,5.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.7.0,5.0.0)",
  org.eclipse.core.resources;bundle-version="[3.7.0,5.0.0)",
- org.openrdf.sesame;bundle-version="[2.4.0,2.5.0)",
- com.kdmanalytics.toif.report;bundle-version="[1.6.0,2.0.0)"
+ org.openrdf.sesame;bundle-version="[2.3.0,3.4.0)",
+ com.kdmanalytics.toif.report;bundle-version="[1.0.0,1.1.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

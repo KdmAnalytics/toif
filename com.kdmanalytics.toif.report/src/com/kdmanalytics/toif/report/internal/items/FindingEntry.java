@@ -8,9 +8,6 @@
 
 package com.kdmanalytics.toif.report.internal.items;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +26,6 @@ import com.kdmanalytics.toif.report.items.IReportItem;
 public class FindingEntry extends ReportItem implements IFindingEntry
 {
     
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8949167670618091743L;
-
     String finding = "Test";
     
     private boolean isOk;
@@ -45,8 +37,10 @@ public class FindingEntry extends ReportItem implements IFindingEntry
     private String cwe;
     
     private int trust = 0;
-        
-    String value = null;
+    
+    private Repository repository;
+    
+    Value value = null;
     
     private List<Trace> traces = new ArrayList<Trace>();
     
@@ -55,12 +49,11 @@ public class FindingEntry extends ReportItem implements IFindingEntry
         isOk = true;
     }
     
-    
-    
     public FindingEntry(Value value, Repository repository)
     {
         isOk = true;
-        this.value = value.stringValue();
+        this.value = value;
+        this.repository = repository;
     }
     
     /*
@@ -69,7 +62,7 @@ public class FindingEntry extends ReportItem implements IFindingEntry
      * @see com.kdmanalytics.toif.report.internal.items.IFindingEntry#getValue()
      */
     @Override
-    public String getValue()
+    public Value getValue()
     {
         return value;
     }
@@ -205,9 +198,20 @@ public class FindingEntry extends ReportItem implements IFindingEntry
     @Override
     public String getFindingId()
     {
-        return value;
+        return value.stringValue();
     }
     
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.kdmanalytics.toif.report.internal.items.IFindingEntry#getRepository()
+     */
+    @Override
+    public Repository getRepository()
+    {
+        return repository;
+    }
     
     /*
      * (non-Javadoc)

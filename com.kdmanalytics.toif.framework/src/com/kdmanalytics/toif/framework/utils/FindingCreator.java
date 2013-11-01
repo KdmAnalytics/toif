@@ -1,19 +1,13 @@
 /*******************************************************************************
- * /////////////////////////////////////////////////////////////////////////////
- * ///// // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This
- * program and the // accompanying materials are made available under the terms
- * of the Open Source // Initiative OSI - Open Software License v3.0 which
- * accompanies this // distribution, and is available at
- * http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////
- * ////////////////////////////////////////////////////
+ * //////////////////////////////////////////////////////////////////////////////////
+ * // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
+ * // accompanying materials are made available under the terms of the Open Source
+ * // Initiative OSI - Open Software License v3.0 which accompanies this
+ * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ * //////////////////////////////////////////////////////////////////////////////////
  ******************************************************************************/
-
 package com.kdmanalytics.toif.framework.utils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -35,10 +29,10 @@ import com.kdmanalytics.toif.framework.xmlElements.facts.DirectoryIsContainedInD
 import com.kdmanalytics.toif.framework.xmlElements.facts.Fact;
 import com.kdmanalytics.toif.framework.xmlElements.facts.FileIsContainedInDirectory;
 import com.kdmanalytics.toif.framework.xmlElements.facts.FindingHasCWEIdentifier;
-import com.kdmanalytics.toif.framework.xmlElements.facts.FindingHasClusterIdentifier;
 import com.kdmanalytics.toif.framework.xmlElements.facts.FindingHasCodeLocation;
 import com.kdmanalytics.toif.framework.xmlElements.facts.FindingHasSFPIdentifier;
 import com.kdmanalytics.toif.framework.xmlElements.facts.FindingIsDescribedByWeaknessDescription;
+import com.kdmanalytics.toif.framework.xmlElements.facts.FindingHasClusterIdentifier;
 import com.kdmanalytics.toif.framework.xmlElements.facts.StatementHasCodeLocation;
 import com.kdmanalytics.toif.framework.xmlElements.facts.StatementIsInvolvedInFinding;
 import com.kdmanalytics.toif.framework.xmlElements.facts.StatementIsProceededByStatement;
@@ -63,37 +57,14 @@ public class FindingCreator
     // the adaptor name.
     String adaptorName = null;
     
-    private boolean unknownCWE;
-
-    private Object line;
-
-    private String sourceFile;
-
-    private String message;
-    
     /**
      * Constructor of the findingCreator.
-     * 
-     * @param unknownCWE
      */
-    public FindingCreator(Properties props, String adaptorName, boolean unknownCWE)
+    public FindingCreator(Properties props, String adaptorName)
     {
         sfps = props;
         elements = new ArrayList<Element>();
         this.adaptorName = adaptorName;
-        this.unknownCWE = unknownCWE;
-    }
-    
-    
-    public String getSourceFile()
-    {
-        return sourceFile;
-    }
-    
-    
-    public Object getLine()
-    {
-        return line;
     }
     
     /**
@@ -114,38 +85,29 @@ public class FindingCreator
     public void create(String msg, String id, Integer lineNumber, Integer offset, Integer position, File file, String dataElement, String cwe,
             CodeLocation... traces)
     {
-        sourceFile = file.getPath();
-        line = lineNumber;
-        message = msg;
         // create a finding from the output.
         Finding finding = new Finding();
+        
+        // add the finding to the list of elements.
+        //elements.add(finding);
+        addToElements(finding);
         
         file = (File) addToElements(file);
         
         containedIn(file);
         
-        boolean cont = true;
+        // Create a weakness description for the finding
+        createWeaknessDescription(finding, id + ": " + msg);
+        
         // create a CWE for the finding
         if (cwe != null)
         {
-            cont = createCwe(finding, cwe);
+            createCwe(finding, cwe);
         }
         else
         {
-            cont = createCweFromId(finding, id);
+            createCweFromId(finding, id);
         }
-        
-        if (!cont)
-        {
-            return;
-        }
-        
-        // add the finding to the list of elements.
-        // elements.add(finding);
-        addToElements(finding);
-        
-        // Create a weakness description for the finding
-        createWeaknessDescription(finding, id + ": " + msg);
         
         // create the entities and facts relating to the error location in the
         // code.
@@ -182,20 +144,13 @@ public class FindingCreator
             // create the fact describing the location of the statement.
             StatementHasCodeLocation hasLocation = new StatementHasCodeLocation(traceStatement, codeLocation);
             elements.add(hasLocation);
-            
+
             // do the trace back.
             StatementIsProceededByStatement preceedingFact = new StatementIsProceededByStatement(lastStatement, traceStatement);
             elements.add(preceedingFact);
             
             lastStatement = traceStatement;
         }
-    }
-    
-    
-    
-    public String getMessage()
-    {
-        return message;
     }
     
     /**
@@ -216,17 +171,6 @@ public class FindingCreator
         
     }
     
-    public static void writeToFile(String sb) throws IOException
-    {
-        java.io.File tempDir = new java.io.File(System.getProperty("java.io.tmpdir"));
-        java.io.File tempFile = new java.io.File(tempDir, "toifLog");
-        FileWriter fileWriter = new FileWriter(tempFile, true);
-        //System.out.println(tempFile.getAbsolutePath());
-        BufferedWriter bw = new BufferedWriter(fileWriter);
-        bw.write(sb);
-        bw.close();
-    }
-    
     /**
      * Given that we are provided with the cwe string directly, just use it to
      * create the cwe element.
@@ -236,39 +180,18 @@ public class FindingCreator
      * @param finding
      * @param cwe
      */
-    boolean createCwe(Finding finding, String cwe)
+    void createCwe(Finding finding, String cwe)
     {
         // if there is a matching cwe in the list, use it.
         if (cwe != null && (cwe.startsWith("CWE-")))
         {
-            
-            if (unknownCWE)
-            {
-                if ("CWE--1".equals(cwe))
-                {
-                    try
-                    {
-                        writeToFile(adaptorName + " finding filtered from results: "+getSourceFile()+":"+getLine()+" "+getMessage()+"\n");
-                    }
-                    catch (IOException e)
-                    {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    return false;
-                }
-            }
-            
             CWEIdentifier cweId = new CWEIdentifier(cwe);
-            
             elements.add(cweId);
             
             Fact fact2 = new FindingHasCWEIdentifier(finding, cweId);
             // add the fact.
             elements.add(fact2);
-            
         }
-        return true;
         
     }
     
@@ -321,19 +244,19 @@ public class FindingCreator
      * @param id
      *            The id of the error.
      */
-    boolean createCweFromId(Finding finding, String id)
+    void createCweFromId(Finding finding, String id)
     {
         // there must be an id.
         if (id == null)
         {
-            return false;
+            return;
         }
         
         // there must be a configuration file.
         if (sfps == null)
         {
             System.err.println("No configuration file found!");
-            return false;
+            return;
         }
         
         // get the string which represents the cluster, sfp, and cwe
@@ -342,24 +265,15 @@ public class FindingCreator
         // if there is no SFP property for this error id, bail!
         if ((sfpProperty == null) || (sfpProperty.isEmpty()))
         {
-            try
-            {
-                writeToFile(adaptorName + ": No properties found for " + id+"\n");
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            sfpProperty = ";SFP--1;CWE--1";
-            // return;
+            System.err.println(adaptorName + ": No properties found for " + id);
+            return;
         }
         
         // split the property string into the individual properties.
         String[] clusterSfpCwe = sfpProperty.split(";");
         
-        String cwe = "CWE--1";
-        String sfp = "SFP--1";
+        String cwe = null;
+        String sfp = null;
         String cluster = null;
         
         // only one element in the array has to be a sfp
@@ -385,39 +299,7 @@ public class FindingCreator
             System.err.println("Missing a configuration file or not enough values for " + id
                     + ". Hence, these Elements have not been created in the toif");
             
-            return false;
-        }
-        
-        /*
-         * now make the cwe elements.
-         */
-        CWEIdentifier cweId = null;
-        // if there is a matching cwe in the list, use it.
-        if (cwe != null && (cwe.startsWith("CWE-") || cwe.startsWith("KDM-")))
-        {
-            if (unknownCWE)
-            {
-                if ("CWE--1".equals(cwe))
-                {
-                    try
-                    {
-                        writeToFile(adaptorName + " finding filtered from results: "+getSourceFile()+":"+getLine()+" "+getMessage()+"\n");
-                    }
-                    catch (IOException e)
-                    {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    return false;
-                }   
-            }
-            
-            cweId = new CWEIdentifier(cwe);
-            elements.add(cweId);
-            
-            Fact fact2 = new FindingHasCWEIdentifier(finding, cweId);
-            // add the fact.
-            elements.add(fact2);
+            return;
         }
         
         SFPIdentifier sfpId = null;
@@ -432,6 +314,21 @@ public class FindingCreator
             Fact fact = new FindingHasSFPIdentifier(finding, sfpId);
             // add the fact.
             elements.add(fact);
+        }
+        
+        /*
+         * now make the cwe elements.
+         */
+        CWEIdentifier cweId = null;
+        // if there is a matching cwe in the list, use it.
+        if (cwe != null && (cwe.startsWith("CWE-") || cwe.startsWith("KDM-")))
+        {
+            cweId = new CWEIdentifier(cwe);
+            elements.add(cweId);
+            
+            Fact fact2 = new FindingHasCWEIdentifier(finding, cweId);
+            // add the fact.
+            elements.add(fact2);
         }
         
         /*
@@ -457,8 +354,6 @@ public class FindingCreator
                 elements.add(fact3);
             }
         }
-        
-        return true;
     }
     
     /**
