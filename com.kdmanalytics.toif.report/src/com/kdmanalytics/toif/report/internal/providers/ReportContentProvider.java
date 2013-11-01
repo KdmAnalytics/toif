@@ -33,6 +33,8 @@ public class ReportContentProvider implements IStructuredContentProvider
     
     private static final Object[] NO_CHILDREN = new Object[] {};
     
+    private IToifProject project;
+    
     /*
      * (non-Javadoc)
      * 
@@ -65,9 +67,28 @@ public class ReportContentProvider implements IStructuredContentProvider
     @Override
     public Object[] getElements(Object inputElement)
     {
+        
+        if (inputElement instanceof ToifReportEntry[]) {
+            return (Object[]) inputElement;
+        }
+        
+        ToifReportEntry[] list = getElementList(inputElement);
+        
+        if (list != null)
+        {
+            return list;
+        }
+        else
+        {
+            return NO_CHILDREN;
+        }
+    }
+    
+    public ToifReportEntry[] getElementList(Object inputElement)
+    {
         if (inputElement instanceof IToifProject)
         {
-            IToifProject project = (IToifProject) inputElement;
+            project = (IToifProject) inputElement;
             
             List<ToifReportEntry> elements = new LinkedList<ToifReportEntry>();
             
@@ -85,9 +106,15 @@ public class ReportContentProvider implements IStructuredContentProvider
                     }
                 }
             }
-            return elements.toArray();
+            return elements.toArray(new ToifReportEntry[elements.size()]);
         }
-        return NO_CHILDREN;
+        
+        return null;
+    }
+    
+    public IToifProject getProject()
+    {
+        return project;
     }
     
 }

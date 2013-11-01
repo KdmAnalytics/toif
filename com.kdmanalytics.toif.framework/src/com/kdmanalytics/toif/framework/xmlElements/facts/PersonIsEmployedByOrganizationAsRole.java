@@ -9,7 +9,6 @@
 package com.kdmanalytics.toif.framework.xmlElements.facts;
 
 import javax.xml.bind.annotation.XmlAttribute;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 

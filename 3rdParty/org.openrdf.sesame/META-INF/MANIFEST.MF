@@ -1,8 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: OpenRDF Sesame Plugin
+Bundle-Name: Open RDF Sesame
 Bundle-SymbolicName: org.openrdf.sesame
-Bundle-Version: 2.3.1
+Bundle-Version: 2.4.2
+Bundle-ClassPath: openrdf-sesame-2.4.2-onejar.jar
+Bundle-Vendor: KDM Analytics Inc.
 Export-Package: info.aduna.collections,
  info.aduna.collections.iterators,
  info.aduna.concurrent,
@@ -21,7 +23,7 @@ Export-Package: info.aduna.collections,
  info.aduna.webapp.filters,
  info.aduna.webapp.util,
  info.aduna.xml,
- org.openrdf;version="2.3.1",
+ org.openrdf,
  org.openrdf.console,
  org.openrdf.http.client,
  org.openrdf.http.protocol,
@@ -35,7 +37,7 @@ Export-Package: info.aduna.collections,
  org.openrdf.http.server.repository.namespaces,
  org.openrdf.http.server.repository.size,
  org.openrdf.http.server.repository.statements,
- org.openrdf.model;version="2.3.1",
+ org.openrdf.model,
  org.openrdf.model.datatypes,
  org.openrdf.model.impl,
  org.openrdf.model.util,
@@ -60,7 +62,7 @@ Export-Package: info.aduna.collections,
  org.openrdf.query.resultio.sparqljson,
  org.openrdf.query.resultio.sparqlxml,
  org.openrdf.query.resultio.text,
- org.openrdf.repository;version="2.3.1",
+ org.openrdf.repository,
  org.openrdf.repository.base,
  org.openrdf.repository.config,
  org.openrdf.repository.contextaware,
@@ -118,7 +120,6 @@ Export-Package: info.aduna.collections,
  org.openrdf.sail.rdbms.postgresql,
  org.openrdf.sail.rdbms.schema,
  org.openrdf.sail.rdbms.util
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.slf4j;bundle-version="1.5.11",
- org.slf4j.log4j12;bundle-version="1.5.11"
-Bundle-Vendor: KDM Analytics Inc.
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.slf4j.api;bundle-version="1.7.5";visibility:=reexport,
+ org.slf4j.log4j;bundle-version="1.7.5";visibility:=reexport

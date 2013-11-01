@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:element name="CWE_Coverage_Claims">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CWE_Coverage_Claim" type="CWE_Coverage_ClaimType"
+					maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CWE_Coverage_ClaimType">
+		<xs:sequence>
+			<xs:element name="Claims">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Claim" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="CWE_Claim_Comments" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>vendor comments for overall claim
+											</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Rule_Set" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>each CWE can be covered by one or more
+												"rules" </xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Rule" maxOccurs="unbounded">
+												<xs:complexType>
+												<xs:sequence>
+												<xs:element name="Rule_Comments" type="xs:string">
+												<xs:annotation>
+												<xs:documentation>comment for each rule allows
+												vendors to explain what they look for in more
+												detail </xs:documentation>
+												</xs:annotation>
+												</xs:element>
+												</xs:sequence>
+												<xs:attribute name="Rule_ID" type="xs:string">
+												<xs:annotation>
+												<xs:documentation>vendor may or may not have ID's
+												</xs:documentation>
+												</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="Rule_Name" type="xs:string"/>
+												</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="Match_Accuracy" type="Match_Accuracy_Type"
+									use="required">
+									<xs:annotation>
+										<xs:documentation>Strength/accuracy of the covered rules to
+											the CWE entry. </xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="CWE_ID" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>unique identifier of the CWE being covered
+										</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+								<xs:attribute name="CWE_Name" type="xs:string" use="optional">
+									<xs:annotation>
+										<xs:documentation>name of the CWE being covered (included
+											for better readability)</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> Optional comments for the entire set of claims.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="CWE_Version" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>all claims are made against a specific version of
+					CWE</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Vendor_Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>all claims are specific to a specific vendor </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Toolset_Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>all claims are specific to a specific named tool set
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Toolset_Version" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>all claims are specific to a specific tool set version
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Info_URL" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>a URI that contains more details, or a human-friendly version of
+					this coverage claim </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Date_of_Claim" type="xs:date">
+			<xs:annotation>
+				<xs:documentation>claims are made as of a date (NOT IN THE FUTURE!)
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Language_Type">
+			<xs:annotation>
+				<xs:documentation>all claims are made against a specific type of
+					language</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Source Code"/>
+					<xs:enumeration value="Byte Code"/>
+					<xs:enumeration value="Binary Code"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Language" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>all claims are made against a specific language</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="Match_Accuracy_Type">
+		<xs:annotation>
+			<xs:documentation>Archetype_Type contains values for the Archetype of the system
+				described by the vignette</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Exact">
+				<xs:annotation>
+					<xs:documentation>The CWE entry exactly covers the same weakness(es) as the
+						given rule set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CWE-more-abstract">
+				<xs:annotation>
+					<xs:documentation>The CWE entry covers more concepts than the given rule set,
+						but there are not any more precise matches available. For example, a rule
+						set might detect resource consumption for a resource that is not
+						specifically covered by CWE.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CWE-more-specific">
+				<xs:annotation>
+					<xs:documentation> The CWE entry is more specific than the weakness reported by
+						the given rule set, but the entry's parent(s) are not appropriate matches.
+						This might indicate a difference in perspective between CWE and the
+						capability providing the coverage mapping. It could also include a single
+						rule that covers multiple CWE entries (which might imply that there would be
+						multiple claims for a single rule/ruleset).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CWE-partial">
+				<xs:annotation>
+					<xs:documentation>The CWE entry is only a partial match with the weakness
+						reported by the given rule set, but the entry is the closest available
+						match.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Not-Covered">
+				<xs:annotation>
+					<xs:documentation>The CWE entry is not covered by any rule set. The provider is
+						not required to include information about uncovered CWEs.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="No-CWE-available">
+				<xs:annotation>
+					<xs:documentation>There is no CWE entry available that closely matches the
+						weakness reported by the given rule set, but the provider believes that a
+						CWE entry should exist for the reported weakness. The associated CWE_ID
+						should be 0.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Not-CWE-applicable">
+				<xs:annotation>
+					<xs:documentation>The rule/ruleset is not applicable to CWE, i.e., it is not
+						necessarily about a weakness. This could include rulesets related to coding
+						style conformance, informational messages about the scan, etc. The
+						associated CWE_ID should be -1. The provider is not required to include
+						information about non-applicable rules.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Unknown">
+				<xs:annotation>
+					<xs:documentation>The match accuracy is unknown. Typically this would be used by
+						a third party who is creating a coverage claim and does not have insight
+						into the technology.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>No other CWE match accuracy type is
+						applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

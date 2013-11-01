@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Export-Package: com.kdmanalytics.toif.adaptor
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,com.kdmanalyti
+ cs.toif.framework;bundle-version="[1.6.0,2.0.0)",org.apache.xerces;bu
+ ndle-version="[2.11.0,3.0.0)"
+Bundle-Vendor: KDMANALYTICS
+Bundle-ActivationPolicy: lazy
+Bundle-Version: 1.8.6
+Bundle-Name: Rats
+Bundle-Activator: com.kdmanalytics.toif.rats.Activator
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.kdmanalytics.toif.rats
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+

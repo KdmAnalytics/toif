@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Export-Package: com.kdmanalytics.toif.framework.parser,com.kdmanalytic
+ s.toif.framework.toolAdaptor,com.kdmanalytics.toif.framework.utils,co
+ m.kdmanalytics.toif.framework.xmlElements.entities,com.kdmanalytics.t
+ oif.framework.xmlElements.facts
+Bundle-ActivationPolicy: lazy
+Bundle-Name: Adaptor
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.junit,com.
+ lexicalscope.jewelcli;bundle-version="[0.8.5,1.0.0)"
+Bundle-Vendor: KDMANALYTICS
+Bundle-Version: 1.8.6
+Bundle-ManifestVersion: 2
+Bundle-Activator: com.kdmanalytics.toif.framework.Activator
+Bundle-SymbolicName: com.kdmanalytics.toif.framework
+Import-Package: org.apache.commons.lang3,org.apache.xerces.parsers
+Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
+

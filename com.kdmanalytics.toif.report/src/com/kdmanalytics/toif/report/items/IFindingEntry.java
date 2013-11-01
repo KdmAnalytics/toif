@@ -27,7 +27,7 @@ import com.kdmanalytics.toif.report.internal.items.Trace;
 public interface IFindingEntry extends IReportItem
 {
     
-    Value getValue();
+    String getValue();
     
     boolean equals(Object obj);
     
@@ -60,12 +60,7 @@ public interface IFindingEntry extends IReportItem
      */
     String getFindingId();
     
-    /**
-     * get the repository that this entry belongs to
-     * 
-     * @return
-     */
-    Repository getRepository();
+
     
     /**
      * get the searchable text of this entry.

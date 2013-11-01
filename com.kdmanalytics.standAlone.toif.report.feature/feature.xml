@@ -2,7 +2,7 @@
 <feature
       id="com.kdmanalytics.toif.report.standAlone.feature"
       label="Extension Point for Stand Alone Report Tool"
-      version="1.0.0"
+      version="1.8.6"
       provider-name="KDM Analytics Inc.">
 
    <description>
@@ -68,19 +68,39 @@ e) to display the Original Work publicly.
 16) Modification of This License. This License is Copyright © 2005 Lawrence Rosen. Permission is granted to copy, distribute, or communicate this License without modification. Nothing in this License permits You to modify this License as applied to the Original Work or to Derivative Works. However, You may modify the text of this License and copy, distribute or communicate your modified version (the &quot;Modified License&quot;) and apply it to other original works of authorship subject to the following conditions: (i) You may not indicate in any way that your Modified License is the &quot;Open Software License&quot; or &quot;OSL&quot; and you may not use those names in the name of your Modified License; (ii) You must replace the notice specified in the first paragraph above with the notice &quot;Licensed under &lt;insert your license name here&gt;&quot; or with a notice of your own that is not confusingly similar to the notice in this License; and (iii) You may not claim that your original works are open source software unless your Modified License has been approved by Open Source Initiative (OSI) and You comply with its license review and certification process.
    </license>
 
-   <requires>
-      <import plugin="org.eclipse.ui" version="3.7.0"/>
-      <import plugin="org.eclipse.core.runtime" version="3.7.0"/>
-      <import plugin="org.eclipse.core.resources" version="3.7.0"/>
-      <import plugin="org.openrdf.sesame" version="2.3.0" match="compatible"/>
-      <import plugin="com.kdmanalytics.toif.report" version="1.0.0" match="equivalent"/>
-   </requires>
-
    <plugin
          id="com.kdmanalytics.standAlone.toif.report"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.8.6.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="com.kdmanalytics.toif.report"
+         download-size="0"
+         install-size="0"
+         version="1.8.6.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.slf4j.log4j"
+         download-size="0"
+         install-size="0"
+         version="1.7.5"
+         unpack="false"/>
+
+   <plugin
+         id="org.slf4j.api"
+         download-size="0"
+         install-size="0"
+         version="1.7.5"
+         unpack="false"/>
+
+   <plugin
+         id="org.openrdf.sesame"
+         download-size="0"
+         install-size="0"
+         version="2.4.2"
          unpack="false"/>
 
 </feature>

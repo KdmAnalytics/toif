@@ -8,6 +8,9 @@
 
 package com.kdmanalytics.toif.assimilator;
 
+import java.io.BufferedWriter;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,15 +19,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.ui.internal.ReopenEditorMenu;
 import org.openrdf.model.Literal;
+import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.kdmanalytics.kdm.repositoryMerger.RepositoryMerger;
+import com.kdmanalytics.kdm.repositoryMerger.StatementWriter;
 
 public class KdmXmlHandler extends DefaultHandler
 {
@@ -33,11 +43,54 @@ public class KdmXmlHandler extends DefaultHandler
     
     public static final String kdmNS = "http://" + kdmNSHost + "/";
     
-    private final Repository repository;
+    /**
+     * @param repositoryConnection
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @throws RepositoryException
+     */
+    public static void addOrWrite(PrintWriter writer, RepositoryConnection repositoryConnection, Resource arg0, URI arg1, Value arg2,
+            Resource... arg3) throws RepositoryException
+    {
+        if (writer == null)
+        {
+            repositoryConnection.add(arg0, arg1, arg2, arg3);
+        }
+        else
+        {
+            // String predicate = "";
+            // if (arg2 instanceof Literal) {
+            // predicate = "\""+arg2.stringValue()+"\"";
+            // } else {
+            // predicate = "<"+arg2.stringValue()+">";
+            // }
+            // //System.err.println("<"+arg0 + "> <" + arg1 + "> " + predicate);
+            // writer.write("<"+arg0 + "> <" + arg1 + "> " + predicate+"  .\n");
+            ValueFactory f = repositoryConnection.getValueFactory();
+            
+            if (arg2 instanceof Literal)
+            {
+                StatementWriter sw = new StatementWriter(writer, RepositoryMerger.NTRIPLES);
+                sw.print(f.createURI(arg0.stringValue()), f.createURI(arg1.stringValue()), f.createLiteral(arg2.stringValue()));
+                //System.err.println(arg0.stringValue()+" "+ f.createURI(arg1.stringValue())+" "+ f.createLiteral(arg2.stringValue()));
+            }
+            else
+            {
+                StatementWriter sw = new StatementWriter(writer, RepositoryMerger.NTRIPLES);
+                sw.print(f.createURI(arg0.stringValue()), f.createURI(arg1.stringValue()), f.createURI(arg2.stringValue()));
+                //System.err.println(arg0.stringValue()+" "+ f.createURI(arg1.stringValue())+" "+ f.createURI(arg2.stringValue()));
+            }
+            
+        }
+    }
+    
+    private Repository repository = null;
     
     private int commitCounter = 0;
     
-    private RepositoryConnection con;
+    private RepositoryConnection con = null;
     
     private static final int commitInterval = 0;
     
@@ -59,9 +112,25 @@ public class KdmXmlHandler extends DefaultHandler
     
     private long smallestBigNumber = Long.MAX_VALUE;
     
+    private long count;
+    
+    private PrintWriter out;
+    
+    private StatementWriter sw;
+    
     public KdmXmlHandler(Repository repository)
     {
         this.repository = repository;
+    }
+    
+    /**
+     * @param out
+     */
+    public KdmXmlHandler(PrintWriter out, Repository repository)
+    {
+        this.out = out;
+        this.repository = repository;
+        this.sw = new StatementWriter(out, RepositoryMerger.NTRIPLES);
     }
     
     /**
@@ -91,7 +160,7 @@ public class KdmXmlHandler extends DefaultHandler
             ValueFactory f = repository.getValueFactory();
             URI key = f.createURI(kdmNS, child.getAttribute("tag"));
             Literal value = f.createLiteral(child.getAttribute("value"));
-            con.add(f.createURI(parent.getURIString()), key, value);
+            KdmXmlHandler.addOrWrite(out, con, f.createURI(parent.getURIString()), key, value);
             return;
         }
         
@@ -100,7 +169,7 @@ public class KdmXmlHandler extends DefaultHandler
         ValueFactory f = repository.getValueFactory();
         URI predicate = f.createURI(kdmNS, "contains");
         
-        con.add(f.createURI(parent.getURIString()), predicate, f.createURI(child.getURIString()));
+        KdmXmlHandler.addOrWrite(out, con, f.createURI(parent.getURIString()), predicate, f.createURI(child.getURIString()));
         doCommit();
         
     }
@@ -315,7 +384,7 @@ public class KdmXmlHandler extends DefaultHandler
             {
                 DelayedRelation rel = it.next();
                 
-                rel.commit(repository, con, root, nodeNames);
+                rel.commit(out, repository, con, root, nodeNames);
                 doCommit();
             }
         }
@@ -335,6 +404,7 @@ public class KdmXmlHandler extends DefaultHandler
      */
     private void setNextId(long newId)
     {
+        
         if (newId > nextId)
         {
             nextId = newId;
@@ -352,6 +422,7 @@ public class KdmXmlHandler extends DefaultHandler
      */
     public void setRDFAttribute(XMLNode source, String name, String value) throws RepositoryException
     {
+        
         ValueFactory f = repository.getValueFactory();
         Literal literal = f.createLiteral(value);
         URI predicate = f.createURI(kdmNS, name);
@@ -371,7 +442,7 @@ public class KdmXmlHandler extends DefaultHandler
             System.err.println("==========================================================");
         }
         
-        con.add(f.createURI(source.getURIString()), predicate, literal);
+        KdmXmlHandler.addOrWrite(out, con, f.createURI(source.getURIString()), predicate, literal);
         doCommit();
     }
     
@@ -395,15 +466,35 @@ public class KdmXmlHandler extends DefaultHandler
         XMLNode node = new XMLNode(namespaceURI, sName, qName, attrs);
         String stringId = node.getAttribute("xmi:id");
         
-        System.err.println("DEALING WITH NODE: " + node.toString());
+        // System.err.println("DEALING WITH NODE: " + node.toString());
+        
+        count++;
+//        if (count % 1000 == 0)
+//        {
+//            System.out.println("Processing Element Count: " + count);
+//        }
         
         if (stringId != null)
         {
-            setNextId(Long.parseLong(stringId));
+            try
+            {
+                long id = Long.parseLong(stringId);
+                
+                setNextId(id);
+            }
+            catch (NumberFormatException e)
+            {
+                System.err.println("Bad ID: ");
+                for (int i = 0; i < attrs.getLength(); i++)
+                {
+                    System.err.println(attrs.getQName(i) + " : " + attrs.getValue(i));
+                }
+                System.err.println(e);
+            }
         }
         else
         {
-            node.setId(smallestBigNumber--);
+            node.setId(getNextId() + 1);
         }
         
         if ("source/SourceRef".equals(node.getKDMType()) || "source/SourceRegion".equals(node.getKDMType()))
@@ -426,6 +517,7 @@ public class KdmXmlHandler extends DefaultHandler
         try
         {
             commitNode(node);
+            
         }
         catch (RepositoryException ex)
         {

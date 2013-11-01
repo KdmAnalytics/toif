@@ -8,8 +8,8 @@
 
 package com.kdmanalytics.toif.report.internal.views;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,16 +17,19 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -47,6 +50,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
@@ -97,12 +102,127 @@ public class ReportView extends ViewPart
     
     private IToifProject inputProject;
     
-    private HashMap<IFolder, IToifProject> toifProjects = new HashMap<IFolder, IToifProject>();
+    private TableViewer tableViewer;
+    
+    protected IProject currentProject;
+    
+    /**
+     * selection changed listener. looks for selection of project to reload toif
+     * data.
+     */
+    ISelectionListener selectionListener = new ISelectionListener() {
+        
+        public void selectionChanged(IWorkbenchPart part, ISelection sel)
+        {
+            
+            IProject newProject = null;
+            
+            if (sel instanceof IStructuredSelection)
+            {
+                
+                for (Object object : ((IStructuredSelection) sel).toArray())
+                {
+                    if (object instanceof IProject)
+                    {
+                        newProject = (IProject) object;
+                        
+                        if (currentProject == newProject)
+                        {
+                            return;
+                        } else {
+                            currentProject = newProject;
+                        }
+                    }
+                }
+                
+                if (newProject == null)
+                {
+                    return;
+                }
+                
+                if (newProject != null)
+                {
+                    persistData();
+                    File file = new File(newProject.getLocation() + "/.toifProject.ser");
+                    
+                    if (!file.exists())
+                    {
+                        pageBook.showPage(noReportPage);
+                        return;
+                    }
+                    
+                    try
+                    {
+                        FileInputStream fileIn = new FileInputStream(file);
+                        ObjectInputStream in = new ObjectInputStream(fileIn);
+                        IToifProject project = (IToifProject) in.readObject();
+                        in.close();
+                        fileIn.close();
+                        
+                        if (project != null)
+                        {
+                            System.out.println("toif project deserialized");
+                            // view.getTableViewer().setInput(project);
+                            
+                            IFolder repoFolder = ensureKdmRepoFolderExists(newProject);
+                            project.setRepository(repoFolder);
+                            project.setIProject(repoFolder.getProject());
+                            // project.setIProject(iProject.getLocation());
+                            
+                            clearInput();
+                            updateInput(project);
+                            refresh();
+                            return;
+                        }
+                    }
+                    catch (IOException i)
+                    {
+                        System.out.println("problem with serialization file.");
+                        i.printStackTrace();
+                        // return;
+                    }
+                    catch (ClassNotFoundException c)
+                    {
+                        System.out.println("IToifProject class not found.");
+                        c.printStackTrace();
+                        // return;
+                    }
+                    catch (CoreException e)
+                    {
+                        System.out.println("repo folder could not be found.");
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    };
+    
+    /**
+     * makes sure that the kdm repository folder does exist.
+     * 
+     * @param project
+     *            the kdm project
+     * @throws CoreException
+     */
+    private static IFolder ensureKdmRepoFolderExists(final IProject project) throws CoreException
+    {
+        IFolder kdmDataDir = project.getFolder(".KDM");
+        if (!kdmDataDir.exists())
+        {
+            kdmDataDir.create(true, true, null);
+        }
+        
+        IFolder kdmRepoDir = kdmDataDir.getFolder("repository");
+        if (!kdmRepoDir.exists())
+        {
+            kdmRepoDir.create(true, true, null);
+        }
+        return kdmRepoDir;
+    }
     
     public ReportView()
     {
-        
-        
         parent = null;
         pageBook = null;
         reportPage = null;
@@ -110,19 +230,59 @@ public class ReportView extends ViewPart
         currentViewerMode = Mode.None;
     }
     
-    public IToifProject getToifProject(IFolder folder)
+    protected void persistData()
     {
-        return toifProjects.get(folder);
-    }
-    
-    public void setToifProjects(IFolder folder, IToifProject project)
-    {
-        toifProjects.put(folder, project);
+        // ReportContentProvider cp = (ReportContentProvider)
+        // tableViewer.getContentProvider();
+        //
+        // IToifProject project = cp.getProject();
+        
+        if (inputProject == null)
+        {
+            System.out.println("no project to save.");
+            return;
+        }
+        
+        if (inputProject.getIProject().getLocation() == null)
+        {
+            System.out.println("no project to save.");
+            return;
+        }
+        
+        File serFile = new File(inputProject.getIProject().getLocation() + "/.toifProject.ser");
+        serFile.delete();
+        
+        try
+        {
+            serFile.createNewFile();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        try
+        {
+            FileOutputStream fileOut = new FileOutputStream(serFile);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(inputProject);
+            out.close();
+            fileOut.close();
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        return;
+        
     }
     
     @Override
     public void createPartControl(Composite container)
     {
+        getSite().getPage().addSelectionListener(selectionListener);
         parent = container;
         pageBook = new PageBook(parent, SWT.NONE);
         
@@ -142,6 +302,13 @@ public class ReportView extends ViewPart
         createReportViewerControl(reportPage);
         pageBook.showPage(noReportPage);
         
+    }
+    
+    public void dispose()
+    {
+        persistData();
+        System.err.println("DATA PERSISTED");
+        getSite().getPage().removeSelectionListener(selectionListener);
     }
     
     /**
@@ -236,7 +403,6 @@ public class ReportView extends ViewPart
         viewerBook = new PageBook(parent, SWT.NONE);
         viewerBook.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
         TableViewer tableViewer = createReportTableViewer(viewerBook);
-        
         tableViewer.addDoubleClickListener(new ReportDoubleClickListener());
         
         emptyViewer = new Label(viewerBook, SWT.TOP | SWT.LEFT | SWT.WRAP);
@@ -256,7 +422,7 @@ public class ReportView extends ViewPart
      */
     private TableViewer createReportTableViewer(Composite parent)
     {
-        TableViewer tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         tableViewer.setContentProvider(new ReportContentProvider());
         tableViewer.setComparator(new ReportViewerComparator());
         Table table = tableViewer.getTable();
@@ -402,8 +568,9 @@ public class ReportView extends ViewPart
      * 
      * @param proj
      */
-    private void updateInput(IToifProject proj)
+    public void updateInput(IToifProject proj)
     {
+        IToifProject prevProj = inputProject;
         if (proj == null)
         {
             clearInput();
@@ -411,25 +578,25 @@ public class ReportView extends ViewPart
         else
         {
             inputProject = proj;
-            
-            updateReportViewer(true);
-            
-            for (ColumnViewer colViewer : viewers.values())
+            if (!inputProject.equals(prevProj))
             {
-                colViewer.setInput(proj);
-                colViewer.getControl().pack();
+                updateReportViewer(true);
+                for (ColumnViewer colViewer : viewers.values())
+                {
+                    colViewer.setInput(inputProject);
+                    colViewer.getControl().pack();
+                }
+                updateDefectCount();
             }
-            updateDefectCount();
             
             pageBook.showPage(reportPage);
         }
     }
     
-    
     /**
      * clears input
      */
-    private void clearInput()
+    public void clearInput()
     {
         inputProject = null;
         updateReportViewer(true);
@@ -538,4 +705,8 @@ public class ReportView extends ViewPart
         getCurrentViewer().setFilters(array);
     }
     
+    public TableViewer getTableViewer()
+    {
+        return tableViewer;
+    }
 }

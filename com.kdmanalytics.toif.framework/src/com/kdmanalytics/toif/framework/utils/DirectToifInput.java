@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * //////////////////////////////
+ * ////////////////////////////////////////////////////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.utils;
 
 import java.io.File;
@@ -71,7 +74,7 @@ public class DirectToifInput extends AbstractAdaptor
         toolAdaptor.createSegmentFile(segmentFile);
         
         // create a finding creator.
-        creator = new FindingCreator(null, ADAPTOR_NAME);
+        creator = new FindingCreator(null, ADAPTOR_NAME, false);
     }
     
     /**
@@ -97,11 +100,12 @@ public class DirectToifInput extends AbstractAdaptor
      */
     public void createFinding(String msg, String id, Integer lineNumber, Integer offset, Integer position, File file, String dataElement, String cwe)
     {
-        //needs a toif file entity as the file. create this from the java.io file.
+        // needs a toif file entity as the file. create this from the java.io
+        // file.
         com.kdmanalytics.toif.framework.xmlElements.entities.File toifFile = new com.kdmanalytics.toif.framework.xmlElements.entities.File(
                 file.getPath());
         
-        //create the finding.
+        // create the finding.
         creator.create(msg, id, lineNumber, offset, position, toifFile, dataElement, cwe);
     }
     
@@ -110,10 +114,10 @@ public class DirectToifInput extends AbstractAdaptor
      */
     public void constructXml()
     {
-        //add the elements from the finding creator
+        // add the elements from the finding creator
         toolAdaptor.addElements(creator.getElements());
         
-        //construct the toif xml.
+        // construct the toif xml.
         toolAdaptor.constructXml(outputDirectory, segmentFile);
     }
     
@@ -231,10 +235,37 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file)
+    public ArrayList<Element> parse(Process process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
+            boolean[] validLines, boolean unknownCWE)
+    {
+        
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public String getRuntoolName()
     {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    public String getLanguage()
+    {
+        return "Unknown";
+    }
+    
+    @Override
+    public boolean acceptsDOptions()
+    {
+        return false;
+    }
+    
+    @Override
+    public boolean acceptsIOptions()
+    {
+        return false;
     }
     
 }

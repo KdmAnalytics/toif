@@ -1,12 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Open Source
- * Initiative OSI - Open Software License v3.0 which accompanies this
- * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Open
+ * Source Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 
 package com.kdmanalytics.toif.report.internal.items;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,8 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
+import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.sail.nativerdf.NativeStore;
 
 import com.kdmanalytics.toif.report.items.IFileGroup;
 import com.kdmanalytics.toif.report.items.IToifProject;
@@ -29,29 +33,27 @@ import com.kdmanalytics.toif.report.util.IRepositoryMaker;
 /**
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
- *
+ * 
  */
 public class Project extends ReportItem implements IToifProject
 {
     
-    private IFolder kdmRepoFolder;
-    
-    private IProject iProject;
-    
     /**
-     * the factory for this internal repository
+     * 
      */
-    private ValueFactory factory;
+    private static final long serialVersionUID = -1786648025858789753L;
+    
+    private transient IProject iProject;
     
     /**
      * the internal repository for the kdm data.
      */
-    private Repository repository;
+    private transient Repository repository;
     
     /**
      * the connection to the internal repository
      */
-    private RepositoryConnection con;
+    private transient RepositoryConnection con;
     
     private List<FileGroup> files;
     
@@ -72,10 +74,15 @@ public class Project extends ReportItem implements IToifProject
     public Project(final IFolder kdmFolder, boolean workbenchPresent)
     {
         files = new ArrayList<FileGroup>();
-        kdmRepoFolder = ensureExists(kdmFolder);
+        IFolder kdmRepoFolder = ensureExists(kdmFolder);
         setRepository(kdmRepoFolder);
         iProject = kdmRepoFolder.getProject();
         inWorkbench = workbenchPresent;
+    }
+    
+    public void setIProject(IProject iProject)
+    {
+        this.iProject = iProject;
     }
     
     /*
@@ -112,10 +119,8 @@ public class Project extends ReportItem implements IToifProject
     @Override
     public ValueFactory getValueFactory()
     {
-        if (factory == null)
-        {
-            factory = repository.getValueFactory();
-        }
+        
+        ValueFactory factory = repository.getValueFactory();
         return factory;
     }
     
@@ -123,7 +128,7 @@ public class Project extends ReportItem implements IToifProject
      * 
      * @param folder
      */
-    private void setRepository(IFolder folder)
+    public void setRepository(IFolder folder)
     {
         if (folder == null)
         {
@@ -131,7 +136,16 @@ public class Project extends ReportItem implements IToifProject
         }
         
         IRepositoryMaker repMaker = getRepositoryMaker(folder);
-        repository = repMaker.getRepository();
+        
+//        if (repMaker == null)
+//        {
+//            repository = new SailRepository(new NativeStore(new File(folder.getRawLocationURI())));
+//        }
+//        else
+//        {
+            
+            repository = repMaker.getRepository();
+//        }
         
         if (repository == null)
         {

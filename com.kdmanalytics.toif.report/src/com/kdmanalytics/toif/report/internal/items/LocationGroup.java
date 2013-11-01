@@ -20,6 +20,11 @@ import java.util.List;
 public class LocationGroup extends ReportItem
 {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 242998160312564325L;
+
     private final List<ToolGroup> toolGroups;
     
     private String toifLineNumber;
