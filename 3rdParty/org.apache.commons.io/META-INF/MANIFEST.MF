@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Commons IO Plugin
+Bundle-Name: Apache Commons Io
 Bundle-SymbolicName: org.apache.commons.io
-Bundle-Version: 2.0.1
-Bundle-Vendor: KDM Analytics Inc.
-Export-Package: org.apache.commons.io;version="2.0.1",
- org.apache.commons.io.comparator;version="2.0.1",
- org.apache.commons.io.filefilter;version="2.0.1",
- org.apache.commons.io.input;version="2.0.1",
- org.apache.commons.io.monitor;version="2.0.1",
- org.apache.commons.io.output;version="2.0.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Version: 2.4.0
+Bundle-Vendor: Kdm Analytics Inc.
+Export-Package: org.apache.commons.io,
+ org.apache.commons.io.comparator,
+ org.apache.commons.io.filefilter,
+ org.apache.commons.io.input,
+ org.apache.commons.io.monitor,
+ org.apache.commons.io.output
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

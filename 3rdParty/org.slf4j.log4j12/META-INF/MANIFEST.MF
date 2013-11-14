@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Log4j12
-Bundle-SymbolicName: org.slf4j.log4j12
-Bundle-Version: 1.6.4
-Bundle-Vendor: kdm anlaytics
-Export-Package: org.slf4j.impl;version="1.6.4"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
