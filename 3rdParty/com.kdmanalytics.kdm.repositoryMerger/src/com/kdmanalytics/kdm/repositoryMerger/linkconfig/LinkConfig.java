@@ -48,10 +48,10 @@ public class LinkConfig
      */
     private List<String> mergeRegex = null;
     
-    /**
-     * 
-     */
-    private Map<String, String> types = null;
+//    /**
+//     * 
+//     */
+//    private Map<String, String> types = null;
     
     /**
      * 
@@ -162,7 +162,7 @@ public class LinkConfig
         mergeMap = new HashMap<String, Integer>();
         mergeRegex = new ArrayList<String>();
         
-        types = new HashMap<String, String>();
+//        types = new HashMap<String, String>();
     }
     
     /**

@@ -151,12 +151,6 @@ public class StatementWriter
                         str = str.replace("\\", "/");
                     }
                     
-                    // Truncate to 100 characters, cause more then that is
-                    // excessive and unlikely to impact the user
-                    if (str.length() > 97)
-                    {
-                        str = str.substring(0, 97) + "...";
-                    }
                     
                     str = NTriplesUtil.escapeString(str);
                     
@@ -191,13 +185,7 @@ public class StatementWriter
                     {
                         str = str.replace("\\", "/");
                     }
-                    
-                    // Truncate to 100 characters, cause more then that is
-                    // excessive and unlikely to impact the user
-                    if (str.length() > 97)
-                    {
-                        str = str.substring(0, 97) + "...";
-                    }
+
                     str = NTriplesUtil.escapeString(str);
                     
                     sb.append(str);
