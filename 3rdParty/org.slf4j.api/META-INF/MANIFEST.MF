@@ -3,8 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SlF4J Api
 Bundle-SymbolicName: org.slf4j.api
 Bundle-Version: 1.7.5
+Bundle-ClassPath: org.slf4j.api_1.7.5.jar
 Bundle-Vendor: KDM Analytics
 Export-Package: org.slf4j,
  org.slf4j.helpers,
  org.slf4j.spi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Created-By: Apache Maven
+Build-Jdk: 1.7.0_25
+Archiver-Version: Plexus Archiver
+Built-By: jenkins

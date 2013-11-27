@@ -2,14 +2,16 @@
 package com.kdmanalytics.toif.adaptor;
 
 /*******************************************************************************
- * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Open Source
- * Initiative OSI - Open Software License v3.0 which accompanies this
- * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Open
+ * Source Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -26,6 +27,7 @@ import com.kdmanalytics.toif.cppcheck.CppCheckParser;
 import com.kdmanalytics.toif.framework.parser.StreamGobbler;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
@@ -72,20 +74,26 @@ public class CppcheckAdaptor extends AbstractAdaptor
      * (CppParser) to generate the elements.
      */
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
     {
-        final InputStream inputStream = process.getErrorStream();
-        Thread stderr;
-        final CppCheckParser parser = new CppCheckParser(getProperties(), file, getAdaptorName(),validLines,unknownCWE);
-        
-        final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
-        
-        /*
-         * The act of using a streamGobbler to consume the error stream is
-         * probably not required if redirectErrorStream() had been used.
-         */
+        InputStream inputStream;
         try
         {
+            String path = process.getAbsolutePath();
+            path = path.replace(".cppcheck", "-err.cppcheck");
+            java.io.File fileerr = new java.io.File(path);
+            inputStream = new FileInputStream(fileerr);
+            
+            Thread stderr;
+            final CppCheckParser parser = new CppCheckParser(getProperties(), file, getAdaptorName(), validLines, unknownCWE);
+            
+            final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
+            
+            /*
+             * The act of using a streamGobbler to consume the error stream is
+             * probably not required if redirectErrorStream() had been used.
+             */
+            
             stderr = new Thread(new StreamGobbler(inputStream, errStream));
             
             stderr.start();
@@ -98,22 +106,22 @@ public class CppcheckAdaptor extends AbstractAdaptor
             
             final XMLReader rdr = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
             rdr.setContentHandler(parser);
-            rdr.parse(new InputSource(in));
+            rdr.parse(fileerr.toURI().toURL().toString());
             
             return parser.getElements();
             
         }
         catch (final SAXException e)
         {
-            e.printStackTrace();
+            System.err.println(getAdaptorName() + ": Error parsing file.");
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            System.err.println(getAdaptorName() + ": Error parsing file.");
         }
         catch (final InterruptedException e)
         {
-            e.printStackTrace();
+            System.err.println(getAdaptorName() + ": Error parsing file.");
         }
         
         return null;
@@ -125,7 +133,7 @@ public class CppcheckAdaptor extends AbstractAdaptor
     @Override
     public String getAdaptorName()
     {
-        return "Cppcheck Adaptor";
+        return "Cppcheck";
     }
     
     /**
@@ -135,15 +143,6 @@ public class CppcheckAdaptor extends AbstractAdaptor
     public String getAdaptorDescription()
     {
         return "The cppCheck adaptor";
-    }
-    
-    /**
-     * return the adaptor version for housekeeping
-     */
-    @Override
-    public String getAdaptorVersion()
-    {
-        return "0.5";
     }
     
     /**
@@ -300,9 +299,9 @@ public class CppcheckAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "C";
+        return Language.C;
     }
     
     @Override

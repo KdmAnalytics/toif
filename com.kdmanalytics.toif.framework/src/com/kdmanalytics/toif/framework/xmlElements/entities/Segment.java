@@ -34,19 +34,15 @@ public class Segment extends Element
     /*
      * doctype stuff.
      */
-    @SuppressWarnings("unused")
     @XmlAttribute(name = "xmlns:toif")
     private String toif = "http://kdmanalytics.com/toif.xsd";
     
-    @SuppressWarnings("unused")
     @XmlAttribute(name = "xmlns:xsi")
     private String xsi = "http://www.w3.org/2001/XMLSchema-instance";
     
-    @SuppressWarnings("unused")
     @XmlAttribute(name = "xmlns:xmi")
     private String xmi = "http://www.omg.org/XMI";
     
-    @SuppressWarnings("unused")
     @XmlAttribute(name = "xsi:schemaLocation")
     private String schemaLocation = "http://kdmanalytics.com/TOIFSchema.xsd TOIFSchema.xsd";
     

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Report
 Bundle-SymbolicName: com.kdmanalytics.standAlone.toif.report;singleton:=true
-Bundle-Version: 1.8.6.qualifier
+Bundle-Version: 1.8.7.qualifier
 Bundle-Activator: com.kdmanalytics.standalone.toif.report.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.eclipse.ui;bundle-version="[3.7.0,5.0.0)",

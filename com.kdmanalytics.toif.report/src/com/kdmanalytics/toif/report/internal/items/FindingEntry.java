@@ -219,7 +219,7 @@ public class FindingEntry extends ReportItem implements IFindingEntry
     @Override
     public String getSearchableText()
     {
-        return parent.getSearchableText() + " " + toString();
+        return parent.getSearchableText() + " | " + toString();
     }
     
     /*
@@ -378,7 +378,7 @@ public class FindingEntry extends ReportItem implements IFindingEntry
     @Override
     public String toString()
     {
-        return sfp + " : " + cwe + " : trust = " + trust + " : " + weaknessDescription;
+        return sfp + " | " + cwe + " | trust = " + trust + " | " + weaknessDescription;
     }
     
     /*

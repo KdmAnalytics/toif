@@ -3,7 +3,6 @@ package com.kdmanalytics.kdm.repositoryMerger;
 
 import java.io.PrintWriter;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;

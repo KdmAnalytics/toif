@@ -17,19 +17,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.xml.crypto.Data;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.utils.FindingCreator;
-import com.kdmanalytics.toif.framework.xmlElements.entities.Date;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 
 public class SplintAdaptor extends AbstractAdaptor
@@ -52,7 +49,7 @@ public class SplintAdaptor extends AbstractAdaptor
     @Override
     public String getAdaptorName()
     {
-        return "Splint Adaptor";
+        return "Splint";
     }
     
     /**
@@ -71,15 +68,6 @@ public class SplintAdaptor extends AbstractAdaptor
     }
     
     /**
-     * return the adaptors version.
-     */
-    @Override
-    public String getAdaptorVersion()
-    {
-        return "0.5";
-    }
-    
-    /**
      * Create the commands to run the tool.
      */
     @Override
@@ -91,9 +79,9 @@ public class SplintAdaptor extends AbstractAdaptor
         // this is where the output of the tool is going to be written in order
         // for us to collect it.
         
-        File tmpdir = new File(System.getProperty("java.io.tmpdir") + File.separator + "Splint");
-        tmpdir.mkdirs();
-        tmpFile = new File(tmpdir, options.getInputFile().getName() + ".csv");
+//        File tmpdir = new File(options.getOutputDirectory(),options.getInputFile().getName()+"."+getGeneratorName());
+//        tmpdir.mkdirs();
+        tmpFile = new File(options.getOutputDirectory(),options.getInputFile().getName()+"."+getGeneratorName());
         
         // tmpFile.deleteOnExit();
         // the required commands to run the tool.
@@ -116,98 +104,16 @@ public class SplintAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
+    public ArrayList<Element> parse(File process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
             boolean[] validLines, boolean unknownCWE)
     {
         // new finding creator
         final FindingCreator creator = new FindingCreator(getProperties(), getAdaptorName(), unknownCWE);
         
-        final BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        final BufferedReader bre = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-        
-        new Thread(new Runnable() {
-            
-            @Override
-            public void run()
-            {
-                try
-                {
-                    String s = "";
-                    while ((s = br.readLine()) != null)
-                    {
-                        // System.err.println(s);
-                        if (s.startsWith("Preprocessing error for file"))
-                        {
-                            writeToFile("splint: " + s + "\n");
-                        }
-                        
-                    }
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-        
-        new Thread(new Runnable() {
-            
-            @Override
-            public void run()
-            {
-                String s = "";
-                
-                try
-                {
-                    while ((s = bre.readLine()) != null)
-                    {
-                        // System.err.println(s);
-                        if (s.startsWith("Preprocessing error for file"))
-                        {
-                            writeToFile("splint: " + s + "\n");
-                        }
-                    }
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-        
+        Scanner scanner = null;
         try
         {
-            process.waitFor();
-        }
-        catch (InterruptedException e1)
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        
-        // // get the stream from the process.
-        // final InputStream inStream = process.getInputStream();
-        // InputStream errStream = process.getErrorStream();
-        //
-        // Thread stderr = new Thread(new StreamGobbler(errStream, null));
-        // stderr.start();
-        //
-        // try
-        // {
-        // stderr.join();
-        // }
-        // catch (InterruptedException e1)
-        // {
-        // e1.printStackTrace();
-        // }
-        //
-        // // new buffered reader from the stream.
-        // final BufferedReader br = new BufferedReader(new
-        // InputStreamReader(inStream));
-        //
-        try
-        {
-            final Scanner scanner = new Scanner(new FileInputStream(tmpFile.getAbsolutePath()));
+            scanner = new Scanner(new FileInputStream(process));
             // read from the csv file.
             while (scanner.hasNextLine())
             {
@@ -215,6 +121,14 @@ public class SplintAdaptor extends AbstractAdaptor
                 
                 final String[] csvElements = csvLine.split(",");
                 
+                // Check if line is valid for parsing
+                if (csvElements.length <= 2)
+                	continue;
+                
+                if ("preproc".equals(csvElements[2]))
+                {
+                    continue;
+                }
                 // the first line of these csv files have the information of
                 // what the values are. We dont need this.
                 if ("Warning".equals(csvElements[0]))
@@ -349,6 +263,11 @@ public class SplintAdaptor extends AbstractAdaptor
         {
             System.err.println("\nThe tools output file could not be found. " + tmpFile.getAbsolutePath() + "\n\n");
             System.exit(1);
+        }
+        finally
+        {
+        if (scanner != null)
+        	scanner.close();
         }
         
         // return the elements from the finding creator.
@@ -551,9 +470,9 @@ public class SplintAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "C";
+        return Language.C;
     }
     
     @Override

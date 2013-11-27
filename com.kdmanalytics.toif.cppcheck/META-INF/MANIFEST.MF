@@ -1,15 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cppcheck
-Bundle-SymbolicName: com.kdmanalytics.toif.cppcheck
-Bundle-Version: 1.8.6.qualifier
+Bundle-SymbolicName: com.kdmanalytics.toif.cppcheck;singleton:=true
+Bundle-Version: 1.8.7.qualifier
 Bundle-Activator: com.kdmanalytics.toif.cppcheck.Activator
 Bundle-Vendor: KDMANALYTICS
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  com.kdmanalytics.toif.framework;bundle-version="[1.6.0,2.0.0)",
  org.apache.xerces;bundle-version="[2.11.0,3.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ActivationPolicy: lazy
-Export-Package: com.kdmanalytics.toif.adaptor,
- com.kdmanalytics.toif.cppcheck
+Export-Package: com.kdmanalytics.toif.adaptor,com.kdmanalytics.toif.cp
+ pcheck

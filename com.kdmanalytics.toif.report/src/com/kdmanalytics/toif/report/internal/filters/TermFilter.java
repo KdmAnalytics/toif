@@ -26,6 +26,7 @@ public class TermFilter extends ViewerFilter
     
     /** The terms. */
     private final String[] terms;
+    private boolean result;
     
     /**
      * Instantiates a new term filter.
@@ -53,15 +54,38 @@ public class TermFilter extends ViewerFilter
             IToifReportEntry iToifReportEntry = (IToifReportEntry) element;
             IFindingEntry findingEntry = iToifReportEntry.getFindingEntry();
             String text = findingEntry.getSearchableText().toLowerCase();
-            for (String term : terms)
+            
+            String[] textarray = text.split("\\|");
+            
+            String[] terms2 = terms.clone();
+            
+            if (terms2.length > 0)
             {
-                if (text.contains(term.toLowerCase().trim()))
+                String t = terms2[0].trim();
+                if (t.startsWith("NOT"))
                 {
-                    return true;
+                    result = false;
+                    terms2[0] = t.replace("NOT", "");
+                }
+                else
+                {
+                    result = true;
                 }
             }
+            
+            for (String term : terms2)
+            {
+                for (String string : textarray)
+                {
+                    if ((term.toLowerCase().trim()).equals(string.toLowerCase().trim()))
+                    {
+                        return result;
+                    }
+                }
+                
+            }
         }
-        return false;
+        return !result;
     }
     
 }

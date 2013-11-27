@@ -1,4 +1,6 @@
+
 package com.kdmanalytics.toif.adaptor;
+
 /*******************************************************************************
  * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
@@ -7,6 +9,7 @@ package com.kdmanalytics.toif.adaptor;
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.regex.Pattern;
 
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.utils.FindingCreator;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
@@ -40,7 +44,7 @@ public class JlintAdaptor extends AbstractAdaptor
     @Override
     public String getAdaptorName()
     {
-        return "JLint Adaptor";
+        return "JLint";
     }
     
     /*
@@ -55,42 +59,32 @@ public class JlintAdaptor extends AbstractAdaptor
         return "Jlint will check your Java code and find bugs, inconsistencies and synchronization problems by doing data flow analysis and building the lock graph.";
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor#getAdaptorVersion
-     * ()
-     */
-    @Override
-    public String getAdaptorVersion()
-    {
-        return "0.5";
-    }
-    
     /**
      * create the List using the FindingCreator of elements.
      */
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
     {
-        
-        // new finding creator
-        FindingCreator creator = new FindingCreator(getProperties(), getAdaptorName(), unknownCWE);
-        
-        // get the stream from the process.
-        InputStream inStream = process.getInputStream();
-        
-        // new buffered reader from the stream.
-        BufferedReader br = new BufferedReader(new InputStreamReader(inStream));
-        
-        String line = null;
-        
+        InputStream inStream = null;
+        BufferedReader br = null;
         try
+        
         {
+            // new finding creator
+            FindingCreator creator = new FindingCreator(getProperties(), getAdaptorName(), unknownCWE);
+            
+            // get the stream from the process.
+            inStream = new FileInputStream(process);
+            
+            // new buffered reader from the stream.
+            br = new BufferedReader(new InputStreamReader(inStream));
+            
+            String line = null;
+            
             // read each line one at a time
             while ((line = br.readLine()) != null)
             {
+                
                 // the different elements are divided by a colon
                 String[] elements = line.split(":");
                 
@@ -110,6 +104,12 @@ public class JlintAdaptor extends AbstractAdaptor
                 }
                 
             }
+            // close resources
+            br.close();
+            br = null;
+            inStream.close();
+            inStream = null;
+            return creator.getElements();
             
         }
         catch (Exception e)
@@ -117,8 +117,23 @@ public class JlintAdaptor extends AbstractAdaptor
             System.err.println(getAdaptorName() + ": Error while reading input stream from tool");
             System.exit(1);
         }
-        
-        return creator.getElements();
+        finally
+        {
+            try
+            {
+                if (br != null)
+                    br.close();
+                
+                if (inStream != null)
+                    inStream.close();
+                
+            }
+            catch (Exception e)
+            {
+                System.err.println(getAdaptorName() + ": Unable to close stream");
+            }
+        }
+        return null;
     }
     
     /**
@@ -131,9 +146,12 @@ public class JlintAdaptor extends AbstractAdaptor
      */
     private String deriveId(String description)
     {
+        
+        Scanner scan = null;
         try
+        
         {
-            Scanner scan = new Scanner(getClass().getResourceAsStream("/config/idConfig"));
+            scan = new Scanner(getClass().getResourceAsStream("/config/idConfig"));
             
             String line = null;
             while (scan.hasNextLine())
@@ -149,15 +167,32 @@ public class JlintAdaptor extends AbstractAdaptor
                 
                 if (m.find())
                 {
+                    scan.close();
+                    scan = null;
                     return id;
-                    
                 }
             }
+            
+            // free resources
+            scan.close();
+            scan = null;
         }
         catch (Exception e)
         {
             System.err.println(getAdaptorName() + ": Could not access the idConfig file.");
             System.exit(1);
+        }
+        finally
+        {
+            try
+            {
+                if (scan != null)
+                    scan.close();
+            }
+            catch (Exception e)
+            {
+                System.err.println(getAdaptorName() + ": Unable to close scanner.");
+            }
         }
         return description;
     }
@@ -395,9 +430,9 @@ public class JlintAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "Java";
+        return Language.JAVA;
     }
     
     @Override

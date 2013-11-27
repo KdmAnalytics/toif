@@ -15,7 +15,6 @@ import java.io.File;
 
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
-import com.lexicalscope.jewel.cli.Unparsed;
 
 /**
  * Define the commands which can be used.
@@ -66,5 +65,6 @@ public interface AdaptorOptions
     @Option
     boolean getUnknownCWE();
     boolean isUnknownCWE();
+
     
 }

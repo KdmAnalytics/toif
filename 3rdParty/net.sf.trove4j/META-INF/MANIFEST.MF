@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Trove4j
 Bundle-SymbolicName: net.sf.trove4j
 Bundle-Version: 3.0.3
-Bundle-Vendor: Kdm Analytics Inc.
+Bundle-ClassPath: net.sf.trove4j_3.0.3.jar
+Bundle-Vendor: Google
 Export-Package: gnu.trove,
  gnu.trove.decorator,
  gnu.trove.function,

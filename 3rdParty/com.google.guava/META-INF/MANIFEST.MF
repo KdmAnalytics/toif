@@ -55,6 +55,6 @@ Export-Package: com.google.common.annotations;version="14.0.1",
    javax.inject,
    com.google.common.primitives,
    com.google.common.math"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.annotation;resolution:=optional,
  javax.inject;resolution:=optional
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

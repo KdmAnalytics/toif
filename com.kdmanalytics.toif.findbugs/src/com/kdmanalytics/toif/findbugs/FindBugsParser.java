@@ -67,6 +67,7 @@ public class FindBugsParser extends DefaultHandler
         {
             id = attrs.getValue("type");
             first = true;
+            canParse = true;
             traces.clear();
         }
         
@@ -75,19 +76,23 @@ public class FindBugsParser extends DefaultHandler
             canParse = false;
         }
         
-        if ("SourceLine".equals(qName) && (attrs.getLength() >= 7) && canParse)
+        if ("SourceLine".equals(qName) && (attrs.getLength() >= 5))
         {
             
+            String startByte = attrs.getValue("startBytecode");
             if (first)
             {
                 line = Integer.parseInt(attrs.getValue("start"));
-                offset = Integer.parseInt(attrs.getValue("startBytecode"));
+                if (startByte != null)
+                {
+                    offset = Integer.parseInt(startByte);
+                }
                 description = props.getProperty(id + "Msg");
                 first = false;
             }
             else
             {
-                traces.add(new CodeLocation(Integer.parseInt(attrs.getValue("start")), null, Integer.parseInt(attrs.getValue("startBytecode"))));
+                traces.add(new CodeLocation(Integer.parseInt(attrs.getValue("start")), null, Integer.parseInt(startByte)));
             }
             
         }

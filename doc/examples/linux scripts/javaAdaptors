@@ -1,0 +1,10 @@
+#!/bin/bash
+
+OUTPUT=/home/adam/Desktop/output/
+CLASSPATH="/home/adam/Desktop/adaptors/*"
+
+echo -e "\nRunning Findbugs Adaptor:\n" ${1}
+java -cp "$CLASSPATH" ToifAdaptor --adaptor FindbugsAdaptor --outputDirectory $OUTPUT  --houseKeeping /home/adam/Desktop/adaptors/housekeepingExamples/sphinxHouseKeeping --inputFile ${1}  -auxclasspath ${2} 2>> "${OUTPUT}Summary" || echo "Findbugs failed on file:" $1>> "${OUTPUT}Summary"&
+
+echo -e "\nRunning Jlint Adaptor:\n" ${1}
+java -cp "$CLASSPATH" ToifAdaptor --adaptor JlintAdaptor --outputDirectory $OUTPUT --houseKeeping /home/adam/Desktop/adaptors//housekeepingExamples/sphinxHouseKeeping --inputFile ${1} 2>> "${OUTPUT}Summary" || echo "jlint failed on file:" $1>> "${OUTPUT}Summary"&

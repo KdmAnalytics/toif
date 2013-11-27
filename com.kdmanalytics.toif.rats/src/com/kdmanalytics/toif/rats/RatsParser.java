@@ -177,9 +177,10 @@ public class RatsParser extends DefaultHandler
      */
     private String deriveId(String description)
     {
+        Scanner scan = null;
         try
         {
-            Scanner scan = new Scanner(getClass().getResourceAsStream("/config/RatsAdaptorIdConfig"));
+            scan = new Scanner(getClass().getResourceAsStream("/config/RatsAdaptorIdConfig"));
             
             String line = null;
             while (scan.hasNextLine())
@@ -208,6 +209,7 @@ public class RatsParser extends DefaultHandler
                 
                 if (m.find())
                 {
+                    scan.close(); scan = null;
                     return id;
                     
                 }
@@ -217,6 +219,11 @@ public class RatsParser extends DefaultHandler
         {
             System.err.println("Could not access the idConfig file." + e);
             System.exit(1);
+        }
+        finally
+        {
+        if (scan != null)
+        	scan.close();
         }
         return null;
     }

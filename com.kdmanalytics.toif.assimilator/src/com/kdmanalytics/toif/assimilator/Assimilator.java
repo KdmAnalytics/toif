@@ -81,8 +81,7 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
  * 
  */
 public class Assimilator
-{
-    
+{    
     public static void debug(Logger logger, Object message)
     {
         logger.debug(message);
@@ -358,7 +357,19 @@ public class Assimilator
             final List<File> tkdmFiles = getFiles(args, TKDM_EXTENSION, KDMO_EXTENSION);
             final List<File> toifFiles = getFiles(args, TOIF_EXTENSION);
             
+            try
+            	{
             repository = createRepository(outputLocation);
+            	}
+            catch (Exception e)
+            	{
+            	e.printStackTrace();
+            	}
+            catch (Error error)
+            	{
+            	System.err.println( "opps " + error.getMessage());
+            	error.printStackTrace();
+            	}
             
             if (createZip)
             {
@@ -454,6 +465,10 @@ public class Assimilator
         {
             e.printStackTrace();
         }
+        catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         finally
         {
             try
@@ -495,11 +510,15 @@ public class Assimilator
         }
         
         File kdmFile = kdmFiles.get(0);
+        
+        FileInputStream is   = null;
+        DataInputStream din = null;
+        BufferedReader br   = null;
         try
         {
-            FileInputStream is = new FileInputStream(kdmFile);
-            DataInputStream din = new DataInputStream(is);
-            BufferedReader br = new BufferedReader(new InputStreamReader(din));
+            is = new FileInputStream(kdmFile);
+            din = new DataInputStream(is);
+            br = new BufferedReader(new InputStreamReader(din));
             
             String firstLine = br.readLine();
             
@@ -531,6 +550,27 @@ public class Assimilator
         {
             LOG.error("error accessing repository for writing xml nodes");
             return;
+        }
+        finally
+        {    
+		try
+			{
+			if (br != null)
+			   br.close();
+			 
+			if (din != null)
+		       din.close();
+		        
+		    if (is != null)
+		        is.close();
+		        
+			}
+		catch (IOException e)
+			{
+            LOG.error( "Unable to close stream: ", e);
+			}
+    
+        
         }
         
     }
@@ -721,7 +761,15 @@ public class Assimilator
         }
         else
         {
-            repository = new SailRepository(new MemoryStore());
+            try
+            	{
+	            MemoryStore memoryStore = new MemoryStore();
+				repository = new SailRepository(memoryStore);
+            	}
+            catch (Exception e)
+            	{
+            	e.printStackTrace();
+            	}
             
         }
         
@@ -1613,7 +1661,9 @@ public class Assimilator
                         line = in.readLine();
                         continue;
                     }
-                    object = factory.createLiteral(StringEscapeUtils.unescapeJava(new String(line.substring(++i, lastIndex))));
+                    String string = new String(line.substring(++i, lastIndex));
+                    string = string.replace("\\", "\\\\");
+                    object = factory.createLiteral(StringEscapeUtils.unescapeJava(string));
                     
                 }
                 

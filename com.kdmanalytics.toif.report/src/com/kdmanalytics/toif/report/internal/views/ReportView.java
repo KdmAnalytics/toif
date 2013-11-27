@@ -319,7 +319,7 @@ public class ReportView extends ViewPart
      */
     private void handleTermFilter(Text text)
     {
-        String[] terms = text.getText().split(",");
+        String[] terms = text.getText().split("OR");
         if (text.getText().isEmpty())
         {
             List<ViewerFilter> filters = new ArrayList<ViewerFilter>(Arrays.asList(getCurrentViewer().getFilters()));
@@ -340,6 +340,7 @@ public class ReportView extends ViewPart
         text.setMessage("Search for Everything...");
         updateDefectCount();
     }
+
     
     /**
      * create the search bar control

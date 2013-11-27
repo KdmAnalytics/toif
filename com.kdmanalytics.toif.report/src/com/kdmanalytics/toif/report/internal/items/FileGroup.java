@@ -208,7 +208,7 @@ public class FileGroup extends ReportItem implements IFileGroup
     @Override
     public String getSearchableText()
     {
-        return parent.getSearchableText() + " " + path;
+        return parent.getSearchableText() + " | " + path;
     }
     
     @Override

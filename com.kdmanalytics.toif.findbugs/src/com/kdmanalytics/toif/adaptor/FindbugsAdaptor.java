@@ -1,13 +1,18 @@
+
 package com.kdmanalytics.toif.adaptor;
+
 /*******************************************************************************
- * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Open Source
- * Initiative OSI - Open Software License v3.0 which accompanies this
- * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Open
+ * Source Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,6 +29,7 @@ import com.kdmanalytics.toif.findbugs.FindBugsParser;
 import com.kdmanalytics.toif.framework.parser.StreamGobbler;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
@@ -55,33 +61,26 @@ public class FindbugsAdaptor extends AbstractAdaptor
     }
     
     /**
-     * the adaptor version
-     */
-    @Override
-    public String getAdaptorVersion()
-    {
-        return "0.5";
-    }
-    
-    /**
      * the xml produced form the tool is parsed by a sax parser and our own
      * content handler.
      */
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines,boolean unknownCWE)
+    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
     {
-        final InputStream inputStream = process.getInputStream();
-        Thread stderr;
-        final FindBugsParser parser = new FindBugsParser(getProperties(), file, getAdaptorName(),unknownCWE);
-        
-        final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
-        
-        /*
-         * The two streams could probably be merged with redirectErrorStream(),
-         * that was we would only have to deal with one stream.
-         */
         try
         {
+            final InputStream inputStream = new FileInputStream(process);
+            Thread stderr;
+            final FindBugsParser parser = new FindBugsParser(getProperties(), file, getAdaptorName(), unknownCWE);
+            
+            final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
+            
+            /*
+             * The two streams could probably be merged with
+             * redirectErrorStream(), that was we would only have to deal with
+             * one stream.
+             */
+            
             stderr = new Thread(new StreamGobbler(inputStream, errStream));
             
             stderr.start();
@@ -95,24 +94,28 @@ public class FindbugsAdaptor extends AbstractAdaptor
             rdr.parse(new InputSource(in));
             
             // return the elements gathered during the parse.
-            return parser.getElements();
+            ArrayList<Element> elements = parser.getElements();
+            
+            return elements;
             
         }
         catch (final SAXException e)
         {
-            e.printStackTrace();
+            // e.printStackTrace();
             System.err.println(getAdaptorName()
                     + ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.");
             System.exit(1);
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            System.err.println(getAdaptorName()
+                    + ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.");
             System.exit(1);
         }
         catch (final InterruptedException e)
         {
-            e.printStackTrace();
+            System.err.println(getAdaptorName()
+                    + ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.");
             System.exit(1);
         }
         
@@ -338,9 +341,9 @@ public class FindbugsAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "Java";
+        return Language.JAVA;
     }
     
     @Override
@@ -354,6 +357,5 @@ public class FindbugsAdaptor extends AbstractAdaptor
     {
         return false;
     }
-
-
+    
 }

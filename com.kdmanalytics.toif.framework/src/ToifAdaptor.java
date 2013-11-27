@@ -10,8 +10,6 @@
  ******************************************************************************/
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.ToolAdaptor;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
@@ -34,7 +32,7 @@ public class ToifAdaptor
     public static void main(String[] args)
     {
         
-        ToolAdaptor toolAdaptor = new ToolAdaptor(args);
+        ToolAdaptor toolAdaptor = new ToolAdaptor();
                 
         // get the options provided to main.
         try
@@ -58,7 +56,7 @@ public class ToifAdaptor
         File file = toolAdaptor.createSegmentFile();
         
         // run the tool.
-        final Process process = toolAdaptor.runTool();
+        final java.io.File process = toolAdaptor.runTool();
         
         if (process == null)
         {
@@ -79,14 +77,14 @@ public class ToifAdaptor
      */
     public static void run(AbstractAdaptor adaptor, List<String> arguments)
     {
-        //spoof the adaptor option at the beginning.
+        // spoof the adaptor option at the beginning.
         arguments.add(0, "-a");
         arguments.add(1, adaptor.getAdaptorName());
         
         
         String[] args = arguments.toArray(new String[arguments.size()]);
         
-        ToolAdaptor toolAdaptor = new ToolAdaptor(args);
+        ToolAdaptor toolAdaptor = new ToolAdaptor();
         
         // get the options provided to main.
         try
@@ -95,8 +93,8 @@ public class ToifAdaptor
         }
         catch (ArgumentValidationException e)
         {
-            System.err.println("Invalid arguments");
-            //e.printStackTrace();
+            System.err.println("Invalid arguments "+e.getMessage());
+            // e.printStackTrace();
         }
         
         toolAdaptor.setAdaptor(adaptor);
@@ -106,7 +104,7 @@ public class ToifAdaptor
         File file = toolAdaptor.createSegmentFile();
         
         // run the tool.
-        final Process process = toolAdaptor.runTool();
+        final java.io.File process = toolAdaptor.runTool();
         
         if (process == null)
         {

@@ -11,6 +11,7 @@
 
 package com.kdmanalytics.toif.framework.toolAdaptor;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,10 +29,19 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 public abstract class AbstractAdaptor
 {
     
+    public ArrayList<Element> parse(AbstractAdaptor abstractAdaptor, java.io.File process, AdaptorOptions options, File file, boolean[] validLines,
+            boolean unknownCWE)
+    {
+        ArrayList<Element> elements = abstractAdaptor.parse(process, options, file, validLines, unknownCWE);
+        
+        FileOutputStream os;
+        return elements;
+    }
+
     /**
      * get the language this adaptor works on.
      */
-    public abstract String getLanguage();
+    public abstract Language getLanguage();
     
     /**
      * get the name to be run from the command line.
@@ -95,7 +105,9 @@ public abstract class AbstractAdaptor
      * 
      * @return the version
      */
-    public abstract String getAdaptorVersion();
+    public String getAdaptorVersion() {
+        return "1.8.7";
+    }
     
     /**
      * get the generators description.
@@ -185,6 +197,7 @@ public abstract class AbstractAdaptor
     /**
      * Create a specific parser for the tool. It must return an arraylist of the
      * elements. These can be generated using the FindingCreator.
+     * @param adaptorImpl 
      * 
      * @param file
      * @param validLines 
@@ -192,7 +205,7 @@ public abstract class AbstractAdaptor
      * 
      * @return
      */
-    public abstract ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE);
+    public abstract ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE);
     
     /**
      * construct the command to run the vulnerability detection tool.

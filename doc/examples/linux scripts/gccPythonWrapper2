@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+
+"""
+An example of wrapping the gcc compiler to execute the adaptors.
+
+"""
+
+import subprocess
+import os
+import shlex
+import sys
+
+include = ""
+options = ""
+inFile = ""
+
+CP = "\"/home/tony/Desktop/Adaptors-v1.8.6/*\""
+HOUSEKEEPING = "/tmp/housekeeping.txt"
+OUTDIR = "/tmp/robert/toif/"
+
+CList = [".c",".cpp",".C",".CPP"]
+
+#for all the arguments passed to gcc, get the ones we need.
+for opt in sys.argv:
+
+
+    #if the argument starts with "-I", then it is an includes.
+    if opt[:2] == "-I":
+        include = include + " " + opt
+
+    #"-D" is a compiler option.
+    if opt[:2] == "-D":
+        options = options + " " + opt
+
+    #if the argument ends with a possible C extension, use it as an input file.
+    if os.path.splitext(opt)[1] in CList:
+
+        #need to construct a full path to the file based on current working directory.
+        inFile = os.getcwd()+os.sep+opt
+
+        #if "packet-" in inFile:
+        #    break
+
+
+if inFile:
+	print("ACCEPTED TOIF: ",sys.argv)
+	#construct the rats command and run it.
+	cmd = "toif --adaptor=rats --housekeeping=" + HOUSEKEEPING + " --inputfile=" + inFile + " --outputdirectory=" + OUTDIR
+	ratsCommand = shlex.split(cmd)
+	rats = subprocess.Popen(ratsCommand,stdout=subprocess.PIPE)
+
+	cmd = "toif --adaptor=splint --housekeeping=" + HOUSEKEEPING + " --inputfile=" + inFile + " --outputdirectory=" + OUTDIR + " -- "+include
+	cmd = cmd + " -- +posixlib -weak"
+
+	print("TOIF: ",cmd)
+
+	#construct the splint command and run it.
+	splintCommand = shlex.split(cmd)
+	splint = subprocess.Popen(splintCommand,stdout=subprocess.PIPE)
+
+	#construct the cppcheck command and run it.
+	cppcheckCommand = shlex.split("toif --adaptor=cppcheck --housekeeping=" + HOUSEKEEPING + " --inputfile=" + inFile + " --outputdirectory=" + OUTDIR + " -- --enable=all" )
+	cppcheck = subprocess.Popen(cppcheckCommand,stdout=subprocess.PIPE)
+
+	#wait for the adaptors to return.
+	rats.wait()
+	splint.wait()
+	cppcheck.wait()
+
+else:
+	print("DECLINED TOIF: ",sys.argv)
+
+#run the gc compiler with all the original compilers.
+subprocess.call(["gcc"]+sys.argv[1:])
+#gcc = subprocess.Popen(["gcc"]+sys.argv[1:], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#gcc.wait()
+
+
+
+
+
+
+

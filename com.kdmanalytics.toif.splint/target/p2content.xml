@@ -1,35 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <units size='1'>
-  <unit id='com.kdmanalytics.toif.splint' version='1.8.6' singleton='false'>
-    <update id='com.kdmanalytics.toif.splint' range='[0.0.0,1.8.6)' severity='0'/>
+  <unit id='com.kdmanalytics.toif.splint' version='1.8.7'>
+    <update id='com.kdmanalytics.toif.splint' range='[0.0.0,1.8.7)' severity='0'/>
     <properties size='5'>
       <property name='org.eclipse.equinox.p2.name' value='Splint'/>
       <property name='org.eclipse.equinox.p2.provider' value='KDMANALYTICS'/>
       <property name='maven-groupId' value='com.kdmanalytics.toif.compile'/>
       <property name='maven-artifactId' value='com.kdmanalytics.toif.splint'/>
-      <property name='maven-version' value='1.8.6'/>
+      <property name='maven-version' value='1.8.7'/>
     </properties>
     <provides size='5'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='com.kdmanalytics.toif.splint' version='1.8.6'/>
-      <provided namespace='osgi.bundle' name='com.kdmanalytics.toif.splint' version='1.8.6'/>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='com.kdmanalytics.toif.splint' version='1.8.7'/>
+      <provided namespace='osgi.bundle' name='com.kdmanalytics.toif.splint' version='1.8.7'/>
       <provided namespace='java.package' name='com.kdmanalytics.toif.adaptor' version='0.0.0'/>
       <provided namespace='java.package' name='com.kdmanalytics.toif.splint' version='0.0.0'/>
       <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
     </provides>
-    <requires size='4'>
-      <required namespace='osgi.bundle' name='org.apache.commons.lang3' range='3.0.0'/>
-      <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+    <requires size='3'>
+      <required namespace='osgi.bundle' name='org.apache.commons.lang3' range='[3.1.0,4.0.0)'/>
       <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
       <required namespace='osgi.bundle' name='com.kdmanalytics.toif.framework' range='[1.6.0,2.0.0)'/>
     </requires>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.splint' version='1.8.6'/>
+      <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.splint' version='1.8.7'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: com.kdmanalytics.toif.splint&#xA;Bundle-Version: 1.8.6&#xA;
+          Bundle-SymbolicName: com.kdmanalytics.toif.splint;singleton:=true&#xA;Bundle-Version: 1.8.7&#xA;
         </instruction>
       </instructions>
     </touchpointData>

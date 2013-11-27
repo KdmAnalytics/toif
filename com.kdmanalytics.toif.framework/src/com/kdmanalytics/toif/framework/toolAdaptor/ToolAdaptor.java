@@ -149,10 +149,16 @@ public class ToolAdaptor
      * @param args
      *            - The arguments from main.
      */
-    public ToolAdaptor(String[] args)
-    {
-        
+    public ToolAdaptor()
+    {     
     }
+    
+    public ToolAdaptor( AbstractAdaptor adaptor)
+    {   
+       this.adaptorImpl = adaptor; 
+    }
+    
+    
     
     public boolean runToolAdaptor(String[] args)
     {
@@ -177,7 +183,7 @@ public class ToolAdaptor
         File file = createSegmentFile();
         
         // run the tool.
-        final Process process = runTool();
+        final java.io.File process = runTool();
         
         if (process == null)
         {
@@ -223,7 +229,7 @@ public class ToolAdaptor
         File file = createSegmentFile();
         
         // run the tool.
-        final Process process = runTool();
+        final java.io.File process = runTool();
         
         if (process == null)
         {
@@ -247,7 +253,7 @@ public class ToolAdaptor
      * @param file
      *            The file that the segment is working on.
      */
-    public void getElementsFromParse(Process process, File file)
+    public void getElementsFromParse(java.io.File process, File file)
     {
         
         /*
@@ -255,8 +261,10 @@ public class ToolAdaptor
          * the elements hashtable.
          */
         ArrayList<Element> parse = parse(process, file);
-        
-        elements.addAll(parse);
+        if (parse != null)
+        {
+            elements.addAll(parse);
+        }
     }
     
     /**
@@ -1142,9 +1150,10 @@ public class ToolAdaptor
      *            - The error-stream from the running process.
      * @return - An ArrayList of the found findings.
      */
-    ArrayList<Element> parse(Process process, File file)
+    ArrayList<Element> parse(java.io.File process, File file)
     {
-        return adaptorImpl.parse(process, options, file, validLines, options.getUnknownCWE());
+        options.getOutputDirectory().mkdirs();
+        return adaptorImpl.parse(adaptorImpl, process, options, file, validLines, options.getUnknownCWE());
     }
     
     /**
@@ -1153,7 +1162,7 @@ public class ToolAdaptor
      * 
      * @return return the process which was created by running the tool.
      */
-    public Process runTool()
+    public java.io.File runTool()
     {
         
         /*
@@ -1179,14 +1188,29 @@ public class ToolAdaptor
             process.directory(workingDirectory);
         }
         
+        java.io.File file = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
+        java.io.File file2 = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "-err." + adaptorImpl.getRuntoolName());
+
+        process.redirectOutput(file);
+        process.redirectError(file2);
+        
         try
         {
-            return process.start();
+            Process p = process.start();
+            
+            p.waitFor();
+            
+            return file;
         }
         catch (final IOException e)
         {
             System.err.println(options.getAdaptor().toString() + ": Failed to find or run the tool.");
             System.exit(1);
+        }
+        catch (InterruptedException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         
         return null;
@@ -1292,9 +1316,8 @@ public class ToolAdaptor
             }
         }
         // Collect the arguments
-
+        
         options = CLI.parseArguments(adaptorOpts);
-
         
     }
     

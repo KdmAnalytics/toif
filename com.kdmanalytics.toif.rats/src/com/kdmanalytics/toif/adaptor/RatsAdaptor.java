@@ -11,6 +11,7 @@ package com.kdmanalytics.toif.adaptor;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,6 +25,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import com.kdmanalytics.toif.framework.parser.StreamGobbler;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 import com.kdmanalytics.toif.rats.RatsParser;
@@ -40,19 +42,13 @@ public class RatsAdaptor extends AbstractAdaptor
     @Override
     public String getAdaptorName()
     {
-        return "Rough Audit Tool for Security Adaptor";
+        return "Rough Audit Tool for Security";
     }
     
     @Override
     public String getAdaptorDescription()
     {
         return "The Rough Audit Tool Adaptor";
-    }
-    
-    @Override
-    public String getAdaptorVersion()
-    {
-        return "0.5";
     }
     
     @Override
@@ -66,16 +62,16 @@ public class RatsAdaptor extends AbstractAdaptor
      * parse the output of the rats tool
      */
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
     {
-        final InputStream inputStream = process.getInputStream();
-        Thread stderr;
-        final RatsParser parser = new RatsParser(getProperties(), file, getAdaptorName(), validLines,unknownCWE);
-        
-        final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
-        
         try
         {
+            final InputStream inputStream = new FileInputStream(process);
+            Thread stderr;
+            final RatsParser parser = new RatsParser(getProperties(), file, getAdaptorName(), validLines, unknownCWE);
+            
+            final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
+            
             stderr = new Thread(new StreamGobbler(inputStream, errStream));
             
             stderr.start();
@@ -226,9 +222,9 @@ public class RatsAdaptor extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "C";
+        return Language.C;
     }
     
     @Override

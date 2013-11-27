@@ -1,15 +1,14 @@
 Manifest-Version: 1.0
 Export-Package: com.kdmanalytics.toif.adaptor,com.kdmanalytics.toif.sp
  lint
-Require-Bundle: org.apache.commons.lang3;bundle-version="3.0.0",org.ec
- lipse.ui,org.eclipse.core.runtime,com.kdmanalytics.toif.framework;bun
- dle-version="[1.6.0,2.0.0)"
+Require-Bundle: org.apache.commons.lang3;bundle-version="[3.1.0,4.0.0)
+ ",org.eclipse.core.runtime,com.kdmanalytics.toif.framework;bundle-ver
+ sion="[1.6.0,2.0.0)"
 Bundle-Vendor: KDMANALYTICS
-Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.8.6
+Bundle-Version: 1.8.7
 Bundle-Name: Splint
 Bundle-Activator: com.kdmanalytics.toif.splint.Activator
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: com.kdmanalytics.toif.splint
+Bundle-SymbolicName: com.kdmanalytics.toif.splint;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

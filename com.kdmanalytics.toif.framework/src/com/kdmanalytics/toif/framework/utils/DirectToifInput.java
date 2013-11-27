@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.toolAdaptor.ToolAdaptor;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
 
@@ -235,7 +236,7 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(Process process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
+    public ArrayList<Element> parse(File process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
             boolean[] validLines, boolean unknownCWE)
     {
         
@@ -251,9 +252,9 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public String getLanguage()
+    public Language getLanguage()
     {
-        return "Unknown";
+        return Language.UNKNOWN;
     }
     
     @Override

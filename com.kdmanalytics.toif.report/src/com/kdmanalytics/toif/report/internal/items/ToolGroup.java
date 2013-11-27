@@ -60,7 +60,7 @@ public class ToolGroup extends ReportItem
     @Override
     public String getSearchableText()
     {
-        return parent.getSearchableText() + " " + name;
+        return parent.getSearchableText() + " | " + name;
     }
     
     /**

@@ -185,7 +185,7 @@ public class LocationGroup extends ReportItem
     @Override
     public String getSearchableText()
     {
-        return parent.getSearchableText() + " " + toString();
+        return parent.getSearchableText() + " | " + toString();
     }
     
     public List<ToolGroup> getToolGroups()
