@@ -72,22 +72,18 @@ House Keeping Example:
 Running the Adaptor from command line:
 The adaptor is run from the command line. Which adaptor to use with the framework is included in the arguments.
 
-	java -cp "<classpath>" ToifAdaptor --adaptor <Adaptor Name> --inputFile <full path to input file> --outputDirectory <path to output directory> --houseKeeping <path to house-keeping file> [Additional arguments]
+	toif --adaptor=<Adaptor Name> --inputfile=<full path to input file> --outputdirectory=<path to output directory> --houseKeeping=<path to house-keeping file> [Additional arguments]
 
-
-“-cp” 
-	The class path must be provided in order for the framework to find the correct adaptor to run. This lets the Java Virtual Machine know where to look for the classes and packages. Multiple paths can be provided by separating the paths with a colon “:”. Note: On windows, if globbing is used, you may need a semi-colon after the classpath. Eg: java "C:\Users\user\adaptors\*";
-
-“--adaptor” or “-a” 
+“--adaptor” 
 	The name of the adaptor class. This is usually the name of the adaptor jar file without the version number. This is the adaptor that is to be used with the input source file. From this class, the framework is able to discover house keeping facts about the adaptor as well as which generator to call and what options to use.
 
-“--inputFile” or “-i” 
+“--inputFile” 
 	The full path to the input source file. In order for the adaptors to create all the facts for this file, a full path must be provided
 
-“--outputDirectory” or “-o” 
+“--outputDirectory” 
 	The path to the output directory. This is the directory where the subdirectories containing the TOIF XML file will be written.
 
-“--houseKeeping” or “-h” 
+“--houseKeeping” 
 	The path to the file containing the facts about the project's house keeping. This file is specific to each adaptor and each project. This is because it is down to the user to provide the project details as well as which generator (scan tool) is running on the system.
 
 Any additional arguments may be entered after the ToifAdaptor's required arguments. These may be included files or compilation options, they will vary from generator to generator.
@@ -155,10 +151,10 @@ The assimilator merges TOIF findings into a common fact-orientated repository or
 
 To run the assimilator, execute the assimilator script on the command line, specifying the repository location and the files to merge.
 
-assimilator.sh -r <path to repository> [-p project root] <files or directories to merge>
+assimilator.sh -k <path to repository> <files or directories to merge>
 
-	-k	The -k option can be used instead of -r to specify a .kdm file. The .kdm files are generally more mobile then a repository.
-	-p  The optional root name that start paths from this common directory name.
+	-k	used to specify a output .kdm file.
+
 	
 	
 --------------------------------------------------------------------------------------------------------------------	
