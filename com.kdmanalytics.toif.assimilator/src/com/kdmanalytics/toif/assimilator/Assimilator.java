@@ -81,7 +81,8 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
  * 
  */
 public class Assimilator
-{    
+{
+    
     public static void debug(Logger logger, Object message)
     {
         logger.debug(message);
@@ -215,8 +216,8 @@ public class Assimilator
     private boolean createZip = false;
     
     private PrintWriter pw;
-
-//	private FileOutputStream fos;
+    
+    // private FileOutputStream fos;
     
     /**
      * constructor for the assimilator.
@@ -273,7 +274,6 @@ public class Assimilator
         }
         
         writer.write("<" + subjectString + "> ");
-
         
         URI predicate = statement.getPredicate();
         String predicateString = predicate.toString();
@@ -353,23 +353,23 @@ public class Assimilator
             outputLocation = getOutputLocation(args);
             
             // get the tkdm files and the toif files.
-            final List<File> kdmFiles = getFiles(args, KDM_EXTENSION,KDM_KEEP_EXTENSION);
+            final List<File> kdmFiles = getFiles(args, KDM_EXTENSION, KDM_KEEP_EXTENSION);
             final List<File> tkdmFiles = getFiles(args, TKDM_EXTENSION, KDMO_EXTENSION);
             final List<File> toifFiles = getFiles(args, TOIF_EXTENSION);
             
             try
-            	{
-            repository = createRepository(outputLocation);
-            	}
+            {
+                repository = createRepository(outputLocation);
+            }
             catch (Exception e)
-            	{
-            	e.printStackTrace();
-            	}
+            {
+                e.printStackTrace();
+            }
             catch (Error error)
-            	{
-            	System.err.println( "opps " + error.getMessage());
-            	error.printStackTrace();
-            	}
+            {
+                System.err.println("opps " + error.getMessage());
+                error.printStackTrace();
+            }
             
             if (createZip)
             {
@@ -466,9 +466,9 @@ public class Assimilator
             e.printStackTrace();
         }
         catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+        {
+            e.printStackTrace();
+        }
         finally
         {
             try
@@ -511,9 +511,9 @@ public class Assimilator
         
         File kdmFile = kdmFiles.get(0);
         
-        FileInputStream is   = null;
+        FileInputStream is = null;
         DataInputStream din = null;
-        BufferedReader br   = null;
+        BufferedReader br = null;
         try
         {
             is = new FileInputStream(kdmFile);
@@ -552,25 +552,24 @@ public class Assimilator
             return;
         }
         finally
-        {    
-		try
-			{
-			if (br != null)
-			   br.close();
-			 
-			if (din != null)
-		       din.close();
-		        
-		    if (is != null)
-		        is.close();
-		        
-			}
-		catch (IOException e)
-			{
-            LOG.error( "Unable to close stream: ", e);
-			}
-    
-        
+        {
+            try
+            {
+                if (br != null)
+                    br.close();
+                
+                if (din != null)
+                    din.close();
+                
+                if (is != null)
+                    is.close();
+                
+            }
+            catch (IOException e)
+            {
+                LOG.error("Unable to close stream: ", e);
+            }
+            
         }
         
     }
@@ -624,15 +623,14 @@ public class Assimilator
     {
         try
         {
-            writer = new PrintWriter( outputLocation);
-
+            writer = new PrintWriter(outputLocation);
+            
         }
         catch (FileNotFoundException e)
         {
             LOG.error("The file " + outputLocation + " has not been found.");
             
         }
-       
         
     }
     
@@ -762,14 +760,14 @@ public class Assimilator
         else
         {
             try
-            	{
-	            MemoryStore memoryStore = new MemoryStore();
-				repository = new SailRepository(memoryStore);
-            	}
+            {
+                MemoryStore memoryStore = new MemoryStore();
+                repository = new SailRepository(memoryStore);
+            }
             catch (Exception e)
-            	{
-            	e.printStackTrace();
-            	}
+            {
+                e.printStackTrace();
+            }
             
         }
         
@@ -832,6 +830,10 @@ public class Assimilator
     {
         
         Value object = null;
+        
+        if (elements.length < 2)
+            return object;
+        
         try
         {
             String objectString = trimForStatement(elements[2]);
@@ -2138,6 +2140,10 @@ public class Assimilator
                 
                 Resource subject = factory.createURI(subjectString);
                 
+                // ** Add guard in case we do have element
+                if (elements.length < 2)
+                    continue;
+                
                 String predicateString = trimForStatement(elements[1]);
                 
                 if (!predicateString.startsWith("http"))
@@ -2148,6 +2154,11 @@ public class Assimilator
                 URI predicate = factory.createURI(predicateString);
                 
                 Value object = determineObjectValue(elements);
+                
+                if (object == null)
+                {
+                    continue;
+                }
                 
                 Statement statement = new StatementImpl(subject, predicate, object);
                 

@@ -18,7 +18,7 @@ Require-Bundle: com.google.guava;bundle-version="[14.0.1,15.0.0)",org.
  .core;bundle-version="[3.7.0,4.2.0)",com.kdmanalytics.toif.ccr;bundle
  -version="[1.6.0,2.0.0)"
 Bundle-Vendor: KDM Analytics Inc.
-Bundle-Version: 1.8.7
+Bundle-Version: 1.8.8
 Bundle-ManifestVersion: 2
 Bundle-Activator: com.kdmanalytics.toif.report.internal.Activator
 Bundle-SymbolicName: com.kdmanalytics.toif.report;singleton:=true

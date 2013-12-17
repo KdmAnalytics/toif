@@ -67,4 +67,6 @@ public interface AdaptorOptions
     boolean isUnknownCWE();
 
     
+
+    
 }

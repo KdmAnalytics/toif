@@ -3,9 +3,9 @@ Export-Package: com.kdmanalytics.toif.adaptor
 Require-Bundle: org.eclipse.core.runtime,com.kdmanalytics.toif.framewo
  rk;bundle-version="[1.6.0,2.0.0)",org.apache.xerces;bundle-version="[
  2.11.0,3.0.0)"
-Bundle-Vendor: KDMANALYTICS
-Bundle-Version: 1.8.7
-Bundle-Name: Rats
+Bundle-Vendor: KDM Analytics Inc.
+Bundle-Version: 1.8.8
+Bundle-Name: TOIF Rats
 Bundle-Activator: com.kdmanalytics.toif.rats.Activator
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.kdmanalytics.toif.rats;singleton:=true

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.kdmanalytics.toif.report.feature_1.8.7.201311261106.jar" id="com.kdmanalytics.toif.report.feature" version="1.8.7.201311261106">
+   <feature url="features/com.kdmanalytics.toif.report.feature_1.8.8.201312171103.jar" id="com.kdmanalytics.toif.report.feature" version="1.8.8.201312171103">
       <category name="sfp_cwe"/>
    </feature>
-   <feature url="features/com.kdmanalytics.toif.report.standAlone.feature_1.8.7.201311261106.jar" id="com.kdmanalytics.toif.report.standAlone.feature" version="1.8.7.201311261106">
+   <feature url="features/com.kdmanalytics.toif.report.standAlone.feature_1.8.8.201312171103.jar" id="com.kdmanalytics.toif.report.standAlone.feature" version="1.8.8.201312171103">
       <category name="sfp_cwe"/>
    </feature>
    <category-def name="sfp_cwe" label="SFP/CWE"/>

@@ -13,10 +13,10 @@ Require-Bundle: org.apache.xerces;bundle-version="[2.11.0,3.0.0)",org.
  .eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)",com.kdmanalytics
  .kdm.repositoryMerger;bundle-version="[2.5.0,3.0.0)",com.google.guava
  ;bundle-version="[14.0.1,15.0.0)"
-Bundle-Vendor: KDMANALYTICS
+Bundle-Vendor: KDM Analytics Inc.
 Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.8.7
-Bundle-Name: Assimilator
+Bundle-Version: 1.8.8
+Bundle-Name: TOIF Assimilator
 Bundle-Activator: com.kdmanalytics.toif.assimilator.Activator
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: com.kdmanalytics.toif.assimilator;singleton:=true

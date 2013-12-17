@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
 <artifacts size='1'>
-  <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.report' version='1.8.7'>
+  <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.report' version='1.8.8'>
     <properties size='5'>
-      <property name='artifact.size' value='152762'/>
-      <property name='download.size' value='152762'/>
+      <property name='artifact.size' value='153095'/>
+      <property name='download.size' value='153095'/>
       <property name='maven-groupId' value='com.kdmanalytics.kdm.wb.plugins'/>
       <property name='maven-artifactId' value='com.kdmanalytics.toif.report'/>
-      <property name='maven-version' value='1.8.7'/>
+      <property name='maven-version' value='1.8.8'/>
     </properties>
   </artifact>
 </artifacts>

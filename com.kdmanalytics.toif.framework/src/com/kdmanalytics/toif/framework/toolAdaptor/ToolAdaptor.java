@@ -150,15 +150,13 @@ public class ToolAdaptor
      *            - The arguments from main.
      */
     public ToolAdaptor()
-    {     
+    {
     }
     
-    public ToolAdaptor( AbstractAdaptor adaptor)
-    {   
-       this.adaptorImpl = adaptor; 
+    public ToolAdaptor(AbstractAdaptor adaptor)
+    {
+        this.adaptorImpl = adaptor;
     }
-    
-    
     
     public boolean runToolAdaptor(String[] args)
     {
@@ -298,12 +296,12 @@ public class ToolAdaptor
             if (options != null)
             {
                 System.err.println(options.getAdaptor().toString() + ": The house-keeping file is missing some properties. ");
-                // e.printStackTrace();
+                e.printStackTrace();
             }
             else
             {
                 System.err.println("The house-keeping file is missing some properties. ");
-                // e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
@@ -823,7 +821,6 @@ public class ToolAdaptor
     {
         // get the information from the properties file.
         final String projectName = housekeeping.getProperty("TOIFSegmentIsRelatedToProject");
-        final String[] projectDetails = housekeeping.getProperty(projectName).split(";");
         
         // project is mandatory.
         if ((projectName == null) || (projectName.isEmpty()))
@@ -831,6 +828,9 @@ public class ToolAdaptor
             System.err.println(options.getAdaptor().toString() + ": No project defined in house-keeping file.");
             System.exit(1);
         }
+        
+        final String[] projectDetails = housekeeping.getProperty(projectName).split(";");
+        
         if (projectDetails == null)
         {
             System.err.println(options.getAdaptor().toString() + ": No project details defined in house-keeping file.");
@@ -961,8 +961,10 @@ public class ToolAdaptor
             }
             else
             {
+                
                 // load the property file
                 props.load(new FileInputStream(options.getHouseKeeping()));
+                
             }
         }
         catch (final FileNotFoundException e)
@@ -1190,7 +1192,7 @@ public class ToolAdaptor
         
         java.io.File file = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
         java.io.File file2 = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "-err." + adaptorImpl.getRuntoolName());
-
+        
         process.redirectOutput(file);
         process.redirectError(file2);
         

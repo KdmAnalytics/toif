@@ -67,6 +67,17 @@ public class UserConsole
     
     private void doAdaptor( ToifCli toifCli)
     	{
+    	// Ensure that output directory is specifed
+    	if (!toifCli.isOutputdirectory())
+    		{
+    		System.err.println( "Output directory needs to be specified");
+    		return;
+    		}
+    	
+    	// Ensure that specified directory exists
+    	if (!toifCli.getOutputdirectory().exists())
+    		toifCli.getOutputdirectory().mkdirs();
+    		
         AdaptorCmd cmd = new AdaptorCmd();
         cmd.execute(toifCli, this.AdaptorArgs);
     	
@@ -101,13 +112,16 @@ public class UserConsole
     				System.err.println( "Specified inputfile does not exist: " + file.getAbsolutePath());
     				return false;
     				}
-    			
-    			if (!file.isFile())
-    				{
+   			
+    			if (!file.isFile() && !file.isDirectory())
+   				{
     				System.err.println( "Specified inputfile not valid: " + file.getAbsolutePath());
 				    return false;
     				}
+
+ 
     			}
+
     		}
     	
     	// Check house keeping

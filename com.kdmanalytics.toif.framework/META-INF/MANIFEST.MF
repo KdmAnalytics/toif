@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Adaptor
+Bundle-Name: TOIF Adaptor
 Bundle-SymbolicName: com.kdmanalytics.toif.framework;singleton:=true
-Bundle-Version: 1.8.7.qualifier
+Bundle-Version: 1.8.8
 Bundle-Activator: com.kdmanalytics.toif.framework.Activator
-Bundle-Vendor: KDMANALYTICS
+Bundle-Vendor: KDM Analytics Inc.
 Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
 Require-Bundle: org.eclipse.core.runtime,
  com.lexicalscope.jewelcli;bundle-version="[0.8.5,1.0.0)",

@@ -6,7 +6,7 @@ Require-Bundle: org.eclipse.core.runtime,com.kdmanalytics.toif.framewo
  .0,2.0.0)"
 Bundle-Vendor: KDMANALYTICS
 Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.8.7
+Bundle-Version: 1.8.8
 Bundle-Name: ExtractorInterface
 Bundle-Activator: com.kdmanalytics.toif.facade.internal.Activator
 Bundle-ManifestVersion: 2

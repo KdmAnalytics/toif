@@ -42,7 +42,7 @@ public class ToifAdaptor
         catch (ArgumentValidationException e)
         {
             System.err.println("Invalid arguments");
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         
         
