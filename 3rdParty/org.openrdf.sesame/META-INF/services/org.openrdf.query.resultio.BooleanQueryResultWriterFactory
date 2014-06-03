@@ -1,4 +1,0 @@
-org.openrdf.query.resultio.sparqlxml.SPARQLBooleanXMLWriterFactory
-
-org.openrdf.query.resultio.text.BooleanTextWriterFactory
-
