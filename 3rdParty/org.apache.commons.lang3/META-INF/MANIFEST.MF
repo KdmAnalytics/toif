@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Commons Lang3
+Bundle-SymbolicName: org.apache.commons.lang3
+Bundle-Version: 3.1.0
+Bundle-ClassPath: org.apache.commons.lang3_3.1.0.jar
+Bundle-Vendor: Kdm Analytics Inc.c
+Export-Package: org.apache.commons.lang3,
+ org.apache.commons.lang3.builder,
+ org.apache.commons.lang3.concurrent,
+ org.apache.commons.lang3.event,
+ org.apache.commons.lang3.exception,
+ org.apache.commons.lang3.math,
+ org.apache.commons.lang3.mutable,
+ org.apache.commons.lang3.reflect,
+ org.apache.commons.lang3.text,
+ org.apache.commons.lang3.text.translate,
+ org.apache.commons.lang3.time,
+ org.apache.commons.lang3.tuple
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Created-By: Apache Maven
+Build-Jdk: 1.7.0_25
+Archiver-Version: Plexus Archiver
+Built-By: jenkins

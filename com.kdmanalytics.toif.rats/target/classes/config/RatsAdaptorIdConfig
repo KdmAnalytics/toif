@@ -1,0 +1,106 @@
+#RATS-C
+
+Standard random number generators should not be used to.*;randdesc
+Double check that your buffer is as big as you specify.*;bufbig
+Check buffer boundaries if calling this function in a loop.*;bufloop
+Truncate all input strings to a.*;bufreasonable
+Many calls for generating temporary file names are.*;tmpfile
+DNS results can easily be forged by an attacker.*;dns
+Buffer size must be .*;pathbuf
+LoadLibrary will search several places for a library if no path is specified, allowing trojan DLL's to be inserted elsewhere even if the intended DLL is correctly protected from overwriting.*;dllload
+GetExtensionVersion.* is called by IIS in the.*;iis_extension
+GetTempPath.* may return the current directory or the.*;w32tmppath
+Many program execution commands under Windows will search.*;w32exec
+While this _exec variant does not search the path for.*;w32execnop
+This function does not properly handle non-NULL terminated.*;accessv
+Impersonation functions return error codes when they.*;w32impers
+This function can throw exceptions in low memory.*;w32crit
+Check to be sure that the format string passed as argument.*;formatArg
+Check to be sure that argument .* passed to this function call will not.*;srcBufArg
+Check to be sure that the non-constant format string passed as argument.*;fsproblem
+Argument .* to this function call should be checked to ensure that it does.*;inputproblem
+A potential race condition vulnerability exists here.*;raceconditionuse
+Extra care should be taken to ensure that character arrays that are allocated on the stack.*;staticlocalbuffer
+Extra care should be taken to ensure that character arrays that are allocated with a static.*;staticglobalbuffer
+A function call is not being made here, but a reference is being made to a name that is normally a vulnerable function.*;reference
+Do not use a variable that has been derived from untrusted sources within a backtick.*;pythonBacktick
+The backtick will act just like an call to exec.* so care should be exercised that the string being backtick evaluated does not come from an.*;otherBacktick
+A potential TOCTOU .* vulnerability.*;raceConditionUse
+Reminder.* Do not forget to chdir.* to an appropriate directory before calling chroot.*;chroot
+Gets is unsafe.* No bounds checking is performed.* buffer is easily overflowable by user.*;gets
+Environment variables are highly untrustable input.*;getEnv
+The last argument is the number of wide chars.* not the number of bytes.*;multiByteToWideChar
+Be sure the destination buffer is at least MAXPATHLEN big.*;realPath
+cin is unsafe.*;cin
+The results of this call are easy to forge.*;getLogin
+This may be forgable.*;cuserid
+The results are easy for an attacker to forge.* and not reliable.*;ttyname
+When setting signal handlers.* do not use the same function to handle multiple signals.*;signals
+Don't use on memory intended to be secure.* because the old structure will not be zeroed out.*;realloc
+Remember that sensitive data get copied on fork.*;fork
+Some implementations may be broken.*;vfork
+If the third argument.* pDacl.* is NULL there is no protection from attack.*;setSecurityDescriptorDacl
+Consider using strlcat.*;strncat
+umask.* can easily be used to create files with unsafe priviledges.*;umask
+This function does not set the inheritance bits in the Access Controle Entry.*;addAccessAllowedAce
+
+
+Unknown.*;none
+
+
+
+#RATS PEARL
+
+When using.* it is important to be sure that the string being passed in does not contain relative path elements.*;taintedfileop
+The filehandle argument should not be derived from user input.*;fcntl
+The second argument specifiying the packed address to bind to.* should not be derived from user input.* If the address is derived from user input.* it is possible for a malicious user to cause the socket to be bound to an address of their choice.;bind
+When using setpgrp.* neither argument should be derived from user input.* doing so may allow the attacker to modify both the PID and the PGRP argument.* possibly allowing arbitrary processes to have their process group changed.*;setgrp
+When using setpriority.* do not pass arguments to it that are derived from user input.* Doing so could allow an attacker to set the priority of an arbitrary process on the system.*;setPriority
+Care should be exercised when using the syscall function.* Arguments derived from user input are to be avoided.* and are especially dangerous due to the fact they are passed directly to the underlying OS call.* There is also a potential for buffer-overflow like problems with strings that may be written to.* Extend all perl strings to sane lengths before passing them into this function.*;syscall
+The second argument specifiying the packed address to bind to.* should not be derived from user input.* If the address is derived from user input.* it is possible for a malicious user to cause the socket to connect to an arbitrary remote address.* enabling hijacking of potentially sensitive network data.*;connect
+When using system.* it is important to be sure that the string being used does not contain relative path elements .* or a null.* which may cause underlying C calls to behave strangely.* It is also imperative to insure the string has no characters that may be interpreted by the shell.* possibly allowing arbitrary commands to be run.*;system
+The filename argument of open should be carefully checked if it is being created with any user-supplied string as a compontent of it.* Strings should be checked for occurences of path backtracking.* which may cause the underlying C call to interpret the filename to open differently than expected.* It is also important to make sure that the final filename does not end in a .* as this will cause the path to be executed.*;open
+Using a user supplied expression as an argument to this function should be avoided.* Explicitly set the umask to a value you know is safe.*;pearlUmask
+Avoid constructing the list of process ids to kill with any strings that contain user inputted data.* Users may be able to manipulate the pid values in such a way as to cause arbitrary signals to be sent to processes.* possibly leading to exploits or DoS attacks.*;kill
+Using user supplied strings as the arguments to ioctl may allow the user to manipulate the device in arbitrary ways.*;ioctl
+Using user supplied strings anywhere inside of an eval is extremely dangerous.* Unvalidated user input fed into an eval call may allow the user to execute arbitrary perl code.* Avoid ever passing user supplied strings into eval.*;eval
+Glob invokes a shell .* to obtain the list of filenames that match the glob pattern.* Unvalidated user input used in a glob pattern could allow arbitrary shell code to be run.* possibly executing programs as a result.* Avoid using user input in glob patterns.*;glob
+
+
+
+#RATS PHP
+
+Arguments .* they will be passed to a remote email server.* make sure they are properly formatted and contain no unexpected characters or extra data.*;mail
+This function literally leaks memory.*;leak
+Reminder.* Do not forget to chdir.* to an appropriate directory before calling chroot.*;phpChroot
+ The results of this call are easy to forge.*;posix_getlogin
+The results are easy for an attacker to forge.*;posix_ttyname
+
+
+RATS OPENSSL
+
+Allow the function to dynamically allocate the buffer.* If you insist on a fixed buffer.* then double check that your buffer is as big as you specify.*;avoidbuf
+Does the memory need to be cleaned if moved.*;cleanrealloc
+Does the memory need to be cleaned before freeing.*;cleanfree
+Use ERR_error_string_n.* instead.*;stringn
+make sure the buffer is EVP_MAX_MD_SIZE.*;mdlen
+make sure the output buffer is either at least one block less one byte biggerthan the input.*;enclen
+make sure the output buffer is four thirds the size of the input buffer.*;encodelen
+Use strlcpy.*strlcat instead of strncpy.*strncat.*;usel
+
+
+RATS RUBY
+
+Ruby safe level 2 disables this function as it could be potentially dangerous.*;rubysafelevel
+Verify variable is properly validated from tainted input.*;untaint
+Unchecked user input could allow director traversal attacks.*;send_files
+#;rubySystem
+Make sure user data is not passed to exec.*;exec
+This method allows .* access outside of the application.*;open
+Use of params.* verify all user values are checked before using.*;params
+Unchecked user input could all exectuion of system commands.*;popen
+Unchecked user input could all loading of rouge scripts.*;load
+Make sure this function is not being used for any security related tasks.*;rand
+
+
+

@@ -1,0 +1,31 @@
+/*******************************************************************************
+ * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Open Source
+ * Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
+ ******************************************************************************/
+
+package com.kdmanalytics.toif.report.internal.handlers;
+
+import org.eclipse.core.expressions.PropertyTester;
+
+/**
+ * 
+ * @author Adam Nunn <adam@kdmanalytics.com>
+ *
+ */
+public class NotWeaknessPropertyTest extends PropertyTester
+{
+    
+    public NotWeaknessPropertyTest()
+    {
+        System.out.println("NotWeaknessPropertyTest.NotWeaknessPropertyTest()");
+    }
+    
+    @Override
+    public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
+    {
+        return true;
+    }
+    
+}

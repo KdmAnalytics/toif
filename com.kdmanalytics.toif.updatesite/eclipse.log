@@ -1,0 +1,236 @@
+!SESSION 2013-11-26 14:26:58.631 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.7.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.rcp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.rcp.product
+
+!ENTRY org.eclipse.update.configurator 4 0 2013-11-26 14:30:42.201
+!MESSAGE Unable to access file "plugins/org.eclipse.datatools.sqltools.parsers.sql.query.source_1.2.1.v201201250505.jar!META-INF/MANIFEST.MF".
+
+!ENTRY org.eclipse.jface 2 0 2013-11-26 14:30:46.251
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-11-26 14:30:46.251
+!MESSAGE A conflict occurred for ALT+SHIFT+D R:
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug,Debug RAP Application,
+		Debug RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+D R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.debug,Debug on Server,
+		Debug the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-11-26 14:30:46.251
+!MESSAGE A conflict occurred for ALT+SHIFT+X R:
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.rap.ui.launch.RAPLaunchShortcut.run,Run RAP Application,
+		Run RAP Application,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+X R,
+	ParameterizedCommand(Command(org.eclipse.wst.server.launchShortcut.run,Run on Server,
+		Run the current selection on a server,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-11-26 14:30:46.251
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,PyDev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2013-11-26 14:30:46.251
+!MESSAGE A conflict occurred for CTRL+DEL:
+Binding(CTRL+DEL,
+	ParameterizedCommand(Command(org.eclipse.datatools.sqltools.result.removeInstance,Remove Result,
+		,
+		Category(org.eclipse.datatools.sqltools.result.category,SQL Results View,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+DEL,
+	ParameterizedCommand(Command(org.eclipse.graphiti.ui.internal.action.RemoveAction,Remove,
+		Remove selected Pictogram Elements,
+		Category(org.eclipse.graphiti.ui.Graphiti_Category,Edit,Graphiti Diagram Editor,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 2 0 2013-11-26 14:31:19.262
+!MESSAGE An error occurred while loading the manifest S:\Robert\eclipse-rcp-indigo-SR2-win32-x86_64\eclipse\plugins\org.eclipse.datatools.sqltools.parsers.sql.query.source_1.2.1.v201201250505.jar.
+!STACK 0
+java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.basicLoadManifest(BundlesAction.java:530)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.loadManifest(BundlesAction.java:516)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.createBundleDescription(BundlesAction.java:509)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.processBundle(RepositoryListener.java:141)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.process(RepositoryListener.java:136)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.added(RepositoryListener.java:117)
+	at org.eclipse.equinox.internal.p2.extensionlocation.BundlePoolFilteredListener.added(BundlePoolFilteredListener.java:42)
+	at org.eclipse.equinox.internal.p2.extensionlocation.SiteListener.added(SiteListener.java:336)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.processFile(DirectoryWatcher.java:197)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.scanDirectories(DirectoryWatcher.java:160)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.poll(DirectoryWatcher.java:108)
+	at org.eclipse.equinox.internal.p2.extensionlocation.SiteListener.synchronizeRepositories(SiteListener.java:111)
+	at org.eclipse.equinox.internal.p2.extensionlocation.ExtensionLocationMetadataRepository.ensureInitialized(ExtensionLocationMetadataRepository.java:66)
+	at org.eclipse.equinox.internal.p2.extensionlocation.ExtensionLocationMetadataRepository.getProperties(ExtensionLocationMetadataRepository.java:194)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.addRepository(AbstractRepositoryManager.java:127)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:657)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.loadMetadataRepository(ProvisioningContext.java:211)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getLoadedMetadataRepositories(ProvisioningContext.java:194)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getMetadata(ProvisioningContext.java:275)
+	at org.eclipse.equinox.internal.p2.director.SimplePlanner.gatherAvailableInstallableUnits(SimplePlanner.java:261)
+	at org.eclipse.equinox.internal.p2.director.SimplePlanner.getSolutionFor(SimplePlanner.java:321)
+	at org.eclipse.equinox.internal.p2.director.SimplePlanner.getProvisioningPlan(SimplePlanner.java:379)
+	at org.eclipse.equinox.internal.p2.operations.PlannerResolutionJob.runModal(PlannerResolutionJob.java:76)
+	at org.eclipse.equinox.p2.operations.ProfileChangeOperation.resolveModal(ProfileChangeOperation.java:115)
+	at org.eclipse.equinox.internal.p2.ui.dialogs.ProvisioningOperationWizard$1.run(ProvisioningOperationWizard.java:213)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.362
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.dbws.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.362
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.dbws.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.362
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.dbwsbuilder.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.362
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.dbwsbuilder.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.372
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.dbwsbuilder.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.372
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.dbwsbuilder.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.372
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.dbws.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.372
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.dbws.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.382
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.jpa.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.382
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.jpa.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.382
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.jpa.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.382
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.jpa.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.392
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.moxy.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.392
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.moxy.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.392
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.moxy.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.392
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.moxy.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.392
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.nosql.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.402
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.nosql.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.402
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.nosql.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.402
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.nosql.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.402
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.sdk.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.402
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.sdk.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.412
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.sdo.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.412
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.sdo.source.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.412
+!MESSAGE Invalid site reference %primaryUpdateURL in feature org.eclipse.persistence.sdo.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 4 0 2013-11-26 14:31:20.412
+!MESSAGE Invalid site reference %secondaryUpdateURL in feature org.eclipse.persistence.sdo.
+
+!ENTRY org.eclipse.equinox.p2.publisher.eclipse 2 0 2013-11-26 14:31:24.582
+!MESSAGE An error occurred while loading the manifest S:\Robert\eclipse-rcp-indigo-SR2-win32-x86_64\eclipse\plugins\org.eclipse.datatools.sqltools.parsers.sql.query.source_1.2.1.v201201250505.jar.
+!STACK 0
+java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at java.util.zip.ZipFile.<init>(Unknown Source)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.basicLoadManifest(BundlesAction.java:530)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.loadManifest(BundlesAction.java:516)
+	at org.eclipse.equinox.p2.publisher.eclipse.BundlesAction.createBundleDescription(BundlesAction.java:509)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.processBundle(RepositoryListener.java:141)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.process(RepositoryListener.java:136)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.RepositoryListener.added(RepositoryListener.java:117)
+	at org.eclipse.equinox.internal.p2.extensionlocation.BundlePoolFilteredListener.added(BundlePoolFilteredListener.java:42)
+	at org.eclipse.equinox.internal.p2.extensionlocation.SiteListener.added(SiteListener.java:336)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.processFile(DirectoryWatcher.java:197)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.scanDirectories(DirectoryWatcher.java:160)
+	at org.eclipse.equinox.internal.provisional.p2.directorywatcher.DirectoryWatcher.poll(DirectoryWatcher.java:108)
+	at org.eclipse.equinox.internal.p2.extensionlocation.SiteListener.synchronizeRepositories(SiteListener.java:111)
+	at org.eclipse.equinox.internal.p2.extensionlocation.ExtensionLocationArtifactRepository.ensureInitialized(ExtensionLocationArtifactRepository.java:66)
+	at org.eclipse.equinox.internal.p2.extensionlocation.ExtensionLocationArtifactRepository.getProperties(ExtensionLocationArtifactRepository.java:259)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.addRepository(AbstractRepositoryManager.java:127)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:657)
+	at org.eclipse.equinox.internal.p2.artifact.repository.ArtifactRepositoryManager.loadRepository(ArtifactRepositoryManager.java:100)
+	at org.eclipse.equinox.internal.p2.artifact.repository.ArtifactRepositoryManager.loadRepository(ArtifactRepositoryManager.java:96)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getLoadedArtifactRepositories(ProvisioningContext.java:160)
+	at org.eclipse.equinox.p2.engine.ProvisioningContext.getArtifactRepositories(ProvisioningContext.java:143)
+	at org.eclipse.equinox.internal.p2.engine.phases.Sizing.completePhase(Sizing.java:91)
+	at org.eclipse.equinox.internal.p2.engine.Phase.postPerform(Phase.java:216)
+	at org.eclipse.equinox.internal.p2.engine.Phase.perform(Phase.java:84)
+	at org.eclipse.equinox.internal.p2.engine.PhaseSet.perform(PhaseSet.java:44)
+	at org.eclipse.equinox.internal.p2.engine.Engine.perform(Engine.java:75)
+	at org.eclipse.equinox.internal.p2.engine.Engine.perform(Engine.java:44)
+	at org.eclipse.equinox.internal.p2.ui.ProvUI.getSize(ProvUI.java:230)
+	at org.eclipse.equinox.internal.p2.ui.dialogs.SizeComputingWizardPage$1.run(SizeComputingWizardPage.java:63)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

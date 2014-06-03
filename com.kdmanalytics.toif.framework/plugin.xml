@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="com.kdmanalytics.toif.adaptor" name="TOIF Adaptor" schema="schema/com.kdmanalytics.toif.adaptor.exsd"/>
+
+</plugin>

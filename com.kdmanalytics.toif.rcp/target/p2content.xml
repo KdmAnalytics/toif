@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='com.kdmanalytics.toif.rcp' version='1.15.5'>
+    <update id='com.kdmanalytics.toif.rcp' range='[0.0.0,1.15.5)' severity='0'/>
+    <properties size='6'>
+      <property name='org.eclipse.equinox.p2.name' value='TOIF RCP Application'/>
+      <property name='org.eclipse.equinox.p2.provider' value='KDM Analytics Inc.'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+      <property name='maven-groupId' value='com.kdmanalytics.toif.compile'/>
+      <property name='maven-artifactId' value='com.kdmanalytics.toif.rcp'/>
+      <property name='maven-version' value='1.15.5'/>
+    </properties>
+    <provides size='3'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='com.kdmanalytics.toif.rcp' version='1.15.5'/>
+      <provided namespace='osgi.bundle' name='com.kdmanalytics.toif.rcp' version='1.15.5'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='10'>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='com.lexicalscope.jewelcli' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.rcp' range='3.7.2'/>
+      <required namespace='osgi.bundle' name='org.apache.xerces' range='2.11.0'/>
+      <required namespace='osgi.bundle' name='com.kdmanalytics.toif.framework' range='1.8.6'/>
+      <required namespace='osgi.bundle' name='com.google.guava' range='14.0.1'/>
+      <required namespace='osgi.bundle' name='org.apache.commons.io' range='[2.4.0,2.5.0)'/>
+      <required namespace='osgi.bundle' name='org.apache.log4j' range='1.2.15'/>
+      <required namespace='osgi.bundle' name='com.kdmanalytics.toif.facade' range='1.8.6'/>
+      <required namespace='osgi.bundle' name='net.sf.trove4j' range='3.0.3'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.rcp' version='1.15.5'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: com.kdmanalytics.toif.rcp; singleton:=true&#xA;Bundle-Version: 1.15.5&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

@@ -1,0 +1,1453 @@
+nestcomment=Other
+preproc=Other
+
+#Null Dereferences (Section 2)
+
+null=;SFP-7;CWE-476
+#A possibly null pointer may be dereferenced, or used somewhere a nonnull pointer is expected. (sets nulldref, nullpass, nullassign, and nullstate
+
+nullderef=;SFP-7;CWE-476
+#A possibly null pointer is dereferenced. Value is either the result of a function which may return null (in which case, code should check it is not null), or a global, parameter or structure field declared with the null qualifier.
+
+nullpass=;SFP-7;CWE-476
+#A possibly null pointer is passed as a parameter corresponding to a formal parameter with no /*@null@*/ annotation. If NULL may be used for this parameter, add a /*@null@*/ annotation to the function parameter declaration.
+ 
+nullret=;SFP-7;CWE-476
+#Function returns a possibly null pointer, but is not declared using /*@null@*/ annotation of result. If function may return NULL, add /*@null@*/ annotation to the return value declaration.
+ 
+nullstate=;SFP-7;CWE-476
+#A possibly null pointer is reachable from a parameter or global variable that is not declared using a /*@null@*/ annotation.
+ 
+nullassign=;SFP-4;CWE-665
+#A reference with no null annotation is assigned or initialized to NULL. Use /*@null@*/ to declare the reference as a possibly null pointer.
+
+
+#################################################################################
+
+
+
+#Use Before Definition (Section 3)
+ 
+usedef=;SFP-1;CWE-457
+#The value of a location that may not be initialized on some execution path is used.
+ 
+impouts=;SFP-1;CWE-457
+#Allow unannotated pointer parameters to functions to be implicit out parameters.
+ 
+compdef=;SFP-1;CWE-456
+#Storage derivable from a parameter, return value or global variable is not completely defined.
+ 
+uniondef=;SFP-1;CWE-456
+#No field of a union is defined.  (No error is reported if at least one union field is defined.)
+ 
+mustdefine=;SFP-1;CWE-457
+#arameter declared with out is not defined before return or scope exit.
+ 
+fullinitblock=;SFP-1;CWE-456
+#Initializer does not set every field in the structure.
+ 
+initallelements=;SFP-1;CWE-456
+#Initializer does not define all elements of a declared array.
+ 
+initsize=;SFP-1;CWE-665
+#Initializer block contains more elements than the size of a declared array
+
+
+#################################################################################
+
+
+#Declarations
+ 
+incondefs=;SFP-1;CWE-704
+#A function, variable or constant is redefined with a different type.
+ 
+functionderef=Other
+#A function type is dereferenced. The ANSI standard allows this because of implicit conversion of function designators, however the dereference is unnecessary.
+ 
+redundantsharequal=;SFP-4;CWE-665
+#A declaration of an immutable object uses a redundant observer qualifier.
+ 
+misplacedsharequal=;SFP-3
+#A declaration of an unsharable object uses a sharing annotation.
+
+
+#################################################################################
+
+
+#Types (Section 4 )
+ 
+ 
+type=;SFP-1;CWE-704
+#Type mismatch.
+ 
+stringliteraltoolong=;SFP-8;CWE-119
+#A string literal is assigned to a char array too small to hold it.
+ 
+stringliteralnoroom=;SFP-11;CWE-170
+#A string literal is assigned to a char array that is not big enough to hold the null terminator.
+ 
+stringliteralnoroomfinalnull=;SFP-11;CWE-170
+#A string literal is assigned to a char array that is not big enough to hold the final null terminator. This may not be a problem because a null character has been explictedly included in the string literal using an escape sequence.
+ 
+stringliteralsmaller=;SFP-8;CWE-119
+#A string literal is assigned to a char array that smaller than the string literal needs.
+ 
+enummembers=Risky values
+#Type of initial values for enum members must be int.
+
+
+#################################################################################
+
+
+#Boolean Types (Section 4.2 )
+#These flags control the type name used to represent Booleans, and whether the Boolean type is abstract.
+ 
+bool=Other
+#Boolean type is an abstract type.
+ 
+booltype=Other
+#Set name of Boolean type to <name>.
+ 
+boolfalse=Other
+#Set name of Boolean false to <name>.
+ 
+booltrue=Other
+#Set name of Boolean true to <name>.
+ 
+likelybool=;SFP-1
+#Splint has found a type which appears to be the boolean type. Use the booltype, boolfalse and booltrue flags to change the name of the default boolean type.
+
+
+
+#################################################################################
+
+
+
+#Predicates
+ 
+predboolptr=Other
+#Type of condition test is a pointer.
+ 
+predboolint=;SFP-1
+#Type of condition test is an integral type.
+ 
+predboolothers=;SFP-1
+#Type of condition test is not a Boolean, pointer or integral type.
+
+predbool=Other
+#Sets predboolint, predboolptr and preboolothers.
+ 
+predassign=Other
+#The condition test is an assignment expression. If an assignment is intended, add an extra parentheses nesting (e.g., if ((a = b)) ...).
+
+
+#################################################################################
+
+
+#Primitive Operations
+ 
+ptrarith=Other
+#Arithmetic involving pointer and integer.
+ 
+nullptrarith=;SFP-7;CWE-476
+#ointer arithmetic using a possibly null pointer and integer.
+ 
+boolops=;SFP-1
+#The operand of a boolean operator is not a boolean. Use +ptrnegate to allow ! to be used on pointers.
+ 
+ptrnegate=Other
+#Allow the operand of the ! operator to be a pointer.
+ 
+bitwisesigned=;SFP-1;CWE-195 
+#An operand to a bitwise operator is not an unsigned value. This may have unexpected results depending on the signed representations.
+ 
+shiftimplementation=;SFP-1
+#The left operand to a shift operator may be negative (behavior is implementationdefined).
+ 
+shiftnegative=;SFP-1
+#The right operand to a shift operator may be negative (behavior undefined).
+ 
+shiftsigned=;SFP-1
+#The left operand to a shift operator is not an unsigned value.
+ 
+strictops=;SFP-1
+#rimitive operation does not type check strictly.
+ 
+sizeoftype=;SFP-1
+#Operand of sizeof operator is a type.  (Safer to use int *x = sizeof (*x); instead of sizeof (int).)
+
+
+#################################################################################
+
+
+#Array Formal arameters
+#These flags control reporting of common errors caused by confusion about the semantics of array formal parameters.
+ 
+ 
+sizeofformalarray=;SFP-1
+#The sizeof operator is used on a parameter declared as an array.  (In many instances this has unexpected behavior, since the result is the size of a pointer to the element type, not the number of elements in the array.)
+ 
+ 
+fixedformalarray=;SFP-1
+#An array formal parameter is declared with a fixed size (e.g., int x[20]).  This is likely to be confusing, since the size is ignored.
+ 
+formalarray=;SFP-1
+#A formal parameter is declared as an array.  This is probably not a problem, but can be confusing since it is treated as a pointer. 
+
+
+#################################################################################
+
+
+#Format Codes
+ 
+formatcode=;SFP-1;CWE-686
+#Invalid format code in format string for printflike or scanflike function.
+ 
+formattype=;SFP-1;CWE-681
+#Typemismatch in parameter corresponding to format code in a printflike or scanflike function.
+ 
+formatconst=Risky Values
+#Format parameter is not known at compiletime. This can lead to security vulnerabilities because the arguments cannot be type checked.
+
+
+#################################################################################
+
+
+#Main
+ 
+maintype=Other
+#Type of main does not match expected type (function returning an int, taking no parameters or two parameters of type int and char **.)
+
+
+#################################################################################
+
+
+#Comparisons
+ 
+boolcompare=;SFP-1
+#Comparison between Boolean values.  This is dangerous since there may be multiple true values as any nonzero value is interpreted as true.
+ 
+realcompare=;SFP-1
+#Comparison involving float or double values.  This is dangerous since it may produce unexpected results because floating point representations are inexact.
+ 
+ptrcompare=;SFP-1
+#Comparison between pointer and number.
+ 
+unsignedcompare=;SFP-1
+#An unsigned value is used in a comparison with zero in a way that is either a bug or confusing.
+
+
+#################################################################################
+
+
+#Type Equivalence
+ 
+voidabstract=;SFP-1;CWE-704
+#Allow void * to match pointers to abstract types.  (Casting a pointer to an abstract type to a pointer to void is okay if +voidabstract is set.)
+ 
+castfcnptr=;SFP-1;CWE-704
+ A pointer to a function is cast to (or used as) a pointer to void (or vice versa).
+ 
+forwarddecl=;SFP-1;CWE-704
+#Forward declarations of pointers to abstract representation match abstract type.
+ 
+imptype=;SFP-1;CWE-665
+#A variable declaration has no explicit type.  The type is implicitly int.
+ 
+incompletetype=;SFP-4;CWE-665
+#A formal parameter is declared with an incomplete type (e.g., int[][]).
+ 
+charindex=;SFP-8
+#Allow char to index arrays.
+ 
+enumindex=;SFP-8
+#Allow members of enumtype to index arrays.
+ 
+boolint=Other
+#Make bool and int are equivalent.  (No type errors are reported when a Boolean is used where an integral type is expected and vice versa.)
+ 
+charint=Other
+#Make char and int types equivalent
+ 
+charunsignedchar=Other
+#To allow char and unsigned char types to match use +charunsignedchar
+ 
+enumint=Other
+#Make enum and int types equivalent
+ 
+floatdouble=Other
+#Make float and double types equivalent
+ 
+ignorequals=Other
+#Ignore type qualifiers (long, short, unsigned).
+ 
+relaxquals=Other
+#Report qualifier mismatches only if dangerous (information may be lost since a larger type is assigned to (or passed as) a smaller one or a comparison uses signed and unsigned values.)
+ 
+ignoresigns=Other
+#Ignore signs in type comparisons (unsigned matches signed).
+ 
+longintegral=Other
+#Allow long type to match an arbitrary integral type (e.g., dev_t).
+ 
+longunsignedintegral
+#Allow unsigned long type to match an arbitrary integral type (e.g., dev_t).
+ 
+matchanyintegral
+#Allow any integral type to match an arbitrary
+ 
+longunsignedunsignedintegral
+#Allow unsigned long type to match an arbitrary unsigned integral type (e.g., size_t).q
+ 
+longsignedintegral
+#Allow long type to match an arbitrary signed integral type (e.g., ssize_t).
+ 
+numliteral
+#Integer literals can be used as floats.
+ 
+charintliteral
+#A character constant may be used as an int.
+ 
+zeroptr
+#Literal 0 may be used as a pointer.
+ 
+zerobool
+#Treat 0 as a boolean.
+ 
+relaxtypes
+#Allow all numeric types to match.
+ 
+shortint
+#Make short int and int types equivalent.
+
+
+#################################################################################
+
+
+#Abstract Types (Section 4.3 )
+ 
+abstract
+#A data abstraction barrier is violated
+ 
+impabstract
+#Implicit abstract annotation for type declarations that do not use concrete.
+ 
+mutrep
+#Representation of mutable type has sharing semantics.
+
+
+#################################################################################
+
+
+#Access (Section 4.3.1)
+ 
+accessmodule
+#An abstract type defined in M.h (or specified in M.lcl) is accessible in M.c.
+ 
+accessfile
+#An abstract type named type is accessible in files named type.*
+ 
+accessczech
+#An abstract type named type may be accessible in a function named type_name. (Section 12.1.1)
+ 
+accessslovak
+#An abstract type named type may be accessible in a function named typeName.  (Section.12.1.2)
+ 
+accessczechoslovak
+#An abstract type named type may be accessible in a function named type_name or typeName.  (Section 12.1.3)
+
+accessall
+#Sets accessmodule, accessfile and accessczech.
+
+
+#################################################################################
+
+
+#Memory Management (Section 5 )
+#Reporting of Memory Management errors is controlled by flags setting checking and implicit annotations and code annotations. 
+
+
+#################################################################################
+
+
+#Deallocation Errors (Section 5.2)
+ 
+usereleased=;SFP-15;CWE-416
+#Storage used after it may have been released.
+ 
+strictusereleased
+#An array element used after it may have been released.
+
+
+#################################################################################
+
+
+#Inconsistent Branches
+ 
+branchstate=Other
+#Storage has inconsistent states of alternate paths through a branch (e.g., it is released in the true branch of an ifstatement, but there is no else branch.)
+ 
+strictbranchstate=Other
+#Storage through array fetch has inconsistent states of alternate paths through a branch.  Since array elements are not checked accurately, this may lead to spurious errors.
+ 
+deparrays
+#Treat array elements as dependent storage.  Checking of array elements cannot be done accurately by Splint.  If deparrays is not set, array elements are assumed to be independent, so code that releases the same element more than once will produce no error.  If deparrays is set, array elements are assumed to be dependent, so code that releases the same element more that once will produce an error, but code that releases different elements correctly will produce a spurious error.
+
+
+#################################################################################
+
+
+
+#Memory Leaks
+ 
+mustfree=;SFP-14;CWE-401
+#Allocated storage was not released before return or scope exit.  Errors are reported for only, fresh or owned storage.
+ 
+mustfreefresh=;SFP-14;CWE-401
+#Allocated storage was not released before return or scope exit. Errors are reported for fresh storage
+ 
+mustfreeonly=;SFP-14;CWE-401
+#Allocated storage was not released before return or scope exit. Errors are reported for only storage
+
+memchecks
+#Sets all dynamic memory checking flags (memimplicit, mustfree, mustdefine, mustnotalias, null, memtrans ).
+ 
+compdestroy=;SFP-14;CWE-401
+#All only references derivable from out only parameter of type void * must be released.  (This is the type of the parameter to free, but may also be used for userdefined deallocation functions.)
+ 
+strictdestroy
+#Report complete destruction errors for array elements that may have been released.  (If strictdestroy is not set, Splint will assume that if any array element was released, the entire array was correctly released.)
+
+
+#################################################################################
+
+
+
+#Transfer Errors
+#A transfer error is reported when storage is transferred (by an assignment, passing a parameter, or returning) in a way that is inconsistent.
+
+memtrans
+#Sets all memory transfer errors flags.
+ 
+onlytrans=;SFP-14;CWE-401
+#Only storage transferred to nononly reference (memory leak).
+ 
+ownedtrans=;SFP-14;CWE-401
+#Owned storage transferred to nonowned reference (memory leak).
+ 
+freshtrans=;SFP-14;CWE-401
+#Newlyallocated storage transferred to nononly reference (memory leak).
+ 
+sharedtrans=;SFP-12;CWE-762
+#Shared storage transferred to nonshared reference
+ 
+dependenttrans=Memory Management
+#Inconsistent dependent transfer. Dependent storage is transferred to a nondependent reference.
+ 
+temptrans=Memory Management
+#Temporary storage (associated with a temp formal parameter) is transferred to a nontemporary reference.  The storage may be released or new aliases created.
+ 
+kepttrans=Memory Management
+#Kept storage (storage what was passed as keep) transferred to nontemporary reference.
+ 
+keeptrans=;SFP-12;CWE-762
+#Keep storage is transferred in a way that may add a new alias to it, or release it.
+ 
+refcounttrans=;SFP-12;CWE-762
+#Reference counted storage is transferred in an inconsistent way.
+ 
+newreftrans=;SFP-12;CWE-762
+#A new reference transferred to a reference counted reference (reference count is not set correctly).
+ 
+immediatetrans=;SFP-1;CWE-587
+#An immediate address (result of &) is transferred inconsistently.
+ 
+statictrans=Memory Management
+#Static storage is transferred in an inconsistent way.
+ 
+exposetrans=;SFP-12;CWE-762
+#Inconsistent exposure transfer. Exposed storage is transferred to a nonexposed, nonobserver reference.
+ 
+observertrans=Memory Management
+#Inconsistent observer transfer. Observer storage is transferred to a nonobserver reference.
+ 
+unqualifiedtrans=Memory Management
+#Unqualified storage is transferred in an inconsistent way.
+
+#Initializers
+ 
+onlyunqglobaltrans
+#Only storage transferred to an unqualified global or static reference. This may lead to a memory leak, since the new reference is not necessarily released.
+ 
+staticinittrans
+#Static storage is used as an initial value in an inconsistent way.
+ 
+unqualifiedinittrans
+#Unqualified storage is used as an initial value in an inconsistent way.
+#Derived Storage
+ 
+compmempass=;SFP-14;CWE-404
+#Storage derivable from a parameter does not match the alias kind expected for the formal parameter.
+#Stack References
+ 
+stackref
+#A stack reference is pointed to by an external reference when the function returns.  Since the call frame will be destroyed when the function returns the return value will point to dead storage. (Section 5.2.6)
+
+
+#################################################################################
+
+
+#Implicit Memory Annotations (Section 5.3 )
+
+allimponly
+#Sets globimponly, retimponly, structimponly, specglobimponly, specretimponly and specstructimponly .
+ 
+globimponly
+#Assume unannotated global storage is only.
+ 
+paramimptemp
+#Assume unannotated parameter is temp.
+ 
+retimponly
+#Assume unannotated returned storage is only.
+ 
+structimponly
+#Assume unannotated structure or union field is only.
+
+codeimponly
+#Sets globimponly, retimponly and structimponly.
+ 
+memimp
+#Report memory errors for unqualified storage.
+ 
+passunknown
+#assing a value as an unannotated parameter clears its annotation.  This will prevent many spurious errors from being report for unannotated programs, but eliminates the possibility of detecting many errors.
+
+#################################################################################
+
+
+#Sharing (Section 6)
+
+#################################################################################
+
+
+#Aliasing (Section 6.1 )
+ 
+aliasunique=;SFP-4;CWE-665
+#An actual parameter that is passed as a unique formal parameter is aliased by another parameter or global variable.
+ 
+mayaliasunique=Other
+#An actual parameter that is passed as a unique formal parameter may be aliased by another parameter or global variable.
+ 
+mustnotalias
+#An alias has been added to a tempqualifier parameter or global that is visible externally when the function returns. 
+ 
+retalias
+#A function returns an alias to parameter or global.
+
+#################################################################################
+
+
+#Exposure (Section 6.2 )
+
+repexpose
+#The internal representation of an abstract type is visible to the caller.  This means clients may have access to a pointer into the abstract representation.  (Sets assignexpose, retexpose, and castexpose.)
+ 
+assignexpose
+#Abstract representation is exposed by an assignment or passed parameter.
+ 
+castexpose
+#Abstract representation is exposed through a cast.
+ 
+retexpose
+#Abstract representation is exposed by a return value.
+#Observer Modifications
+ 
+modobserver=Other
+#ossible modification of observer storage.
+ 
+modobserveruncon
+#Storage declared with observer may be modified through a call to an unconstrained function.
+#String Literals (Section 6.2.1)
+ 
+readonlytrans
+#Report memory transfer errors for initializations to readonly string literals
+ 
+readonlystrings
+#String literals are readonly (ISO semantics).  An error is reported if a string literal may be modified or released.
+
+#################################################################################
+
+
+#Function Interfaces (Section 7 )
+
+
+#################################################################################
+
+
+
+#Modification (Section 7.1)
+ 
+modifies
+#Undocumented modification of callervisible state.  Without +moduncon, modification errors are only reported in the definitions of functions declared with a modifies clause (or specified).
+ 
+mustmod
+#Documented modification is not detected.  An object listed in the modifies clause for a function, is not modified by the implementation.
+
+moduncon
+#Report modification errors in functions declared without a modifies clause.(Sets modnomods, modglobsnomods and modstrictglobsnomods.)
+ 
+modnomods
+#Report modification errors (not involving global variables) in functions declared without a modifies clause.
+ 
+modunconnomods
+#An unconstrained function is called in a function body where modifications are checked.  Since the unconstrained function may modify anything, there may be undetected modifications in the checked function.
+ 
+modinternalstrict
+#A function that modifies internalState is called from a function that does not list internalState in its modifies clause.
+ 
+modfilesys
+#A function modifies the file system but does not list fileSystem in its modifies clause.
+
+#################################################################################
+
+
+#Global Variables (Section 7.2 )
+#Errors involving the use and modification of global and file static variables are reported depending on flag settings, annotations where the global variable is declared, and whether or not the function where the global is used was declared with a globals clause.
+ 
+globs
+#Undocumented use of a checked global variable in a function with a globals list.
+ 
+globuse
+#A global listed in the globals list is not used in the implementation.
+ 
+globnoglobs
+#Use of a checked global in a function with no globals list.
+ 
+internalglobs
+#Undocumented use of internal state (should have globals internalState).
+ 
+internalglobsnoglobs
+#Use of internal state in function with no globals list.
+ 
+globstate=;SFP-15;CWE-416
+#A function returns with global in inconsistent state (null or undefined)
+ 
+allglobs
+#Report use and modification errors for globals not annotated with unchecked.
+ 
+checkstrictglobs
+#Report use and modification errors for checkedstrict globals.
+
+#Modification of Global Variables
+ 
+modglobs
+#Undocumented modification of a checked global variable.
+ 
+modglobsunchecked
+#Undocumented modification of an unchecked global variable.
+ 
+modglobsnomods
+#Undocumented modification of a checked global variable in a function with no modifies clause.
+ 
+modstrictglobsnomods
+#Undocumented modification of a checkedstrict global variable in a function declared with no modifies clause.
+#Globals Lists and Modifies Clauses
+ 
+warnmissingglobs
+#Global variable used in modifies clause is not listed in globals list.  (The global is added to the globals list.)
+ 
+warnmissingglobsnoglobs
+#Global variable used in modifies clause of a function with no globals list.
+ 
+globsimpmodsnothing
+#A function declared with a globals list but no modifies clause is assumed to modify nothing.
+ 
+modsimpnoglobs
+#A function declared with a modifies clause but no globals list is assumed to use no globals.
+#Implicit Checking Annotations
+ 
+impcheckedglobs
+#Implicit checked annotation on global variables with no checking annotation.
+ 
+impcheckedstatics
+#Implicit checked qualifier file static scope variables with no checking annotation.
+ 
+impcheckmodglobs
+#Implicit checkmod qualifier on global variables with no checking annotation.
+ 
+ 
+impcheckmodstatics
+#Implicit checkmod qualifier file static scope variables with no checking annotation.
+ 
+impcheckedstrictglobs
+#Implicit checked qualifier on global variables with no checking annotation.
+ 
+impcheckedstrictstatics
+#Implicit checked qualifier file static scope variables with no checking annotation.
+ 
+impcheckmodinternals
+#Implicit checkmod qualifier on function scope static variables with no checking annotation.
+ 
+ 
+#Global Aliasing
+
+globalias
+#Function returns with global aliasing external state (sets checkstrictglobalias, checkedglobalias, checkmodglobalias and uncheckedglobalias).
+ 
+checkstrictglobalias
+#Function returns with a checkedstrict global aliasing external state.
+ 
+checkedglobalias
+#Function returns with a checked global aliasing external state.
+ 
+checkmodglobalias
+#Function returns with a checkmod global aliasing external state.
+ 
+uncheckedglobalias
+#Function returns with an unchecked global aliasing external state.
+
+#################################################################################
+
+
+#Declaration Consistency (Section 7.3)
+ 
+incondefs
+#Identifier redeclared or redefined with inconsistent type.
+ 
+incondefslib
+#Identifier defined in a library is redefined with inconsistent type.
+ 
+overload
+#Standard library function overloaded.
+ 
+matchfields
+#A struct or enum type is redefined with inconsistent fields or members.
+
+
+#################################################################################
+
+
+#Macros (Section 11 )
+#These flags control expansion and checking of macro definitions and invocations.
+
+
+#################################################################################
+
+
+
+#Macro Expansion
+#These flags control which macros are checked as functions or constants, and which are expanded in the preprocessing phase.  Macros preceded by /*@notfunction@*/ are never expanded regardless of these flag settings.  These flags may be used in sourcefile control comments.
+
+ 
+fcnmacros
+#Macros defined with parameter lists are not expanded and are checked as functions.
+ 
+constmacros
+#Macros defined without parameter lists are not expanded and are checked as constants.
+
+allmacros
+#Sets fcnmacros and constmacros.
+ 
+libmacros
+#Macros defining identifiers declared in a loaded library are not expanded and are checked according to the library information. 
+
+
+#################################################################################
+
+
+#Macro Definitions
+#These flags control what errors are reported in macro definitions.
+
+ 
+macrostmt
+#Macro definition is not syntactically equivalent to function.  This means if the macro is used as a statement (e.g., if (test) macro();) unexpected behavior may result.  One fix is to surround the macro body with do { … } while (FALSE).
+ 
+macroreturn
+#The body of a macro declared as a function uses a return statement. This exhibits behavior that could not be implemented by a function.
+ 
+macroassign
+#A macro parameter is used as the left side of an assignment expression.
+ 
+macroparams=;SFP-2;CWE-563
+ 
+macroparens=Other
+#A macro parameter is used without parentheses (in potentially dangerous context).
+ 
+macroempty
+#Macro definition of a function is empty.  
+ 
+macroredef
+#Macro is redefined.  There is another macro defined with the same name.
+ 
+macrounrecog 
+#An unrecognized identifier appears in a macro definition.  Since the identifier may be defined where the macro is used, this could be okay, but Splint will not be able to check the unrecognized identifier appropriately.
+#Corresponding Declarations
+ 
+macromatchname
+#An iter or constant macro is defined using a different name from the one used in the previous syntactic comment
+
+macrodecl
+#A macro definition has no corresponding declaration.  (Sets macrofcndecl and macroconstdecl.)
+ 
+macrofcndecl
+#Macro definition with parameter list has no corresponding function prototype. Without a prototype, the types of the macro result and parameters are unknown.
+ 
+macroconstdecl
+#A macro definition without parameter list has no corresponding constant declaration.   
+ 
+nextlinemacros
+#A constant or iter declaration is not immediately followed by a macro definition.
+
+#################################################################################
+
+
+#Side Effect Free arameters (Section 11.2.1 )
+#These flags control error reporting for parameters with inconsistent side effects in invocations of checked function macros and function calls.
+
+ 
+sefparams
+#An actual parameter with side effects is passed as a formal parameter declared with sef.
+ 
+sefuncon
+#An actual parameter involving a call to an unconstrained function (declared without modifies clause) that may modify anything is passed as a sef parameter.
+
+
+#################################################################################
+
+
+
+#Iterators
+ 
+iterbalance
+#Iter is not balanced with end <iter>.
+ 
+iteryield
+#Iter yield parameter is inappropriate.
+ 
+hasyield
+#An iterator has been declared with no parameters annotated with yield.
+
+#################################################################################
+
+
+#Naming Conventions (Section 12)
+ 
+namechecks
+#Turns all name checking on or off without changing other settings.
+
+#################################################################################
+
+
+#TypeBased Naming Conventions (Section 12.1)
+#Czech Naming Convention
+
+czech
+#Selects complete Czech naming convention (sets accessczech, czechfcns, czechvars, czechconsts, czechmacros, and czechtypes).
+ 
+accessczech
+#Allow access to abstract types following Czech naming convention.  The representation of an abstract type named t is accessible in the definition of a function or constant named t_name.
+ 
+czechfcns
+#Function or iterator name is not consistent with Czech naming convention.
+ 
+czechvars
+ Variable name is not consistent with Czech naming convention.
+ 
+czechmacros
+ Expanded macro name is not consistent with Czech naming convention.
+ 
+czechconsts
+#Constant name is not consistent with Czech naming convention.
+ 
+czechtypes
+#Type name is not consistent with Czech naming convention.  Czech type names must not use the underscore character.
+#Slovak Naming Convention
+
+slovak
+#Selects complete Slovak naming convention (sets accessslovak, slovakfcns, slovakvars, slovakconsts, slovakmacros, and slovaktypes).
+ 
+accessslovak
+#Allow access to abstract types following Slovak naming convention. The representation of an abstract type named t is accessible in the definition of a function or constant named tName.
+ 
+slovakfcns
+#Function or iterator name is not consistent with Slovak naming convention.
+ 
+slovakmacros
+#Expanded macro name is not consistent with Slovak naming convention.
+ 
+slovakvars
+ Variable name is not consistent with Slovak naming convention.
+ 
+slovakconsts
+ Constant name is not consistent with Slovak naming convention.
+ 
+slovaktypes
+#Type name is not consistent with Slovak naming convention.  Slovak type names may not include uppercase letters.
+#Czechoslovak Naming Convention
+
+czechoslovak
+#Selects complete Czechoslovak naming convention (sets accessczechoslovak, czechoslovakfcns, czechoslovakvars, czechoslovakconsts, czechoslovakmacros, and czechoslovaktypes).
+ 
+accessczechoslovak
+#Allow access to abstract types by Czechoslovak naming convention. The representation of an abstract type named t is accessible in the definition of a function or constant named t_name or tName.
+ 
+czechoslovakfcns
+ Function name is not consistent with Czechoslovak naming convention.
+ 
+czechoslovakmacros
+#Expanded macro name is not consistent with Czechoslovak naming convention.
+ 
+czechoslovakvars
+#Variable name is not consistent with Czechoslovak naming convention.
+ 
+czechoslovakconsts
+#Constant name is not consistent with Czechoslovak naming convention.
+ 
+czechoslovaktypes
+#Type name is not consistent with Czechoslovak naming convention. Czechoslovak type names may not include uppercase letters or the underscore character.
+
+#################################################################################
+
+
+#Namespace refixes (Section 12.2)
+#macrovarprefix <prefix string>
+#Set namespace prefix for variables declared in a macro body.  (Default is m_.)
+ 
+macrovarprefixexclude=Other
+#A variable declared outside a macro body starts with the macrovarprefix.
+#tagprefix <prefix string>
+#Set namespace prefix of struct, union or enum tag identifiers.
+ 
+tagprefixexclude
+#An identifier that is not a tag starts with the tagprefix.
+#enumprefix <prefix string>
+#Set namespace prefix for enum members.
+ 
+enumprefixexclude
+#An identifier that is not an enum member starts with the enumprefix.
+#filestaticprefix  <prefix string>
+#Set namespace prefix for file static declarations.
+ 
+filestaticprefixexclude
+#An identifier that is not file static starts with the filestaticprefix.
+#globalprefix <prefix string>
+#Set namespace prefix for global variables.
+ 
+globalprefixexclude
+#An identifier that is not a global variable starts with the globalprefix.
+#typeprefix <prefix string>
+#Set namespace prefix for userdefined types.
+ 
+typeprefixexclude
+#An identifier that is not a type name starts with the typeprefix.
+#externalprefix <prefix string>
+#Set namespace prefix for external identifiers.
+ 
+externalprefixexclude
+#An identifier that is not external starts with the externalprefix.
+
+#localprefix <prefix string>
+#Set namespace prefix for local variables.
+ 
+localprefixexclude
+#An identifier that is not a local variable starts with the localprefix.
+
+#uncheckedmacroprefix  <prefix string>
+#Set namespace prefix for unchecked macros.
+ 
+uncheckedmacroprefixexclude
+#An identifier that is not the name of an unchecked macro starts with the uncheckedmacroprefix.
+#constprefix <prefix string>
+#Set namespace prefix for constants.
+ 
+constprefixexclude
+#An identifier that is not a constant starts with the constantprefix.
+#iterprefix <prefix string>
+#Set namespace prefix for iterators.
+ 
+iterprefixexclude
+#An identifier that is not an iter starts with the iterprefix.
+#protoparamprefix  <prefix string>
+#Set namespace prefix for parameters in function prototypes.
+ 
+protoparamprefixexclude
+#An identifier that is not a parameter in a function prototype starts with the protoprarmprefix.
+ 
+protoparamname
+#A parameter in a function prototype has a name (can interfere with macro definitions).
+ 
+protoparammatch
+#The name of a parameter in a function definition does not match the corresponding name of the parameter in a function prototype (after removing the protoparamprefix).
+
+
+#################################################################################
+
+
+#Naming Restrictions (Section 12.3)
+ 
+shadow=Other
+#Declaration reuses name visible in outer scope.
+#Reserved Names
+ 
+ansireserved
+#External name conflicts with name reserved for the compiler or standard library.
+ 
+ansireservedinternal
+ Internal name conflicts with name reserved for the compiler or standard library.
+ 
+isoreserved
+#External name is reserved for system use by ISO C99 standard.
+ 
+isoreservedinternal
+#Internal name is reserved for system in ISO C99 standard (this should not be necessary unless you are worried about C library implementations that violate the standard and use macros).
+ 
+cppnames
+#Internal or external name conflicts with a C++ reserved word.  (Will cause problems if program is compiled with a C++ compiler.)
+#Distinct External Names
+ 
+distinctexternalnames
+#An external name is not distinguishable from another external name using externalnamelen significant characters.
+ 
+externalnamelen  <number>
+#Sets the number of significant characters in an external name (ANSI default minimum is 6).  Sets +distinctexternalnames.
+ 
+externalnamecaseinsensitive
+#Make alphabetic case insignificant in external names.  According to ANSI standard, case need not be significant in an external name.  If +distinctexternalnames is not set, sets +distinctexternalnames with unlimited external name length.
+#Distinct Internal Names
+ 
+distinctinternalnames
+#An internal name is not distinguishable from another internal name using internalnamelen significant characters.   (Also effected by internalnamecaseinsensitive and internalnamelookalike.)
+ 
+internalnamelen  <number>
+#Set the number of significant characters in an internal name. Sets +distinctinternalnames.
+ 
+internalnamecaseinsensitive
+#Set whether case is significant an internal names (internalnamecaseinsensitive means case is significant).  If +distinctinternalnames is not set, sets +distinctinternalnames with unlimited internal name length.
+ 
+internalnamelookalike
+ Set whether similar looking characters (e.g., “1” and “l”) match in internal names.
+
+#################################################################################
+
+
+#Control Flow (Section 8)
+
+#################################################################################
+
+
+#Undefined Evaluation Order (Section 8.2 )
+ 
+evalorder=;SFP-1
+#Behavior of an expression is unspecified or implementationdependent because subexpressions contain interfering side effects that may be evaluated in any order.
+ 
+evalorderuncon
+#An expression may be undefined because a subexpression contains a call to an unconstrained function (no modifies clause) that may modify something that may be modified or used by another subexpression.
+
+#################################################################################
+
+
+#roblematic Control Structures (Section 8.3 )
+ 
+infloops
+#Likely infinite loop is detected (Section 8.3.1).
+ 
+infloopsuncon
+#Likely infinite loop is detected.  Loop test or body calls an unconstrained function that may produce an undetected modification.
+ 
+elseifcomplete
+#There is no finals else following an else if construct (Section 8.3.5).
+ 
+casebreak=;SFP-4;CWE-484
+#There is a nonempty case in a switch not followed by a break(Section 8.3.2 ).
+ 
+firstcase
+#The first statement after a switch is not a case.
+ 
+#Duplicatecase
+#Duplicate cases in switch.
+ 
+misscase
+#A switch on an enum type is missing a case for a member of the enumerator.
+#+
+emptyreturn
+#Empty return in function declared to return value.
+#+
+alwaysexits
+#Loop predicate always exits.
+
+loopexec
+#Assume all loops execute at least once.  This effects usebeforedefinition and memory checking.  It should probably not be used globally, but may be used surrounding a particular loop that is known to always execute to prevent spurious messages. (sets forloopexec, whileloopexec and iterloopexec
+#
+forloopexec
+#Assume all for loops execute at least once. This effects usebeforedefinition and memory checking. It should probably not be used globally, but may be used surrounding a particular loop that is known to always execute to prevent spurious messages.
+#
+whileloopexec
+#Assume all while loops execute at least once. This effects usebeforedefinition and memory checking. It should probably not be used globally, but may be used surrounding a particular loop that is known to always execute to prevent spurious messages.
+#
+iterloopexec
+#Assume all iter loops execute at least once. This effects usebeforedefinition and memory checking. It should probably not be used globally, but may be used surrounding a particular loop that is known to always execute to prevent spurious messages.
+#+
+obviousloopexec
+#Assume loop that can be determined to always execute always does.
+
+#################################################################################
+
+
+#Deep Break (Section 8.3.3 )
+
+deepbreak
+#Report errors for break statements inside a nested while, for or switch.  (Sets all nested break and continue flags.)
+ 
+looploopbreak
+#There is a break inside a while, for or iterator loop that is inside a while, for or iterator loop. Mark with /*@innerbreak@*/ to suppress the message.
+ 
+switchloopbreak
+#There is abreak inside a while, for or iterator loop that is inside a switch statement.  Mark with /*@loopbreak@*/.
+ 
+loopswitchbreak
+#There is abreak inside a switch statement that is inside a while, for or iterator loop.  Mark with /*@switchbreak@*/.
+ 
+switchswitchbreak
+#There is abreak inside a switch statement that is inside another switch statement.  Mark with /*@innerbreak@*/.
+ 
+looploopcontinue
+#There is a continue inside a while, for or iterator loop that is inside a while, for or iterator loop.  Mark with /*@innercontinue@*/.
+
+#################################################################################
+
+
+#Loop and if Bodies (Section 8.3.4)
+
+allempty
+#An if, while or for statement has no body (sets ifempty, whileempty and forempty.)
+
+allblock
+#The body of an if, while or for statement is not a block (sets ifblock, whileblock and forblock.)
+ 
+whileempty
+#A while statement has no body.
+ 
+whileblock
+#The body of a while statement is not a block
+ 
+forempty
+#A for statement has no body.
+ 
+forblock
+#The body of a for statement is not a block.
+ 
+ifempty=Other
+#An if statement has no body.
+ 
+ifblock
+#The body of an if statement is not a block.
+
+#################################################################################
+
+
+#Suspicious Statements (Section 8.4)
+ 
+unreachable=;SFP-2;CWE-561
+#Code is not reached on any possible execution.
+ 
+noeffect=;SFP-1
+#Statement has no effect.
+ 
+noeffectuncon
+#Statement involving call to unconstrained function may have no effect.
+ 
+noret=Other
+#There is a path with no return in a function declared to return a nonvoid value.
+
+#################################################################################
+
+
+
+#Ignored Return Values (Section 8.4.2 )
+#These flags control when errors are reported for function calls that do not use the return value.  Casting the function call to void or declaring the called function to return /*@alt void@*/.
+
+ 
+retvalbool
+#Return value of type bool ignored.
+ 
+retvalint=;SFP-4;CWE-252
+#Return value of type int ignored.
+ 
+retvalother=;SFP-4;CWE-252
+#Return value of type other than bool or int ignored.
+
+retval
+#Return value ignored (Sets retvalbool, retvalint, retvalother.)
+
+#################################################################################
+
+
+#Memory Bounds (Section 9)
+
+bounds
+#Memory read or write may be out of bounds of allocated storage (sets boundsread and boundswrite
+ 
+boundsread
+#A memory read references memory beyond the allocated storage (also sets likelyboundsread.
+ 
+boundswrite
+#A memory write may write to an address beyond the allocated buffer (also sets likelyboundswrite.
+
+likelybounds
+#Likely memory read or write is likely to be out of bounds of allocated storage (sets likelyboundsread and likelyboundswrite)
+ 
+likelyboundsread
+#A likely memory read references memory beyond the allocated storage (also sets likelyboundsread.
+ 
+likelyboundswrite
+#A memory write is likely to write to an address beyond the allocated buffer.
+ 
+fcnpost
+#Display function post conditions.
+ 
+redundantconstraints
+#Display seemingly redundant conditions.
+ 
+checkpost
+#The functions implementation may not satidfy a post condition given in an ensures clause.
+#
+showconstraintparens
+#Display parentheses around constraint terms.
+#+
+showconstraintlocation
+#Display location for every constraint generated.
+
+#The following flags are mainly of interest to Splint developers. The default values are adequate in normal use. They are included for completeness.
+
+debugfcnconstraint
+#erform buffer overflow checking even if the errors would be inhibited.
+#
+implictconstraints
+#Generate implicit constraints for functions.  This is an experimental option.  Currently this option reduces the number of bounds errors but causes real error to be missed.
+#
+orconstraint
+#This flags affects the internal constraint resolution.  If set, the internal constraint resolution is more accurate.  The performance impact is minimal so there is little reason not to have this flag set.
+
+#################################################################################
+
+
+#Extensible Checking (Section 13 )
+
+mts <filename>
+#Load meta state declaration and corresponding xh file.
+ 
+statetransfer
+#Transfer violates userdefined state rules.
+ 
+statemerge
+#Control path merge violates userdefined state merge rules.
+
+#################################################################################
+
+#Completeness (Section 13 )
+
+#################################################################################
+#Unused Declarations (Section 13.1 )
+#These flags control when errors are reported for declarations that are never used.  The unused annotation can be used to prevent unused errors from being report for a particular declaration.
+
+ 
+topuse=;SFP-2;CWE-563
+#An external declaration is not used in any file.
+ 
+constuse=;SFP-2;CWE-563
+#Constant never used.
+ 
+enummemuse=;SFP-2;CWE-563
+#Member of enumerator never used.
+ 
+varuse=;SFP-2;CWE-563
+#Variable never used.
+ 
+paramuse=SFP-2
+#Function parameter never used.
+ 
+fcnuse=;SFP-2;CWE-561
+#Function is never used.
+ 
+typeuse=;SFP-2;CWE-563
+#Defined type never used.
+ 
+fielduse=;SFP-2;CWE-563
+#Field of structure or union type is never used.
+ 
+unusedspecial
+#Declaration in a special file (corresponding to .l or .y file) is unused.
+
+#################################################################################
+
+#Complete rograms (Section 13.2)
+ 
+declundef
+#Function, variable, iterator or constant declared but never defined.
+
+partial
+#Check as partial system (sets declundef, exportlocal and prevents checking of macros in headers without corresponding .c files.)
+
+
+#################################################################################
+
+
+#Exports
+ 
+exportlocal=;SFP-2;CWE-561
+#A declaration is exported but not used outside this module.  (Declaration can use the static qualifier.)
+ 
+exportheader
+#A declaration (other than a variable) is exported but does not appear in a header file.
+ 
+exportheadervar
+#A variable declaration is exported but does not appear in a header file.
+
+
+#################################################################################
+
+#Unrecognized Identifiers
+ 
+unrecog=;SFP-1;CWE-456
+#An unrecognized identifier is used.
+ 
+sysunrecog=;SFP-4;CWE-665
+#Report unrecognized identifiers that start with the system prefix, __ (two underscores).
+ 
+repeatunrecog=;SFP-4;CWE-665
+#Report multiple messages for unrecognized identifiers.  If repeatunrecog is not set, an error is reported only the first time a particular unrecognized identifier appears in the file.
+
+
+#################################################################################
+
+#Multiple Definition and Declarations
+ 
+redef=;SFP-4;CWE-665
+#A function or variable is defined more than once.
+ 
+redecl=;SFP-4;CWE-665
+#An identifier is declared more than once.
+ 
+nestedextern=;SFP-1;CWE-465
+#An extern declaration is used inside a function body.
+
+
+#################################################################################
+
+#ISO Conformance
+ 
+noparams
+#A function is declared without a parameter list prototype.
+ 
+oldstyle
+#Function definition is in old style syntax.  Standard prototype syntax is preferred.
+ 
+exitarg=Risky values
+#Argument to exit has implementation defined behavior.  The only valid arguments to exit are EXIT_SUCCESS, EXIT_FAILURE and 0.  An error is reported if Splint can determine statically that the argument to exit is not one of these.
+ 
+usevarargs=Other
+#Report if <varargs.h> is used (should use stdarg.h).
+
+#################################################################################
+
+#Warn use
+
+bufferoverflow
+#Use of function that may lead to buffer overflow.
+
+bufferoverflowhigh=;SFP-8;CWE-120
+#Use of function that may lead to buffer overflow.
+
+implementationoptional
+#Use of a declarator that is implementation optional, not required by ISO99.
+
+multithreaded
+#Nonreentrant function should not be used in multithreaded code.
+
+portability
+#Use of function that may have implementationdependent behavior.
+
+superuser
+#Call to function restricted to superusers.
+
+toctou
+#Possible time of check, time of use vulnerability.
+
+unixstandard
+#Use of function that need not be provided by UNIX implementations
+
+#################################################################################
+
+#Header Inclusion (Section 14.3 )
+
+skipansiheaders
+#Prevent inclusion of header files in a system directory with names that match standard ANSI headers. The symbolic information in the standard library is used instead.  Flag in effect only if a library that includes the standard library is used.  The ANSI headers are: assert, ctype, errno, float, limits, locale, math, setjmp, signal, stdarg, stddef, stdio, stdlib, strings, string, time, and wchar.
+
+skipisoheaders
+#Prevent inclusion of header files in a system directory with names that match standard ISO C99 headers. The symbolic information in the standard library is used instead.  In effect only if a library that includes the standard library is used.  The ISO C99 headers are: assert, complex, ctype, errno, fenv, float, inttypes, iso646, limits, locale, math, setjmp, signal, stdarg, stdbool, stddef, stdio, stdlib, string, tgmath, time, wchar, and wctype.
+
+skipposixheaders
+#Prevent inclusion of header files in a system directory with names that match standard POSIX headers. The symbolic information in the standard library is used instead.  In effect only if a library that includes the POSIX library is used.  The skipped POSIX headers are: dirent, fcntl, grp, pwd, termios, sys/stat, sys/times, sys/types, sys/utsname, sys/wait, unistd, and utime.
+
+warnposixheaders=Other
+#Report use of a POSIX header when checking a program with a nonPOSIX library.
+ 
+warnunixheaders
+#Warn the user that the unix library may not be compatible with all platforms.
+
+skipsysheaders
+#Prevent inclusion of all header files in system directories.
+
+sysdirexpandmacros
+#Expand macros in system directories regardless of other settings, except for macros corresponding to names defined in a load library.
+
+sysdirerrors
+#Report errors in files in system directories (set by sysdirs).  
+ 
+warnsysfiles
+#Warn when a system file was listed as a command line file but Splint is not set to report errors for system files. This prevents accidentally missing warnings in system files when Splint is run in a system directory.
+
+singleinclude
+#Optimize header inclusion to only include each header file once.
+
+neverinclude
+#Use library information instead of including header files.
+
+caseinsensitivefilenames
+#File names are case insensitive (file.h and FILE.H are the same file).
+
+
+
+#Comments
+#These flags control how syntactic comments are interpreted.
+
+#commentchar <char>
+#Set the marker character for syntactic comments.  Comments beginning with /*<char> are interpreted by Splint.
+
+noaccess
+#Ignore access comments.
+
+nocomments
+#Ignore all stylized comments.
+
+supcounts
+#Actual number of errors does not match number in /*@i<n>@*/
+
+lintcomments
+#Interpret traditional lint comments (/*FALLTHROUGH*/, /*NOTREACHED*/, /*PRINTFLIKE*/).
+
+warnlintcomments=Other
+#Print a warning and suggest an alternative when a traditional lint comment is used.   
+
+unrecogcomments=Other
+#Stylized comment is unrecognized.
+
+unrecogflagcomments
+#Semantic comment attempts to set a flag that is not recognized.
+
+annotationerror
+#A declaration uses an invalid annotation.
+
+commenterror
+#A syntactic comment is used inconsistently.

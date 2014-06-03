@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='1'>
+  <unit id='com.kdmanalytics.toif.jlint' version='1.15.5'>
+    <update id='com.kdmanalytics.toif.jlint' range='[0.0.0,1.15.5)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='TOIF Jlint'/>
+      <property name='org.eclipse.equinox.p2.provider' value='KDM Analytics Inc.'/>
+      <property name='maven-groupId' value='com.kdmanalytics.toif.compile'/>
+      <property name='maven-artifactId' value='com.kdmanalytics.toif.jlint'/>
+      <property name='maven-version' value='1.15.5'/>
+    </properties>
+    <provides size='4'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='com.kdmanalytics.toif.jlint' version='1.15.5'/>
+      <provided namespace='osgi.bundle' name='com.kdmanalytics.toif.jlint' version='1.15.5'/>
+      <provided namespace='java.package' name='com.kdmanalytics.toif.adaptor' version='0.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='4'>
+      <required namespace='osgi.bundle' name='com.kdmanalytics.toif.framework' range='[1.15.0,2.0.0)'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.apache.log4j' range='[1.2.15,1.3.0)'/>
+      <required namespace='osgi.bundle' name='com.kdmanalytics.toif.common' range='[1.15.0,2.0.0)'/>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='com.kdmanalytics.toif.jlint' version='1.15.5'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: com.kdmanalytics.toif.jlint;singleton:=true&#xA;Bundle-Version: 1.15.5&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

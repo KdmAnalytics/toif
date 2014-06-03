@@ -1,0 +1,38 @@
+###########################
+#		  Facts
+###########################
+
+TOIFSegmentIsRelatedToProject=project1
+TOIFSegmentIsProducedByOrganization=org1
+TOIFSegmentIsOwnedByOrganization=org1
+
+TOIFSegmentIsGeneratedByPerson=person1
+TOIFSegmentIsSupervisedByPerson=person1
+
+PersonIsInvolvedInProjectAsRole=person1;project1;role1
+OrganizationIsInvolvedInProjectAsRole=org1;project1;role2
+#OrganizationIsPartOfOrganizationAsRole=org1;org2;role2
+PersonIsEmployedByOrganizationAsRole=person1;org1;role1
+
+###########################
+#		Entities
+###########################
+
+SegmentDescription=Segment relating to the findings by the analyzer.
+
+#projectId=name;description
+project1=The Project;The description of the project.
+
+#personId=name;email;phone
+person1=Ken Duck;ken@kdmanalytics.com;613-627-1011
+#person2=Joe Bloggs;blogs@kdmanalytics.com;555-1234
+
+#organizationId=name;description;address;phone;email
+org1=KDM Analytics;KDM Analytics is a security assurance company providing products and services for threat risk assessment and management, due diligence assessments, and information and data assurance. Leveraging our decades of experience in static analysis, reverse engineering and formal methods, we have created breakthrough products for the automated and systematic investigation of code, data and networks;3730 Richmond Rd, Suite 204, Ottawa, ON K2H 5B9;613-627-1011;info@kdmanalytics.com
+
+#organizationId=name;description;address;phone;email
+#org2=Acme Corporation;Acme Corporation;blah;555-5555;thingamy@thingamy.com
+
+#roleId=name;description
+role1=Analyst;Analyst for KDM Analytics
+role2=Analysis;Security Assurance
