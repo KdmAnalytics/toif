@@ -1,0 +1,163 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  
+
+  <groupId>com.kdmanalytics</groupId>
+  <artifactId>toif</artifactId>
+  <version>1.15.5</version>
+
+  <name>Tool Output Integration Framework</name>
+
+  <packaging>pom</packaging>
+
+
+ <properties>
+    <junit-version>4.8.1</junit-version>
+   <tycho-version>0.19.0</tycho-version>
+    <target-platform>toif-1.8.x</target-platform>
+ </properties>
+ 
+ <profiles>
+    <profile>
+      <id>platform-indigo</id>
+      <activation>
+      	<activeByDefault>true</activeByDefault>
+        <property> 
+          <name>platform-version-name</name>
+          <value>indigo</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>toif-1.8.x</target-platform>
+        <platform-version>[3.7,3.8)</platform-version>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-juno</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>juno</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>toif-1.8.x</target-platform>
+        <platform-version>[3.8,3.9)</platform-version>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-kepler</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>kepler</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>toif-1.8.x</target-platform>
+        <platform-version>[3.9,4.0)</platform-version>
+      </properties>
+    </profile>
+  </profiles>
+
+   <modules>
+    <module>plugins</module>
+  </modules>
+
+
+
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>   
+     
+     
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+	      <target>
+	        <artifact>
+	          <groupId>com.kdmanalytics.toif.plugins</groupId>
+	          <artifactId>com.kdmanalytics.toif.target</artifactId>
+	          <version>${project.version}</version>
+	          <classifier>${target-platform}</classifier>
+	        </artifact>
+	      </target>
+          <resolver>p2</resolver>
+          <pomDependencies>consider</pomDependencies>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-compiler-plugin</artifactId>
+          <version>${tycho-version}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>     
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.7</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.7</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+     <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit-version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  
+  
+</project>

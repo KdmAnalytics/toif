@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TOIF Common
+Bundle-SymbolicName: com.kdmanalytics.toif.common;singleton:=true
+Bundle-Version: 1.15.5
+Bundle-Activator: com.kdmanalytics.toif.common.Activator
+Bundle-Vendor: KDMANALYTICS
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: com.kdmanalytics.toif.common.exception

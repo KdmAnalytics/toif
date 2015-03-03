@@ -1,0 +1,34 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.kdmanalytics</groupId>
+    <artifactId>toif</artifactId>
+    <version>1.15.5</version>
+  </parent>
+
+  <groupId>com.kdmanalytics.toif</groupId>
+  <artifactId>plugins</artifactId>
+  <name>TOIF plugins</name>
+  <packaging>pom</packaging>
+
+  
+  <modules>
+    <module>com.kdmanalytics.toif.target</module>
+    <module>com.kdmanalytics.toif.common</module>
+    <module>com.kdmanalytics.toif.report</module>
+    <module>com.kdmanalytics.toif.ccr</module>
+    <module>com.kdmanalytics.toif.framework</module>
+    <module>com.kdmanalytics.toif.assimilator</module>
+    <module>com.kdmanalytics.toif.facade</module>
+    <module>com.kdmanalytics.toif.splint</module>
+    <module>com.kdmanalytics.toif.cppcheck</module>
+    <module>com.kdmanalytics.toif.rats</module>
+    <module>com.kdmanalytics.toif.jlint</module>
+    <module>com.kdmanalytics.toif.findbugs</module>
+    <module>com.kdmanalytics.toif.rcp</module>
+    <module>com.kdmanalytics.kdm.repositoryMerger</module>
+  </modules>
+</project>

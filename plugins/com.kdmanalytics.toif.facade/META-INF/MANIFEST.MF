@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ExtractorInterface
+Bundle-SymbolicName: com.kdmanalytics.toif.facade
+Bundle-Version: 1.15.5
+Bundle-Activator: com.kdmanalytics.toif.facade.internal.Activator
+Bundle-Vendor: KDMANALYTICS
+Require-Bundle: org.eclipse.core.runtime,
+ com.kdmanalytics.toif.framework;bundle-version="[1.14.0,2.0.0)",
+ com.google.guava;bundle-version="[14.0.1,15.0.0)",
+ com.kdmanalytics.toif.assimilator;bundle-version="[1.14.0,2.0.0)",
+ com.kdmanalytics.toif.common;bundle-version="[1.14.0,2.0.0)";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.kdmanalytics.toif.facade
