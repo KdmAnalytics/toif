@@ -16,7 +16,6 @@
 
   
   <modules>
-    <module>com.kdmanalytics.toif.target</module>
     <module>com.kdmanalytics.toif.common</module>
     <module>com.kdmanalytics.toif.report</module>
     <module>com.kdmanalytics.toif.ccr</module>
