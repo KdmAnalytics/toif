@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: JewelCLI
 Bundle-SymbolicName: com.lexicalscope.jewelcli
 Bundle-Version: 0.8.5
-Bundle-ClassPath: com.lexicalscope.jewelcli_0.8.5.jar
+Bundle-ClassPath: .
+Eclipse-BuddyPolicy: registered
 Bundle-Vendor: KDM Analytics Inc
 Export-Package: com.lexicalscope.jewel,
  com.lexicalscope.jewel.cli,
@@ -42,9 +43,4 @@ Export-Package: com.lexicalscope.jewel,
  com.lexicalscope.jewelcli.internal.lamdaj.util,
  com.lexicalscope.jewelcli.internal.lamdaj.util.iterator,
  com.lexicalscope.jewelcli.internal.lang3.builder
-Created-By: Apache Maven
-Archiver-Version: Plexus Archiver
-Eclipse-BuddyPolicy: registered
-Built-By: jenkins
-Build-Jdk: 1.7.0_25
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

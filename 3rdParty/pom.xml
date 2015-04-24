@@ -1,0 +1,32 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.kdmanalytics</groupId>
+    <artifactId>toif</artifactId>
+    <version>1.15.5</version>
+  </parent>
+
+  <groupId>com.kdmanalytics.libs.libsjava</groupId>
+  <artifactId>plugins</artifactId>
+  <name>TOIF 3rdparty plugins</name>
+  <packaging>pom</packaging>
+
+  
+  <modules>
+    <module>com.google.guava</module>
+    <module>com.lexicalscope.jewelcli</module>
+    <module>javax.xml</module>
+    <module>net.sf.trove4j</module>
+    <module>org.apache.commons.io</module>
+    <module>org.apache.commons.lang3</module>
+    <module>org.apache.xerces</module>    
+    <module>org.apache.xml.resolver</module>
+    <module>org.apache.xml.serializer</module>
+    <module>org.openrdf.sesame</module>
+    <module>org.slf4j.api</module>
+    <module>org.slf4j.log4j</module>
+  </modules>
+</project>
