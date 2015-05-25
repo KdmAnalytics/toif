@@ -1,0 +1,42 @@
+barMethod	sync_loop	Loop 999: invocation of synchronized method barMethod can cause deadlock
+barMethod	loop	Loop 999/999: invocation of method barMethod forms the loop in class dependency graph
+fooString	lock	Lock fooString is requested while holding lock fooString, with other thread holding fooString and requesting lock fooString
+wait()	wait	Method wait() can be invoked with monitor of other object locked
+null	locklist	Holding 999 lock(s):fooString
+barMethod	wait_path	Call sequence to method barMethod can cause deadlock in wait()
+barMethod	nosync	Synchronized method barMethod is overridden by non-synchronized method of derived class 'CruftClass'
+barMethod	concurrent_call	Method barMethod can be called from different threads and is not synchronized
+'uglyUTFstuff'	concurrent_access	Field 'uglyUTFstuff' of class 'CruftClass' can be accessed from different threads and is not volatile
+barMethod	run_nosync	Method barMethod implementing 'Runnable' interface is not synchronized
+uglyUTFstuff	lock_assign	Value of lock uglyUTFstuff is changed outside synchronization or constructor
+uglyUTFstuff	lock_assign2	Value of lock uglyUTFstuff is changed while (potentially) owning it
+'fooString.uglyUTFstuff'	wait_nosync	Method 'fooString.uglyUTFstuff' is called without synchronizing on 'fooString'
+barMethod	not_overridden	Method barMethod is not overridden by method with the same name of derived class 'CruftClass'
+null	equals_not_overridden	hashCode() was overridden but not equals()
+null	hashcode_not_overridden	equals() was overridden but not hashCode()
+uglyUTFstuff	field_redefined	Component 'uglyUTFstuff' in class 'CruftClass' shadows one in base class 'CruftClass'
+uglyUTFstuff	shadow_local	Local variable 'uglyUTFstuff' shadows component of class 'CruftClass'
+null	super_finalize	Method finalize() doesn't call super.finalize()
+barMethod	null_param	Method barMethod can be invoked with NULL as 999 parameter and this parameter is used without check for NULL
+'uglyUTFstuff'	null_var	Value of referenced variable 'uglyUTFstuff' may be NULL
+null	null_ptr	NULL reference can be used
+fooString	zero_operand	Zero operand for fooString operation
+fooString	zero_result	Result of operation fooString is always 0
+fooString	shift_count	Shift fooString with count fooString than 999
+fooString	shift_range	Shift fooString count range [999,999] is out of domain
+fooString	conversion	Range of expression value has no intersection with fooString type domain
+fooString	truncation	Data can be lost as a result of truncation to fooString
+null	overflow	Maybe type cast is not correctly applied
+null	same_result	Comparison always produces the same result
+null	disjoint_mask	Compared expressions can be equal only when both of them are 0
+null	no_effect	Reminder always equal to the first operand
+null	short_char_cmp	Comparison of short with char
+null	string_cmp	Compare strings as object references
+null	weak_cmp	Inequality comparison can be replaced with equality comparison
+null	incomp_case	Switch case constant 999 can't be produced by switch expression
+null	neg_len	Array length [999,999] is less than zero
+null	maybe_neg_len	Array length [999,999] may be less than zero
+null	bad_index	Index [999,999] is out of array bounds
+null	maybe_bad_index	Index [999,999] may be out of array bounds
+null	done	Verification completed: 999 reported messages
+		

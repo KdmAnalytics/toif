@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.kdmanalytics</groupId>
+    <artifactId>toif</artifactId>
+    <version>1.16.0</version>
+  </parent>
+
+  <groupId>com.kdmanalytics.toif</groupId>
+  <artifactId>tests</artifactId>
+  <name>TOIF tests</name>
+
+  <packaging>pom</packaging>
+  
+  <modules>
+    <module>com.kdmanalytics.toif.assimilator.test</module>
+    <module>com.kdmanalytics.kdm.repositoryMerger.test</module>
+    <module>com.kdmanalytics.toif.jlint.test</module>
+    <module>com.kdmanalytics.toif.findbugs.test</module>
+  </modules>
+</project>

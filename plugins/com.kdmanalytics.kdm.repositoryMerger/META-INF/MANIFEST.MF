@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Repository Merger
 Bundle-SymbolicName: com.kdmanalytics.kdm.repositoryMerger
-Bundle-Version: 1.15.5
+Bundle-Version: 1.16.1.qualifier
 Bundle-Activator: com.kdmanalytics.kdm.repositoryMerger.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.apache.commons.lang3;bundle-version="[3.0.0,4.0.0)",

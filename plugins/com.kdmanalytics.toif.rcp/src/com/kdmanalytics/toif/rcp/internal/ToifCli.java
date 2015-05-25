@@ -58,4 +58,13 @@ public interface ToifCli
     @Option 
     String getRootname();
     boolean isRootname();
+    
+    /**
+     * Help message.
+     * 
+     * @return returns true?
+     */
+    @Option(description = "Display this help message", helpRequest = true, shortName = "h")
+    boolean getHelp();
+    
 	}

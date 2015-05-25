@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<toif:TOIFSegment xsi:schemaLocation="http://kdmanalytics.com/TOIFSchema.xsd TOIFSchema.xsd" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:toif="http://kdmanalytics.com/toif.xsd" xsi:type="toif:TOIFSegment">
+    <name name="0"/>
+    <description text="Segment relating to the findings by the analyzer."/>
+    <fact date="2011-08-23 13:57:38" xsi:type="toif:Date" id="1"/>
+    <fact xsi:type="toif:Project" id="2">
+        <description text="The description of the project."/>
+        <name name="The Project"/>
+    </fact>
+    <fact xsi:type="toif:File" id="3">
+        <checksum checksum="0xD41D8CD98F00B204E9800998ECF8427E"/>
+        <name name="segment.c"/>
+    </fact>
+    <fact xsi:type="toif:Directory" id="4">
+        <name name="Desktop"/>
+    </fact>
+    <fact xsi:type="toif:Directory" id="5">
+        <name name="adam"/>
+    </fact>
+    <fact xsi:type="toif:Directory" id="6">
+        <name name="home"/>
+    </fact>
+    <fact xsi:type="toif:Directory" id="7">
+        <name name="/"/>
+    </fact>
+    <fact xsi:type="toif:Finding" id="8"/>
+    <fact text="tst: Test Message" xsi:type="toif:WeaknessDescription" id="9"/>
+    <fact xsi:type="toif:CWEIdentifier" id="10">
+        <name name="CWE-123"/>
+    </fact>
+    <fact xsi:type="toif:CodeLocation" id="11">
+        <lineNumber lineNumber="10"/>
+        <offset offset="2"/>
+        <position position="4"/>
+    </fact>
+    <fact xsi:type="toif:Statement" id="12"/>
+    <fact xsi:type="toif:DataElement" id="13">
+        <name name="TheDataElement"/>
+    </fact>
+    <fact xsi:type="toif:Finding" id="14"/>
+    <fact text="tst2: Another Test Message" xsi:type="toif:WeaknessDescription" id="15"/>
+    <fact xsi:type="toif:CWEIdentifier" id="16">
+        <name name="CWE-555"/>
+    </fact>
+    <fact xsi:type="toif:CodeLocation" id="17">
+        <lineNumber lineNumber="35"/>
+    </fact>
+    <fact xsi:type="toif:Statement" id="18"/>
+    <fact xsi:type="toif:DataElement" id="19">
+        <name name="TheDataElement"/>
+    </fact>
+    <fact segment="0" date="1" xsi:type="toif:TOIFSegmentIsCreatedAtDate" id="20"/>
+    <fact segment="0" project="2" xsi:type="toif:TOIFSegmentIsRelatedToProject" id="21"/>
+    <fact segment="0" file="3" xsi:type="toif:TOIFSegmentReferencesFile" id="22"/>
+    <fact file="3" directory="4" xsi:type="toif:FileIsContainedInDirectory" id="23"/>
+    <fact directory1="4" directory2="5" xsi:type="toif:DirectoryIsContainedInDirectory" id="24"/>
+    <fact directory1="5" directory2="6" xsi:type="toif:DirectoryIsContainedInDirectory" id="25"/>
+    <fact directory1="6" directory2="7" xsi:type="toif:DirectoryIsContainedInDirectory" id="26"/>
+    <fact finding="8" description="9" xsi:type="toif:FindingIsDescribedByWeaknessDescription" id="27"/>
+    <fact finding="8" cwe="10" xsi:type="toif:FindingHasCWEIdentifier" id="28"/>
+    <fact codeLocation="11" file="0" xsi:type="toif:CodeLocationReferencesFile" id="29"/>
+    <fact finding="8" location="11" xsi:type="toif:FindingHasCodeLocation" id="30"/>
+    <fact statement="12" finding="8" xsi:type="toif:StatementIsInvolvedInFinding" id="31"/>
+    <fact statement="12" finding="8" xsi:type="toif:StatementIsSinkInFinding" id="32"/>
+    <fact statement="12" location="11" xsi:type="toif:StatementHasCodeLocation" id="33"/>
+    <fact data="13" finding="8" xsi:type="toif:DataElementIsInvolvedInFinding" id="34"/>
+    <fact data="13" statement="12" xsi:type="toif:DataElementIsInvolvedInStatement" id="35"/>
+    <fact finding="14" description="15" xsi:type="toif:FindingIsDescribedByWeaknessDescription" id="36"/>
+    <fact finding="14" cwe="16" xsi:type="toif:FindingHasCWEIdentifier" id="37"/>
+    <fact codeLocation="17" file="0" xsi:type="toif:CodeLocationReferencesFile" id="38"/>
+    <fact finding="14" location="17" xsi:type="toif:FindingHasCodeLocation" id="39"/>
+    <fact statement="18" finding="14" xsi:type="toif:StatementIsInvolvedInFinding" id="40"/>
+    <fact statement="18" finding="14" xsi:type="toif:StatementIsSinkInFinding" id="41"/>
+    <fact statement="18" location="17" xsi:type="toif:StatementHasCodeLocation" id="42"/>
+    <fact data="19" finding="14" xsi:type="toif:DataElementIsInvolvedInFinding" id="43"/>
+    <fact data="19" statement="18" xsi:type="toif:DataElementIsInvolvedInStatement" id="44"/>
+</toif:TOIFSegment>

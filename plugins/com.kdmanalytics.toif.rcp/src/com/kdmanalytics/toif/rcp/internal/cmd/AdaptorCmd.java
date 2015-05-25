@@ -36,9 +36,7 @@ public class AdaptorCmd implements IToifCmd
     			if (toolName.equalsIgnoreCase( adaptor.getRuntoolName()))
     				{
     				ToifFacade toif = new ToifFacade();
-    				if (!toif.isAdapterReportingToolRunnable(adaptor))
-    					System.err.println( "Adaptor " + adaptor.getAdaptorName() + "is not runnable");
-					else
+
 						try
 							{
 							for (File inputFile : toifCli.getInputfile())

@@ -94,17 +94,28 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
             // read each line one at a time
             while ((line = br.readLine()) != null)
             {
-                
+                    
+            	//get the colon out the way of the windows side.
+            	line = line.replaceFirst(":\\\\", "#");
+            	
                 // the different elements are divided by a colon
-                String[] elements = line.split(":");
+                String[] elements = line.split(":",3);
+                
+                
                 
                 // anything of length 3, is a finding
                 if (elements.length == 3)
                 {
                     
                     // create the parts of a finding.
-                    String msg = elements[2].trim();
-                    String id = deriveId(elements[2]);
+                    String msg = line.split(": ", 2)[1].trim();
+                    
+                    //continue if the message is the verification message.
+                    if (msg.startsWith("Verification completed")) {
+                    	continue;
+                    }
+                    
+                    String id = deriveId(msg);
                     int lineNumber = Integer.parseInt(elements[1]);
                     // String file = elements[0];
                     
@@ -156,7 +167,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
      * @return
      * @throws ToifException 
      */
-    private String deriveId(String description) throws ToifException
+    protected String deriveId(String description) throws ToifException
     {
         
         Scanner scan = null;
@@ -288,7 +299,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getAdaptorVendorAddress()
     {
-        return "3730 Richmond Rd, Suite 204, Ottawa, ON, K2H 5B9";
+        return "1956 Robertson Road, Suite 204, Ottawa, ON, K2H 5B9";
     }
     
     /*
@@ -312,7 +323,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getAdaptorVendorEmail()
     {
-        return "adam@kdmanalytics.com";
+        return "info@kdmanalytics.com";
     }
     
     /*
@@ -336,7 +347,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getAdaptorVendorPhone()
     {
-        return "613-627-1011";
+        return "1-613-627-1010";
     }
     
     /*
@@ -373,7 +384,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getGeneratorVendorAddress()
     {
-        return "http://artho.com/index.shtml";
+        return "http://jlint.sourceforge.net/";
     }
     
     /*
@@ -397,7 +408,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getGeneratorVendorEmail()
     {
-        return "cyrille@artho.com";
+        return "c.artho@aist.go.jp";
     }
     
     /*
@@ -409,7 +420,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getGeneratorVendorName()
     {
-        return "artho";
+        return "Cyrille Artho";
     }
     
     /*
@@ -421,7 +432,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getGeneratorVendorPhone()
     {
-        return "+81.8051731892";
+        return "+81 (0)6 6494 7813";
     }
     
     /*
@@ -433,7 +444,7 @@ private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
     @Override
     public String getGeneratorVersion()
     {
-        return "Assumed 3.0";
+        return "Assumed 3.0.0";
     }
     
     @Override

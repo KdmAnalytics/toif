@@ -1,3 +1,5 @@
+tests/*/bin
+tests/*/target
 plugins/*/bin
 plugins/*/target
 Vagrantfile

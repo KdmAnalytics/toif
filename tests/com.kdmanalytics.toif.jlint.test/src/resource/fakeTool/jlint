@@ -1,0 +1,29 @@
+#! /usr/bin/python
+
+# a fake jlint tool. used in conjunction with the expectedWeaknesses file.
+
+import os
+
+def printWeakness(msg):
+  print "Test.java:1: "+msg.rstrip()
+
+def printFooter(counter):
+  print "Verification completed: "+str(counter)+" reported messages."
+
+count = 0
+
+dir = os.path.dirname(__file__)
+filename = os.path.join(dir, 'expectedWeaknesses')
+
+with open(filename) as f:
+  content = f.readlines()
+  for line in content:
+
+    if not line.strip() == '':
+      values = line.split("\t")
+
+      if len(values) == 3:
+        count=count+1
+        printWeakness(values[2])  
+
+printFooter(count)

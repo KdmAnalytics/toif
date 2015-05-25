@@ -1,0 +1,4 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<kdm:Segment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:action="http://kdm.omg.org/action" xmlns:build="http://kdm.omg.org/build" xmlns:code="http://kdm.omg.org/code" xmlns:kdm="http://kdm.omg.org/kdm" xmlns:source="http://kdm.omg.org/source" xmi:id="0" name="Java$Application">
+  <attribute tag="UID" value="0"/>
+</kdm:Segment>

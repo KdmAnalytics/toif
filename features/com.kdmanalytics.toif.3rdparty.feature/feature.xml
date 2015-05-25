@@ -2,7 +2,7 @@
 <feature
       id="com.kdmanalytics.toif.3rdparty.feature"
       label="Toif 3rd Party dependencies"
-      version="1.15.5"
+      version="1.16.1.qualifier"
       provider-name="KDM Analytics Inc.">
 
    <description url="http://www.example.com/description">

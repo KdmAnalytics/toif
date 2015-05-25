@@ -1,0 +1,38 @@
+#! /usr/bin/python
+
+# A fake findbugs that will spit out all the possible weaknesses based on the findbugsAdaptorConfiguration file
+
+import os
+import sys
+
+script_dir = os.path.dirname(__file__)
+
+rel_path = "FindbugsAdaptorConfiguration"
+
+abs_file_path = os.path.join(script_dir, rel_path)
+
+
+def printWeakness(id):
+  print "  <BugInstance type=\""+id+"\" priority=\"1\" rank=\"1\" abbrev=\"NOT_USED\" category=\"WHO_CARES\">\n    <SourceLine classname=\"Test\" start=\"1\" end=\"1\" startBytecode=\"1\" endBytecode=\"1\" sourcefile=\"Test.java\" sourcepath=\"Test.java\"/>\n  </BugInstance>"
+  
+
+def printHeader():
+  print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<BugCollection version=\"3.0.0\" sequence=\"0\" timestamp=\"1426874941000\" analysisTimestamp=\"1426874988115\" release=\"\">\n  <Project projectName=\"\">\n    <Jar>Test.class</Jar>\n  </Project>"
+
+def printFooter():
+  print "  <History></History>\n</BugCollection>"
+
+printHeader()
+
+with open(abs_file_path) as f:
+  content = f.readlines()
+  for line in content:
+
+    if not line.startswith("#"):
+      if not "Msg" in line:
+        if "=" in line:
+          printWeakness( line.split("=")[0])  
+
+printFooter()
+
+print >> sys.stderr, 'Warnings generated: 13'

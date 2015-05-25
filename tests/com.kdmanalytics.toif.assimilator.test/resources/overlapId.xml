@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<kdm:Segment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:action="http://kdm.omg.org/action"
+  xmlns:build="http://kdm.omg.org/build" xmlns:code="http://kdm.omg.org/code" xmlns:kdm="http://kdm.omg.org/kdm"
+  xmlns:source="http://kdm.omg.org/source" xmi:id="0" name="Java$Application">
+  <attribute tag="UID" value="0" />
+  <model xmi:type="code:CodeModel" xmi:id="1" name="Code Model">
+    <attribute tag="UID" value="34936" />
+    <codeElement xmi:type="code:Package" xmi:id="10" name="com">
+      <attribute tag="UID" value="34948" />
+      <attribute tag="lastUID" value="144451" />
+      <codeElement xmi:type="code:Package" xmi:id="11" name="kdmanalytics">
+        <attribute tag="UID" value="34949" />
+        <attribute tag="lastUID" value="114117" />
+        <codeElement xmi:type="code:Package" xmi:id="12" name="toif">
+          <codeElement xmi:type="code:ClassUnit" xmi:id="9" name="AdminPanelPlugin">
+            <attribute tag="UID" value="34954" />
+            <codeElement xmi:type="code:MethodUnit" xmi:id="38" name="AdminPanelPlugin" type="41" kind="constructor">
+              <attribute tag="UID" value="34955" />
+              <codeElement xmi:type="action:ActionElement" xmi:id="48" name="line 27" kind="Compound">
+                <attribute tag="UID" value="34955" />
+                <source language="java">
+                  <region file="30" startLine="27" />
+                </source>
+                <codeElement xmi:type="action:ActionElement" xmi:id="54" name="L1947903349" kind="Nop">
+                  <attribute tag="UID" value="34955" />
+                  <actionRelation xmi:type="action:Flow" to="66" from="54" />
+                </codeElement>
+                <codeElement xmi:type="action:ActionElement" xmi:id="66" name="call PanelPlugin()" kind="MethodCall">
+                  <attribute tag="UID" value="34955" />
+                  <actionRelation xmi:type="action:Calls" to="72" from="66" />
+                  <actionRelation xmi:type="action:Flow" to="79" from="66" />
+                  <actionRelation xmi:type="action:Reads" stereotype="3" to="45" from="66" />
+                  <actionRelation xmi:type="action:Reads" stereotype="3" to="49" from="66" />
+                  <actionRelation xmi:type="action:Reads" stereotype="3" to="53" from="66" />
+                </codeElement>
+                <codeElement xmi:type="action:ActionElement" xmi:id="79" name="L1439150816" kind="Nop">
+                  <actionRelation xmi:type="action:Flow" to="80" from="79" />
+                  <actionRelation xmi:type="action:Flow" to="80" from="79" />
+                </codeElement>
+                <codeElement xmi:type="code:StorableUnit" xmi:id="80" name="tmp29" kind="register">
+                  <attribute tag="UID" value="8910"/>
+                </codeElement>
+              </codeElement>
+            </codeElement>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+    </codeElement>
+  </model>
+</kdm:Segment>

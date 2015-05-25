@@ -1,0 +1,834 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<kdm:Segment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:action="http://kdm.omg.org/action" xmlns:code="http://kdm.omg.org/code" xmlns:kdm="http://kdm.omg.org/kdm" xmlns:source="http://kdm.omg.org/source" xmi:id="0" name="javaOutput">
+  <attribute tag="UID" value="0"/>
+  <attribute tag="lastUID" value="65"/>
+  <extensionFamily xmi:id="1" name="PrimitiveTypes">
+    <attribute tag="UID" value="1"/>
+  </extensionFamily>
+  <extensionFamily xmi:id="2" name="Workarounds">
+    <attribute tag="UID" value="2"/>
+    <attribute tag="lastUID" value="3"/>
+    <stereotype xmi:id="3" name="Invokes">
+      <attribute tag="UID" value="3"/>
+    </stereotype>
+  </extensionFamily>
+  <extensionFamily xmi:id="4" name="Instructions">
+    <attribute tag="UID" value="4"/>
+  </extensionFamily>
+  <model xmi:type="source:InventoryModel" xmi:id="5" name="Virtual">
+    <attribute tag="UID" value="5"/>
+    <attribute tag="lastUID" value="9"/>
+    <inventoryElement xmi:type="source:Directory" xmi:id="19" name="HelloWorld">
+      <attribute tag="UID" value="6"/>
+      <attribute tag="lastUID" value="7"/>
+      <inventoryElement xmi:type="source:SourceFile" xmi:id="18" name="HelloWorld.java" path="HelloWorld.java">
+        <attribute tag="UID" value="7"/>
+      </inventoryElement>
+    </inventoryElement>
+    <inventoryElement xmi:type="source:Directory" xmi:id="289" name="Message">
+      <attribute tag="UID" value="8"/>
+      <attribute tag="lastUID" value="9"/>
+      <inventoryElement xmi:type="source:SourceFile" xmi:id="288" name="Message.java" path="Message.java">
+        <attribute tag="UID" value="9"/>
+      </inventoryElement>
+    </inventoryElement>
+  </model>
+  <model xmi:type="code:CodeModel" xmi:id="7" name="Code Model">
+    <attribute tag="UID" value="10"/>
+    <attribute tag="lastUID" value="48"/>
+    <codeElement xmi:type="code:LanguageUnit" xmi:id="8" name=":language">
+      <attribute tag="UID" value="11"/>
+      <attribute tag="lastUID" value="15"/>
+      <codeElement xmi:type="code:VoidType" xmi:id="24" name="void">
+        <attribute tag="UID" value="12"/>
+      </codeElement>
+      <codeElement xmi:type="code:VoidType" xmi:id="64" name="null">
+        <attribute tag="UID" value="13"/>
+      </codeElement>
+      <codeElement xmi:type="code:StringType" xmi:id="92" name="java.lang.String">
+        <attribute tag="UID" value="14"/>
+      </codeElement>
+      <codeElement xmi:type="code:IntegerType" xmi:id="132" name="int">
+        <attribute tag="UID" value="15"/>
+      </codeElement>
+    </codeElement>
+    <codeElement xmi:type="code:ClassUnit" xmi:id="6" name="HelloWorld">
+      <attribute tag="UID" value="16"/>
+      <attribute tag="lastUID" value="22"/>
+      <codeElement xmi:type="code:MethodUnit" xmi:id="20" name="HelloWorld" type="23" kind="constructor">
+        <attribute tag="UID" value="17"/>
+        <source xmi:id="22" language="java">
+          <region xmi:id="21" file="18" startLine="1"/>
+        </source>
+        <entryFlow to="28" from="20"/>
+        <codeElement xmi:type="code:Signature" xmi:id="23" name="&lt;init>">
+          <attribute tag="UID" value="17"/>
+          <parameterUnit xmi:id="25" name="return: void" type="24" kind="return">
+            <attribute tag="pos" value="0"/>
+            <attribute tag="UID" value="17"/>
+          </parameterUnit>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="27" name="this" type="6">
+          <attribute tag="UID" value="17"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="26" to="6" from="27">
+            <attribute tag="UID" value="17"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="354" name="line 1" kind="Compound">
+          <attribute tag="UID" value="17"/>
+          <source language="java">
+            <region file="18" startLine="1"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="28" name="L561094448" kind="Nop">
+            <attribute tag="UID" value="17"/>
+            <actionRelation xmi:type="action:Flow" to="34" from="28"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="34" name="call Object()" kind="MethodCall">
+            <attribute tag="UID" value="17"/>
+            <actionRelation xmi:type="action:Calls" to="40" from="34"/>
+            <actionRelation xmi:type="action:Flow" to="43" from="34"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="27" from="34"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="43" name="RETURN" kind="Return">
+            <attribute tag="UID" value="17"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="46" name="L795578445" kind="Nop">
+            <attribute tag="UID" value="17"/>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+      <codeElement xmi:type="code:MethodUnit" xmi:id="49" name="main" type="52">
+        <attribute tag="UID" value="19"/>
+        <source xmi:id="51" language="java">
+          <region xmi:id="50" file="18" startLine="9"/>
+        </source>
+        <entryFlow to="58" from="49"/>
+        <codeElement xmi:type="code:Signature" xmi:id="52" name="main">
+          <attribute tag="UID" value="19"/>
+          <parameterUnit xmi:id="53" name="return: void" type="24" kind="return">
+            <attribute tag="pos" value="0"/>
+            <attribute tag="UID" value="19"/>
+          </parameterUnit>
+          <parameterUnit xmi:id="57" name="args" type="54">
+            <attribute tag="pos" value="1"/>
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:ArrayType" xmi:id="54">
+              <attribute tag="UID" value="19"/>
+              <itemUnit xmi:id="55" type="56">
+                <attribute tag="UID" value="19"/>
+              </itemUnit>
+            </codeElement>
+          </parameterUnit>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="84" name="new StringBuilder" type="83">
+          <attribute tag="UID" value="19"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="85" to="83" from="84">
+            <attribute tag="UID" value="19"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="137" name="x" type="132">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="148" name="y" type="132">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="165" name="" type="132">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="172" name="world" type="6">
+          <attribute tag="UID" value="19"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="173" to="6" from="172">
+            <attribute tag="UID" value="19"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="355" name="line 9" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="9"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="58" name="L1682540307" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="61" from="58"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="61" name="load null object" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:DataElement" xmi:id="65" name="nothing" type="64">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Reads" to="65" from="61"/>
+            <actionRelation xmi:type="action:Flow" to="66" from="61"/>
+            <actionRelation xmi:type="action:Writes" to="356" from="61"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="66" name="Store in local var" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Writes" to="65" from="66"/>
+            <actionRelation xmi:type="action:Flow" to="69" from="66"/>
+            <actionRelation xmi:type="action:Reads" to="356" from="66"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="69" name="L1289702396" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="72" from="69"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="356" name="tmp0" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="357" name="tmp1" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="358" name="line 10" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="10"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="72" name="get static field out" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Reads" to="79" from="72"/>
+            <actionRelation xmi:type="action:Flow" to="80" from="72"/>
+            <actionRelation xmi:type="action:Writes" to="357" from="72"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="80" name="new StringBuilder" kind="New">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Creates" to="83" from="80"/>
+            <actionRelation xmi:type="action:Flow" to="94" from="80"/>
+            <actionRelation xmi:type="action:Writes" to="359" from="80"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="94" name="call StringBuilder()" kind="MethodCall">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:Value" xmi:id="360" name="Hello World " type="92">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Calls" to="97" from="94"/>
+            <actionRelation xmi:type="action:Flow" to="104" from="94"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="359" from="94"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="360" from="94"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="104" name="call append()" kind="VirtualCall">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Calls" to="107" from="104"/>
+            <actionRelation xmi:type="action:Flow" to="113" from="104"/>
+            <actionRelation xmi:type="action:Writes" to="361" from="104"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="359" from="104"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="65" from="104"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="113" name="call toString()" kind="VirtualCall">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Calls" to="116" from="113"/>
+            <actionRelation xmi:type="action:Flow" to="119" from="113"/>
+            <actionRelation xmi:type="action:Writes" to="362" from="113"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="361" from="113"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="119" name="call println()" kind="VirtualCall">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Calls" to="122" from="119"/>
+            <actionRelation xmi:type="action:Flow" to="126" from="119"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="357" from="119"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="362" from="119"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="126" name="L221200805" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="129" from="126"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="359" name="tmp2" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="361" name="tmp3" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="362" name="tmp4" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="363" name="line 12" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="12"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="129" name="load int 0" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:Value" xmi:id="133" name="0" type="132">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Reads" to="133" from="129"/>
+            <actionRelation xmi:type="action:Flow" to="134" from="129"/>
+            <actionRelation xmi:type="action:Writes" to="364" from="129"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="134" name="Store in local var" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Writes" to="137" from="134"/>
+            <actionRelation xmi:type="action:Flow" to="138" from="134"/>
+            <actionRelation xmi:type="action:Reads" to="364" from="134"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="138" name="L1100759185" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="141" from="138"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="364" name="tmp5" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="365" name="line 13" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="13"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="141" name="load int 0" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:Value" xmi:id="144" name="0" type="132">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Reads" to="144" from="141"/>
+            <actionRelation xmi:type="action:Flow" to="145" from="141"/>
+            <actionRelation xmi:type="action:Writes" to="366" from="141"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="145" name="Store in local var" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Writes" to="148" from="145"/>
+            <actionRelation xmi:type="action:Flow" to="149" from="145"/>
+            <actionRelation xmi:type="action:Reads" to="366" from="145"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="149" name="L16772849" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="158" from="149"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="366" name="tmp6" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="367" name="line 14" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="14"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="158" name="Add ints" kind="Add">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:Value" xmi:id="161" name="" type="132">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Flow" to="166" from="158"/>
+            <actionRelation xmi:type="action:Writes" to="137" from="158"/>
+            <actionRelation xmi:type="action:Reads" to="137" from="158"/>
+            <actionRelation xmi:type="action:Reads" to="148" from="158"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="166" name="L728275102" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="169" from="166"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="368" name="tmp7" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="369" name="line 16" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="16"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="169" name="new HelloWorld" kind="New">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Creates" to="6" from="169"/>
+            <actionRelation xmi:type="action:Flow" to="177" from="169"/>
+            <actionRelation xmi:type="action:Writes" to="368" from="169"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="177" name="call HelloWorld()" kind="MethodCall">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Calls" to="20" from="177"/>
+            <actionRelation xmi:type="action:Flow" to="180" from="177"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="368" from="177"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="180" name="Store in local var" kind="Assign">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Writes" to="172" from="180"/>
+            <actionRelation xmi:type="action:Flow" to="183" from="180"/>
+            <actionRelation xmi:type="action:Reads" to="370" from="180"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="183" name="L1850278722" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="193" from="183"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="370" name="tmp8" kind="register">
+          <attribute tag="UID" value="19"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="371" name="line 17" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="17"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="193" name="call printMessage()" kind="VirtualCall">
+            <attribute tag="UID" value="19"/>
+            <codeElement xmi:type="code:Value" xmi:id="372" name="message" type="92">
+              <attribute tag="UID" value="19"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Calls" to="196" from="193"/>
+            <actionRelation xmi:type="action:Flow" to="200" from="193"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="172" from="193"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="372" from="193"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="200" name="L1690127932" kind="Nop">
+            <attribute tag="UID" value="19"/>
+            <actionRelation xmi:type="action:Flow" to="203" from="200"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="373" name="line 18" kind="Compound">
+          <attribute tag="UID" value="19"/>
+          <source language="java">
+            <region file="18" startLine="18"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="203" name="RETURN" kind="Return">
+            <attribute tag="UID" value="19"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="206" name="L1653894434" kind="Nop">
+            <attribute tag="UID" value="19"/>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+      <codeElement xmi:type="code:MethodUnit" xmi:id="196" name="printMessage" type="197">
+        <attribute tag="UID" value="21"/>
+        <source xmi:id="210" language="java">
+          <region xmi:id="209" file="18" startLine="22"/>
+        </source>
+        <entryFlow to="214" from="196"/>
+        <codeElement xmi:type="code:Signature" xmi:id="197" name="printMessage">
+          <attribute tag="UID" value="21"/>
+          <parameterUnit xmi:id="198" name="return: void" type="24" kind="return">
+            <attribute tag="pos" value="0"/>
+            <attribute tag="UID" value="21"/>
+          </parameterUnit>
+          <parameterUnit xmi:id="199" name="java.lang.String" type="92">
+            <attribute tag="pos" value="1"/>
+            <attribute tag="UID" value="21"/>
+          </parameterUnit>
+          <parameterUnit xmi:id="213" name="msg" type="92">
+            <attribute tag="pos" value="1"/>
+            <attribute tag="UID" value="21"/>
+          </parameterUnit>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="212" name="this" type="6">
+          <attribute tag="UID" value="21"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="211" to="6" from="212">
+            <attribute tag="UID" value="21"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="235" name="new Message" type="234">
+          <attribute tag="UID" value="21"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="236" to="234" from="235">
+            <attribute tag="UID" value="21"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="263" name="unitialized Message" type="234">
+          <attribute tag="UID" value="21"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="264" to="234" from="263">
+            <attribute tag="UID" value="21"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="374" name="line 22" kind="Compound">
+          <attribute tag="UID" value="21"/>
+          <source language="java">
+            <region file="18" startLine="22"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="214" name="L1486077090" kind="Nop">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Flow" to="220" from="214"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="220" name="Equals" kind="Equals">
+            <attribute tag="UID" value="21"/>
+            <codeElement xmi:type="code:DataElement" xmi:id="376" name="null" type="64">
+              <attribute tag="UID" value="21"/>
+            </codeElement>
+            <actionRelation xmi:type="action:Flow" to="225" from="220"/>
+            <actionRelation xmi:type="action:Writes" to="375" from="220"/>
+            <actionRelation xmi:type="action:Reads" to="213" from="220"/>
+            <actionRelation xmi:type="action:Reads" to="376" from="220"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="225" name="If Equals Null" kind="Condition">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:TrueFlow" to="228" from="220"/>
+            <actionRelation xmi:type="action:FalseFlow" to="231" from="220"/>
+            <actionRelation xmi:type="action:Reads" to="375" from="225"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="228" name="new Message" kind="New">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Creates" to="234" from="228"/>
+            <actionRelation xmi:type="action:Flow" to="243" from="228"/>
+            <actionRelation xmi:type="action:Writes" to="377" from="228"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="243" name="call Message()" kind="MethodCall">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Calls" to="246" from="243"/>
+            <actionRelation xmi:type="action:Flow" to="250" from="243"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="377" from="243"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="213" from="243"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="250" name="Goto L737736904" kind="Goto">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Flow" to="253" from="250"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="231" name="L520078315" kind="Nop">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Flow" to="253" from="231"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="253" name="L737736904" kind="Nop">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Flow" to="260" from="253"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="260" name="call Print()" kind="VirtualCall">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Calls" to="268" from="260"/>
+            <actionRelation xmi:type="action:Flow" to="271" from="260"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="263" from="260"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="271" name="L1134355578" kind="Nop">
+            <attribute tag="UID" value="21"/>
+            <actionRelation xmi:type="action:Flow" to="274" from="271"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="375" name="tmp0" kind="register">
+          <attribute tag="UID" value="21"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="377" name="tmp1" kind="register">
+          <attribute tag="UID" value="21"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="378" name="line 23" kind="Compound">
+          <attribute tag="UID" value="21"/>
+          <source language="java">
+            <region file="18" startLine="23"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="274" name="RETURN" kind="Return">
+            <attribute tag="UID" value="21"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="277" name="L2061171244" kind="Nop">
+            <attribute tag="UID" value="21"/>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+    </codeElement>
+    <codeElement xmi:type="code:Package" xmi:id="38" name="java">
+      <attribute tag="UID" value="23"/>
+      <attribute tag="lastUID" value="42"/>
+      <codeElement xmi:type="code:Package" xmi:id="39" name="lang">
+        <attribute tag="UID" value="24"/>
+        <attribute tag="lastUID" value="38"/>
+        <codeElement xmi:type="code:ClassUnit" xmi:id="37" name="Object">
+          <attribute tag="UID" value="25"/>
+          <attribute tag="lastUID" value="27"/>
+          <codeElement xmi:type="code:MethodUnit" xmi:id="40" name="Object" type="41" kind="constructor">
+            <attribute tag="UID" value="26"/>
+            <codeElement xmi:type="code:Signature" xmi:id="41" name="&lt;init>">
+              <attribute tag="UID" value="26"/>
+              <parameterUnit xmi:id="42" name="return: void" type="24" kind="return">
+                <attribute tag="pos" value="0"/>
+                <attribute tag="UID" value="26"/>
+              </parameterUnit>
+            </codeElement>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:ClassUnit" xmi:id="56" name="String">
+          <attribute tag="UID" value="28"/>
+        </codeElement>
+        <codeElement xmi:type="code:ClassUnit" xmi:id="75" name="System">
+          <attribute tag="UID" value="29"/>
+          <attribute tag="lastUID" value="31"/>
+          <codeElement xmi:type="code:MemberUnit" xmi:id="79" name="out" type="76">
+            <attribute tag="UID" value="30"/>
+            <attribute tag="lastUID" value="31"/>
+            <codeRelation xmi:type="code:HasType" xmi:id="78" to="76" from="79">
+              <attribute tag="UID" value="31"/>
+            </codeRelation>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:ClassUnit" xmi:id="83" name="StringBuilder">
+          <attribute tag="UID" value="32"/>
+          <attribute tag="lastUID" value="38"/>
+          <codeElement xmi:type="code:MethodUnit" xmi:id="97" name="StringBuilder" type="98" kind="constructor">
+            <attribute tag="UID" value="33"/>
+            <codeElement xmi:type="code:Signature" xmi:id="98" name="&lt;init>">
+              <attribute tag="UID" value="33"/>
+              <parameterUnit xmi:id="99" name="return: void" type="24" kind="return">
+                <attribute tag="pos" value="0"/>
+                <attribute tag="UID" value="33"/>
+              </parameterUnit>
+              <parameterUnit xmi:id="100" name="java.lang.String" type="92">
+                <attribute tag="pos" value="1"/>
+                <attribute tag="UID" value="33"/>
+              </parameterUnit>
+            </codeElement>
+          </codeElement>
+          <codeElement xmi:type="code:MethodUnit" xmi:id="107" name="append" type="108">
+            <attribute tag="UID" value="35"/>
+            <codeElement xmi:type="code:Signature" xmi:id="108" name="append">
+              <attribute tag="UID" value="35"/>
+              <parameterUnit xmi:id="110" name="return: java.lang.StringBuilder" type="83" kind="return">
+                <attribute tag="pos" value="0"/>
+                <attribute tag="UID" value="35"/>
+                <codeRelation xmi:type="code:HasType" xmi:id="109" to="83" from="110">
+                  <attribute tag="UID" value="35"/>
+                </codeRelation>
+              </parameterUnit>
+              <parameterUnit xmi:id="112" name="java.lang.Object" type="37">
+                <attribute tag="pos" value="1"/>
+                <attribute tag="UID" value="35"/>
+                <codeRelation xmi:type="code:HasType" xmi:id="111" to="37" from="112">
+                  <attribute tag="UID" value="35"/>
+                </codeRelation>
+              </parameterUnit>
+            </codeElement>
+          </codeElement>
+          <codeElement xmi:type="code:MethodUnit" xmi:id="116" name="toString" type="117">
+            <attribute tag="UID" value="37"/>
+            <codeElement xmi:type="code:Signature" xmi:id="117" name="toString">
+              <attribute tag="UID" value="37"/>
+              <parameterUnit xmi:id="118" name="return: java.lang.String" type="92" kind="return">
+                <attribute tag="pos" value="0"/>
+                <attribute tag="UID" value="37"/>
+              </parameterUnit>
+            </codeElement>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+      <codeElement xmi:type="code:Package" xmi:id="77" name="io">
+        <attribute tag="UID" value="39"/>
+        <attribute tag="lastUID" value="42"/>
+        <codeElement xmi:type="code:ClassUnit" xmi:id="76" name="PrintStream">
+          <attribute tag="UID" value="40"/>
+          <attribute tag="lastUID" value="42"/>
+          <codeElement xmi:type="code:MethodUnit" xmi:id="122" name="println" type="123">
+            <attribute tag="UID" value="41"/>
+            <codeElement xmi:type="code:Signature" xmi:id="123" name="println">
+              <attribute tag="UID" value="41"/>
+              <parameterUnit xmi:id="124" name="return: void" type="24" kind="return">
+                <attribute tag="pos" value="0"/>
+                <attribute tag="UID" value="41"/>
+              </parameterUnit>
+              <parameterUnit xmi:id="125" name="java.lang.String" type="92">
+                <attribute tag="pos" value="1"/>
+                <attribute tag="UID" value="41"/>
+              </parameterUnit>
+            </codeElement>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+    </codeElement>
+    <codeElement xmi:type="code:ClassUnit" xmi:id="234" name="Message">
+      <attribute tag="UID" value="43"/>
+      <attribute tag="lastUID" value="48"/>
+      <codeElement xmi:type="code:MethodUnit" xmi:id="246" name="Message" type="247" kind="constructor">
+        <attribute tag="UID" value="44"/>
+        <source xmi:id="291" language="java">
+          <region xmi:id="290" file="288" startLine="7"/>
+        </source>
+        <entryFlow to="295" from="246"/>
+        <codeElement xmi:type="code:Signature" xmi:id="247" name="&lt;init>">
+          <attribute tag="UID" value="44"/>
+          <parameterUnit xmi:id="248" name="return: void" type="24" kind="return">
+            <attribute tag="pos" value="0"/>
+            <attribute tag="UID" value="44"/>
+          </parameterUnit>
+          <parameterUnit xmi:id="249" name="java.lang.String" type="92">
+            <attribute tag="pos" value="1"/>
+            <attribute tag="UID" value="44"/>
+          </parameterUnit>
+          <parameterUnit xmi:id="294" name="msg" type="92">
+            <attribute tag="pos" value="1"/>
+            <attribute tag="UID" value="44"/>
+          </parameterUnit>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="293" name="this" type="234">
+          <attribute tag="UID" value="44"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="292" to="234" from="293">
+            <attribute tag="UID" value="44"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="379" name="line 7" kind="Compound">
+          <attribute tag="UID" value="44"/>
+          <source language="java">
+            <region file="288" startLine="7"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="295" name="L1787753557" kind="Nop">
+            <attribute tag="UID" value="44"/>
+            <actionRelation xmi:type="action:Flow" to="301" from="295"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="301" name="call Object()" kind="MethodCall">
+            <attribute tag="UID" value="44"/>
+            <actionRelation xmi:type="action:Calls" to="40" from="301"/>
+            <actionRelation xmi:type="action:Flow" to="304" from="301"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="293" from="301"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="304" name="L1226090823" kind="Nop">
+            <attribute tag="UID" value="44"/>
+            <actionRelation xmi:type="action:Flow" to="313" from="304"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="380" name="line 9" kind="Compound">
+          <attribute tag="UID" value="44"/>
+          <source language="java">
+            <region file="288" startLine="9"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="313" name="put field msg" kind="MemberReplace">
+            <attribute tag="UID" value="44"/>
+            <actionRelation xmi:type="action:Writes" to="316" from="313"/>
+            <actionRelation xmi:type="action:Flow" to="317" from="313"/>
+            <actionRelation xmi:type="action:Addresses" to="293" from="313"/>
+            <actionRelation xmi:type="action:Reads" to="294" from="313"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="317" name="L779064443" kind="Nop">
+            <attribute tag="UID" value="44"/>
+            <actionRelation xmi:type="action:Flow" to="320" from="317"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="381" name="line 10" kind="Compound">
+          <attribute tag="UID" value="44"/>
+          <source language="java">
+            <region file="288" startLine="10"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="320" name="RETURN" kind="Return">
+            <attribute tag="UID" value="44"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="323" name="L1267448673" kind="Nop">
+            <attribute tag="UID" value="44"/>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+      <codeElement xmi:type="code:MethodUnit" xmi:id="268" name="Print" type="269">
+        <attribute tag="UID" value="46"/>
+        <source xmi:id="327" language="java">
+          <region xmi:id="326" file="288" startLine="14"/>
+        </source>
+        <entryFlow to="330" from="268"/>
+        <codeElement xmi:type="code:Signature" xmi:id="269" name="Print">
+          <attribute tag="UID" value="46"/>
+          <parameterUnit xmi:id="270" name="return: void" type="24" kind="return">
+            <attribute tag="pos" value="0"/>
+            <attribute tag="UID" value="46"/>
+          </parameterUnit>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="329" name="this" type="234">
+          <attribute tag="UID" value="46"/>
+          <codeRelation xmi:type="code:HasType" xmi:id="328" to="234" from="329">
+            <attribute tag="UID" value="46"/>
+          </codeRelation>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="382" name="line 14" kind="Compound">
+          <attribute tag="UID" value="46"/>
+          <source language="java">
+            <region file="288" startLine="14"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="330" name="L501368859" kind="Nop">
+            <attribute tag="UID" value="46"/>
+            <actionRelation xmi:type="action:Flow" to="333" from="330"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="333" name="get static field out" kind="Assign">
+            <attribute tag="UID" value="46"/>
+            <actionRelation xmi:type="action:Reads" to="79" from="333"/>
+            <actionRelation xmi:type="action:Flow" to="339" from="333"/>
+            <actionRelation xmi:type="action:Writes" to="383" from="333"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="339" name="get field msg" kind="MemberSelect">
+            <attribute tag="UID" value="46"/>
+            <actionRelation xmi:type="action:Reads" to="316" from="339"/>
+            <actionRelation xmi:type="action:Flow" to="342" from="339"/>
+            <actionRelation xmi:type="action:Writes" to="384" from="339"/>
+            <actionRelation xmi:type="action:Addresses" to="329" from="339"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="342" name="call println()" kind="VirtualCall">
+            <attribute tag="UID" value="46"/>
+            <actionRelation xmi:type="action:Calls" to="122" from="342"/>
+            <actionRelation xmi:type="action:Flow" to="345" from="342"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="383" from="342"/>
+            <actionRelation xmi:type="action:Reads" stereotype="3" to="384" from="342"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="345" name="L948102387" kind="Nop">
+            <attribute tag="UID" value="46"/>
+            <actionRelation xmi:type="action:Flow" to="348" from="345"/>
+          </codeElement>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="383" name="tmp0" kind="register">
+          <attribute tag="UID" value="46"/>
+        </codeElement>
+        <codeElement xmi:type="code:StorableUnit" xmi:id="384" name="tmp1" kind="register">
+          <attribute tag="UID" value="46"/>
+        </codeElement>
+        <codeElement xmi:type="action:ActionElement" xmi:id="385" name="line 16" kind="Compound">
+          <attribute tag="UID" value="46"/>
+          <source language="java">
+            <region file="288" startLine="16"/>
+          </source>
+          <codeElement xmi:type="action:ActionElement" xmi:id="348" name="RETURN" kind="Return">
+            <attribute tag="UID" value="46"/>
+          </codeElement>
+          <codeElement xmi:type="action:ActionElement" xmi:id="351" name="L439177261" kind="Nop">
+            <attribute tag="UID" value="46"/>
+          </codeElement>
+        </codeElement>
+      </codeElement>
+      <codeElement xmi:type="code:MemberUnit" xmi:id="316" name="msg" type="92">
+        <attribute tag="UID" value="48"/>
+      </codeElement>
+    </codeElement>
+  </model>
+  <model xmi:type="source:InventoryModel" xmi:id="10" name="Default">
+    <attribute tag="UID" value="49"/>
+    <attribute tag="lastUID" value="65"/>
+    <inventoryElement xmi:type="source:Directory" xmi:id="11" name="/">
+      <attribute tag="UID" value="50"/>
+      <attribute tag="lastUID" value="57"/>
+      <inventoryElement xmi:type="source:Directory" xmi:id="12" name="home">
+        <attribute tag="UID" value="51"/>
+        <attribute tag="lastUID" value="57"/>
+        <inventoryElement xmi:type="source:Directory" xmi:id="13" name="adam">
+          <attribute tag="UID" value="52"/>
+          <attribute tag="lastUID" value="57"/>
+          <inventoryElement xmi:type="source:Directory" xmi:id="14" name="Desktop">
+            <attribute tag="UID" value="53"/>
+            <attribute tag="lastUID" value="57"/>
+            <inventoryElement xmi:type="source:Directory" xmi:id="15" name="helloworld">
+              <attribute tag="UID" value="54"/>
+              <attribute tag="lastUID" value="57"/>
+              <inventoryElement xmi:type="source:Directory" xmi:id="16" name="HelloWorld">
+                <attribute tag="UID" value="55"/>
+                <attribute tag="lastUID" value="57"/>
+                <inventoryElement xmi:type="source:Directory" xmi:id="17" name="bin">
+                  <attribute tag="UID" value="56"/>
+                  <attribute tag="lastUID" value="57"/>
+                  <inventoryElement xmi:type="source:BinaryFile" xmi:id="9" name="HelloWorld.class" path="/home/adam/Desktop/helloworld/HelloWorld/bin/HelloWorld.class">
+                    <attribute tag="UID" value="57"/>
+                  </inventoryElement>
+                </inventoryElement>
+              </inventoryElement>
+            </inventoryElement>
+          </inventoryElement>
+        </inventoryElement>
+      </inventoryElement>
+    </inventoryElement>
+    <inventoryElement xmi:type="source:Directory" xmi:id="281" name="/">
+      <attribute tag="UID" value="58"/>
+      <attribute tag="lastUID" value="65"/>
+      <inventoryElement xmi:type="source:Directory" xmi:id="282" name="home">
+        <attribute tag="UID" value="59"/>
+        <attribute tag="lastUID" value="65"/>
+        <inventoryElement xmi:type="source:Directory" xmi:id="283" name="adam">
+          <attribute tag="UID" value="60"/>
+          <attribute tag="lastUID" value="65"/>
+          <inventoryElement xmi:type="source:Directory" xmi:id="284" name="Desktop">
+            <attribute tag="UID" value="61"/>
+            <attribute tag="lastUID" value="65"/>
+            <inventoryElement xmi:type="source:Directory" xmi:id="285" name="helloworld">
+              <attribute tag="UID" value="62"/>
+              <attribute tag="lastUID" value="65"/>
+              <inventoryElement xmi:type="source:Directory" xmi:id="286" name="HelloWorld">
+                <attribute tag="UID" value="63"/>
+                <attribute tag="lastUID" value="65"/>
+                <inventoryElement xmi:type="source:Directory" xmi:id="287" name="bin">
+                  <attribute tag="UID" value="64"/>
+                  <attribute tag="lastUID" value="65"/>
+                  <inventoryElement xmi:type="source:BinaryFile" xmi:id="280" name="Message.class" path="/home/adam/Desktop/helloworld/HelloWorld/bin/Message.class">
+                    <attribute tag="UID" value="65"/>
+                  </inventoryElement>
+                </inventoryElement>
+              </inventoryElement>
+            </inventoryElement>
+          </inventoryElement>
+        </inventoryElement>
+      </inventoryElement>
+    </inventoryElement>
+  </model>
+</kdm:Segment>

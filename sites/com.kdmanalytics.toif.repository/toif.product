@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="TOIF RCP" uid="com.kdmanalytics.toif" id="com.kdmanalytics.toif.rcp.product" application="com.kdmanalytics.toif.rcp.application" version="1.15.5" useFeatures="true" includeLaunchers="true">
+<product name="TOIF RCP" uid="com.kdmanalytics.toif" id="com.kdmanalytics.toif.rcp.product" application="com.kdmanalytics.toif.rcp.application" version="1.16.1.qualifier" useFeatures="true" includeLaunchers="true">
 
 
    <configIni use="default">

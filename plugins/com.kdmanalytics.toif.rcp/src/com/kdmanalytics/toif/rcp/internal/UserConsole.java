@@ -12,6 +12,7 @@ import java.io.File;
 import com.kdmanalytics.toif.rcp.internal.cmd.AdaptorCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.MergeCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.VersionCmd;
+import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.CliFactory;
 
 public class UserConsole
@@ -35,7 +36,11 @@ public class UserConsole
     	ToifCli toifCli = null;
     	try
     		{
-    	    toifCli = CliFactory.parseArguments(ToifCli.class, toifArgs);
+    	  if (toifArgs.length == 0) 
+    	  {
+    	    throw new ArgumentValidationException(CliFactory.createCli(ToifCli.class).getHelpMessage());
+    	  }
+    	  toifCli = CliFactory.parseArguments(ToifCli.class, toifArgs);
     		}
     	catch( Exception ex)
     		{
@@ -95,6 +100,7 @@ public class UserConsole
      **************************************************/
     private boolean argsValid( ToifCli cli)
     	{
+      
     	// Check that we are only doing a single command
     	if (cli.isMerge() && cli.isAdaptor())
     		{

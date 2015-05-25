@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<toif:TOIFSegment xsi:schemaLocation="http://kdmanalytics.com/TOIFSchema.xsd TOIFSchema.xsd" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:toif="http://kdmanalytics.com/toif.xsd" xsi:type="toif:TOIFSegment">
+    <name name="0"/>
+    <description text="Segment relating to the sphinx-4 project."/>
+    <fact xsi:type="toif:Person" id="1">
+        <name name="Adam Nunn"/>
+        <phone phone="555-1234"/>
+        <email email="adam@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Role" id="2">
+        <name name="company"/>
+        <description text="employer"/>
+    </fact>
+    <fact xsi:type="toif:Vendor" id="3">
+        <name name="KDM Analytics"/>
+        <description text="KDM Analytics is a security assurance company providing products and services for threat risk assessment and management, due diligence assessments, and information and data assurance. Leveraging our decades of experience in static analysis, reverse engineering and formal methods, we have created breakthrough products for the automated and systematic investigation of code, data and networks."/>
+        <address address="3730 Richmond Rd, Suite 204, Ottawa, ON, K2H 5B9"/>
+        <phone phone="613-627-1011"/>
+        <email email="adam@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Project" id="4">
+        <description text="Using Sphinx-4 to test the TOIF tool chain."/>
+        <name name="Sphinx-4"/>
+    </fact>
+    <fact xsi:type="toif:Organization" id="5">
+        <name name="Acme Corporation"/>
+        <description text="Acme Corporation"/>
+        <address address="blah"/>
+        <phone phone="555-5555"/>
+        <email email="thingamy@thingamy.com"/>
+    </fact>
+    <fact xsi:type="toif:Adaptor" id="6">
+        <description text="Find Bugs in Java Programs"/>
+        <name name="FindBugs Adaptor"/>
+        <version version="0.5"/>
+    </fact>
+    <fact xsi:type="toif:Organization" id="7">
+        <name name="KDM"/>
+        <description text="Kdm Analytics"/>
+        <address address="Richmond Road"/>
+        <phone phone="555-5555"/>
+        <email email="kdm@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Vendor" id="8">
+        <name name="sourceforge"/>
+        <description text="SourceForge is a web-based source code repository."/>
+        <address address="http://findbugs.sourceforge.net/"/>
+        <phone phone=""/>
+        <email email="findbugs@cs.umd.edu"/>
+    </fact>
+    <fact xsi:type="toif:Generator" id="9">
+        <name name="findbugs"/>
+        <description text="Static code analysis tool that analyses Java bytecode and detects a wide range of problems."/>
+        <version version="1.3.9"/>
+    </fact>
+    <fact xsi:type="toif:Role" id="10">
+        <name name="Software Developer"/>
+        <description text="Developer on the TOIF Adaptors project"/>
+    </fact>
+    <fact adaptor="6" vendor="3" xsi:type="toif:AdaptorIsSuppliedByVendor" id="11"/>
+    <fact segment="0" person="1" xsi:type="toif:TOIFSegmentIsGeneratedByPerson" id="12"/>
+    <fact generator="9" vendor="8" xsi:type="toif:GeneratorIsSuppliedByVendor" id="13"/>
+    <fact organization1="7" organization2="5" role="2" xsi:type="toif:OrganizationIsPartOfOrganizationAsRole" id="14"/>
+    <fact segment="0" project="4" xsi:type="toif:TOIFSegmentIsRelatedToProject" id="15"/>
+    <fact segment="0" organization="7" xsi:type="toif:TOIFSegmentIsOwnedByOrganization" id="16"/>
+    <fact person="1" organization="7" role="10" xsi:type="toif:PersonIsEmployedByOrganizationAsRole" id="17"/>
+    <fact segment="0" adaptor="6" xsi:type="toif:TOIFSegmentIsProcessedByAdaptor" id="18"/>
+    <fact segment="0" generator="9" xsi:type="toif:TOIFSegmentIsGeneratedByGenerator" id="19"/>
+    <fact segment="0" organization="7" xsi:type="toif:TOIFSegmentIsProducedByOrganization" id="20"/>
+    <fact organization="7" project="4" role="2" xsi:type="toif:OrganizationIsInvolvedInProjectAsRole" id="21"/>
+    <fact adaptor="6" generator="9" xsi:type="toif:AdaptorSupportsGenerator" id="22"/>
+    <fact segment="0" person="1" xsi:type="toif:TOIFSegmentIsSupervisedByPerson" id="23"/>
+    <fact role="10" project="4" person="1" xsi:type="toif:PersonIsInvolvedInProjectAsRole" id="24"/>
+</toif:TOIFSegment>

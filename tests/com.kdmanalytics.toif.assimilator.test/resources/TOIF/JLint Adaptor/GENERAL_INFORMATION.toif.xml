@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<toif:TOIFSegment xsi:schemaLocation="http://kdmanalytics.com/TOIFSchema.xsd TOIFSchema.xsd" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:toif="http://kdmanalytics.com/toif.xsd" xsi:type="toif:TOIFSegment">
+    <name name="0"/>
+    <description text="Segment relating to the sphinx-4 project."/>
+    <fact xsi:type="toif:Person" id="1">
+        <name name="Adam Nunn"/>
+        <phone phone="555-1234"/>
+        <email email="adam@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Role" id="2">
+        <name name="company"/>
+        <description text="employer"/>
+    </fact>
+    <fact xsi:type="toif:Vendor" id="3">
+        <name name="KDM Analytics"/>
+        <description text="KDM Analytics is a security assurance company providing products and services for threat risk assessment and management, due diligence assessments, and information and data assurance. Leveraging our decades of experience in static analysis, reverse engineering and formal methods, we have created breakthrough products for the automated and systematic investigation of code, data and networks."/>
+        <address address="3730 Richmond Rd, Suite 204, Ottawa, ON, K2H 5B9"/>
+        <phone phone="613-627-1011"/>
+        <email email="adam@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Project" id="4">
+        <description text="Using Sphinx-4 to test the TOIF tool chain."/>
+        <name name="Sphinx-4"/>
+    </fact>
+    <fact xsi:type="toif:Organization" id="5">
+        <name name="Acme Corporation"/>
+        <description text="Acme Corporation"/>
+        <address address="blah"/>
+        <phone phone="555-5555"/>
+        <email email="thingamy@thingamy.com"/>
+    </fact>
+    <fact xsi:type="toif:Generator" id="6">
+        <name name="jlint"/>
+        <description text="Jlint will check your Java code and find bugs, inconsistencies and synchronization problems by doing data flow analysis and building the lock graph."/>
+        <version version="Assumed 3.0"/>
+    </fact>
+    <fact xsi:type="toif:Vendor" id="7">
+        <name name="artho"/>
+        <description text="We develop tools for web pages with dynamic content of medium size"/>
+        <address address="http://artho.com/index.shtml"/>
+        <phone phone="+81.8051731892"/>
+        <email email="cyrille@artho.com"/>
+    </fact>
+    <fact xsi:type="toif:Organization" id="8">
+        <name name="KDM"/>
+        <description text="Kdm Analytics"/>
+        <address address="Richmond Road"/>
+        <phone phone="555-5555"/>
+        <email email="kdm@kdmanalytics.com"/>
+    </fact>
+    <fact xsi:type="toif:Adaptor" id="9">
+        <description text="Jlint will check your Java code and find bugs, inconsistencies and synchronization problems by doing data flow analysis and building the lock graph."/>
+        <name name="JLint Adaptor"/>
+        <version version="0.5"/>
+    </fact>
+    <fact xsi:type="toif:Role" id="10">
+        <name name="Software Developer"/>
+        <description text="Developer on the TOIF Adaptors project"/>
+    </fact>
+    <fact organization1="8" organization2="5" role="2" xsi:type="toif:OrganizationIsPartOfOrganizationAsRole" id="11"/>
+    <fact adaptor="9" vendor="3" xsi:type="toif:AdaptorIsSuppliedByVendor" id="12"/>
+    <fact segment="0" person="1" xsi:type="toif:TOIFSegmentIsGeneratedByPerson" id="13"/>
+    <fact role="10" project="4" person="1" xsi:type="toif:PersonIsInvolvedInProjectAsRole" id="14"/>
+    <fact person="1" organization="8" role="10" xsi:type="toif:PersonIsEmployedByOrganizationAsRole" id="15"/>
+    <fact organization="8" project="4" role="2" xsi:type="toif:OrganizationIsInvolvedInProjectAsRole" id="16"/>
+    <fact segment="0" project="4" xsi:type="toif:TOIFSegmentIsRelatedToProject" id="17"/>
+    <fact segment="0" organization="8" xsi:type="toif:TOIFSegmentIsOwnedByOrganization" id="18"/>
+    <fact segment="0" adaptor="9" xsi:type="toif:TOIFSegmentIsProcessedByAdaptor" id="19"/>
+    <fact segment="0" organization="8" xsi:type="toif:TOIFSegmentIsProducedByOrganization" id="20"/>
+    <fact adaptor="9" generator="6" xsi:type="toif:AdaptorSupportsGenerator" id="21"/>
+    <fact generator="6" vendor="7" xsi:type="toif:GeneratorIsSuppliedByVendor" id="22"/>
+    <fact segment="0" person="1" xsi:type="toif:TOIFSegmentIsSupervisedByPerson" id="23"/>
+    <fact segment="0" generator="6" xsi:type="toif:TOIFSegmentIsGeneratedByGenerator" id="24"/>
+</toif:TOIFSegment>

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jlint Tests
+Bundle-SymbolicName: com.kdmanalytics.toif.jlint.test
+Bundle-Version: 1.16.0
+Bundle-Vendor: KDM Analytics Inc.
+Fragment-Host: com.kdmanalytics.toif.jlint
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit,
+ org.mockito.core;bundle-version="1.9.5",
+ org.objenesis;bundle-version="1.0.0"
+Bundle-ClassPath: libs/junit-4.12.jar,
+ .

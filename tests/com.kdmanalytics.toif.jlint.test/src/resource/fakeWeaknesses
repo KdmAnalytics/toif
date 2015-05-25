@@ -1,0 +1,42 @@
+sync_loop	Loop 999: invocation of synchronized method barMethod can cause deadlock
+loop	Loop 999/999: invocation of method barMethod forms the loop in class dependency graph
+lock	Lock fooString is requested while holding lock fooString, with other thread holding fooString and requesting lock fooString
+wait	Method wait() can be invoked with monitor of other object locked
+locklist	Holding 999 lock(s):fooString
+wait_path	Call sequence to method barMethod can cause deadlock in wait()
+nosync	Synchronized method barMethod is overridden by non-synchronized method of derived class 'CruftClass'
+concurrent_call	Method barMethod can be called from different threads and is not synchronized
+concurrent_access	Field 'uglyUTFstuff' of class 'CruftClass' can be accessed from different threads and is not volatile
+run_nosync	Method barMethod implementing 'Runnable' interface is not synchronized
+lock_assign	Value of lock uglyUTFstuff is changed outside synchronization or constructor
+lock_assign2	Value of lock uglyUTFstuff is changed while (potentially) owning it
+wait_nosync	Method 'fooString.uglyUTFstuff' is called without synchronizing on 'fooString'
+not_overridden	Method barMethod is not overridden by method with the same name of derived class 'CruftClass'
+equals_not_overridden	hashCode() was overridden but not equals()
+hashcode_not_overridden	equals() was overridden but not hashCode()
+field_redefined	Component 'uglyUTFstuff' in class 'CruftClass' shadows one in base class 'CruftClass'
+shadow_local	Local variable 'uglyUTFstuff' shadows component of class 'CruftClass'
+super_finalize	Method finalize() doesn't call super.finalize()
+null_param	Method barMethod can be invoked with NULL as 999 parameter and this parameter is used without check for NULL
+null_var	Value of referenced variable 'uglyUTFstuff' may be NULL
+null_ptr	NULL reference can be used
+zero_operand	Zero operand for fooString operation
+zero_result	Result of operation fooString is always 0
+shift_count	Shift fooString with count fooString than 999
+shift_range	Shift fooString count range [999,999] is out of domain
+conversion	Range of expression value has no intersection with fooString type domain
+truncation	Data can be lost as a result of truncation to fooString
+overflow	Maybe type cast is not correctly applied
+same_result	Comparison always produces the same result
+disjoint_mask	Compared expressions can be equal only when both of them are 0
+no_effect	Reminder always equal to the first operand
+short_char_cmp	Comparison of short with char
+string_cmp	Compare strings as object references
+weak_cmp	Inequality comparison can be replaced with equality comparison
+incomp_case	Switch case constant 999 can't be produced by switch expression
+neg_len	Array length [999,999] is less than zero
+maybe_neg_len	Array length [999,999] may be less than zero
+bad_index	Index [999,999] is out of array bounds
+maybe_bad_index	Index [999,999] may be out of array bounds
+done	Verification completed: 999 reported messages
+	

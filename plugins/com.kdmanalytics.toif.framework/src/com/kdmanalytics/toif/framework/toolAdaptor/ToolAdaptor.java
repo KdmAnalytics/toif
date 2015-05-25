@@ -106,10 +106,12 @@ import com.lexicalscope.jewel.cli.CliFactory;
 
 public class ToolAdaptor
 {
+    
     /**
      * the logger.
      */
     private static Logger LOG = Logger.getLogger(ToolAdaptor.class);
+    
     /**
      * The implementation of the specific adaptor.
      */
@@ -165,6 +167,13 @@ public class ToolAdaptor
         this.adaptorImpl = adaptor;
     }
     
+    public static void main(String[] args) throws ToifException
+    {
+        ToolAdaptor ta = new ToolAdaptor();
+        
+        ta.runToolAdaptor(args);
+    }
+    
     public boolean runToolAdaptor(String[] args) throws ToifException
     {
         // get the options provided to main.
@@ -174,7 +183,7 @@ public class ToolAdaptor
         }
         catch (ArgumentValidationException e)
         {
-            System.err.println("Incorrect arguments");
+            System.err.println("Incorrect arguments: " + e);
             return false;
         }
         
@@ -204,7 +213,8 @@ public class ToolAdaptor
         return true;
     }
     
-    public boolean runToolAdaptor(AbstractAdaptor adaptor, List<String> arguments, java.io.File workingDirectory, boolean[] validLines) throws ToifException
+    public boolean runToolAdaptor(AbstractAdaptor adaptor, List<String> arguments, java.io.File workingDirectory, boolean[] validLines)
+            throws ToifException
     {
         // spoof the adaptor option at the beginning.
         arguments.add(0, "-a");
@@ -257,7 +267,7 @@ public class ToolAdaptor
      *            the scan tool process
      * @param file
      *            The file that the segment is working on.
-     * @throws ToifException 
+     * @throws ToifException
      */
     public void getElementsFromParse(java.io.File process, File file) throws ToifException
     {
@@ -277,7 +287,7 @@ public class ToolAdaptor
      * create the house keeping facts.
      * 
      * @param housekeepingFile
-     * @throws ToifException 
+     * @throws ToifException
      */
     public void createFacts(java.io.File housekeepingFile) throws ToifException
     {
@@ -319,7 +329,7 @@ public class ToolAdaptor
      * get an implementation of the adaptor class in use.
      * 
      * @param adaptorClass
-     * @throws ToifException 
+     * @throws ToifException
      */
     public void setAdaptorImplementation(Class<?> adaptorClass) throws ToifException
     {
@@ -331,8 +341,8 @@ public class ToolAdaptor
         catch (final InstantiationException | IllegalAccessException e1)
         {
             final String msg = options.getAdaptor().toString() + ": Adaptor not found!";
-            LOG.error( msg, e1 );
-            throw new ToifException( msg );
+            LOG.error(msg, e1);
+            throw new ToifException(msg);
             
         }
     }
@@ -367,15 +377,15 @@ public class ToolAdaptor
         catch (final ClassNotFoundException e1)
         {
             final String msg = adaptor + ": Adaptor not found!";
-            LOG.error( msg, e1 );
-            throw new ToifException( msg );
-          
+            LOG.error(msg, e1);
+            throw new ToifException(msg);
+            
         }
         catch (Exception e)
         {
             final String msg = "Error reading arguments.";
-            LOG.error( msg, e);
-            throw new ToifException( msg );
+            LOG.error(msg, e);
+            throw new ToifException(msg);
             
         }
         return adaptorClass;
@@ -425,7 +435,8 @@ public class ToolAdaptor
     /**
      * Since all the entities and facts are in the elements hashtable, we can
      * add them to the root segment and generate the xml for the ouput.
-     * @throws ToifException 
+     * 
+     * @throws ToifException
      */
     public void constructXml() throws ToifException
     {
@@ -461,7 +472,8 @@ public class ToolAdaptor
     /**
      * Since all the entities and facts are in the elements hashtable, we can
      * add them to the root segment and generate the xml for the ouput.
-     * @throws ToifException 
+     * 
+     * @throws ToifException
      */
     public void constructXml(java.io.File outputDir, java.io.File outputFile) throws ToifException
     {
@@ -830,7 +842,7 @@ public class ToolAdaptor
      * 
      * @param housekeeping
      *            the properties file.
-     * @throws ToifException 
+     * @throws ToifException
      */
     private void createSegmentIsRelatedToProject(Properties housekeeping) throws NullPointerException, ToifException
     {
@@ -839,10 +851,10 @@ public class ToolAdaptor
         
         // project is mandatory.
         if ((projectName == null) || (projectName.isEmpty()))
-        {      
+        {
             final String msg = options.getAdaptor().toString() + ": No project defined in house-keeping file.";
-            LOG.error( msg);
-            throw new ToifException( msg );
+            LOG.error(msg);
+            throw new ToifException(msg);
         }
         
         final String[] projectDetails = housekeeping.getProperty(projectName).split(";");
@@ -850,8 +862,8 @@ public class ToolAdaptor
         if (projectDetails == null)
         {
             final String msg = options.getAdaptor().toString() + ": No project details defined in house-keeping file.";
-            LOG.error( msg);
-            throw new ToifException( msg );
+            LOG.error(msg);
+            throw new ToifException(msg);
             
         }
         
@@ -928,7 +940,8 @@ public class ToolAdaptor
     /**
      * Get the housekeeping facts and elements. ie, all the facts not relating
      * to the finding facts and elements.
-     * @throws ToifException 
+     * 
+     * @throws ToifException
      */
     void getHouseKeepingFacts() throws NullPointerException, ToifException
     {
@@ -963,7 +976,7 @@ public class ToolAdaptor
      * get the house keeping values
      * 
      * @return
-     * @throws ToifException 
+     * @throws ToifException
      */
     Properties getHousekeepingProperties(java.io.File housekeepingFile) throws ToifException
     {
@@ -973,7 +986,7 @@ public class ToolAdaptor
          */
         final Properties props = new Properties();
         
-        // 
+        //
         FileInputStream istream = null;
         try
         {
@@ -986,7 +999,7 @@ public class ToolAdaptor
                 
                 // load the property file
                 istream = new FileInputStream(options.getHouseKeeping());
-                props.load( istream );
+                props.load(istream);
                 istream.close();
                 
             }
@@ -994,11 +1007,10 @@ public class ToolAdaptor
         catch (final IOException e)
         {
             final String msg = options.getAdaptor().toString() + ": Could not find the house-keeping file";
-            LOG.error( msg, e);
-            throw new ToifException( msg );
+            LOG.error(msg, e);
+            throw new ToifException(msg);
         }
         
-       
         finally
         {
             // Always ensure that we are closing the file handle
@@ -1010,7 +1022,7 @@ public class ToolAdaptor
                 catch (IOException e)
                 {
                     // Just leave it be.
-                   LOG.error(  "Unable to close stream for " + options.getHouseKeeping().getAbsolutePath());        
+                    LOG.error("Unable to close stream for " + options.getHouseKeeping().getAbsolutePath());
                 }
         }
         return props;
@@ -1099,7 +1111,7 @@ public class ToolAdaptor
      * 
      * @param outFile
      * @param elementList
-     * @throws ToifException 
+     * @throws ToifException
      */
     private void marshall(java.io.File outFile, final ArrayList<Element> elementList) throws ToifException
     {
@@ -1171,14 +1183,14 @@ public class ToolAdaptor
         catch (final JAXBException e)
         {
             final String msg = options.getAdaptor().toString() + ": Failed to create XML output \n";
-            LOG.error( msg, e);
-            throw new ToifException( msg );
+            LOG.error(msg, e);
+            throw new ToifException(msg);
         }
         catch (final FileNotFoundException ex)
         {
-            final String  msg = options.getAdaptor().toString() + ": Not able to write to output file " + outFile;
-            LOG.error( msg, ex);
-            throw new ToifException( msg );
+            final String msg = options.getAdaptor().toString() + ": Not able to write to output file " + outFile;
+            LOG.error(msg, ex);
+            throw new ToifException(msg);
         }
     }
     
@@ -1190,7 +1202,7 @@ public class ToolAdaptor
      * @param inputStream
      *            - The error-stream from the running process.
      * @return - An ArrayList of the found findings.
-     * @throws ToifException 
+     * @throws ToifException
      */
     ArrayList<Element> parse(java.io.File process, File file) throws ToifException
     {
@@ -1203,7 +1215,7 @@ public class ToolAdaptor
      * you were running it from the command line.
      * 
      * @return return the process which was created by running the tool.
-     * @throws ToifException 
+     * @throws ToifException
      */
     public java.io.File runTool() throws ToifException
     {
@@ -1228,12 +1240,12 @@ public class ToolAdaptor
         
         if (SystemUtils.IS_OS_WINDOWS)
         {
-            niceCommands.add( "C:\\Windows\\System32\\cmd.exe");
-            niceCommands.add( "/c");
-            niceCommands.add( "start");
-            niceCommands.add( "/B");
-            niceCommands.add( "/BELOWNORMAL");
-            niceCommands.add( "/WAIT");
+            niceCommands.add("C:\\Windows\\System32\\cmd.exe");
+            niceCommands.add("/c");
+            niceCommands.add("start");
+            niceCommands.add("/B");
+            niceCommands.add("/BELOWNORMAL");
+            niceCommands.add("/WAIT");
         }
         else
         {
@@ -1249,15 +1261,15 @@ public class ToolAdaptor
             process.directory(workingDirectory);
         }
         
-        options.getOutputDirectory().mkdirs();
+        java.io.File outputDirectory = options.getOutputDirectory();
+        outputDirectory.mkdirs();
         
         java.io.File file = null;
         if (adaptorImpl.getAdaptorName().equals("Splint"))
         {
-            file = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
+            file = new java.io.File(outputDirectory, options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
             
-            java.io.File file2 = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "-err."
-                    + adaptorImpl.getRuntoolName());
+            java.io.File file2 = new java.io.File(outputDirectory, options.getInputFile().getName() + "-err." + adaptorImpl.getRuntoolName());
             
             java.io.File tmp = null;
             try
@@ -1266,8 +1278,8 @@ public class ToolAdaptor
             }
             catch (IOException e)
             {
-                LOG.error( e);
-                throw new ToifException( );
+                LOG.error(e);
+                throw new ToifException();
             }
             if (tmp != null)
             {
@@ -1290,9 +1302,8 @@ public class ToolAdaptor
         // }
         else
         {
-            file = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
-            java.io.File file2 = new java.io.File(options.getOutputDirectory(), options.getInputFile().getName() + "-err."
-                    + adaptorImpl.getRuntoolName());
+            file = new java.io.File(outputDirectory, options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
+            java.io.File file2 = new java.io.File(outputDirectory, options.getInputFile().getName() + "-err." + adaptorImpl.getRuntoolName());
             
             process.redirectOutput(file);
             process.redirectError(file2);
@@ -1305,23 +1316,24 @@ public class ToolAdaptor
             p.waitFor();
             
             // Check the exit value to ensure that process did not fail
-            if ( p.exitValue() != 0)
-            	{
-            	int status = p.exitValue();
-            	final String  msg = "Adaptor process failure detected: status=" + status + " " +
-            			options.getAdaptor().toString();
-            	
-            	LOG.error( msg);
-            	throw new ToifException( msg);
-            	}
+            // except splint, splint is stupid and is always non-zero
+            String name = adaptorImpl.getAdaptorName();
+            if ((p.exitValue() != 0) && (!"Splint".equals(name)))
+            {
+                int status = p.exitValue();
+                final String msg = "Adaptor process failure detected: status=" + status + " " + options.getAdaptor().toString();
+                
+                LOG.error(msg);
+                throw new ToifException(msg);
+            }
             return file;
         }
         catch (final IOException | InterruptedException e)
         {
-            final String msg = options.getAdaptor().toString() + ": Could not write to output.";
-            LOG.error( msg );
-            throw new ToifException( e );
-        }   
+            final String msg = options.getAdaptor().toString() + ": Could not write to output. " + e;
+            LOG.error(msg);
+            throw new ToifException(e);
+        }
     }
     
     /**

@@ -4,9 +4,9 @@
 
   <groupId>com.kdmanalytics</groupId>
   <artifactId>toif</artifactId>
-  <version>1.15.5</version>
+  <version>1.16.0-SNAPSHOT</version>
 
-  <name>TOIF (Tool Output Integration Framework</name>
+  <name>TOIF (Tool Output Integration Framework)</name>
 
   <packaging>pom</packaging>
 

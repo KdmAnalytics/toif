@@ -119,56 +119,9 @@ public class ToifFacade implements IToifFacade
 
 			String runtimeName = adaptor.getRuntoolName();
 			ProcessBuilder process = null;
-			if ("findbugs".equals(runtimeName))
-				{
 
-				// if the system is linux, findbugs can be executed on its
-				// own.
-				if ("Linux".equals(System.getProperty("os.name")))
-					{
-					process = new ProcessBuilder();
-					ArrayList<String> commands = new ArrayList<String>();
-					commands.add(runtimeName);
-					commands.add("-version");
-					process.command(commands);
+			process = new ProcessBuilder(runtimeName);
 
-					}
-				else
-					{
-					process = new ProcessBuilder();
-					String[] commands = { "cmd.exe", "/C", "findbugs.bat",
-							"-version" };
-					process.command(commands);
-
-					Process child = process.start();
-
-					InputStream is = child.getInputStream();
-					InputStreamReader isr = new InputStreamReader(is);
-					BufferedReader br = new BufferedReader(isr);
-					String line;
-					while ((line = br.readLine()) != null)
-						{
-						if (line.startsWith("1.3"))
-							{
-							return true;
-							}
-						else
-							{
-							return false;
-							}
-						}
-
-					// Close file and free resources
-					isr.close();
-					is.close();
-
-					return false;
-					}
-				}
-			else
-				{
-				process = new ProcessBuilder(runtimeName);
-				}
 
 			process.start();
 

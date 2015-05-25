@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TOIF Cppcheck
 Bundle-SymbolicName: com.kdmanalytics.toif.cppcheck;singleton:=true
-Bundle-Version: 1.15.5
+Bundle-Version: 1.16.1.qualifier
 Bundle-Activator: com.kdmanalytics.toif.cppcheck.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.eclipse.core.runtime,

@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.kdmanalytics.toif</groupId>
 		<artifactId>plugins</artifactId>
-		<version>1.15.5</version>
+		<version>1.16.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.kdmanalytics.toif.compile</groupId>
@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>Cppcheck Adaptor</name>
+	<name>TOIF Cppcheck Adaptor</name>
 </project>
