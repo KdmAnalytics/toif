@@ -10,7 +10,7 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>sites</artifactId>
-  <name>TOIF sites</name>
+  <name>TOIF Sites Module</name>
 
   <packaging>pom</packaging>
   

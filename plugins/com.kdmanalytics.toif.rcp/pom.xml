@@ -17,8 +17,8 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF RCP</name>
-	
+	<name>TOIF CLI RCP </name>
+
 	<profiles>
     <profile>
       <id>jenkins</id>
@@ -37,9 +37,9 @@
                 <phase>process-resources</phase>
                 <configuration>
                   <tasks>
-                    <replace file="plugin.properties" 
+                    <replace file="plugin.properties"
                              token="@build@" value="${env.BUILD_NUMBER}" />
-                    <replace file="plugin.properties" 
+                    <replace file="plugin.properties"
                              token="@commit@" value="${env.GIT_COMMIT}" />
                   </tasks>
                 </configuration>
@@ -52,9 +52,9 @@
                 <phase>package</phase>
                 <configuration>
                   <tasks>
-                    <replace file="plugin.properties" 
+                    <replace file="plugin.properties"
                              token="${env.BUILD_NUMBER}" value="@build@" />
-                    <replace file="plugin.properties" 
+                    <replace file="plugin.properties"
                              token="${env.GIT_COMMIT}" value="@commit@" />
                   </tasks>
                 </configuration>

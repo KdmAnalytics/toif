@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Application Interface</name>
+	<name>TOIF API</name>
 </project>

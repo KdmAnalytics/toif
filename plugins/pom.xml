@@ -11,10 +11,10 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>plugins</artifactId>
-  <name>TOIF plugins</name>
+  <name>TOIF Plugins Module</name>
   <packaging>pom</packaging>
 
-  
+
   <modules>
     <module>com.kdmanalytics.toif.common</module>
     <module>com.kdmanalytics.toif.report</module>

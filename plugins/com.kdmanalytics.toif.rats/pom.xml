@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>Rats Adaptor</name>
+	<name>TOIF Rats Adaptor</name>
 </project>

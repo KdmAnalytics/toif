@@ -6,7 +6,7 @@
   <artifactId>toif</artifactId>
   <version>1.15.5</version>
 
-  <name>Tool Output Integration Framework</name>
+  <name>TOIF (Tool Output Integration Framework</name>
 
   <packaging>pom</packaging>
 
@@ -27,7 +27,7 @@
        <id>eclipse-indigo</id>
        <url>http://download.eclipse.org/releases/indigo</url>
        <layout>p2</layout>
-    </repository> 
+    </repository>
   </repositories>
 
   <build>
@@ -37,9 +37,9 @@
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
         <extensions>true</extensions>
-      </plugin>   
+      </plugin>
     </plugins>
-    
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -49,7 +49,7 @@
           <configuration>
             <encoding>UTF-8</encoding>
           </configuration>
-        </plugin>     
+        </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
@@ -83,12 +83,12 @@
               </environment>
             </environments>
           </configuration>
-        </plugin>      
+        </plugin>
       </plugins>
-      
+
     </pluginManagement>
   </build>
-  
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -99,5 +99,5 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
 </project>

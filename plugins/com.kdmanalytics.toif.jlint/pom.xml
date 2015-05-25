@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>Jlint Adaptor</name>
+	<name>TOIF Jlint Adaptor</name>
 </project>

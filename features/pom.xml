@@ -10,10 +10,10 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>features</artifactId>
-  <name>TOIF features</name>
+  <name>TOIF Features Module</name>
 
   <packaging>pom</packaging>
-  
+
   <modules>
       <module>com.kdmanalytics.toif.rcp.feature</module>
       <module>com.kdmanalytics.toif.core.feature</module>

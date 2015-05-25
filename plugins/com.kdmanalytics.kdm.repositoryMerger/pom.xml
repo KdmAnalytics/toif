@@ -11,9 +11,9 @@
 
 	<groupId>com.kdmanalytics.toif.compile</groupId>
   <artifactId>com.kdmanalytics.kdm.repositoryMerger</artifactId>
- 
+
   <packaging>eclipse-plugin</packaging>
-  
-  <name>Repository Merger</name>
+
+  <name>TOIF Repository Merger</name>
 
 </project>
