@@ -5,3 +5,4 @@ plugins/*/target
 Vagrantfile
 .vagrant
 target
+cachedir

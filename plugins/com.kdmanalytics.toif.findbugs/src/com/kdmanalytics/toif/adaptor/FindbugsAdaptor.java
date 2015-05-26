@@ -1,7 +1,7 @@
 package com.kdmanalytics.toif.adaptor;
 
 /*******************************************************************************
- * Copyright (c) 2012 KDM Analytics, Inc. All rights reserved. This program and
+ * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
  * Source Initiative OSI - Open Software License v3.0 which accompanies this
  * distribution, and is available at
@@ -40,6 +40,7 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.File;
  * 
  */
 public class FindbugsAdaptor extends AbstractAdaptor {
+	String OS = System.getProperty("os.name");
 	private static final String SECURITYPLUGIN_VERSION = "v1.2.1";
 	private static final String FINDBUGS_VERSION = "3.0.0";
 	private static Logger LOG = Logger.getLogger(FindbugsAdaptor.class);
@@ -134,7 +135,7 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 	@Override
 	public String[] runToolCommands(AdaptorOptions options, String[] otherOpts) {
 		// if the system is linux, findugs can b eexecuted on its own.
-		if ("Linux".equals(System.getProperty("os.name"))) {
+		if (isLinux()) {
 			// the basic command to run the tool.
 			final String[] commands = { "findbugs", "-xml",
 					options.getInputFile().toString() };
@@ -169,6 +170,22 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 			return s;
 		}
 
+	}
+
+	/**
+	 * testing method
+	 * @return
+	 */
+	boolean isLinux() {
+		return "Linux".equals(OS);
+	}
+	
+	/**
+	 * testing method
+	 * @param oS
+	 */
+	public void setOS(String oS) {
+		OS = oS;
 	}
 
 	/**
@@ -277,7 +294,7 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 		ProcessBuilder findbugs = null;
 
 		// if the system is linux, run normally
-		if ("Linux".equals(System.getProperty("os.name"))) {
+		if (isLinux()) {
 			String[] commands = { "findbugs", "-version" };
 			findbugs = new ProcessBuilder(commands);
 		}

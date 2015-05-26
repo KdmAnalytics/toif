@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jlint Tests
 Bundle-SymbolicName: com.kdmanalytics.toif.jlint.test
-Bundle-Version: 1.16.0
+Bundle-Version: 1.16.0.qualifier
 Bundle-Vendor: KDM Analytics Inc.
 Fragment-Host: com.kdmanalytics.toif.jlint
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

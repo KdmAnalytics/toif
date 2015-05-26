@@ -7,15 +7,15 @@
   <parent>
     <groupId>com.kdmanalytics.toif</groupId>
     <artifactId>tests</artifactId>
-    <version>1.16.0</version>
+    <version>1.16.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif.tests</groupId>
   <artifactId>com.kdmanalytics.toif.assimilator.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
-  
-  <name>Toif Assimilator Tests</name>
-  
+
+  <name>TOIF Assimilator Tests</name>
+
   <build>
     <plugins>
       <plugin>

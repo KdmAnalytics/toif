@@ -28,5 +28,7 @@
     <module>org.openrdf.sesame</module>
     <module>org.slf4j.api</module>
     <module>org.slf4j.log4j</module>
+    <module>org.mockito.core</module>
+    <module>org.objenesis</module>
   </modules>
 </project>

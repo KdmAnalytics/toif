@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.kdmanalytics</groupId>
     <artifactId>toif</artifactId>
-    <version>1.16.0</version>
+    <version>1.16.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
@@ -13,10 +13,9 @@
   <name>TOIF tests</name>
 
   <packaging>pom</packaging>
-  
+
   <modules>
     <module>com.kdmanalytics.toif.assimilator.test</module>
-    <module>com.kdmanalytics.kdm.repositoryMerger.test</module>
     <module>com.kdmanalytics.toif.jlint.test</module>
     <module>com.kdmanalytics.toif.findbugs.test</module>
   </modules>

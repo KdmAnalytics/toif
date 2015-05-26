@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Objenesis
+Bundle-SymbolicName: org.objenesis
+Bundle-Version: 1.0.0
+Bundle-ClassPath: objenesis-1.0.jar
+Bundle-Vendor: KDM Analytics Inc.
+Export-Package: org.objenesis,
+ org.objenesis.instantiator,
+ org.objenesis.instantiator.basic,
+ org.objenesis.instantiator.gcj,
+ org.objenesis.instantiator.jrockit,
+ org.objenesis.instantiator.sun,
+ org.objenesis.strategy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

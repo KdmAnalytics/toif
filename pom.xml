@@ -20,6 +20,7 @@
     <module>3rdParty</module>
     <module>sites</module>
     <module>features</module>
+    <module>tests</module>
   </modules>
 
   <repositories>

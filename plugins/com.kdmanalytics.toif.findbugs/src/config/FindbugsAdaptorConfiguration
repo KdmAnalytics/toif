@@ -4,7 +4,13 @@
 #
 #####
 
+#AM: Creates an empty jar file entry (AM_CREATES_EMPTY_JAR_FILE_ENTRY)
+AM_CREATES_EMPTY_JAR_FILE_ENTRY=;SFP--1;CWE-398
+AM_CREATES_EMPTY_JAR_FILE_ENTRYMsg=The code calls putNextEntry(), immediately followed by a call to closeEntry(). This results in an empty JarFile entry. The contents of the entry should be written to the JarFile between the calls to putNextEntry()</code> and closeEntry().
 
+#AM: Creates an empty zip file entry (AM_CREATES_EMPTY_ZIP_FILE_ENTRY)
+AM_CREATES_EMPTY_ZIP_FILE_ENTRY=;SFP--1;CWE-398
+AM_CREATES_EMPTY_ZIP_FILE_ENTRYMsg=The code calls putNextEntry() immediately followed by a call to closeEntry(). This results in an empty ZipFile entry. The contents of the entry should be written to the ZipFile between the calls to putNextEntry() and closeEntry().
 
 #BC: Equals method should not assume anything about the type of its argument (BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS)
 BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS=;SFP--1;CWE-398
@@ -295,7 +301,7 @@ SI_INSTANCE_BEFORE_FINALS_ASSIGNED=;SFP-1;CWE-456
 SI_INSTANCE_BEFORE_FINALS_ASSIGNEDMsg=The class's static initializer creates an instance of the class before all of the static final fields are assigned.
 
 #SW: Certain swing methods needs to be invoked in Swing thread (SW_SWING_METHODS_INVOKED_IN_SWING_THREAD)
-SW_SWING_METHODS_INVOKED_IN_SWING_THREAD=API;SFP--1;CWE-684
+SW_SWING_METHODS_INVOKED_IN_SWING_THREAD=API;SFP-19;CWE-662
 SW_SWING_METHODS_INVOKED_IN_SWING_THREADMsg=The Swing methods show(), setVisible(), and pack() will create the associated peer for the frame. With the creation of the peer, the system creates the event dispatch thread. This makes things problematic because the event dispatch thread could be notifying listeners while pack and validate are still processing. This situation could result in two threads going through the Swing component-based GUI -- it's a serious flaw that could result in deadlocks or other related threading issues. A pack call causes components to be realized. As they are being realized (that is, not necessarily visible), they could trigger listener notification on the event dispatch thread.
 
 #Se: Non-transient non-serializable instance field in serializable class (SE_BAD_FIELD)
@@ -967,7 +973,6 @@ DP_DO_INSIDE_DO_PRIVILEGED=;SFP-36;CWE-269
 DP_DO_INSIDE_DO_PRIVILEGEDMsg=This code invokes a method that requires a security permission check. If this code will be granted security permissions, but might be invoked by code that does not have security permissions, then the invocation needs to occur inside a doPrivileged block.
 
 #EI: May expose internal representation by returning reference to mutable object (EI_EXPOSE_REP)
-? EI_EXPOSE_REP2=;SFP-23;CWE-375
 EI_EXPOSE_REP=;SFP-23;CWE-375
 EI_EXPOSE_REPMsg=Returning a reference to a mutable object value stored in one of the object's fields exposes the internal representation of the object. If instances are accessed by untrusted code, and unchecked changes to the mutable object would compromise security or other important properties, you will need to do something different. Returning a new copy of the object is better approach in many situations.
 

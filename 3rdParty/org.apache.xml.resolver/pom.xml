@@ -12,9 +12,9 @@
   <groupId>com.kdmanalytics.libs.libsjava.plugins</groupId>
   <artifactId>org.apache.xml.resolver</artifactId>
   <version>1.2.0</version>
-  
-  <name>KDM Analytics Apache Xerces-J Resolver Plugin</name>
-  
+
+  <name>Apache Xerces-J Resolver</name>
+
   <packaging>eclipse-plugin</packaging>
-    
+
 </project>

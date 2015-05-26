@@ -14,7 +14,7 @@
   <artifactId>org.apache.xml.serializer</artifactId>
   <version>2.7.1</version>
 
-  <name>KDM Analytics Apache Xerces-J Serilizer Plugin</name>
+  <name>Apache Xerces-J Serilizer</name>
 
   <packaging>eclipse-plugin</packaging>
 

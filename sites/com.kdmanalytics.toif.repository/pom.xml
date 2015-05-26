@@ -1,52 +1,50 @@
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.kdmanalytics.toif</groupId>
-		<artifactId>sites</artifactId>
-		<version>1.16.0-SNAPSHOT</version>
-	</parent>
+  <parent>
+    <groupId>com.kdmanalytics.toif</groupId>
+    <artifactId>sites</artifactId>
+    <version>1.16.0-SNAPSHOT</version>
+    </parent>
 
-	<groupId>com.kdmanalytics.toif.compile</groupId>
-	<artifactId>com.kdmanalytics.toif.repository</artifactId>
+    <groupId>com.kdmanalytics.toif.compile</groupId>
+    <artifactId>com.kdmanalytics.toif.repository</artifactId>
 
-	<packaging>eclipse-repository</packaging>
+  <packaging>eclipse-repository</packaging>
 
-	<name>TOIF Repository</name>
+  <name>TOIF Repository</name>
 
-	<properties>
-		<toif-archive-name>toif-${project.version}</toif-archive-name>
-    	<distribution.prefix>${project.build.directory}/products/com.kdmanalytics.toif</distribution.prefix>
-	</properties>
+  <properties>
+    <toif-archive-name>toif-${project.version}</toif-archive-name>
+      <distribution.prefix>${project.build.directory}/products/com.kdmanalytics.toif</distribution.prefix>
+  </properties>
 
-	<profiles>
-		<profile>
-			<id>jenkins</id>
-			<activation>
-				<property>
-					<name>env.BUILD_NUMBER</name>
-				</property>
-			</activation>
-			<properties>
-				<toif-archive-name>toif-${project.version}-${env.BUILD_NUMBER}</toif-archive-name>
-			</properties>
-		</profile>
-	</profiles>
+  <profiles>
+    <profile>
+      <id>jenkins</id>
+      <activation>
+        <property>
+          <name>env.BUILD_NUMBER</name>
+        </property>
+      </activation>
+      <properties>
+        <toif-archive-name>toif-${project.version}-${env.BUILD_NUMBER}</toif-archive-name>
+      </properties>
+    </profile>
+  </profiles>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-p2-repository-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<createArtifactRepository>false</createArtifactRepository>
-				</configuration>
-			</plugin>
-			
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <createArtifactRepository>false</createArtifactRepository>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -68,9 +66,8 @@
             </product>
           </products>
         </configuration>
-
       </plugin>
-      
+<!--
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.7</version>
@@ -80,7 +77,6 @@
             <phase>package</phase>
             <configuration>
               <target>
-
                 <delete
                   file="${distribution.prefix}/win32/win32/x86_64/toif.exe" />
                 <move
@@ -94,16 +90,17 @@
           </execution>
         </executions>
       </plugin>
-			
+-->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.3</version>
         <configuration>
           <finalName>kdmanalytics</finalName>
           <descriptors>
-
             <descriptor>assemblies/toif-linux-x86_64.xml</descriptor>
+<!--
             <descriptor>assemblies/toif-windows-x86_64.xml</descriptor>
+-->
           </descriptors>
         </configuration>
         <executions>
@@ -116,7 +113,6 @@
           </execution>
         </executions>
       </plugin>
-		</plugins>
-	</build>
+    </plugins>
+  </build>
 </project>
-

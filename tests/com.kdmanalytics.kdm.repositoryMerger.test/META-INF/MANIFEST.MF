@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Repository Merger Tests
 Bundle-SymbolicName: com.kdmanalytics.kdm.repositoryMerger.test
-Bundle-Version: 1.16.0
+Bundle-Version: 1.16.0.qualifier
 Bundle-Vendor: KDM Analytics Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="4.8.2",
