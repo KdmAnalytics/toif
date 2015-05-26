@@ -18,6 +18,7 @@
   <modules>
     <module>com.kdmanalytics.toif.common</module>
     <module>com.kdmanalytics.toif.report</module>
+    <module>com.kdmanalytics.standAlone.toif.report</module>
     <module>com.kdmanalytics.toif.ccr</module>
     <module>com.kdmanalytics.toif.framework</module>
     <module>com.kdmanalytics.toif.assimilator</module>

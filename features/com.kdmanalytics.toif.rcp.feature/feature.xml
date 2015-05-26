@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.kdmanalytics.toif.rcp.feature"
-      label="TOIF CLI RCP Feature"
+      label="TOIF RCP Feature"
       version="1.16.0.qualifier"
       provider-name="KDM Analytics Inc.">
 

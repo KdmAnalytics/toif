@@ -10,7 +10,7 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>tests</artifactId>
-  <name>TOIF tests</name>
+  <name>TOIF Tests Module</name>
 
   <packaging>pom</packaging>
 
