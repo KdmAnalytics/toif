@@ -2,7 +2,6 @@ tests/*/bin
 tests/*/target
 plugins/*/bin
 plugins/*/target
-Vagrantfile
 .vagrant
 target
 cachedir
