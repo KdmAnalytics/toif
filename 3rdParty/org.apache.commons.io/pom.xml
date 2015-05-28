@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.kdmanalytics.libs.libsjava</groupId>
     <artifactId>plugins</artifactId>
-    <version>1.16.0-SNAPSHOT</version>
+    <version>1.16.0</version>
   </parent>
 
   <groupId>com.kdmanalytics.libs.libsjava.plugins</groupId>

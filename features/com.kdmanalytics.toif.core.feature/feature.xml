@@ -2,7 +2,7 @@
 <feature
       id="com.kdmanalytics.toif.core.feature"
       label="TOIF Core Feature"
-      version="1.16.0.qualifier"
+      version="1.16.0"
       provider-name="KDM Analytics Inc.">
 
    <description>
