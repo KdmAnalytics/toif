@@ -9,7 +9,7 @@ domain = 'toif.local'
 
 # VM network configuration
 nodes = [
-  { :hostname => 'sample', :ip => '192.168.0.10'},
+  { :hostname => 'sample', :ip => '192.168.6.10'},
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
