@@ -67,7 +67,7 @@ import com.google.common.io.Files;
 import com.kdmanalytics.kdm.repositoryMerger.RepositoryMerger;
 import com.kdmanalytics.kdm.repositoryMerger.linkconfig.LinkConfig;
 import com.kdmanalytics.kdm.repositoryMerger.linkconfig.MergeConfig;
-import com.kdmanalytics.toif.assimilator.FilePathTrie.Node;
+import com.kdmanalytics.toif.assimilator.FilePathTree.Node;
 import com.kdmanalytics.toif.assimilator.exceptions.AssimilatorArgumentException;
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.mergers.ToifMerger;
@@ -648,7 +648,7 @@ public class Assimilator
         HashMap<String, Resource> bestFitMap = new HashMap<String, Resource>();
         
         int statements = 0;
-        Map<Resource, FilePathTrie> tries = new HashMap<Resource, FilePathTrie>();
+        Map<Resource, FilePathTree> tries = new HashMap<Resource, FilePathTree>();
         // for all the toif statements that are a path
         for (Statement toifStatement : toifPaths)
         {
@@ -880,7 +880,7 @@ public class Assimilator
      *            path.
      * @return returns the kdm resource with the best fit.
      */
-    private Resource findBestFitSourceFile(Map<Resource, FilePathTrie> tries, final Statement st)
+    private Resource findBestFitSourceFile(Map<Resource, FilePathTree> tries, final Statement st)
     {
         Resource bestFit = null;
         int bestFitCount = 0;
@@ -925,8 +925,8 @@ public class Assimilator
             // if the filename doesn't exist, create a new trie for it.
             if (!tries.containsKey(kdmResource))
             {
-                FilePathTrie filePathTrie = new FilePathTrie(kdmFileName);
-                tries.put(kdmResource, filePathTrie);
+                FilePathTree FilePathTree = new FilePathTree(kdmFileName);
+                tries.put(kdmResource, FilePathTree);
             }
             
             // set the node as the sourcefile we are working with.
@@ -937,7 +937,7 @@ public class Assimilator
             for (int i = 1; i < kdmPathArray.size(); i++)
             {
                 // get the correct trie based on the resource.
-                FilePathTrie trie = tries.get(kdmResource);
+                FilePathTree trie = tries.get(kdmResource);
                 // add the parent to the current kdm node. currentKdm Node gets
                 // replaced with the parent once this is done.
                 currentKdmNode = trie.addParentDirectory(currentKdmNode, kdmPathArray.get(i));
@@ -946,7 +946,7 @@ public class Assimilator
         
         for (Resource file : tries.keySet())
         {
-            FilePathTrie trie = tries.get(file);
+            FilePathTree trie = tries.get(file);
             // get the longest kdm path that we can find from the tries.
             List<String> path = trie.getBestPath(toifPathArray);
             
