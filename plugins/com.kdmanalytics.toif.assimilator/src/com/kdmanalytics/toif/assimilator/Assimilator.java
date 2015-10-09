@@ -806,7 +806,10 @@ public class Assimilator
         FileOutputStream fos;
         try
         {
-            fos = new FileOutputStream(outputLocation);
+            // Provide the zip file with a distinct name such that the file it contains des not have the same name
+            File zipFile = new File(outputLocation.getName() + ".zip");
+
+            fos = new FileOutputStream(zipFile);
             zos = new ZipOutputStream(fos);
             ZipEntry ze = new ZipEntry(outputLocation.getName());
             zos.putNextEntry(ze);
