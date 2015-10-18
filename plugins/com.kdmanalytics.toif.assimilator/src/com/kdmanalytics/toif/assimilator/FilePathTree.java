@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Trie representing the file paths.
+ * 
  * @author adam
  * 
  */
@@ -36,10 +38,11 @@ public class FilePathTree
     }
     
     /**
-     * match files based on a best path fit.
+     * find the best fitting path
      * 
      * @param path
-     * @return
+     *            the path for which to find the best fit for.
+     * @return the resulting best fit path.
      */
     public List<String> getBestPath(List<String> path)
     {
@@ -103,6 +106,8 @@ public class FilePathTree
     }
     
     /**
+     * returns the root file.
+     * 
      * @return the root
      */
     public Node getFile()
@@ -187,8 +192,11 @@ public class FilePathTree
         }
         
         /**
+         * is there a node within this node with the name ...
+         * 
          * @param parentName
-         * @return
+         *            the name to try to find.
+         * @return returns true if a node with the same name as parent name.
          */
         private boolean parentsContains(String parentName)
         {

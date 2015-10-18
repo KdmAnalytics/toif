@@ -17,7 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.kdmanalytics.toif.assimilator.FilePathTrie.Node;
+import com.kdmanalytics.toif.assimilator.FilePathTree.Node;
 
 /**
  * @author adam
@@ -30,17 +30,17 @@ public class FilePathTreeTest {
   
   private File treeFile;
   
-  private FilePathTrie tree;
+  private FilePathTree tree;
   
   @Before
   public void before() throws Exception {
     treeFile = folder.newFile("file");
-    tree = new FilePathTrie(treeFile.getName());
+    tree = new FilePathTree(treeFile.getName());
   }
   
   /**
    * Test method for
-   * {@link com.kdmanalytics.toif.assimilator.FilePathTrie#FilePathTree(java.lang.String)} .
+   * {@link com.kdmanalytics.toif.assimilator.FilePathTree#FilePathTree(java.lang.String)} .
    */
   @Test
   public void testFilePathTree() {
@@ -49,15 +49,15 @@ public class FilePathTreeTest {
   
   /**
    * Test method for
-   * {@link com.kdmanalytics.toif.assimilator.FilePathTrie#FilePathTree(java.lang.String)} .
+   * {@link com.kdmanalytics.toif.assimilator.FilePathTree#FilePathTree(java.lang.String)} .
    */
   @Test(expected = NullPointerException.class)
   public void testFilePathTreeNull() {
-    new FilePathTrie(null);
+    new FilePathTree(null);
   }
   
   /**
-   * Test method for {@link com.kdmanalytics.toif.assimilator.FilePathTrie#getFile()}.
+   * Test method for {@link com.kdmanalytics.toif.assimilator.FilePathTree#getFile()}.
    */
   @Test
   public void testGetFile() {
@@ -66,7 +66,7 @@ public class FilePathTreeTest {
   
   /**
    * Test method for
-   * {@link com.kdmanalytics.toif.assimilator.FilePathTrie#addParentDirectory(com.kdmanalytics.toif.assimilator.FilePathTrie.Node, java.lang.String)}
+   * {@link com.kdmanalytics.toif.assimilator.FilePathTree#addParentDirectory(com.kdmanalytics.toif.assimilator.FilePathTree.Node, java.lang.String)}
    * .
    */
   @Test
@@ -96,7 +96,7 @@ public class FilePathTreeTest {
   
   @Test
   public void testNodeEqualsNullPass() {
-    FilePathTrie tree = new FilePathTrie(treeFile.getName());
+    FilePathTree tree = new FilePathTree(treeFile.getName());
     Node node1 = tree.new Node(null);
     Node node2 = tree.new Node(null);
     
@@ -106,7 +106,7 @@ public class FilePathTreeTest {
   
   @Test
   public void testNodeEqualsNullFail() {
-    FilePathTrie tree = new FilePathTrie(treeFile.getName());
+    FilePathTree tree = new FilePathTree(treeFile.getName());
     Node node1 = tree.new Node("foo");
     Node node2 = tree.new Node(null);
     
