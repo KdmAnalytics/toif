@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="Running Platform" sequenceNumber="14">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.cdt.feature.group" version="8.8.0.201509131935"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.5.1.v20150904-0015"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.11.1.v20150904-0015"/>
+<repository location="http://download.eclipse.org/releases/mars"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
+<unit id="javax.servlet" version="3.1.0.v201410161800"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
+</location>
+</locations>
+<environment>
+<os>linux</os>
+<ws>gtk</ws>
+<arch>x86_64</arch>
+<nl>en_CA</nl>
+</environment>
+<launcherArgs>
+<vmArgs>-Dosgi.requiredJavaVersion=1.7 -XX:MaxPermSize=256m -Xms256m -Xmx1024m</vmArgs>
+</launcherArgs>
+</target>
