@@ -184,7 +184,7 @@ incompletetype=;SFP--1;CWE-710
 #formal parameter has an incomplete type
 #A formal parameter is declared with an incomplete type.
 
-formalarray=;SFP-7;CWE-469
+formalarray=;SFP-1;CWE-469
 #formal parameter is an array
 #A formal parameter is declared as an array.  This can be confusing, since 
 #a formal array parameter is treated as a pointer.
@@ -353,31 +353,31 @@ mutrep=;SFP--1;CWE-710
 #  /* Deallocation Errors */
 
 
-mustfreefresh=;SFP-14;CWE-401
+mustfreefresh=;SFP-38;CWE-401
 #freshly allocated storage not released before return or scope exit
 #A memory leak has been detected. Storage allocated locally 
 #is not released before the last reference to it is lost.
 
-mustfreeonly=;SFP-14;CWE-401
+mustfreeonly=;SFP-38;CWE-401
 #only storage not released before return or scope exit
 #A memory leak has been detected. Only-qualified storage is not released before the last 
 #reference to it is lost.
 
-mustfree=;SFP-14;CWE-401
+mustfree=;SFP-38;CWE-401
 #fresh or only storage not released before return or scope exit (sets mustfreefresh and mustfreeonly)
 #A memory leak has been detected.
 
-usereleased=;SFP-15;CWE-416
+usereleased=;SFP-7;CWE-416
 #storage used after release
 #Memory is used after it has been released (either by passing 
 #as an only param or assigning to an only global).
 
-strictusereleased=;SFP-15;CWE-416
+strictusereleased=;SFP-7;CWE-416
 #element used after it may have been released
 #Memory (through fetch) is used after it may have been released 
 #(either by passing as an only param or assigning to an only global).
 
-compdestroy=;SFP-14;CWE-401
+compdestroy=;SFP-38;CWE-401
 #all only references derivable from void pointer out only parameter are released
 #A storage leak due to incomplete deallocation of a structure or deep 
 #pointer is suspected. Unshared storage that is reachable from 
@@ -430,7 +430,7 @@ onlytrans=;SFP--1;CWE-701
 #only annotation. This may lead to a memory leak, since the 
 #new reference is not necessarily released.
 
-onlyunqglobaltrans=;SFP-14;CWE-401
+onlyunqglobaltrans=;SFP-38;CWE-401
 #only storage transferred to an unqualified global or 
 #static reference (memory leak)
 #The only reference to this storage is transferred to another 
@@ -1815,7 +1815,7 @@ formattype=;SFP--1;CWE-628
 #type-mismatch in parameter corresponding to format code in a printf or scanf-like function
 #Type of parameter is not consistent with corresponding code in format string.
 
-formatconst=;SFP--1;CWE-134
+formatconst=;SFP-24;CWE-134
 #format parameter is not a string constant (hence variable arguments cannot be typechecked)
 #Format parameter is not known at compile-time.  This can lead to security vulnerabilities because the arguments cannot be type checked.
 

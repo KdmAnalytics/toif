@@ -1,5 +1,3 @@
-package com.kdmanalytics.toif.adaptor;
-
 /*******************************************************************************
  * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
@@ -7,17 +5,23 @@ package com.kdmanalytics.toif.adaptor;
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+package com.kdmanalytics.toif.adaptor;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -26,12 +30,11 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.findbugs.FindBugsParser;
-import com.kdmanalytics.toif.framework.parser.StreamGobbler;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
-import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
 /**
  * An example of how the findbugs adaptor could be made.
@@ -44,6 +47,19 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 	private static final String SECURITYPLUGIN_VERSION = "v1.2.1";
 	private static final String FINDBUGS_VERSION = "3.0.0";
 	private static Logger LOG = Logger.getLogger(FindbugsAdaptor.class);
+
+	/**
+	 * By default we expect the executable to be in path
+	 */
+	private String execPath = "findbugs.bat";
+
+	{
+		// Override path for linux
+		if(isLinux())
+		{
+			execPath = "findbugs";
+		}
+	}
 
 	/**
 	 * the name of the adaptor
@@ -69,15 +85,28 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 	 */
 	@Override
 	public ArrayList<Element> parse(java.io.File process,
-			AdaptorOptions options, File file, boolean[] validLines,
+			AdaptorOptions options, IFileResolver resolver, boolean[] validLines,
 			boolean unknownCWE) throws ToifException {
+//		InputStream inputStream = null;
 		try {
-			final InputStream inputStream = new FileInputStream(process);
-			Thread stderr;
-			final FindBugsParser parser = new FindBugsParser(getProperties(),
-					file, getAdaptorName(), unknownCWE);
+			InputStream fis = null;
+			String theString = "";
+			try
+			{
+				fis = new FileInputStream(process);
+				StringWriter writer = new StringWriter();
+				IOUtils.copy(fis, writer, "UTF-8");
+				theString = writer.toString();
+			}
+			finally {
+				if(fis != null) fis.close();
+			}
 
-			final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
+//			inputStream = new ByteArrayInputStream(theString.getBytes(StandardCharsets.UTF_8));
+			//			Thread stderr;
+			final FindBugsParser parser = new FindBugsParser(getProperties(), resolver, getAdaptorName(), unknownCWE);
+
+			//			final ByteArrayOutputStream errStream = new ByteArrayOutputStream();
 
 			/*
 			 * The two streams could probably be merged with
@@ -85,18 +114,18 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 			 * one stream.
 			 */
 
-			stderr = new Thread(new StreamGobbler(inputStream, errStream));
-
-			stderr.start();
-			stderr.join();
-
-			final byte[] data = errStream.toByteArray();
-			final ByteArrayInputStream in = new ByteArrayInputStream(data);
+			//			stderr = new Thread(new StreamGobbler(inputStream, errStream));
+			//
+			//			stderr.start();
+			//			stderr.join();
+			//
+			//			final byte[] data = errStream.toByteArray();
+			//			final ByteArrayInputStream in = new ByteArrayInputStream(data);
 
 			final XMLReader rdr = XMLReaderFactory
 					.createXMLReader("org.apache.xerces.parsers.SAXParser");
 			rdr.setContentHandler(parser);
-			rdr.parse(new InputSource(in));
+			rdr.parse(new InputSource(new StringReader(theString)));
 
 			// return the elements gathered during the parse.
 			ArrayList<Element> elements = parser.getElements();
@@ -108,6 +137,7 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 			final String msg = getAdaptorName()
 					+ ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.";
 			LOG.error(msg, e);
+			e.printStackTrace();
 			throw new ToifException(msg);
 		} catch (final IOException e) {
 			final String msg = getAdaptorName()
@@ -116,14 +146,26 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 			LOG.error(msg, e);
 			throw new ToifException(msg);
 
-		} catch (final InterruptedException e) {
-			final String msg = getAdaptorName()
-					+ ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.";
-
-			LOG.error(msg, e);
-			throw new ToifException(msg);
-
 		}
+//		finally
+//		{
+//			if(inputStream != null) {
+//				try {
+//					inputStream.close();
+//				}
+//				catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+		//		catch (final InterruptedException e) {
+		//			final String msg = getAdaptorName()
+		//					+ ": Possibly the file the tool is run against is too large, the wrong kind of file, or not just one file.";
+		//
+		//			LOG.error(msg, e);
+		//			throw new ToifException(msg);
+		//
+		//		}
 	}
 
 	/**
@@ -134,10 +176,25 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 	 */
 	@Override
 	public String[] runToolCommands(AdaptorOptions options, String[] otherOpts) {
+		
+		// There is an extra '--' that was added to the args that should
+		// be removed (but kept for logging)
+		List<String> cleanOpts = new LinkedList<String>();
+		for(String opt: otherOpts)
+		{
+			if("--".equals(opt)) continue;
+			cleanOpts.add(opt);
+		}
+		cleanOpts.remove("--");
+		otherOpts = cleanOpts.toArray(new String[cleanOpts.size()]);
+
 		// if the system is linux, findugs can b eexecuted on its own.
 		if (isLinux()) {
+			String execPath = this.execPath;
+			if(options.getExecutablePath() != null) execPath = options.getExecutablePath().getAbsolutePath();
+
 			// the basic command to run the tool.
-			final String[] commands = { "findbugs", "-xml",
+			final String[] commands = { execPath, "-xml",
 					options.getInputFile().toString() };
 
 			// inserting the optional arguments into that array.
@@ -155,8 +212,11 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 		 * cmd.exe.
 		 */
 		else {
+			String execPath = this.execPath;
+			if(options.getExecutablePath() != null) execPath = options.getExecutablePath().getAbsolutePath();
+
 			// the basic commands to run the tool
-			final String[] commands = { "cmd.exe", "/C", "findbugs.bat",
+			final String[] commands = { "cmd.exe", "/C", execPath,
 					"-textui", "-xml", options.getInputFile().toString() };
 
 			// inserting the optional arguments into the commands array.
@@ -179,7 +239,7 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 	boolean isLinux() {
 		return "Linux".equals(OS);
 	}
-	
+
 	/**
 	 * testing method
 	 * @param oS
@@ -302,7 +362,7 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 		// if the system is windows, run the tool inside cmd.exe
 		else {
 			String[] commands = { "cmd.exe", "/C", "findbugs.bat", "-textui",
-					"-version" };
+			"-version" };
 			findbugs = new ProcessBuilder(commands);
 		}
 
@@ -328,14 +388,14 @@ public class FindbugsAdaptor extends AbstractAdaptor {
 
 		} catch (Exception e) {
 			System.err
-					.println("Could not run program to gather generator version. "
-							+ e);
+			.println("Could not run program to gather generator version. "
+					+ e);
 		}
 
 		return "";
 	}
 
-	
+
 	/**
 	 * method used to aid the testing of the getGeneratorVersion method. We need some
 	 * indirection so that this class can be partially mocked. 

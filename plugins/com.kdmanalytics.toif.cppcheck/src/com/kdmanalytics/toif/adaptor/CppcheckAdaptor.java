@@ -1,6 +1,3 @@
-
-package com.kdmanalytics.toif.adaptor;
-
 /*******************************************************************************
  * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
@@ -8,6 +5,9 @@ package com.kdmanalytics.toif.adaptor;
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+
+package com.kdmanalytics.toif.adaptor;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,12 +24,13 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.kdmanalytics.toif.cppcheck.CppCheckParser;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.parser.StreamGobbler;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
+import com.kdmanalytics.toif.framework.toolAdaptor.INiceable;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
-import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
 /**
  * Create the implementation of the adaptor.
@@ -37,8 +38,12 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.File;
  * @author Adam Nunn
  * 
  */
-public class CppcheckAdaptor extends AbstractAdaptor
+public class CppcheckAdaptor extends AbstractAdaptor implements INiceable
 {
+	/**
+	 * By default we expect the executable to be in path
+	 */
+    private String execPath = "cppcheck";
     
     public CppcheckAdaptor()
     {
@@ -51,8 +56,11 @@ public class CppcheckAdaptor extends AbstractAdaptor
     @Override
     public String[] runToolCommands(AdaptorOptions options, String[] otherOpts)
     {
+    	String execPath = this.execPath;
+    	if(options.isExecutablePath()) execPath = options.getExecutablePath().getAbsolutePath();
+    	
         // The basic commands to run the tool.
-        final String[] commands = { "cppcheck", "--xml", "-q", options.getInputFile().toString() };
+        final String[] commands = { execPath, "--xml", "-q", options.getInputFile().toString() };
         
         /*
          * the optional arguments are inserted in to the command array before
@@ -74,8 +82,9 @@ public class CppcheckAdaptor extends AbstractAdaptor
      * (CppParser) to generate the elements.
      */
     @Override
-    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines, boolean unknownCWE)
     {
+    	com.kdmanalytics.toif.framework.xmlElements.entities.File file = resolver.getDefaultFile();
         InputStream inputStream;
         try
         {
@@ -271,14 +280,14 @@ public class CppcheckAdaptor extends AbstractAdaptor
             while ((strLine = br.readLine()) != null)
             {
                 String[] stringArray = strLine.split(" ");
-                if (stringArray[1].trim().equals("1.40"))
+                if (stringArray[1].trim().equals("1.60"))
                 {
                     return stringArray[1].trim();
                 }
                 else
                 {
                     // give a warning that a different version was found.
-                    System.err.println(getAdaptorName() + ": Generator " + stringArray[1] + " found, only version 1.40 has been tested");
+                    System.err.println(getAdaptorName() + ": Generator " + stringArray[1] + " found, only version 1.60 has been tested");
                     return stringArray[1].trim();
                 }
             }

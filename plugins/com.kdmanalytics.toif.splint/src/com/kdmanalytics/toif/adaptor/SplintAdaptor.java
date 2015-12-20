@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
@@ -41,6 +42,11 @@ private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
     private String path = null;
     
     private File tmpFile = null;
+    
+	/**
+	 * By default we expect the executable to be in path
+	 */
+    private String execPath = "splint";
     
     /**
      * return this adaptors name
@@ -92,7 +98,9 @@ private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
         
         // tmpFile.deleteOnExit();
         // the required commands to run the tool.
-        final String[] commands = { "splint", options.getInputFile().toString(), "+csv", tmpFile.getPath(), "+csvoverwrite" };
+    	String execPath = this.execPath;
+    	if(options.getExecutablePath() != null) execPath = options.getExecutablePath().getAbsolutePath();
+        final String[] commands = { execPath, options.getInputFile().toString(), "+csv", tmpFile.getPath(), "+csvoverwrite" };
         
         String[] allCommands = (String[]) ArrayUtils.addAll(commands, otherOpts);
         
@@ -111,9 +119,10 @@ private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
     }
     
     @Override
-    public ArrayList<Element> parse(File process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
+    public ArrayList<Element> parse(File process, AdaptorOptions options, IFileResolver resolver,
             boolean[] validLines, boolean unknownCWE) throws ToifException
     {
+    	com.kdmanalytics.toif.framework.xmlElements.entities.File file = resolver.getDefaultFile();
         // new finding creator
         final FindingCreator creator = new FindingCreator(getProperties(), getAdaptorName(), unknownCWE);
         
