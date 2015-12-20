@@ -30,6 +30,9 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.ExplicitFileResolver;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
+import com.kdmanalytics.toif.framework.files.RootFileResolver;
 import com.kdmanalytics.toif.framework.utils.ElementComparator;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Adaptor;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Address;
@@ -258,6 +261,15 @@ public class ToolAdaptor
         constructXml();
         
         return true;
+    }
+    
+    /** Set the working directory
+     * 
+     * @param workingDirectory
+     */
+    public void setWorkingDirectory(java.io.File workingDirectory)
+    {
+        this.workingDirectory = workingDirectory;
     }
     
     /**
@@ -1016,14 +1028,14 @@ public class ToolAdaptor
             // Always ensure that we are closing the file handle
             if (istream != null)
                 try
-                {
+            {
                     istream.close();
-                }
-                catch (IOException e)
-                {
-                    // Just leave it be.
-                    LOG.error("Unable to close stream for " + options.getHouseKeeping().getAbsolutePath());
-                }
+            }
+            catch (IOException e)
+            {
+                // Just leave it be.
+                LOG.error("Unable to close stream for " + options.getHouseKeeping().getAbsolutePath());
+            }
         }
         return props;
     }
@@ -1194,6 +1206,75 @@ public class ToolAdaptor
         }
     }
     
+    /** Get the command line that will be run
+     * 
+     * @return
+     */
+    public String[] getCommands()
+    {
+        /*
+         * CppCheck command. Tool executable location (taken from the options
+         * provided to main), enable style error reporting, output in xml,
+         * location to run the tool on.
+         */
+        
+        String[] commands = adaptorImpl.runToolCommands(options, otherOpts);
+        
+        if (commands == null)
+        {
+            return null;
+        }
+        
+        // DISABLED Nicing Windows. It seems that the cmd is dodgy and
+        // occasionally loses the path that we set in the environment,
+        // and it certainly does not like having absolute paths to
+        // executables (at least ones with spaces).
+        //
+        // If the path to the executable is absolute, then put it in path and
+        // use a relative name to the executable. This is required because
+        // windows gets very cranky with how its command shell is used.
+        //        java.io.File execDir = null;
+        //        if(SystemUtils.IS_OS_WINDOWS)
+        //        {
+        //            String execPath = commands[0];
+        //            java.io.File execFile = new java.io.File(execPath);
+        //            if(execFile.isAbsolute())
+        //            {
+        //              execDir = execFile.getParentFile();
+        //              commands[0] = execFile.getName().replace(".exe", "");
+        //            }
+        //        }
+        
+        List<String> niceCommands = new ArrayList<String>();
+        
+        if (SystemUtils.IS_OS_WINDOWS)
+        {
+            // Explicit nicing required on windows. It seems that the cmd is dodgy.
+            if(adaptorImpl instanceof INiceable)
+            {
+                niceCommands.add("C:\\Windows\\System32\\cmd.exe");
+                niceCommands.add("/c");
+                niceCommands.add("start");
+                niceCommands.add("\"\"");
+                niceCommands.add("/B");
+                niceCommands.add("/BELOWNORMAL");
+                niceCommands.add("/WAIT");
+            }
+        }
+        else
+        {
+            niceCommands.add("nice");
+        }
+        
+        for(String cmd: commands)
+        {
+            if(cmd.contains(" ")) niceCommands.add("\"" + cmd + "\"");
+            else niceCommands.add(cmd);
+        }
+        
+        return niceCommands.toArray(new String[niceCommands.size()]);
+    }
+    
     /**
      * Parse the output of the tool and generate a list of the findings.
      * 
@@ -1207,7 +1288,21 @@ public class ToolAdaptor
     ArrayList<Element> parse(java.io.File process, File file) throws ToifException
     {
         options.getOutputDirectory().mkdirs();
-        return adaptorImpl.parse(adaptorImpl, process, options, file, validLines, options.getUnknownCWE());
+        
+        // Depending on the input file we will create a reasonable file resolver
+        IFileResolver resolver = null;
+        String path = file.getPath();
+        java.io.File afile = new java.io.File(path);
+        if(afile.isFile())
+        {
+            resolver = new ExplicitFileResolver(file);
+        }
+        else
+        {
+            resolver = new RootFileResolver(path);
+        }
+        
+        return adaptorImpl.parse(adaptorImpl, process, options, resolver, validLines, options.getUnknownCWE());
     }
     
     /**
@@ -1219,42 +1314,61 @@ public class ToolAdaptor
      */
     public java.io.File runTool() throws ToifException
     {
+        ProcessBuilder process = null;
+        java.io.File file = null;
         
-        /*
-         * CppCheck command. Tool executable location (taken from the options
-         * provided to main), enable style error reporting, output in xml,
-         * location to run the tool on.
-         */
+        final String[] command = getCommands();
         
-        final String[] commands = adaptorImpl.runToolCommands(options, otherOpts);
-        // final String[] command = adaptorImpl.runToolCommands(options,
-        // options.getAdditionalArgs().toArray(new
-        // String[options.getAdditionalArgs().size()]));
-        
-        if (commands == null)
+        synchronized(this)
         {
-            return null;
+            StringBuilder sb = new StringBuilder();
+            for (String cmd : command)
+            {
+                sb.append(cmd).append(" ");
+            }
         }
         
-        List<String> niceCommands = new ArrayList<String>();
+        process = new ProcessBuilder(command);
         
-        if (SystemUtils.IS_OS_WINDOWS)
-        {
-            niceCommands.add("C:\\Windows\\System32\\cmd.exe");
-            niceCommands.add("/c");
-            niceCommands.add("start");
-            niceCommands.add("/B");
-            niceCommands.add("/BELOWNORMAL");
-            niceCommands.add("/WAIT");
-        }
-        else
-        {
-            niceCommands.add("nice");
-        }
+        // DISABLED Nicing Windows. It seems that the cmd is dodgy and
+        // occasionally loses the path that we set in the environment,
+        // and it certainly does not like having absolute paths to
+        // executables (at least ones with spaces).
+        // Put the executable directory in path
+        //        if(SystemUtils.IS_OS_WINDOWS && execDir != null)
+        //        {
+        //            Map<String,String> env = process.environment();
+        //            String envPath = env.get("PATH");
+        //            if(envPath != null)
+        //            {
+        //                envPath = execDir.toString() + ";" + envPath;
+        //            }
+        //            else
+        //            {
+        //            	envPath = execDir.toString();
+        //            }
+        //            System.err.println("SETTING PATH: " + envPath);
+        //            env.put("PATH", envPath);
+        //        }
         
-        niceCommands.addAll(Arrays.asList(commands));
-        final String[] command = niceCommands.toArray(new String[niceCommands.size()]);
-        final ProcessBuilder process = new ProcessBuilder(command);
+        // This doesn't work without spawning a bat or shell wrapper
+        //        // Extra path information
+        //        java.io.File paths = options.getPaths();
+        //        if(paths != null)
+        //        {
+        //            Map<String,String> env = process.environment();
+        //            String envPath = env.get("PATH");
+        //            if(envPath != null)
+        //            {
+        //                envPath = paths + ";" + envPath;
+        //            }
+        //            else
+        //            {
+        //                envPath = paths.toString();
+        //            }
+        //            System.err.println("SETTING PATH: " + envPath);
+        //            env.put("PATH", envPath);
+        //        }
         
         if (workingDirectory != null)
         {
@@ -1264,7 +1378,7 @@ public class ToolAdaptor
         java.io.File outputDirectory = options.getOutputDirectory();
         outputDirectory.mkdirs();
         
-        java.io.File file = null;
+        file = null;
         if (adaptorImpl.getAdaptorName().equals("Splint"))
         {
             file = new java.io.File(outputDirectory, options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
@@ -1308,7 +1422,6 @@ public class ToolAdaptor
             process.redirectOutput(file);
             process.redirectError(file2);
         }
-        
         try
         {
             Process p = process.start();
@@ -1321,7 +1434,7 @@ public class ToolAdaptor
             if ((p.exitValue() != 0) && (!"Splint".equals(name)))
             {
                 int status = p.exitValue();
-                final String msg = "Adaptor process failure detected: status=" + status + " " + options.getAdaptor().toString();
+                final String msg = "Adaptor process failure detected for '" + name + "': status=" + status + " " + options.getAdaptor().toString();
                 
                 LOG.error(msg);
                 throw new ToifException(msg);
@@ -1335,7 +1448,7 @@ public class ToolAdaptor
             throw new ToifException(e);
         }
     }
-    
+
     /**
      * set the adaptor implementation
      * 
@@ -1394,9 +1507,6 @@ public class ToolAdaptor
      */
     public void setOptions(String[] args) throws ArgumentValidationException
     {
-        // create the command line interface.
-        final Cli<AdaptorOptions> CLI = CliFactory.createCli(AdaptorOptions.class);
-        
         // List<String> options = Arrays.asList(args);
         String[] adaptorOpts = {};
         
@@ -1413,6 +1523,14 @@ public class ToolAdaptor
                 argsLimit += 2;
             }
             if ("-n".equals(string))
+            {
+                argsLimit += 2;
+            }
+            if ("--exec".equals(string))
+            {
+                argsLimit += 2;
+            }
+            if ("--extraPath".equals(string))
             {
                 argsLimit += 2;
             }
@@ -1436,8 +1554,9 @@ public class ToolAdaptor
         }
         // Collect the arguments
         
+        // create the command line interface.
+        final Cli<AdaptorOptions> CLI = CliFactory.createCli(AdaptorOptions.class);
         options = CLI.parseArguments(adaptorOpts);
-        
     }
     
     /**

@@ -66,4 +66,14 @@ public class Position
         this.position = position;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        if(position != null) return position.toString();
+        return "0";
+    }
 }

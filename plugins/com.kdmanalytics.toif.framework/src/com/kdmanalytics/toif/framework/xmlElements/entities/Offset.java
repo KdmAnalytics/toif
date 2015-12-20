@@ -65,4 +65,14 @@ public class Offset
         this.offset = offset;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        if(offset != null) return offset.toString();
+        return "0";
+    }
 }
