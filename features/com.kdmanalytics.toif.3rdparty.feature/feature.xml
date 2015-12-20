@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.kdmanalytics.toif.3rdparty.feature"
-      label="Toif 3rd Party dependencies"
-      version="1.16.0"
+      label="TOIF 3rd Party dependencies"
+      version="2.1.0.qualifier"
       provider-name="KDM Analytics Inc.">
 
    <description>
@@ -10,12 +10,8 @@
    </description>
 
    <copyright>
-      Dependant on individual 3rd part projects.
+      Dependent on individual 3rd part projects.
    </copyright>
-
-   <license url="">
-      Dependant on individual 3rd part projects.
-   </license>
 
    <plugin
          id="org.openrdf.sesame"
@@ -110,6 +106,20 @@
 
    <plugin
          id="com.lexicalscope.jewelcli"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.ossindex.eclipse.common.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.csv"
          download-size="0"
          install-size="0"
          version="0.0.0"
