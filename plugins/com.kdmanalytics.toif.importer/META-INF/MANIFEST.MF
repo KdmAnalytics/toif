@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KDM File Importer
+Bundle-SymbolicName: com.kdmanalytics.toif.importer;singleton:=true
+Bundle-Version: 2.1.0.qualifier
+Bundle-Activator: com.kdmanalytics.toif.importer.Activator
+Bundle-Vendor: KDM Analytics Inc.
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.core.resources;bundle-version="[3.8.1,4.0.0)",
+ org.eclipse.core.filesystem;bundle-version="[1.3.200,2.0.0)",
+ org.apache.commons.io;bundle-version="2.4.0",
+ org.openrdf.sesame;bundle-version="2.4.2",
+ org.apache.commons.lang3;bundle-version="3.1.0",
+ com.kdmanalytics.toif.ui;bundle-version="2.1.0",
+ com.kdmanalytics.toif.ui.common;bundle-version="2.1.0",
+ org.apache.commons.csv;bundle-version="1.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

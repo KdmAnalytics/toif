@@ -47,15 +47,33 @@ public interface AdaptorOptions
      * 
      * @return
      */
-    @Option(shortName = "a", description = "Name of the adaptor to run.")
+    @Option(shortName = "a", longName = "adaptor", description = "Name of the adaptor to run.")
     File getAdaptor();
     
+    /**
+     * class name of the adaptor to run.
+     * 
+     * @return
+     */
+    @Option(longName = "exec", description = "Override path to the vulnerability detection tool executable.")
+    File getExecutablePath();
+    boolean isExecutablePath();
+
+//    /**
+//     * class name of the adaptor to run.
+//     * 
+//     * @return
+//     */
+//    @Option(longName = "extraPath", description = "Extra path for dependency location.")
+//    File getPaths();
+//    boolean isPaths();
+
     /**
      * the housekeeping file to use.
      * 
      * @return
      */
-    @Option(shortName = "h", description = "The location of the house-keeping file")
+    @Option(shortName = "h", longName = "housekeeping", description = "The location of the house-keeping file")
     File getHouseKeeping();
     
     @Option(shortName = "n", description = "Rename the file as this.")

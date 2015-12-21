@@ -65,4 +65,14 @@ public class LineNumber
         this.lineNumber = lineNumber;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        if(lineNumber != null) return lineNumber.toString();
+        return "0";
+    }
 }

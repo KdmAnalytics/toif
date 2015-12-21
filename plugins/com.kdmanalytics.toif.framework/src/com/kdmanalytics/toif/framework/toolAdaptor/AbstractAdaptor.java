@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
-import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
 /**
  * abstract class outlining the adaptor classes.
@@ -29,10 +29,10 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 public abstract class AbstractAdaptor
 {
     
-    public ArrayList<Element> parse(AbstractAdaptor abstractAdaptor, java.io.File process, AdaptorOptions options, File file, boolean[] validLines,
+    public ArrayList<Element> parse(AbstractAdaptor abstractAdaptor, java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines,
             boolean unknownCWE) throws ToifException
     {
-        ArrayList<Element> elements = abstractAdaptor.parse(process, options, file, validLines, unknownCWE);
+        ArrayList<Element> elements = abstractAdaptor.parse(process, options, resolver, validLines, unknownCWE);
 
         return elements;
     }
@@ -205,7 +205,7 @@ public abstract class AbstractAdaptor
      * @return
      * @throws ToifException 
      */
-    public abstract ArrayList<Element> parse(java.io.File process, AdaptorOptions options, File file, boolean[] validLines, boolean unknownCWE) throws ToifException;
+    public abstract ArrayList<Element> parse(java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines, boolean unknownCWE) throws ToifException;
     
     /**
      * construct the command to run the vulnerability detection tool.

@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
@@ -239,7 +240,7 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(File process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
+    public ArrayList<Element> parse(File process, AdaptorOptions options, IFileResolver resolver,
             boolean[] validLines, boolean unknownCWE)
     {
         

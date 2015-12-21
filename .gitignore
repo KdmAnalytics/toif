@@ -5,3 +5,4 @@ plugins/*/target
 .vagrant
 target
 cachedir
+*.prefs

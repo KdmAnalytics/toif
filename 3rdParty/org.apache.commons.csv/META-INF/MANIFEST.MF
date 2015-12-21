@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Commons CSV
+Bundle-SymbolicName: org.apache.commons.csv
+Bundle-Version: 1.2.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.apache.commons.csv

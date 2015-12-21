@@ -184,4 +184,20 @@ public class CodeLocation extends Entity
         return result;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        if(lineNumber != null) sb.append(lineNumber);
+        else sb.append(0);
+        sb.append(":");
+        if(offset != null) sb.append(offset);
+        else if(position != null) sb.append(position);
+        else sb.append(0);
+        return sb.toString();
+    }
 }

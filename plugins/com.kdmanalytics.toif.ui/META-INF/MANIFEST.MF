@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ETOIF UI
+Bundle-SymbolicName: com.kdmanalytics.toif.ui;singleton:=true
+Bundle-Version: 2.1.0.qualifier
+Bundle-Activator: com.kdmanalytics.toif.ui.Activator
+Bundle-Vendor: KDM Analytics
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;bundle-version="[3.8.0,4.0.0)",
+ org.eclipse.ui.views;bundle-version="[3.6.100,4.0.0)",
+ org.eclipse.ui.ide;bundle-version="[3.8.2,4.0.0)",
+ com.kdmanalytics.toif.ccr;bundle-version="2.1.0",
+ com.kdmanalytics.toif.ui.common;bundle-version="2.1.0",
+ org.eclipse.equinox.p2.engine;bundle-version="2.3.0",
+ org.apache.commons.csv;bundle-version="1.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: com.kdmanalytics.toif.ui.views

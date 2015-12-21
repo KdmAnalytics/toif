@@ -1,12 +1,12 @@
-
-package com.kdmanalytics.toif.cppcheck;
-
 /*******************************************************************************
  * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
  * accompanying materials are made available under the terms of the Open Source
  * Initiative OSI - Open Software License v3.0 which accompanies this
  * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+
+package com.kdmanalytics.toif.cppcheck;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -79,7 +79,7 @@ public class CppCheckParser extends DefaultHandler
         }
         catch (NumberFormatException e)
         {
-            System.err.println("Number exception");
+            System.err.println("Number exception in " + attrs.getValue("line"));
         }
         
         if (lineNumber == null)

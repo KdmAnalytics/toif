@@ -88,7 +88,7 @@ eraseDereference=;SFP--1;CWE-710
 unreadVariable=;SFP-2;CWE-563
 
 #unassignedVariable
-unassignedVariable=;SFP-2;CWE-457
+unassignedVariable=;SFP-1;CWE-457
 
 #(autoVariables, error) Wrong assignment of an auto-variable to an effective parameter of a function
 autoVariables=;SFP-1;CWE-562
@@ -121,7 +121,7 @@ dangerousStdCinElement=Dangerous usage of #, possible buffer overrun
 
 #(strncatUsage, possible error) Dangerous usage of strncat. Tip: the 3rd parameter means maximum number of characters to append
 strncatUsage=;SFP-3;CWE-676
-strncatUsageElemnet=Dangerous usage of #. Tip: the 3rd parameter means maximum number of characters to append
+strncatUsageElement=Dangerous usage of #. Tip: the 3rd parameter means maximum number of characters to append
 
 #(outOfBounds, error) index is out of bounds
 outOfBounds=;SFP-8;CWE-118
@@ -177,22 +177,22 @@ dangerousFunctionscanf=;SFP-3;CWE-676
 dangerousFunctionscanfElement=Found '#'. You should use 'fgets' instead
 
 #(exceptThrowInDestructor, style) Throwing exception in destructor
-exceptThrowInDestructor=;SFP-14;CWE-401
+exceptThrowInDestructor=;SFP-38;CWE-401
 
 #(exceptNew, style) Upon exception there is memory leak: p
 exceptNewElement=Upon exception there is memory leak: #
-exceptNew=;SFP-14;CWE-401
+exceptNew=;SFP-38;CWE-401
 
 #(exceptRealloc, style) Upon exception p becomes a dead pointer
-exceptRealloc=;SFP-14;CWE-401
+exceptRealloc=;SFP-38;CWE-401
 exceptReallocElement=Upon exception # becomes a dead pointer
 
 #(exceptDeallocThrow, error) Throwing exception in invalid state, p points at deallocated memory
-exceptDeallocThrow=;SFP-15;CWE-416
+exceptDeallocThrow=;SFP-7;CWE-416
 exceptDeallocThrowElement=Throwing exception in invalid state, # points at deallocated memory
 
 #(memleak, error) Memory leak: varname
-memleak=Resource Management=;SFP-14;CWE-401
+memleak=Resource Management=;SFP-38;CWE-401
 memleakElement=Memory leak: #
 
 #(resourceLeak, error) Resource leak: varname
@@ -204,7 +204,7 @@ deallocDealloc=;SFP-12;CWE-415
 deallocDeallocElement=Deallocating a deallocated pointer: #
 
 #(deallocuse, error) Dereferencing 'varname' after it is deallocated / released
-deallocuse=;SFP-15;CWE-416
+deallocuse=;SFP-7;CWE-416
 deallocuseElement=Dereferencing '#' after it is deallocated / released
 
 #(mismatchAllocDealloc, error) Mismatching allocation and deallocation: varname
@@ -280,3 +280,133 @@ stlIfFind=;SFP--1;CWE-710
 unusedFunction=;SFP-2;CWE-561
 unusedFunctionElement=The function '#' is never used
 
+###### Added for Cppcheck 1.60.1 #######
+
+#(useClosedFile, error) Used file that is not opened.
+useClosedFile=;SFP-15;CWE-672
+
+#(returnAddressOfAutoVariable, error) Address of an auto-variable returned.
+returnAddressOfAutoVariable=;SFP-7;CWE-416
+
+#(doubleFree, error) Memory pointed to by 'varname' is freed twice.
+doubleFree=;SFP-12;CWE-415
+doubleFreeElement=Memory pointed to by '#' is freed twice.
+
+#(autovarInvalidDeallocation, error) Deallocation of an auto-variable results in undefined behaviour.
+autovarInvalidDeallocation=;SFP-12;CWE-590
+
+#(assignBoolToPointer, error) Boolean value assigned to pointer.
+assignBoolToPointer=;SFP-1;CWE-587
+
+#(boostForeachError, error) BOOST_FOREACH caches the end() iterator. It's undefined behavior if you modify the container inside.
+boostForeachError=;SFP--1;CWE-758
+
+#(coutCerrMisusage, error) Invalid usage of output stream: '<< std::cout'.
+coutCerrMisusage=;SFP-24;CWE-134
+doubleFreeElement=Invalid usage of output stream: '<< std::#'.
+
+#(deallocret, error) Returning/dereferencing 'p' after it is deallocated / released
+deallocret=;SFP-7;CWE-416
+deallocretElement=Returning/dereferencing '#' after it is deallocated / released
+
+#(fflushOnInputStream, error) fflush() called on input stream 'stdin' results in undefined behaviour.
+fflushOnInputStream=;SFP--1;CWE-758
+fflushOnInputStreamElement=fflush() called on input stream '#' results in undefined behaviour.
+
+#(insecureCmdLineArgs, error) Buffer overrun possible for long command line arguments.
+insecureCmdLineArgs=;SFP-3;CWE-676
+
+#(invalidIterator1, error) Invalid iterator: iterator
+invalidIterator1=;SFP--1;CWE-398
+invalidIterator1Element=Invalid iterator: #.
+
+#(invalidIterator2, error) After push_back|push_front|insert(), the iterator 'iterator' may be invalid.
+invalidIterator2=;SFP--1;CWE-398
+invalidIterator2Element=After push_back|push_front|insert(), the iterator '#' may be invalid.
+
+#(IOWithoutPositioning, error) Read and write operations without a call to a positioning function (fseek, fsetpos or rewind) or fflush in between result in undefined behaviour.
+IOWithoutPositioning=;SFP-1;CWE-475
+
+#(leakNoVarFunctionCall, error) Allocation with funcName, funcName doesn't release it.
+leakNoVarFunctionCall=;SFP-14;CWE-773
+
+#(mallocOnClassError, error) Memory for class instance allocated with malloc(), but class contains a std::string.
+mallocOnClassError=;SFP--1;CWE-758
+
+#(memleakOnRealloc, error) Common realloc mistake: 'varname' nulled but not freed upon failure
+memleakOnRealloc=;SFP-14;CWE-771
+memleakOnReallocElement=Common realloc mistake: '#' nulled but not freed upon failure
+
+#(negativeIndex, error) Array index -1 is out of bounds.
+negativeIndex=;SFP-8;CWE-118
+negativeIndexElement=Array index # is out of bounds.
+
+#(readWriteOnlyFile, error) Read operation on a file that was opened only for writing.
+readWriteOnlyFile=;SFP--1;CWE-398
+
+#(returnAddressOfFunctionParameter, error) Address of function parameter 'parameter' returned.
+returnAddressOfFunctionParameter=;SFP--1;CWE-398
+returnAddressOfFunctionParameterElement=Address of function parameter '#' returned.
+
+#(returnReference, error) Reference to auto variable returned.
+returnReference=;SFP-1;CWE-562
+
+#(returnTempReference, error) Reference to temporary returned.
+returnTempReference=;SFP-1;CWE-562
+
+#(shiftNegative, error) Shifting by a negative value.
+shiftNegative=;SFP--1;CWE-398
+
+#(sizeofwithsilentarraypointer, error) Using 'sizeof' on array given as function argument returns size of a pointer.
+sizeofwithsilentarraypointer=;SFP-1;CWE-475
+
+#(stlcstr, error) Dangerous usage of c_str(). The value returned by c_str() is invalid after this call.
+stlcstr=;SFP--1;CWE-758
+
+#(tooBigSleepTime, error) The argument of usleep must be less than 1000000.
+tooBigSleepTime=;SFP--1;CWE-398
+
+#(uninitstring, error) Dangerous usage of 'varname' (strncpy doesn't always null-terminate it).
+uninitstring=;SFP-11;CWE-170
+uninitstringElement=Dangerous usage of '#' (strncpy doesn't always null-terminate it).
+
+#(uninitStructMember, error) Uninitialized struct member: a.b
+uninitStructMember=;SFP-1;CWE-457
+uninitStructMemberElement=Uninitialized struct member: #
+
+#(unusedScopedObject, error) Instance of 'varname' object is destroyed immediately.
+unusedScopedObject=;SFP--1;CWE-710
+unusedScopedObjectElement=Instance of '#' object is destroyed immediately.
+
+#(useAutoPointerArray, error) Object pointed by an 'auto_ptr' is destroyed using operator 'delete'. You should not use 'auto_ptr' for pointers obtained with operator 'new[]'.
+useAutoPointerArray=;SFP-1;CWE-475
+
+#(useAutoPointerContainer, error) You can randomly lose access to pointers if you store 'auto_ptr' pointers in an STL container.
+useAutoPointerContainer=;SFP-7;CWE-476
+
+#(writeOutsideBufferSize, error) Writing 1 bytes outside buffer size.
+writeOutsideBufferSize=;SFP-10;CWE-131
+
+#(writeReadOnlyFile, error) Write operation on a file that was opened only for reading.
+writeReadOnlyFile=;SFP--1;CWE-398
+
+#(wrongcctypecall, error) Passing value value to funname() causes undefined behavior which may lead to a crash.
+wrongcctypecall=;SFP--1;CWE-758
+wrongcctypecallElement=Passing value value to #() causes undefined behavior which may lead to a crash.
+
+#(wrongmathcall, error) Passing value '#' to #() leads to undefined result.
+wrongmathcall=;SFP--1;CWE-687
+wrongmathcallElement=Passing value '#' to #() leads to undefined result.
+
+#(wrongPipeParameterSize, error) Buffer 'varname' must have size of 2 integers if used as parameter of pipe().
+wrongPipeParameterSize=;SFP-1;CWE-686
+wrongPipeParameterSizeElement=Buffer '#' must have size of 2 integers if used as parameter of pipe().
+
+#(wrongPrintfScanfArgNum, error) printf format string has 3 parameters but only 2 are given.
+wrongPrintfScanfArgNum=;SFP-1;CWE-685
+
+#(cppcheckError, error) Analysis failed. If the code is valid then please report this failure.
+cppcheckError=;SFP--1;CWE-1
+
+#(preprocessorErrorDirective, error) #error message
+preprocessorErrorDirective=;SFP--1;CWE-1

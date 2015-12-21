@@ -110,7 +110,7 @@ ttyname=;SFP-3;CWE-676
 signals=;SFP-19;CWE-364
 
 #Don't use on memory intended to be secure, because the old structure will not be zeroed out.
-realloc=;SFP-14;CWE-244
+realloc=;SFP-23;CWE-244
 
 #Remember that sensitive data get copied on fork.  For example, a random number generator's internal state will get duplicated, and the child may start outputting identical number streams.
 fork=;SFP-23;CWE-214
@@ -147,7 +147,7 @@ bind=;SFP-24;CWE-99
 mail=;SFP-24;CWE-77
 
 #This function literally leaks memory. Are you sure you meant to use this
-leak=;SFP-14;CWE-401
+leak=;SFP-38;CWE-401
 
 #Reminder: Do not forget to chdir() to an appropriate directory before calling chroot()
 phpChroot=;SFP-17;CWE-243
