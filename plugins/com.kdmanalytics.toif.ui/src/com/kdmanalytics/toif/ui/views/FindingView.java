@@ -69,6 +69,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -323,10 +324,14 @@ public class FindingView extends ViewPart
 	 */
 	private void clear()
 	{
-		viewer.getControl().setRedraw(false);
-		contentProvider.clear();
-		viewer.refresh();
-		viewer.getControl().setRedraw(true);
+		Control control = viewer.getControl();
+		if(!control.isDisposed())
+		{
+			viewer.getControl().setRedraw(false);
+			contentProvider.clear();
+			viewer.refresh();
+			viewer.getControl().setRedraw(true);
+		}
 	}
 
 	/** Update data for the specified file(s)
