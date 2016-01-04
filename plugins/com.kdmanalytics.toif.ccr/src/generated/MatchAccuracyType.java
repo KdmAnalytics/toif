@@ -11,19 +11,20 @@
 // Generated on: 2012.03.30 at 02:17:16 PM EDT 
 //
 
-
 package generated;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for Match_Accuracy_Type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for Match_Accuracy_Type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="Match_Accuracy_Type">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -44,109 +45,92 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "Match_Accuracy_Type")
 @XmlEnum
 public enum MatchAccuracyType {
-
-
-    /**
-     * The CWE entry exactly covers the same weakness(es) as the
-     * 						given rule set.
-     * 
-     */
-    @XmlEnumValue("Exact")
-    EXACT("Exact"),
-
-    /**
-     * The CWE entry covers more concepts than the given rule set,
-     * 						but there are not any more precise matches available. For example, a rule
-     * 						set might detect resource consumption for a resource that is not
-     * 						specifically covered by CWE.
-     * 
-     */
-    @XmlEnumValue("CWE-more-abstract")
-    CWE_MORE_ABSTRACT("CWE-more-abstract"),
-
-    /**
-     *  The CWE entry is more specific than the weakness reported by
-     * 						the given rule set, but the entry's parent(s) are not appropriate matches.
-     * 						This might indicate a difference in perspective between CWE and the
-     * 						capability providing the coverage mapping. It could also include a single
-     * 						rule that covers multiple CWE entries (which might imply that there would be
-     * 						multiple claims for a single rule/ruleset).
-     * 
-     */
-    @XmlEnumValue("CWE-more-specific")
-    CWE_MORE_SPECIFIC("CWE-more-specific"),
-
-    /**
-     * The CWE entry is only a partial match with the weakness
-     * 						reported by the given rule set, but the entry is the closest available
-     * 						match.
-     * 
-     */
-    @XmlEnumValue("CWE-partial")
-    CWE_PARTIAL("CWE-partial"),
-
-    /**
-     * The CWE entry is not covered by any rule set. The provider is
-     * 						not required to include information about uncovered CWEs.
-     * 
-     */
-    @XmlEnumValue("Not-Covered")
-    NOT_COVERED("Not-Covered"),
-
-    /**
-     * There is no CWE entry available that closely matches the
-     * 						weakness reported by the given rule set, but the provider believes that a
-     * 						CWE entry should exist for the reported weakness. The associated CWE_ID
-     * 						should be 0.
-     * 
-     */
-    @XmlEnumValue("No-CWE-available")
-    NO_CWE_AVAILABLE("No-CWE-available"),
-
-    /**
-     * The rule/ruleset is not applicable to CWE, i.e., it is not
-     * 						necessarily about a weakness. This could include rulesets related to coding
-     * 						style conformance, informational messages about the scan, etc. The
-     * 						associated CWE_ID should be -1. The provider is not required to include
-     * 						information about non-applicable rules.
-     * 
-     */
-    @XmlEnumValue("Not-CWE-applicable")
-    NOT_CWE_APPLICABLE("Not-CWE-applicable"),
-
-    /**
-     * The match accuracy is unknown. Typically this would be used by
-     * 						a third party who is creating a coverage claim and does not have insight
-     * 						into the technology.
-     * 
-     */
-    @XmlEnumValue("Unknown")
-    UNKNOWN("Unknown"),
-
-    /**
-     * No other CWE match accuracy type is
-     * 						applicable.
-     * 
-     */
-    @XmlEnumValue("Other")
-    OTHER("Other");
-    private final String value;
-
-    MatchAccuracyType(String v) {
-        value = v;
+  
+  /**
+   * The CWE entry exactly covers the same weakness(es) as the given rule set.
+   * 
+   */
+  @XmlEnumValue("Exact") EXACT("Exact"),
+  
+  /**
+   * The CWE entry covers more concepts than the given rule set, but there are not any more precise
+   * matches available. For example, a rule set might detect resource consumption for a resource
+   * that is not specifically covered by CWE.
+   * 
+   */
+  @XmlEnumValue("CWE-more-abstract") CWE_MORE_ABSTRACT("CWE-more-abstract"),
+  
+  /**
+   * The CWE entry is more specific than the weakness reported by the given rule set, but the
+   * entry's parent(s) are not appropriate matches. This might indicate a difference in perspective
+   * between CWE and the capability providing the coverage mapping. It could also include a single
+   * rule that covers multiple CWE entries (which might imply that there would be multiple claims
+   * for a single rule/ruleset).
+   * 
+   */
+  @XmlEnumValue("CWE-more-specific") CWE_MORE_SPECIFIC("CWE-more-specific"),
+  
+  /**
+   * The CWE entry is only a partial match with the weakness reported by the given rule set, but the
+   * entry is the closest available match.
+   * 
+   */
+  @XmlEnumValue("CWE-partial") CWE_PARTIAL("CWE-partial"),
+  
+  /**
+   * The CWE entry is not covered by any rule set. The provider is not required to include
+   * information about uncovered CWEs.
+   * 
+   */
+  @XmlEnumValue("Not-Covered") NOT_COVERED("Not-Covered"),
+  
+  /**
+   * There is no CWE entry available that closely matches the weakness reported by the given rule
+   * set, but the provider believes that a CWE entry should exist for the reported weakness. The
+   * associated CWE_ID should be 0.
+   * 
+   */
+  @XmlEnumValue("No-CWE-available") NO_CWE_AVAILABLE("No-CWE-available"),
+  
+  /**
+   * The rule/ruleset is not applicable to CWE, i.e., it is not necessarily about a weakness. This
+   * could include rulesets related to coding style conformance, informational messages about the
+   * scan, etc. The associated CWE_ID should be -1. The provider is not required to include
+   * information about non-applicable rules.
+   * 
+   */
+  @XmlEnumValue("Not-CWE-applicable") NOT_CWE_APPLICABLE("Not-CWE-applicable"),
+  
+  /**
+   * The match accuracy is unknown. Typically this would be used by a third party who is creating a
+   * coverage claim and does not have insight into the technology.
+   * 
+   */
+  @XmlEnumValue("Unknown") UNKNOWN("Unknown"),
+  
+  /**
+   * No other CWE match accuracy type is applicable.
+   * 
+   */
+  @XmlEnumValue("Other") OTHER("Other");
+  
+  private final String value;
+  
+  MatchAccuracyType(String v) {
+    value = v;
+  }
+  
+  public String value() {
+    return value;
+  }
+  
+  public static MatchAccuracyType fromValue(String v) {
+    for (MatchAccuracyType c : MatchAccuracyType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
-
-    public String value() {
-        return value;
-    }
-
-    public static MatchAccuracyType fromValue(String v) {
-        for (MatchAccuracyType c: MatchAccuracyType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
-
+    throw new IllegalArgumentException(v);
+  }
+  
 }

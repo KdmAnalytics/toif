@@ -13,32 +13,27 @@ import org.eclipse.jface.viewers.Viewer;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
 
 /**
- * ViewerFilter that returns true for ToifReportEntry who's finding entries are
- * found to be valid.
+ * ViewerFilter that returns true for ToifReportEntry who's finding entries are found to be valid.
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
  * @author Kyle Girard <kyle@kdmanalytics.com>
  * @author Ken Duck
- * 
+ *         
  */
-public class IsValidFilter extends AbstractValidFilter
-{
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
-     * .Viewer, java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element)
-    {
-        if (element instanceof FindingEntry)
-        {
-            return valid(((FindingEntry) element));
-        }
-        return false;
+public class IsValidFilter extends AbstractValidFilter {
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers .Viewer,
+   * java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public boolean select(Viewer viewer, Object parentElement, Object element) {
+    if (element instanceof FindingEntry) {
+      return valid(((FindingEntry) element));
     }
-    
+    return false;
+  }
+  
 }

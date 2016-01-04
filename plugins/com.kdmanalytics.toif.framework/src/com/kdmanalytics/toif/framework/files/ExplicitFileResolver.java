@@ -5,19 +5,22 @@
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.files;
 
 import com.kdmanalytics.toif.framework.xmlElements.entities.File;
 
-/** A file resolver that is explicitly resolving to a specific file.
+/**
+ * A file resolver that is explicitly resolving to a specific file.
  * 
  * @author Ken Duck
- *
+ *        
  */
 public class ExplicitFileResolver implements IFileResolver
 {
+    
     private File file;
-
+    
     public ExplicitFileResolver(com.kdmanalytics.toif.framework.xmlElements.entities.File file)
     {
         this.file = file;
@@ -25,16 +28,19 @@ public class ExplicitFileResolver implements IFileResolver
     
     /*
      * (non-Javadoc)
-     * @see com.kdmanalytics.toif.framework.files.IFileResolver#resolve(com.kdmanalytics.toif.framework.xmlElements.entities.File)
+     * 
+     * @see com.kdmanalytics.toif.framework.files.IFileResolver#resolve(com.
+     * kdmanalytics.toif.framework.xmlElements.entities.File)
      */
     @Override
     public File resolve(File file)
     {
         return this.file;
     }
-
+    
     /*
      * (non-Javadoc)
+     * 
      * @see com.kdmanalytics.toif.framework.files.IFileResolver#getDefaultFile()
      */
     @Override
@@ -42,6 +48,5 @@ public class ExplicitFileResolver implements IFileResolver
     {
         return file;
     }
-
     
 }

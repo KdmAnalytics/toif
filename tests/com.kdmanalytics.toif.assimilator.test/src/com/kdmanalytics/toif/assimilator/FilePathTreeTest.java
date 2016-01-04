@@ -21,7 +21,7 @@ import com.kdmanalytics.toif.assimilator.FilePathTrie.Node;
 
 /**
  * @author adam
- * 
+ *         
  */
 public class FilePathTreeTest {
   

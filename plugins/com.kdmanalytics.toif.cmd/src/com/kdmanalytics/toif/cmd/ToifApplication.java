@@ -1,3 +1,4 @@
+
 package com.kdmanalytics.toif.cmd;
 
 /*******************************************************************************
@@ -19,60 +20,49 @@ import com.kdmanalytics.toif.rcp.internal.UserConsole;
 /**
  * This class controls all aspects of the application's execution
  */
-public class ToifApplication implements IApplication
-	{
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.
-	 * IApplicationContext)
-	 */
-	public Object start(IApplicationContext context) throws Exception
-		{
-		boolean markerFound         = false;
-		List<String> toifArgList    = Lists.newArrayList();
-		List<String> adaptorArgList = Lists.newArrayList();
-		
-		// Strip some arguments passed by eclipse that we are
-		// not interested it and build argument list
-		String[] appArgs = Platform.getApplicationArgs();
-		
-		for (String s : appArgs)
-			{
-			if (s.equals("-product"))
-				continue;
-			
-			if (markerFound)
-				adaptorArgList.add( s );
-			else
-				{
-				if ( s.equals("--"))
-					{
-					markerFound = true;
-					continue;
-					}
-				else
-				   toifArgList.add( s );
-				}
-			}
-		
-		String[] toifArgs    = toifArgList.toArray( new String[toifArgList.size()]);
-		String[] adaptorArgs = adaptorArgList.toArray( new String[adaptorArgList.size()]);
-		
-		UserConsole uc = new UserConsole(toifArgs, adaptorArgs);
-		uc.execute();
-		
-		return IApplication.EXIT_OK;
-		}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.equinox.app.IApplication#stop()
-	 */
-	public void stop()
-		{
-		// nothing to do
-		}
-	}
+public class ToifApplication implements IApplication {
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app. IApplicationContext)
+   */
+  public Object start(IApplicationContext context) throws Exception {
+    boolean markerFound = false;
+    List<String> toifArgList = Lists.newArrayList();
+    List<String> adaptorArgList = Lists.newArrayList();
+    
+    // Strip some arguments passed by eclipse that we are
+    // not interested it and build argument list
+    String[] appArgs = Platform.getApplicationArgs();
+    
+    for (String s : appArgs) {
+      if (s.equals("-product")) continue;
+      
+      if (markerFound) adaptorArgList.add(s);
+      else {
+        if (s.equals("--")) {
+          markerFound = true;
+          continue;
+        } else toifArgList.add(s);
+      }
+    }
+    
+    String[] toifArgs = toifArgList.toArray(new String[toifArgList.size()]);
+    String[] adaptorArgs = adaptorArgList.toArray(new String[adaptorArgList.size()]);
+    
+    UserConsole uc = new UserConsole(toifArgs, adaptorArgs);
+    uc.execute();
+    
+    return IApplication.EXIT_OK;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.equinox.app.IApplication#stop()
+   */
+  public void stop() {
+    // nothing to do
+  }
+}

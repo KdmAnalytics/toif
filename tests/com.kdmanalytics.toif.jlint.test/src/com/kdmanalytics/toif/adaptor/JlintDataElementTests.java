@@ -22,7 +22,7 @@ import com.kdmanalytics.toif.adaptor.JlintAdaptor;
 public class JlintDataElementTests {
   
   private static final String EXPECTED_WEAKNESS_FILE = "/resource/expectedWeaknesses";
-
+  
   private String expected;
   
   private String id;
@@ -63,7 +63,7 @@ public class JlintDataElementTests {
       if (split.length == 3) {
         
         Object a[] = new Object[] {
-            "null".equals(split[0]) ? null : split[0], split[1], split[2]
+                                    "null".equals(split[0]) ? null : split[0], split[1], split[2]
         };
         
         res.add(a);
@@ -77,8 +77,8 @@ public class JlintDataElementTests {
   @Test
   public void test_getDataElement() {
     String dataElement = jla.getDataElement(id, msg);
-	assertEquals("Not what was expected. Got:"+dataElement+" wanted:"+expected+"    -   MSG: "+msg,expected, dataElement);
+    assertEquals("Not what was expected. Got:" + dataElement + " wanted:" + expected + "    -   MSG: " + msg, expected,
+                 dataElement);
   }
-
   
 }

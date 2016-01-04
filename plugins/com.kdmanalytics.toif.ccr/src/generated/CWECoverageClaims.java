@@ -11,7 +11,6 @@
 // Generated on: 2012.03.30 at 02:17:16 PM EDT 
 //
 
-
 package generated;
 
 import java.util.ArrayList;
@@ -22,11 +21,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -44,41 +44,40 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cweCoverageClaim"
+                                  "cweCoverageClaim"
 })
 @XmlRootElement(name = "CWE_Coverage_Claims")
 public class CWECoverageClaims {
-
-    @XmlElement(name = "CWE_Coverage_Claim", required = true)
-    protected List<CWECoverageClaimType> cweCoverageClaim;
-
-    /**
-     * Gets the value of the cweCoverageClaim property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the cweCoverageClaim property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getCWECoverageClaim().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link CWECoverageClaimType }
-     * 
-     * 
-     */
-    public List<CWECoverageClaimType> getCWECoverageClaim() {
-        if (cweCoverageClaim == null) {
-            cweCoverageClaim = new ArrayList<CWECoverageClaimType>();
-        }
-        return this.cweCoverageClaim;
+  
+  @XmlElement(name = "CWE_Coverage_Claim", required = true)
+  protected List<CWECoverageClaimType> cweCoverageClaim;
+  
+  /**
+   * Gets the value of the cweCoverageClaim property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot. Therefore any
+   * modification you make to the returned list will be present inside the JAXB object. This is why
+   * there is not a <CODE>set</CODE> method for the cweCoverageClaim property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getCWECoverageClaim().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list {@link CWECoverageClaimType }
+   * 
+   * 
+   */
+  public List<CWECoverageClaimType> getCWECoverageClaim() {
+    if (cweCoverageClaim == null) {
+      cweCoverageClaim = new ArrayList<CWECoverageClaimType>();
     }
-
+    return this.cweCoverageClaim;
+  }
+  
 }

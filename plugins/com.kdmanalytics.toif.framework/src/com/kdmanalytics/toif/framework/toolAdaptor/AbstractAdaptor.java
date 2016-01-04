@@ -24,19 +24,19 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
  * abstract class outlining the adaptor classes.
  * 
  * @author "Adam Nunn <adam@kdmanalytics.com>"
- * 
+ *         
  */
 public abstract class AbstractAdaptor
 {
     
-    public ArrayList<Element> parse(AbstractAdaptor abstractAdaptor, java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines,
-            boolean unknownCWE) throws ToifException
+    public ArrayList<Element> parse(AbstractAdaptor abstractAdaptor, java.io.File process, AdaptorOptions options, IFileResolver resolver,
+            boolean[] validLines, boolean unknownCWE) throws ToifException
     {
         ArrayList<Element> elements = abstractAdaptor.parse(process, options, resolver, validLines, unknownCWE);
-
+        
         return elements;
     }
-
+    
     /**
      * get the language this adaptor works on.
      */
@@ -104,7 +104,8 @@ public abstract class AbstractAdaptor
      * 
      * @return the version
      */
-    public String getAdaptorVersion() {
+    public String getAdaptorVersion()
+    {
         return "1.8.7";
     }
     
@@ -196,17 +197,19 @@ public abstract class AbstractAdaptor
     /**
      * Create a specific parser for the tool. It must return an arraylist of the
      * elements. These can be generated using the FindingCreator.
-     * @param adaptorImpl 
      * 
+     * @param adaptorImpl
+     *            
      * @param file
-     * @param validLines 
-     * @param unknownCWE 
-     * 
+     * @param validLines
+     * @param unknownCWE
+     *            
      * @return
-     * @throws ToifException 
+     * @throws ToifException
      */
-    public abstract ArrayList<Element> parse(java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines, boolean unknownCWE) throws ToifException;
-    
+    public abstract ArrayList<Element> parse(java.io.File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines,
+            boolean unknownCWE) throws ToifException;
+            
     /**
      * construct the command to run the vulnerability detection tool.
      * 

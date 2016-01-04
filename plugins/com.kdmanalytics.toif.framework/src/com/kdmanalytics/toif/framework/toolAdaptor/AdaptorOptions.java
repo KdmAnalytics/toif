@@ -20,7 +20,7 @@ import com.lexicalscope.jewel.cli.Option;
  * Define the commands which can be used.
  * 
  * @author adam
- * 
+ *         
  */
 @CommandLineInterface(application = "adaptor")
 public interface AdaptorOptions
@@ -57,17 +57,19 @@ public interface AdaptorOptions
      */
     @Option(longName = "exec", description = "Override path to the vulnerability detection tool executable.")
     File getExecutablePath();
+    
     boolean isExecutablePath();
-
-//    /**
-//     * class name of the adaptor to run.
-//     * 
-//     * @return
-//     */
-//    @Option(longName = "extraPath", description = "Extra path for dependency location.")
-//    File getPaths();
-//    boolean isPaths();
-
+    
+    // /**
+    // * class name of the adaptor to run.
+    // *
+    // * @return
+    // */
+    // @Option(longName = "extraPath", description = "Extra path for dependency
+    // location.")
+    // File getPaths();
+    // boolean isPaths();
+    
     /**
      * the housekeeping file to use.
      * 
@@ -78,13 +80,12 @@ public interface AdaptorOptions
     
     @Option(shortName = "n", description = "Rename the file as this.")
     String getRename();
+    
     boolean isRename();
     
     @Option
     boolean getUnknownCWE();
-    boolean isUnknownCWE();
-
     
-
+    boolean isUnknownCWE();
     
 }

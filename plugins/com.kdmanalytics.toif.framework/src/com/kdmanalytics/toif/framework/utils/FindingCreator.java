@@ -49,7 +49,7 @@ import com.kdmanalytics.toif.framework.xmlElements.facts.StatementIsSinkInFindin
  * vulnerability detection tool.
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 public class FindingCreator
 {
@@ -64,11 +64,11 @@ public class FindingCreator
     String adaptorName = null;
     
     private boolean unknownCWE;
-
+    
     private Object line;
-
+    
     private String sourceFile;
-
+    
     private String message;
     
     /**
@@ -84,12 +84,10 @@ public class FindingCreator
         this.unknownCWE = unknownCWE;
     }
     
-    
     public String getSourceFile()
     {
         return sourceFile;
     }
-    
     
     public Object getLine()
     {
@@ -159,7 +157,7 @@ public class FindingCreator
         // creates the dataElement for this finding.
         if (dataElement != null)
             createDataElement(dataElement, finding, statement);
-        
+            
         Statement lastStatement = statement;
         
         for (CodeLocation codeLocation : traces)
@@ -191,8 +189,6 @@ public class FindingCreator
         }
     }
     
-    
-    
     public String getMessage()
     {
         return message;
@@ -221,7 +217,7 @@ public class FindingCreator
         java.io.File tempDir = new java.io.File(System.getProperty("java.io.tmpdir"));
         java.io.File tempFile = new java.io.File(tempDir, "toifLog");
         FileWriter fileWriter = new FileWriter(tempFile, true);
-        //System.out.println(tempFile.getAbsolutePath());
+        // System.out.println(tempFile.getAbsolutePath());
         BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(sb);
         bw.close();
@@ -248,7 +244,7 @@ public class FindingCreator
                 {
                     try
                     {
-                        writeToFile(adaptorName + " finding filtered from results: "+getSourceFile()+":"+getLine()+" "+getMessage()+"\n");
+                        writeToFile(adaptorName + " finding filtered from results: " + getSourceFile() + ":" + getLine() + " " + getMessage() + "\n");
                     }
                     catch (IOException e)
                     {
@@ -344,7 +340,7 @@ public class FindingCreator
         {
             try
             {
-                writeToFile(adaptorName + ": No properties found for " + id+"\n");
+                writeToFile(adaptorName + ": No properties found for " + id + "\n");
             }
             catch (IOException e)
             {
@@ -382,9 +378,9 @@ public class FindingCreator
         }
         else
         {
-            System.err.println("Missing a configuration file or not enough values for " + id
-                    + ". Hence, these Elements have not been created in the toif");
-            
+            System.err.println(
+                    "Missing a configuration file or not enough values for " + id + ". Hence, these Elements have not been created in the toif");
+                    
             return false;
         }
         
@@ -401,7 +397,7 @@ public class FindingCreator
                 {
                     try
                     {
-                        writeToFile(adaptorName + " finding filtered from results: "+getSourceFile()+":"+getLine()+" "+getMessage()+"\n");
+                        writeToFile(adaptorName + " finding filtered from results: " + getSourceFile() + ":" + getLine() + " " + getMessage() + "\n");
                     }
                     catch (IOException e)
                     {
@@ -409,7 +405,7 @@ public class FindingCreator
                         e.printStackTrace();
                     }
                     return false;
-                }   
+                }
             }
             
             cweId = new CWEIdentifier(cwe);

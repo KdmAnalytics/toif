@@ -17,24 +17,22 @@ import com.kdmanalytics.toif.ui.common.FindingEntry;
  * 
  * @author Kyle Girard <kyle@kdmanalytics.com>
  * @author Ken Duck
- * 
+ *         
  */
-public abstract class AbstractValidFilter extends ViewerFilter
-{
-    
-    /**
-     * Returns true if the finding entry of the given report entry is not OK
-     * 
-     * @param element
-     *            a toif report entry
-     * 
-     * @return true if the entry has been cited as "true"
-     */
-    protected boolean valid(FindingEntry entry)
-    {
-    	Boolean b = entry.getCiting();
-        if(b != null) return b;
-        return false;
-    }
-    
+public abstract class AbstractValidFilter extends ViewerFilter {
+  
+  /**
+   * Returns true if the finding entry of the given report entry is not OK
+   * 
+   * @param element
+   *          a toif report entry
+   *          
+   * @return true if the entry has been cited as "true"
+   */
+  protected boolean valid(FindingEntry entry) {
+    Boolean b = entry.getCiting();
+    if (b != null) return b;
+    return false;
+  }
+  
 }

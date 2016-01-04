@@ -1,3 +1,4 @@
+
 package com.kdmanalytics.toif.rcp.internal.cmd;
 
 /*******************************************************************************
@@ -14,40 +15,34 @@ import com.kdmanalytics.toif.rcp.internal.ToifCli;
 import com.kdmanalytics.toif.rcp.internal.util.BuildInformation;
 import com.kdmanalytics.toif.rcp.internal.util.CommonUtil;
 
-public class VersionCmd implements IToifCmd
-	{
-
-	@Override
-	public void execute(ToifCli toifCli, String userArgs[])
-		{
-		BuildInformation bi = new BuildInformation( this );
-		System.out.println( "Version="+ bi.getVersion());
-		System.out.println( "");
-		
-		if (toifCli.isVerbose())
-			{
-			// List detected plugins
-			for (AbstractAdaptor adaptor :ToolAdaptorUtil.getAdaptors())
-				{
-				StringBuilder sb  = new StringBuilder();
-				sb.append( "Adaptor Name=");
-				String name = CommonUtil.padRight( adaptor.getAdaptorName(), 15);
-				sb.append( name);
-				
-				sb.append( " tool=");
-				String tool = CommonUtil.padRight( adaptor.getRuntoolName(), 15);
-				sb.append( tool );
-				
-				sb.append( " version=");
-				bi = new BuildInformation( this );
-				sb.append( bi.getVersion());
-				
-				System.out.println( sb );
-				}		
-			}
-		
-		}
-	
-	
+public class VersionCmd implements IToifCmd {
+  
+  @Override
+  public void execute(ToifCli toifCli, String userArgs[]) {
+    BuildInformation bi = new BuildInformation(this);
+    System.out.println("Version=" + bi.getVersion());
+    System.out.println("");
     
-	}
+    if (toifCli.isVerbose()) {
+      // List detected plugins
+      for (AbstractAdaptor adaptor : ToolAdaptorUtil.getAdaptors()) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Adaptor Name=");
+        String name = CommonUtil.padRight(adaptor.getAdaptorName(), 15);
+        sb.append(name);
+        
+        sb.append(" tool=");
+        String tool = CommonUtil.padRight(adaptor.getRuntoolName(), 15);
+        sb.append(tool);
+        
+        sb.append(" version=");
+        bi = new BuildInformation(this);
+        sb.append(bi.getVersion());
+        
+        System.out.println(sb);
+      }
+    }
+    
+  }
+  
+}

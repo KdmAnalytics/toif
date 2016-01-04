@@ -30,7 +30,7 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
  * toifAdaptor.
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 public class DirectToifInput extends AbstractAdaptor
 {
@@ -61,7 +61,7 @@ public class DirectToifInput extends AbstractAdaptor
      *            toif housekeeping file format
      * @param segmentFile
      *            The source file which is being analyzed.
-     * @throws ToifException 
+     * @throws ToifException
      */
     public DirectToifInput(File ouputDirectory, File housekeepingFile, File segmentFile) throws ToifException
     {
@@ -108,14 +108,15 @@ public class DirectToifInput extends AbstractAdaptor
         // file.
         com.kdmanalytics.toif.framework.xmlElements.entities.File toifFile = new com.kdmanalytics.toif.framework.xmlElements.entities.File(
                 file.getPath());
-        
+                
         // create the finding.
         creator.create(msg, id, lineNumber, offset, position, toifFile, dataElement, cwe);
     }
     
     /**
      * construct the xml after creating all the findings.
-     * @throws ToifException 
+     * 
+     * @throws ToifException
      */
     public void constructXml() throws ToifException
     {
@@ -240,8 +241,7 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(File process, AdaptorOptions options, IFileResolver resolver,
-            boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines, boolean unknownCWE)
     {
         
         // TODO Auto-generated method stub

@@ -8,16 +8,18 @@
  * //////////////////////////////
  * ////////////////////////////////////////////////////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.toolAdaptor;
 
-/** Implement this interface if we know it can be run "nicely". This is
- * used to ensure we perform proper testing on each adaptor in case there
- * is some unknown dodgy issues -- particularly with MS Window.
+/**
+ * Implement this interface if we know it can be run "nicely". This is used to
+ * ensure we perform proper testing on each adaptor in case there is some
+ * unknown dodgy issues -- particularly with MS Window.
  * 
  * @author Ken Duck
- *
+ *        
  */
 public interface INiceable
-{   
-    
+{
+
 }

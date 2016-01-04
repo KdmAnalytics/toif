@@ -17,50 +17,45 @@ import org.eclipse.ui.IWorkbench;
  * 
  * @author Ken Duck
  * @author Adam Nunn <adam@kdmanalytics.com>
- * 
+ *         
  */
-public class RepositoryImportWizard extends Wizard implements IImportWizard
-{
-    
-    RepositoryImportWizardPage mainPage;
-    
-    public RepositoryImportWizard()
-    {
-        super();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
-    public boolean performFinish()
-    {
-        return mainPage.finish();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init(IWorkbench workbench, IStructuredSelection selection)
-    {
-        setWindowTitle("File Import Wizard"); // NON-NLS-1
-        setNeedsProgressMonitor(true);
-        mainPage = new RepositoryImportWizardPage("Import TOIF Data", selection); // NON-NLS-1
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    public void addPages()
-    {
-        super.addPages();
-        addPage(mainPage);
-    }
-    
+public class RepositoryImportWizard extends Wizard implements IImportWizard {
+  
+  RepositoryImportWizardPage mainPage;
+  
+  public RepositoryImportWizard() {
+    super();
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.wizard.Wizard#performFinish()
+   */
+  public boolean performFinish() {
+    return mainPage.finish();
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+   * org.eclipse.jface.viewers.IStructuredSelection)
+   */
+  public void init(IWorkbench workbench, IStructuredSelection selection) {
+    setWindowTitle("File Import Wizard"); // NON-NLS-1
+    setNeedsProgressMonitor(true);
+    mainPage = new RepositoryImportWizardPage("Import TOIF Data", selection); // NON-NLS-1
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.wizard.IWizard#addPages()
+   */
+  public void addPages() {
+    super.addPages();
+    addPage(mainPage);
+  }
+  
 }

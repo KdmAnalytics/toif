@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.entities;
 
 import javax.xml.bind.annotation.XmlElementRef;
@@ -54,7 +57,8 @@ public class File extends Entity
         
         checksum = new Checksum(file.getPath());
         
-        if(checksum == null) {
+        if (checksum == null)
+        {
             checksum = new Checksum("none");
         }
         
@@ -145,7 +149,7 @@ public class File extends Entity
         }
         return null;
     }
-
+    
     @Override
     public int hashCode()
     {
@@ -155,7 +159,7 @@ public class File extends Entity
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         return result;
     }
-
+    
     @Override
     public boolean equals(Object obj)
     {
@@ -183,30 +187,33 @@ public class File extends Entity
         return true;
     }
     
-//    /**
-//     * override the equals method so that only one of these files is present in
-//     * the elements.
-//     */
-//    @Override
-//    public boolean equals(Object obj)
-//    {
-//        
-//        if (obj instanceof File)
-//        {
-//            File file = (File) obj;
-//            
-//            return getName().getName().equals(file.getName().getName()) && getPath().equals(file.getPath());
-//        }
-//        return false;
-//        
-//    }
-//    
-//    /**
-//     * override the hashcode.
-//     */
-//    @Override
-//    public int hashCode()
-//    {
-//        return getName().getName().hashCode() ^ getPath().hashCode() ^ "file".hashCode();
-//    }
+    // /**
+    // * override the equals method so that only one of these files is present
+    // in
+    // * the elements.
+    // */
+    // @Override
+    // public boolean equals(Object obj)
+    // {
+    //
+    // if (obj instanceof File)
+    // {
+    // File file = (File) obj;
+    //
+    // return getName().getName().equals(file.getName().getName()) &&
+    // getPath().equals(file.getPath());
+    // }
+    // return false;
+    //
+    // }
+    //
+    // /**
+    // * override the hashcode.
+    // */
+    // @Override
+    // public int hashCode()
+    // {
+    // return getName().getName().hashCode() ^ getPath().hashCode() ^
+    // "file".hashCode();
+    // }
 }

@@ -23,93 +23,79 @@ import com.kdmanalytics.toif.report.items.IFileGroup;
  * member utilities.
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
- * 
+ *         
  */
-public class MemberUtil
-{
+public class MemberUtil {
+  
+  private MemberUtil() {
+  
+  }
+  
+  /**
+   * find suitable resources
+   * 
+   * @param member
+   * @param file
+   * @return
+   * @throws CoreException
+   */
+  public static IResource findMembers(IResource member, IFileGroup file) throws CoreException {
+    String name = file.getName();
     
-    private MemberUtil()
-    {
-        
+    String path = file.getPath();
+    path = path.replace("\\", "/");
+    
+    String[] pathArray = path.split("/");
+    ArrayUtils.reverse(pathArray);
+    
+    List<IResource> result = new ArrayList<IResource>();
+    List<IResource> toDo = new ArrayList<IResource>();
+    
+    toDo.add(member);
+    
+    while (!toDo.isEmpty()) {
+      IResource resource = toDo.remove(0);
+      
+      if (resource instanceof IContainer) {
+        for (IResource iResource : ((IContainer) resource).members()) {
+          toDo.add(iResource);
+        }
+      }
+      
+      result.add(resource);
+      
     }
     
-    /**
-     * find suitable resources
-     * 
-     * @param member
-     * @param file
-     * @return
-     * @throws CoreException
-     */
-    public static IResource findMembers(IResource member, IFileGroup file) throws CoreException
-    {
-        String name = file.getName();
+    ResourceMatch match = new ResourceMatch();
+    
+    for (IResource iResource : result) {
+      if (iResource == null) {
+        continue;
+      }
+      if (iResource.getName().equals(name)) {
+        IPath ipath = iResource.getLocation();
         
-        String path = file.getPath();
-        path = path.replace("\\", "/");
+        String stringPath = ipath.toString();
+        stringPath = stringPath.replace("\\", "/");
         
-        String[] pathArray = path.split("/");
-        ArrayUtils.reverse(pathArray);
+        String[] resourcePathArray = stringPath.split("/");
+        ArrayUtils.reverse(resourcePathArray);
         
-        List<IResource> result = new ArrayList<IResource>();
-        List<IResource> toDo = new ArrayList<IResource>();
-        
-        toDo.add(member);
-        
-        while (!toDo.isEmpty())
-        {
-            IResource resource = toDo.remove(0);
-            
-            if (resource instanceof IContainer)
-            {
-                for (IResource iResource : ((IContainer) resource).members())
-                {
-                    toDo.add(iResource);
-                }
+        int smallestSize = (pathArray.length < resourcePathArray.length) ? pathArray.length : resourcePathArray.length;
+        for (int i = 0; i < smallestSize; i++) {
+          if (pathArray[i].equals(resourcePathArray[i])) {
+            if (i >= match.getScore()) {
+              match = new ResourceMatch(iResource, i);
             }
-            
-            result.add(resource);
-            
+          } else {
+            break;
+          }
+          
         }
-        
-        ResourceMatch match = new ResourceMatch();
-        
-        for (IResource iResource : result)
-        {
-            if (iResource == null)
-            {
-                continue;
-            }
-            if (iResource.getName().equals(name))
-            {
-                IPath ipath = iResource.getLocation();
-                
-                String stringPath = ipath.toString();
-                stringPath = stringPath.replace("\\", "/");
-                
-                String[] resourcePathArray = stringPath.split("/");
-                ArrayUtils.reverse(resourcePathArray);
-                
-                int smallestSize = (pathArray.length < resourcePathArray.length) ? pathArray.length : resourcePathArray.length;
-                for (int i = 0; i < smallestSize; i++)
-                {
-                    if (pathArray[i].equals(resourcePathArray[i]))
-                    {
-                        if (i >= match.getScore())
-                        {
-                            match = new ResourceMatch(iResource, i);
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                    
-                }
-            }
-        }
-        
-        return match.getIResource();
+      }
     }
     
+    return match.getIResource();
+  }
+  
 }
