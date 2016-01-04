@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Findbugs Adaptor</name>
+	<name>Open TOIF Adaptor - Findbugs</name>
 </project>

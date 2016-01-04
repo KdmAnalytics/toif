@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Splint Adaptor</name>
+	<name>Open TOIF Adaptor - Splint</name>
 </project>

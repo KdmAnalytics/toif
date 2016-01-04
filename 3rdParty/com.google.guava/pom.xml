@@ -13,9 +13,9 @@
   <groupId>com.kdmanalytics.libs.libsjava.plugins</groupId>
   <artifactId>com.google.guava</artifactId>
   <version>14.0.1</version>
-  
+
   <name>Google Guava Library</name>
-  
+
   <packaging>eclipse-plugin</packaging>
 
 </project>

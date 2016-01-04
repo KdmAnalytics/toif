@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Assimilator</name>
+	<name>Open TOIF Assimilator</name>
 </project>

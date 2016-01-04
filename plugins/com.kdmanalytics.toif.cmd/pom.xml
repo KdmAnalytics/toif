@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF RCP Command</name>
+	<name>Open TOIF RCP App</name>
 </project>

@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-feature</packaging>
 
-	<name>TOIF Report Feature</name>
+	<name>Open TOIF CLI Feature</name>
 </project>

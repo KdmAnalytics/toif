@@ -10,7 +10,7 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>features</artifactId>
-  <name>TOIF Features Module</name>
+  <name>Open TOIF Features Module</name>
 
   <packaging>pom</packaging>
 

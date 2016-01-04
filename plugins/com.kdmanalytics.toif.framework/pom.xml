@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Adaptor Framework</name>
+	<name>Open TOIF Adaptor Framework</name>
 </project>

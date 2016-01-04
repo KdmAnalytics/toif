@@ -14,7 +14,7 @@
 
 	<packaging>eclipse-repository</packaging>
 
-	<name>TOIF P2 Repository</name>
+	<name>Open TOIF P2 Repository</name>
 	<properties>
 		<toif-archive-name>toif-${project.version}</toif-archive-name>
 		<distribution.prefix>${project.build.directory}/products/com.kdmanalytics.toif</distribution.prefix>
