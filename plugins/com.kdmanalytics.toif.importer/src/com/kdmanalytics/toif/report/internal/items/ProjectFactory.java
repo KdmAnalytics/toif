@@ -175,12 +175,10 @@ public class ProjectFactory
     private static void initCodeLocationCache(IToifProject project) throws QueryEvaluationException, RepositoryException, MalformedQueryException
     {
         Set<String> uniquePaths = new HashSet<String>();
-        int count = 0;
         
         codeLocationCache = new HashMap<String, Map<Value, CachedCodeLocation>>();
         countFindings = 0;
         countCodeLocations = 0;
-        int findingCount = 0;
         
         RepositoryConnection con = project.getRepositoryConnection();
         // make the query. get all the codelocations that have the
@@ -215,10 +213,8 @@ public class ProjectFactory
                 {
                     loc = new CachedCodeLocation(codeLocation, path.stringValue(), lineno.stringValue());
                     map.put(codeLocation, loc);
-                    ++count;
                 }
                 loc.addFinding(finding);
-                findingCount++;
             }
         }
         finally

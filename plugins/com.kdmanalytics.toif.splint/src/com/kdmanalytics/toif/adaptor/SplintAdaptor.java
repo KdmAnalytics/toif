@@ -39,7 +39,6 @@ public class SplintAdaptor extends AbstractAdaptor
  * the logger.
  */
 private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
-    private String path = null;
     
     private File tmpFile = null;
     
@@ -85,9 +84,6 @@ private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
     @Override
     public String[] runToolCommands(AdaptorOptions options, String[] otherOpts)
     {
-        // we need the path in order to construct the full file path.
-        path = options.getInputFile().getParent();
-        
         // this is where the output of the tool is going to be written in order
         // for us to collect it.
         
@@ -198,12 +194,6 @@ private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
                 final Integer offset = null;
                 // get the position of the weakness.
                 final Integer position = Integer.valueOf(csvElements[6]);
-                
-                // This tool is funny in that it doesn't give you the full path
-                // of the file. Therefore, we must construct the full path
-                // ourselves.
-                final int index = csvFileName.lastIndexOf(File.separator) + 1;
-                final String fileName = path + File.separator + csvFileName.substring(index);
                 
                 // if there is a dataElement, use it.
                 String dataElement = null;

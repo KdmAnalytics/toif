@@ -330,10 +330,6 @@ public class ToifReportImportJob extends Job
 										Trace t = trace.get(0);
 										line = Integer.parseInt(t.getLineNumber());
 									}
-									for (Trace t : trace)
-									{
-										//System.err.println("  * " + t);
-									}
 								}
 								try
 								{

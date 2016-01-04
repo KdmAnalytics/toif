@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -420,7 +419,6 @@ public class DefectDescriptionView extends ViewPart
 					header = false;
 					continue;
 				}
-				int size = record.size();
 				String cweid = record.get(0);
 				String name = record.get(1);
 //				if(size > 2)

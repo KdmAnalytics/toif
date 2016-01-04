@@ -8,7 +8,6 @@
 
 package com.kdmanalytics.toif.report.internal.items;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +22,6 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.nativerdf.NativeStore;
 
 import com.kdmanalytics.toif.report.internal.items.FindingEntry.Citing;
 import com.kdmanalytics.toif.report.items.IFileGroup;

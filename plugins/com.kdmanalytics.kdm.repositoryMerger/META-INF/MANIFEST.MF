@@ -13,7 +13,7 @@ Require-Bundle: org.apache.commons.lang3;bundle-version="[3.0.0,4.0.0)",
  com.lexicalscope.jewelcli;bundle-version="[0.8.5,1.0.0)",
  org.eclipse.ui,
  org.eclipse.core.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
 Bundle-ActivationPolicy: lazy
 Export-Package: com.kdmanalytics.kdm.repositoryMerger,com.kdmanalytics

@@ -125,7 +125,7 @@ public class AssimilatorTest {
    * {@link com.kdmanalytics.toif.assimilator.Assimilator#createRepository(java.io.File)} .
    */
   @Test
-  public void testCreateRepository() {
+  public void testCreateRepository() throws Exception {
     File out = folder.newFolder("testRepo");
     Repository repository = assimilator.createRepository(out);
     assertNotNull("The repository returned should not be null", repository);

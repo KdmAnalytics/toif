@@ -32,7 +32,6 @@ public class JlintTests extends TestCase {
   
   @Test
   public void testGetLanguage() {
-    Language l = jla.getLanguage();
     assertEquals(Language.JAVA, jla.getLanguage());
   }
   

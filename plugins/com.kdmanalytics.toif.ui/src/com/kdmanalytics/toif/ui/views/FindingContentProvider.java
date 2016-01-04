@@ -9,11 +9,9 @@ package com.kdmanalytics.toif.ui.views;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -206,31 +204,6 @@ class FindingContentProvider implements IStructuredContentProvider
 					viewer.add(finding);
 					addEntry(finding);
 				}
-			}
-
-			/** Check to see if there are any new findings
-			 * 
-			 * @param oldFindings
-			 * @param newFindings
-			 * @return
-			 */
-			private boolean equals(Collection<FindingEntry> oldFindings, Collection<FindingEntry> newFindings)
-			{
-				Set<FindingEntry> copy = new HashSet<FindingEntry>();
-				copy.addAll(oldFindings);
-				for(FindingEntry finding: newFindings)
-				{
-					if(copy.contains(finding))
-					{
-						copy.remove(finding);
-					}
-					else
-					{
-						return false;
-					}
-				}
-				if(!copy.isEmpty()) return false;
-				return true;
 			}
 		});
 	}

@@ -10,9 +10,6 @@ package com.kdmanalytics.toif.report.items;
 
 import java.util.List;
 
-import org.openrdf.model.Value;
-import org.openrdf.repository.Repository;
-
 import com.kdmanalytics.toif.report.internal.items.FindingEntry;
 import com.kdmanalytics.toif.report.internal.items.FindingEntry.Citing;
 import com.kdmanalytics.toif.report.internal.items.ReportItem;

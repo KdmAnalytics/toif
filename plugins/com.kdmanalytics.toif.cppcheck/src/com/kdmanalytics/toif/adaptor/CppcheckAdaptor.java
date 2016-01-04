@@ -9,7 +9,6 @@
 package com.kdmanalytics.toif.adaptor;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -110,8 +109,6 @@ public class CppcheckAdaptor extends AbstractAdaptor implements INiceable
             
             // process.waitFor();
             
-            final byte[] data = errStream.toByteArray();
-            final ByteArrayInputStream in = new ByteArrayInputStream(data);
             
             final XMLReader rdr = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
             rdr.setContentHandler(parser);
