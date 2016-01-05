@@ -16,50 +16,45 @@ import org.eclipse.ui.IWorkbench;
  * Import a *.TSV Citing file into the internal defect database.
  * 
  * @author Ken Duck
- * 
+ *         
  */
-public class TsvImportWizard extends Wizard implements IImportWizard
-{
-    
-    TsvImportWizardPage mainPage;
-    
-    public TsvImportWizard()
-    {
-        super();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
-    public boolean performFinish()
-    {
-        return mainPage.finish();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init(IWorkbench workbench, IStructuredSelection selection)
-    {
-        setWindowTitle("File Import Wizard"); // NON-NLS-1
-        setNeedsProgressMonitor(true);
-        mainPage = new TsvImportWizardPage("Import Citing Data", selection); // NON-NLS-1
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    public void addPages()
-    {
-        super.addPages();
-        addPage(mainPage);
-    }
-    
+public class TsvImportWizard extends Wizard implements IImportWizard {
+  
+  TsvImportWizardPage mainPage;
+  
+  public TsvImportWizard() {
+    super();
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.wizard.Wizard#performFinish()
+   */
+  public boolean performFinish() {
+    return mainPage.finish();
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+   * org.eclipse.jface.viewers.IStructuredSelection)
+   */
+  public void init(IWorkbench workbench, IStructuredSelection selection) {
+    setWindowTitle("File Import Wizard"); // NON-NLS-1
+    setNeedsProgressMonitor(true);
+    mainPage = new TsvImportWizardPage("Import Citing Data", selection); // NON-NLS-1
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.wizard.IWizard#addPages()
+   */
+  public void addPages() {
+    super.addPages();
+    addPage(mainPage);
+  }
+  
 }

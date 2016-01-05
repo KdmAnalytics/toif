@@ -34,6 +34,7 @@ public class KdmXmlHandlerTest {
   private SAXParser saxParser;
   
   private KdmXmlHandler xmlHandler;
+  
   private KdmXmiIdHandler idHandler;
   
   private PrintWriter printWriter;
@@ -57,7 +58,7 @@ public class KdmXmlHandlerTest {
     saxParser = factory.newSAXParser();
     
     outputFile = folder.newFile("testOutput.kdm");
-    printWriter = new PrintWriter( new FileOutputStream(outputFile));
+    printWriter = new PrintWriter(new FileOutputStream(outputFile));
     idHandler = new KdmXmiIdHandler();
   }
   
@@ -77,28 +78,28 @@ public class KdmXmlHandlerTest {
    * 
    * @throws Exception
    */
-  @Test 
+  @Test
   public void simpleParse() throws Exception {
     File simpleXml = new File("resources/simpleXml.xml");
     saxParser.parse(simpleXml, idHandler);
     xmlHandler = new KdmXmlHandler(printWriter, repository, idHandler.getMaxId());
     saxParser.parse(simpleXml, xmlHandler);
-
+    
     String fileContents = readOutputFile();
     assertTrue(fileContents.contains("<http://kdmanalytics.com/0> <http://org.omg.kdm/kdmType> \"kdm/Segment\""));
     assertTrue(fileContents.contains("<http://kdmanalytics.com/0> <http://org.omg.kdm/name> \"Java$Application\""));
     assertTrue(fileContents.contains("<http://kdmanalytics.com/0> <http://org.omg.kdm/UID> \"0\""));
-//    dumpFileToConsole();
+    // dumpFileToConsole();
   }
-
-  @Test 
+  
+  @Test
   public void actionElementParse() throws Exception {
     File simpleXml = new File("resources/actionElements.xml");
     saxParser.parse(simpleXml, idHandler);
     xmlHandler = new KdmXmlHandler(printWriter, repository, idHandler.getMaxId());
     saxParser.parse(simpleXml, xmlHandler);
-    //dumpFileToConsole();
-
+    // dumpFileToConsole();
+    
     String fileContents = readOutputFile();
     
     Pattern pattern = Pattern.compile(Pattern.quote("<http://kdmanalytics.com/3420961> <http://org.omg.kdm/kdmType>"));
@@ -107,14 +108,14 @@ public class KdmXmlHandlerTest {
     assertFalse("There should only one match of id 3420961 and kdmType", matcher.find());
   }
   
-  @Test 
+  @Test
   public void overlapId() throws Exception {
     File simpleXml = new File("resources/overlapId.xml");
     saxParser.parse(simpleXml, idHandler);
     xmlHandler = new KdmXmlHandler(printWriter, repository, idHandler.getMaxId());
     saxParser.parse(simpleXml, xmlHandler);
-    //dumpFileToConsole();
-
+    // dumpFileToConsole();
+    
     String fileContents = readOutputFile();
     
     Pattern pattern = Pattern.compile(Pattern.quote("<http://kdmanalytics.com/80> <http://org.omg.kdm/kdmType>"));
@@ -123,18 +124,18 @@ public class KdmXmlHandlerTest {
     assertFalse("There should only one match of id 80 and kdmType", matcher.find());
   }
   
-  @Test (expected=SAXException.class)
+  @Test(expected = SAXException.class)
   public void overlapIdInvalidMaxId() throws Exception {
     File simpleXml = new File("resources/overlapId.xml");
     xmlHandler = new KdmXmlHandler(printWriter, repository, 60);
     saxParser.parse(simpleXml, xmlHandler);
-   }
+  }
   
   /**
-   * Flushes the printwriter and dumps the contents of the outputFile to 
-   * StandardErr
+   * Flushes the printwriter and dumps the contents of the outputFile to StandardErr
    * 
-   * @throws Exception if anything bad happens
+   * @throws Exception
+   *           if anything bad happens
    */
   private String readOutputFile() throws Exception {
     printWriter.flush();
@@ -149,10 +150,10 @@ public class KdmXmlHandlerTest {
   }
   
   /**
-   * Flushes the printwriter and dumps the contents of the outputFile to 
-   * StandardErr
+   * Flushes the printwriter and dumps the contents of the outputFile to StandardErr
    * 
-   * @throws Exception if anything bad happens
+   * @throws Exception
+   *           if anything bad happens
    */
   void dumpFileToConsole() throws Exception {
     printWriter.flush();
@@ -164,70 +165,70 @@ public class KdmXmlHandlerTest {
     }
   }
   
-//  
-//  @Test
-//  public void testStartDocument() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testAddOrWrite() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testKdmXmlHandlerRepository() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testKdmXmlHandlerPrintWriterRepository() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testAddChild() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testCommitNode() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testEndElementStringStringString() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testGetNextId() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testGetSmallestBigNumber() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testPostLoad() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testSetRDFAttribute() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testStartElementStringStringStringAttributes() {
-//    fail("Not yet implemented");
-//  }
-//  
-//  @Test
-//  public void testStopDocument() {
-//    fail("Not yet implemented");
-//  }
+  //
+  // @Test
+  // public void testStartDocument() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testAddOrWrite() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testKdmXmlHandlerRepository() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testKdmXmlHandlerPrintWriterRepository() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testAddChild() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testCommitNode() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testEndElementStringStringString() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testGetNextId() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testGetSmallestBigNumber() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testPostLoad() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testSetRDFAttribute() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testStartElementStringStringStringAttributes() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testStopDocument() {
+  // fail("Not yet implemented");
+  // }
   
 }

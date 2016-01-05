@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.entities;
 
 import javax.xml.bind.annotation.XmlElementRef;
@@ -15,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * representation of the directory
  * 
  * @author adam
- * 
+ *         
  */
 @XmlRootElement(name = "fact")
 public class Directory extends Entity
@@ -110,7 +113,7 @@ public class Directory extends Entity
     {
         return path;
     }
-
+    
     @Override
     public int hashCode()
     {
@@ -120,7 +123,7 @@ public class Directory extends Entity
         result = prime * result + ((path == null) ? 0 : path.hashCode());
         return result;
     }
-
+    
     @Override
     public boolean equals(Object obj)
     {
@@ -148,31 +151,33 @@ public class Directory extends Entity
         return true;
     }
     
-//    /**
-//     * Over ride the equals method. This is so that we can make sure that only
-//     * one of these elements is in the end toif output.
-//     */
-//    @Override
-//    public boolean equals(Object obj)
-//    {
-//        
-//        if (obj instanceof Directory)
-//        {
-//            Directory directory = (Directory) obj;
-//            
-//            return this.name.getName().equals(directory.getName().getName()) && this.path.equals(directory.getPath());
-//        }
-//        return false;
-//        
-//    }
-//    
-//    /**
-//     * over ride the hash
-//     */
-//    @Override
-//    public int hashCode()
-//    {
-//        return name.getName().hashCode() ^ path.hashCode() ^ "directory".hashCode();
-//    }
+    // /**
+    // * Over ride the equals method. This is so that we can make sure that only
+    // * one of these elements is in the end toif output.
+    // */
+    // @Override
+    // public boolean equals(Object obj)
+    // {
+    //
+    // if (obj instanceof Directory)
+    // {
+    // Directory directory = (Directory) obj;
+    //
+    // return this.name.getName().equals(directory.getName().getName()) &&
+    // this.path.equals(directory.getPath());
+    // }
+    // return false;
+    //
+    // }
+    //
+    // /**
+    // * over ride the hash
+    // */
+    // @Override
+    // public int hashCode()
+    // {
+    // return name.getName().hashCode() ^ path.hashCode() ^
+    // "directory".hashCode();
+    // }
     
 }

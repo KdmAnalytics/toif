@@ -21,79 +21,76 @@ import com.kdmanalytics.toif.report.internal.items.FindingEntry;
 import com.kdmanalytics.toif.report.internal.items.ReportItem;
 
 /**
- * Interface for the project. projects contain all the files (first level
- * children), locations, tools, and findings.
+ * Interface for the project. projects contain all the files (first level children), locations,
+ * tools, and findings.
  * 
  * @author Kyle Girard <kyle@kdmanalytics.com>
- * 
+ *         
  */
-public interface IToifProject extends IReportItem
-{
-    
-    /**
-     * get the project
-     * 
-     * @return
-     */
-    IProject getIProject();
-    
-    
-    void setIProject(IProject iProject);
-    
-    /**
-     * get the repository this project is in
-     * 
-     * @return
-     */
-    Repository getRepository();
-    
-    
-    void setRepository(IFolder ifolder);
-    
-    /**
-     * get the repository's connection
-     * 
-     * @return
-     */
-    RepositoryConnection getRepositoryConnection();
-    
-    /**
-     * get the value factory for the repository
-     * 
-     * @return
-     */
-    ValueFactory getValueFactory();
-    
-    void dispose();
-    
-    /**
-     * get the file groups in this project.
-     * 
-     * @return
-     */
-    List<FileGroup> getFileGroup();
-    
-    /**
-     * add a file group to this project
-     * 
-     * @param file
-     */
-    void AddFileGroup(FileGroup file);
-    
-    /**
-     * get all the finding entries that are not ok
-     * 
-     * @return
-     */
-    List<FindingEntry> getFindingEntriesNotOk();
-    
-    /**
-     * get all the finding entries in this project
-     * 
-     * @return
-     */
-    List<FindingEntry> getFindingEntries();
-    
-    List<ReportItem> getChildren();
-    
+public interface IToifProject extends IReportItem {
+  
+  /**
+   * get the project
+   * 
+   * @return
+   */
+  IProject getIProject();
+  
+  void setIProject(IProject iProject);
+  
+  /**
+   * get the repository this project is in
+   * 
+   * @return
+   */
+  Repository getRepository();
+  
+  void setRepository(IFolder ifolder);
+  
+  /**
+   * get the repository's connection
+   * 
+   * @return
+   */
+  RepositoryConnection getRepositoryConnection();
+  
+  /**
+   * get the value factory for the repository
+   * 
+   * @return
+   */
+  ValueFactory getValueFactory();
+  
+  void dispose();
+  
+  /**
+   * get the file groups in this project.
+   * 
+   * @return
+   */
+  List<FileGroup> getFileGroup();
+  
+  /**
+   * add a file group to this project
+   * 
+   * @param file
+   */
+  void AddFileGroup(FileGroup file);
+  
+  /**
+   * get all the finding entries that are not ok
+   * 
+   * @return
+   */
+  List<FindingEntry> getFindingEntriesNotOk();
+  
+  /**
+   * get all the finding entries in this project
+   * 
+   * @return
+   */
+  List<FindingEntry> getFindingEntries();
+  
+  List<ReportItem> getChildren();
+  
 }

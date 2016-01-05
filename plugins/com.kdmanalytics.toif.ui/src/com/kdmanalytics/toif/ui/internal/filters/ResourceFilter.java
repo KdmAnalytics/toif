@@ -5,6 +5,7 @@
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+
 package com.kdmanalytics.toif.ui.internal.filters;
 
 import java.util.Collection;
@@ -17,37 +18,36 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
 
-/** Filter based on a set of acceptable resources
+/**
+ * Filter based on a set of acceptable resources
  * 
  * @author Ken Duck
- *
+ *        
  */
-public class ResourceFilter extends ViewerFilter
-{
-	private Set<IFile> accept;
-
-	public ResourceFilter(Collection<IFile> resources)
-	{
-		accept = new HashSet<IFile>();
-		accept.addAll(resources);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public boolean select(Viewer viewer, Object parentElement, Object element)
-	{
-		if(element instanceof FindingEntry)
-		{
-			IFile file = ((FindingEntry)element).getFile();
-			if(accept.contains(file))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
+public class ResourceFilter extends ViewerFilter {
+  
+  private Set<IFile> accept;
+  
+  public ResourceFilter(Collection<IFile> resources) {
+    accept = new HashSet<IFile>();
+    accept.addAll(resources);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+   * java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public boolean select(Viewer viewer, Object parentElement, Object element) {
+    if (element instanceof FindingEntry) {
+      IFile file = ((FindingEntry) element).getFile();
+      if (accept.contains(file)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }

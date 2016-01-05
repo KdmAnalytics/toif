@@ -17,5 +17,5 @@
 
   <packaging>eclipse-plugin</packaging>
 
-  <name>TOIF Common UI</name>
+  <name>Open TOIF UI</name>
 </project>

@@ -1,3 +1,4 @@
+
 package com.kdmanalytics.toif.rcp.internal.cmd;
 
 /*******************************************************************************
@@ -13,24 +14,19 @@ import com.kdmanalytics.toif.facade.ToifFacade;
 import com.kdmanalytics.toif.rcp.internal.IToifCmd;
 import com.kdmanalytics.toif.rcp.internal.ToifCli;
 
-public class MergeCmd implements IToifCmd
-	{
-
-	@Override
-	public void execute(ToifCli toifCli, String userArgs[])
-		{
-		
-		ToifFacade toif = new ToifFacade();
-		try
-			{
-			toif.merge( toifCli.getKdmfile(), toifCli.getInputfile(), true);
-			}
-		catch (ToifException e)
-			{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
-		
-		}
-
-	}
+public class MergeCmd implements IToifCmd {
+  
+  @Override
+  public void execute(ToifCli toifCli, String userArgs[]) {
+    
+    ToifFacade toif = new ToifFacade();
+    try {
+      toif.merge(toifCli.getKdmfile(), toifCli.getInputfile(), true);
+    } catch (ToifException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+  }
+  
+}

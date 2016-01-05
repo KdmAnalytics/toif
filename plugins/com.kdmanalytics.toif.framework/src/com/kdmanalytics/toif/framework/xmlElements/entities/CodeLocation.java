@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.entities;
 
 import javax.xml.bind.annotation.XmlElementRef;
@@ -15,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Entity which represents the codeLocation.
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 @XmlRootElement(name = "fact")
 public class CodeLocation extends Entity
@@ -63,7 +66,7 @@ public class CodeLocation extends Entity
             this.position = new Position(position);
         if (offset != null)
             this.offset = new Offset(offset);
-        
+            
     }
     
     /**
@@ -180,23 +183,27 @@ public class CodeLocation extends Entity
             result ^= offset.hashCode();
         if (position != null)
             result ^= position.hashCode();
-        
+            
         return result;
     }
     
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        if(lineNumber != null) sb.append(lineNumber);
+        if (lineNumber != null)
+            sb.append(lineNumber);
         else sb.append(0);
         sb.append(":");
-        if(offset != null) sb.append(offset);
-        else if(position != null) sb.append(position);
+        if (offset != null)
+            sb.append(offset);
+        else if (position != null)
+            sb.append(position);
         else sb.append(0);
         return sb.toString();
     }

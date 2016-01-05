@@ -18,63 +18,62 @@ import com.kdmanalytics.toif.report.internal.items.ReportItem;
  * Interface for the file group. files contain locations.
  * 
  * @author Kyle Girard <kyle@kdmanalytics.com>
- * 
+ *         
  */
-public interface IFileGroup extends IReportItem
-{
-    
-    /**
-     * add a location fo the file
-     * 
-     * @param location
-     */
-    void AddLocation(LocationGroup location);
-    
-    /**
-     * get the children in this file
-     */
-    List<ReportItem> getChildren();
-    
-    /**
-     * get the findings in this file
-     */
-    List<FindingEntry> getFindingEntries();
-    
-    /**
-     * get the findings that are not ok in this file
-     * 
-     * @return
-     */
-    List<FindingEntry> getFindingEntriesNotOk();
-    
-    /**
-     * get the trust sum of the findings that are not ok.
-     * 
-     * @return
-     */
-    int getFindingEntriesNotOkTrustSum();
-    
-    /**
-     * get the locations within this file
-     * 
-     * @return
-     */
-    List<LocationGroup> getLocationGroup();
-    
-    /**
-     * get the name of the file
-     * 
-     * @return
-     */
-    String getName();
-    
-    /**
-     * get the path of the file.
-     * 
-     * @return
-     */
-    String getPath();
-    
-    String getSearchableText();
-    
+public interface IFileGroup extends IReportItem {
+  
+  /**
+   * add a location fo the file
+   * 
+   * @param location
+   */
+  void AddLocation(LocationGroup location);
+  
+  /**
+   * get the children in this file
+   */
+  List<ReportItem> getChildren();
+  
+  /**
+   * get the findings in this file
+   */
+  List<FindingEntry> getFindingEntries();
+  
+  /**
+   * get the findings that are not ok in this file
+   * 
+   * @return
+   */
+  List<FindingEntry> getFindingEntriesNotOk();
+  
+  /**
+   * get the trust sum of the findings that are not ok.
+   * 
+   * @return
+   */
+  int getFindingEntriesNotOkTrustSum();
+  
+  /**
+   * get the locations within this file
+   * 
+   * @return
+   */
+  List<LocationGroup> getLocationGroup();
+  
+  /**
+   * get the name of the file
+   * 
+   * @return
+   */
+  String getName();
+  
+  /**
+   * get the path of the file.
+   * 
+   * @return
+   */
+  String getPath();
+  
+  String getSearchableText();
+  
 }

@@ -11,7 +11,7 @@
 
   <groupId>com.kdmanalytics.libs.libsjava</groupId>
   <artifactId>plugins</artifactId>
-  <name>TOIF 3rd Party Module</name>
+  <name>Open TOIF 3rd Party Module</name>
   <packaging>pom</packaging>
 
 

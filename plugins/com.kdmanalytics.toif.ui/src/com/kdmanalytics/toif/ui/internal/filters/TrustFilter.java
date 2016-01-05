@@ -17,77 +17,68 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
 
 /**
- * Creates a filter which filters out all elements that don't have/aren't
- * findingEntrys with a trust level above the set amount.
+ * Creates a filter which filters out all elements that don't have/aren't findingEntrys with a trust
+ * level above the set amount.
  * 
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
  * @author Ken Duck
  */
-public class TrustFilter extends ViewerFilter
-{
-    
-    /**
-     * The trust amount that the element must be over.
-     */
-    private int amount;
-    
-    /**
-     * create a new filter with the trust amount set.
-     * 
-     * @param amount
-     */
-    public TrustFilter(int amount)
-    {
-        this.amount = amount;
+public class TrustFilter extends ViewerFilter {
+  
+  /**
+   * The trust amount that the element must be over.
+   */
+  private int amount;
+  
+  /**
+   * create a new filter with the trust amount set.
+   * 
+   * @param amount
+   */
+  public TrustFilter(int amount) {
+    this.amount = amount;
+  }
+  
+  /**
+   * @return the amount
+   */
+  public int getAmount() {
+    return amount;
+  }
+  
+  @Override
+  public boolean select(Viewer viewer, Object parentElement, Object element) {
+    if (element instanceof FindingEntry) {
+      FindingEntry entry = (FindingEntry) element;
+      List<FindingEntry> list = new ArrayList<FindingEntry>();
+      list.add(entry);
+      return trustIsHighEnough(list);
+    }
+    return false;
+  }
+  
+  /**
+   * set the trust amount
+   */
+  public void setAmount(int amount) {
+    this.amount = amount;
+  }
+  
+  /**
+   * returns true if there is a finding with a trust higher than amount.
+   * 
+   * @param element
+   */
+  private boolean trustIsHighEnough(List<FindingEntry> list) {
+    for (FindingEntry findingEntry : list) {
+      int trust = findingEntry.getTrust();
+      if (trust >= amount) {
+        return true;
+      }
     }
     
-    /**
-     * @return the amount
-     */
-    public int getAmount()
-    {
-        return amount;
-    }
-    
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element)
-    {
-        if (element instanceof FindingEntry)
-        {
-            FindingEntry entry = (FindingEntry) element;
-            List<FindingEntry> list = new ArrayList<FindingEntry>();
-            list.add(entry);
-            return trustIsHighEnough(list);
-        }
-        return false;
-    }
-    
-    /**
-     * set the trust amount
-     */
-    public void setAmount(int amount)
-    {
-        this.amount = amount;
-    }
-    
-    /**
-     * returns true if there is a finding with a trust higher than amount.
-     * 
-     * @param element
-     */
-    private boolean trustIsHighEnough(List<FindingEntry> list)
-    {
-        for (FindingEntry findingEntry : list)
-        {
-            int trust = findingEntry.getTrust();
-            if (trust >= amount)
-            {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
+    return false;
+  }
+  
 }

@@ -11,7 +11,7 @@
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>plugins</artifactId>
-  <name>TOIF Plugins Module</name>
+  <name>Open TOIF Plugins Module</name>
   <packaging>pom</packaging>
 
 

@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.facts;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -38,11 +41,11 @@ public class TOIFSegmentReferencesFile extends Fact
     /**
      * 
      */
-    public TOIFSegmentReferencesFile() {
+    public TOIFSegmentReferencesFile()
+    {
         super();
         type = "toif:TOIFSegmentReferencesFile";
     }
-
     
     /**
      * @return the file
@@ -52,16 +55,15 @@ public class TOIFSegmentReferencesFile extends Fact
     {
         return file.getId();
     }
-
     
     /**
-     * @param file the file to set
+     * @param file
+     *            the file to set
      */
     public void setFile(File file)
     {
         this.file = file;
     }
-
     
     /**
      * @return the segment
@@ -71,10 +73,10 @@ public class TOIFSegmentReferencesFile extends Fact
     {
         return segment.getName().getName();
     }
-
     
     /**
-     * @param segment the segment to set
+     * @param segment
+     *            the segment to set
      */
     public void setSegment(Segment segment)
     {

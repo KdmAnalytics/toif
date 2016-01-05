@@ -14,45 +14,42 @@ import java.io.Serializable;
  * a trace is additional line numbers for the location of a finding.
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
- * 
+ *         
  */
-public class Trace implements Serializable
-{
-    
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1373786791887348407L;
-    private String lineNumber;
-    
-    /**
-     * get the line number
-     * 
-     * @return
-     */
-    public String getLineNumber()
-    {
-        return lineNumber;
-    }
-    
-    /**
-     * set the line number
-     * 
-     * @param lineNumber
-     */
-    public void setLineNumber(String lineNumber)
-    {
-        this.lineNumber = lineNumber;
-    }
-    
-    /**
-     * create a new trace.
-     * 
-     * @param lineNumber
-     */
-    public Trace(String lineNumber)
-    {
-        this.lineNumber = lineNumber;
-    }
-    
+public class Trace implements Serializable {
+  
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1373786791887348407L;
+  
+  private String lineNumber;
+  
+  /**
+   * get the line number
+   * 
+   * @return
+   */
+  public String getLineNumber() {
+    return lineNumber;
+  }
+  
+  /**
+   * set the line number
+   * 
+   * @param lineNumber
+   */
+  public void setLineNumber(String lineNumber) {
+    this.lineNumber = lineNumber;
+  }
+  
+  /**
+   * create a new trace.
+   * 
+   * @param lineNumber
+   */
+  public Trace(String lineNumber) {
+    this.lineNumber = lineNumber;
+  }
+  
 }

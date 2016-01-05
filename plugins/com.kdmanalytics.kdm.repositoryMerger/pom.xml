@@ -14,5 +14,5 @@
 
   <packaging>eclipse-plugin</packaging>
 
-  <name>KDM Repository Merger</name>
+  <name>Open TOIF KDM Repository Merger</name>
 </project>

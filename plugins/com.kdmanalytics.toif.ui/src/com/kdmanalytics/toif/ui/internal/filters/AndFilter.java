@@ -15,62 +15,58 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
- * Used to make filters ADDITIVE (AND them together). ALL filters must
- * return valid for something to be valid.
+ * Used to make filters ADDITIVE (AND them together). ALL filters must return valid for something to
+ * be valid.
  * 
  * @author Ken Duck
- * 
+ *         
  */
-public class AndFilter extends ViewerFilter
-{
-	List<ViewerFilter> filterList = new ArrayList<ViewerFilter>();
-	
-	/**
-	 * 
-	 * @param filter
-	 */
-	public void add(ViewerFilter filter)
-	{
-		filterList.add(filter);
-	}
-	
-	/** Returns true if there are no filters set
-	 * 
-	 * @return
-	 */
-	public boolean isEmpty()
-	{
-		return filterList.isEmpty();
-	}
-	
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
-     * .Viewer, java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element)
-    {
-    	// No filters -- nothing is valid
-    	if(filterList.isEmpty()) return false;
-    	
-    	for (ViewerFilter filter : filterList)
-    	{
-    		// Return false is ANY filter rejects a value
-			if(!filter.select(viewer, parentElement, element)) return false;
-		}
-        return true;
-    }
-
-    /** Get an array of installed filters.
-     * 
-     * @return
-     */
-	public ViewerFilter[] getFilters()
-	{
-		return filterList.toArray(new ViewerFilter[filterList.size()]);
-	}
+public class AndFilter extends ViewerFilter {
+  
+  List<ViewerFilter> filterList = new ArrayList<ViewerFilter>();
+  
+  /**
+   * 
+   * @param filter
+   */
+  public void add(ViewerFilter filter) {
+    filterList.add(filter);
+  }
+  
+  /**
+   * Returns true if there are no filters set
+   * 
+   * @return
+   */
+  public boolean isEmpty() {
+    return filterList.isEmpty();
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers .Viewer,
+   * java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public boolean select(Viewer viewer, Object parentElement, Object element) {
+    // No filters -- nothing is valid
+    if (filterList.isEmpty()) return false;
     
+    for (ViewerFilter filter : filterList) {
+      // Return false is ANY filter rejects a value
+      if (!filter.select(viewer, parentElement, element)) return false;
+    }
+    return true;
+  }
+  
+  /**
+   * Get an array of installed filters.
+   * 
+   * @return
+   */
+  public ViewerFilter[] getFilters() {
+    return filterList.toArray(new ViewerFilter[filterList.size()]);
+  }
+  
 }

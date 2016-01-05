@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.facts;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -14,17 +17,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Organization;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Segment;
 
-@XmlRootElement(name="fact")
+@XmlRootElement(name = "fact")
 public class TOIFSegmentIsOwnedByOrganization extends Fact
-{   
+{
+    
     private Segment segment;
+    
     private Organization organization;
     
-    public TOIFSegmentIsOwnedByOrganization() {
+    public TOIFSegmentIsOwnedByOrganization()
+    {
         super();
         type = "toif:TOIFSegmentIsOwnedByOrganization";
     }
-
+    
     public TOIFSegmentIsOwnedByOrganization(Segment segment, Organization organization)
     {
         super();
@@ -32,7 +38,6 @@ public class TOIFSegmentIsOwnedByOrganization extends Fact
         this.segment = segment;
         this.organization = organization;
     }
-
     
     /**
      * @return the segment
@@ -42,16 +47,15 @@ public class TOIFSegmentIsOwnedByOrganization extends Fact
     {
         return segment.getName().getName();
     }
-
     
     /**
-     * @param segment the segment to set
+     * @param segment
+     *            the segment to set
      */
     public void setSegment(Segment segment)
     {
         this.segment = segment;
     }
-
     
     /**
      * @return the organization
@@ -61,10 +65,10 @@ public class TOIFSegmentIsOwnedByOrganization extends Fact
     {
         return organization.getId();
     }
-
     
     /**
-     * @param organization the organization to set
+     * @param organization
+     *            the organization to set
      */
     public void setOrganization(Organization organization)
     {

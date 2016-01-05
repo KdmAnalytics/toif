@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-plugin</packaging>
 
-	<name>TOIF Cppcheck Adaptor</name>
+	<name>Open TOIF Adaptor - Cppcheck</name>
 </project>

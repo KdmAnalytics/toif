@@ -17,5 +17,5 @@
 
 	<packaging>eclipse-feature</packaging>
 
-	<name>TOIF Core Feature</name>
+	<name>Open TOIF Importer Feature</name>
 </project>

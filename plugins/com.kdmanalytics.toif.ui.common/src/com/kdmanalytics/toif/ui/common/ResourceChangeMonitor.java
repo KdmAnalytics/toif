@@ -5,6 +5,7 @@
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
+
 package com.kdmanalytics.toif.ui.common;
 
 import java.util.HashSet;
@@ -32,141 +33,125 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-/** This class monitors for changes in resources to provide appropriate
- * warnings when in "Import" mode.
+/**
+ * This class monitors for changes in resources to provide appropriate warnings when in "Import"
+ * mode.
  * 
  * @author Ken Duck
- *
+ *        
  */
-public class ResourceChangeMonitor implements IStartup, IResourceChangeListener, ISelectionListener
-{
-	/**
-	 * Track all cited resources that are currently selected
-	 */
-	private Set<IFile> citedResource = new HashSet<IFile>();
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.IStartup#earlyStartup()
-	 */
-	@Override
-	public void earlyStartup()
-	{
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
-
-		final ResourceChangeMonitor monitor = this;
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
-				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-				ISelectionService service = window.getSelectionService();
-				service.addSelectionListener(monitor);
-			}
-		});
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
-	 */
-	@Override
-	public void resourceChanged(IResourceChangeEvent event)
-	{
-		switch (event.getType()) {
-		case IResourceChangeEvent.POST_CHANGE:
-		{
-			try
-			{
-				event.getDelta().accept(getDeltaPrinter(citedResource));
-			}
-			catch (CoreException e)
-			{
-				e.printStackTrace();
-			}
-			break;
-		}
-		}
-	}
-
-	/**
-	 * 
-	 * @param citedResource
-	 * @return
-	 */
-	protected IResourceDeltaVisitor getDeltaPrinter(Set<IFile> citedResource)
-	{
-		return new ResourceChangeDeltaPrinter(citedResource);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart, org.eclipse.jface.viewers.ISelection)
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection)
-	{
-		if(selection instanceof IStructuredSelection)
-		{
-			IStructuredSelection sel = (IStructuredSelection)selection;
-			for(Iterator<?> it = sel.iterator(); it.hasNext();)
-			{
-				Object o = it.next();
-				if(o instanceof IResource)
-				{
-					setSelectedCitedResources((IResource)o);
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param resource
-	 */
-	private void setSelectedCitedResources(IResource resource)
-	{
-		citedResource.clear();
-		
-		// Only works with open projects
-		if(resource instanceof IProject)
-		{
-			if(!((IProject)resource).isOpen())
-			{
-				return;
-			}
-		}
-		try
-		{
-			if(resource instanceof IFile)
-			{
-				Map<QualifiedName, String> props = resource.getPersistentProperties();
-				for(Map.Entry<QualifiedName, String> entry: props.entrySet())
-				{
-					String key = entry.getKey().toString();
-					if(key.startsWith(Activator.PLUGIN_ID) && key.endsWith(":citing"))
-					{
-						citedResource.add((IFile)resource);
-					}
-				}
-			}
-			if(resource instanceof IContainer)
-			{
-				IResource[] children = ((IContainer)resource).members();
-				if(children != null)
-				{
-					for (IResource child : children)
-					{
-						setSelectedCitedResources(child);
-					}
-				}
-			}
-		}
-		catch(CoreException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
+public class ResourceChangeMonitor implements IStartup, IResourceChangeListener, ISelectionListener {
+  
+  /**
+   * Track all cited resources that are currently selected
+   */
+  private Set<IFile> citedResource = new HashSet<IFile>();
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.IStartup#earlyStartup()
+   */
+  @Override
+  public void earlyStartup() {
+    IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    workspace.addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
+    
+    final ResourceChangeMonitor monitor = this;
+    PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+      
+      public void run() {
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        ISelectionService service = window.getSelectionService();
+        service.addSelectionListener(monitor);
+      }
+    });
+    
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.
+   * IResourceChangeEvent)
+   */
+  @Override
+  public void resourceChanged(IResourceChangeEvent event) {
+    switch (event.getType()) {
+      case IResourceChangeEvent.POST_CHANGE: {
+        try {
+          event.getDelta().accept(getDeltaPrinter(citedResource));
+        } catch (CoreException e) {
+          e.printStackTrace();
+        }
+        break;
+      }
+    }
+  }
+  
+  /**
+   * 
+   * @param citedResource
+   * @return
+   */
+  protected IResourceDeltaVisitor getDeltaPrinter(Set<IFile> citedResource) {
+    return new ResourceChangeDeltaPrinter(citedResource);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.ISelectionListener#selectionChanged(org.eclipse.ui.IWorkbenchPart,
+   * org.eclipse.jface.viewers.ISelection)
+   */
+  @Override
+  public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    if (selection instanceof IStructuredSelection) {
+      IStructuredSelection sel = (IStructuredSelection) selection;
+      for (Iterator<?> it = sel.iterator(); it.hasNext();) {
+        Object o = it.next();
+        if (o instanceof IResource) {
+          setSelectedCitedResources((IResource) o);
+        }
+      }
+    }
+  }
+  
+  /**
+   * 
+   * @param resource
+   */
+  private void setSelectedCitedResources(IResource resource) {
+    citedResource.clear();
+    
+    // Only works with open projects
+    if (resource instanceof IProject) {
+      if (!((IProject) resource).isOpen()) {
+        return;
+      }
+    }
+    try {
+      if (resource instanceof IFile) {
+        Map<QualifiedName, String> props = resource.getPersistentProperties();
+        for (Map.Entry<QualifiedName, String> entry : props.entrySet()) {
+          String key = entry.getKey().toString();
+          if (key.startsWith(Activator.PLUGIN_ID) && key.endsWith(":citing")) {
+            citedResource.add((IFile) resource);
+          }
+        }
+      }
+      if (resource instanceof IContainer) {
+        IResource[] children = ((IContainer) resource).members();
+        if (children != null) {
+          for (IResource child : children) {
+            setSelectedCitedResources(child);
+          }
+        }
+      }
+    } catch (CoreException e) {
+      e.printStackTrace();
+    }
+  }
+  
 }

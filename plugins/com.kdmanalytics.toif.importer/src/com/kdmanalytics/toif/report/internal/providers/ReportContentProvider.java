@@ -26,95 +26,78 @@ import com.kdmanalytics.toif.report.items.IToifProject;
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
  * @author Kyle Girard <kyle@kdmanalytics.com>
- * 
+ *         
  */
-public class ReportContentProvider implements IStructuredContentProvider
-{
+public class ReportContentProvider implements IStructuredContentProvider {
+  
+  private static final Object[] NO_CHILDREN = new Object[] {};
+  
+  private IToifProject project;
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+   */
+  @Override
+  public void dispose() {
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface .viewers.Viewer,
+   * java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java .lang.Object)
+   */
+  @Override
+  public Object[] getElements(Object inputElement) {
     
-    private static final Object[] NO_CHILDREN = new Object[] {};
-    
-    private IToifProject project;
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
-    @Override
-    public void dispose()
-    {
+    if (inputElement instanceof ToifReportEntry[]) {
+      return (Object[]) inputElement;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface
-     * .viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-    {
-    }
+    ToifReportEntry[] list = getElementList(inputElement);
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java
-     * .lang.Object)
-     */
-    @Override
-    public Object[] getElements(Object inputElement)
-    {
-        
-        if (inputElement instanceof ToifReportEntry[]) {
-            return (Object[]) inputElement;
-        }
-        
-        ToifReportEntry[] list = getElementList(inputElement);
-        
-        if (list != null)
-        {
-            return list;
-        }
-        else
-        {
-            return NO_CHILDREN;
-        }
+    if (list != null) {
+      return list;
+    } else {
+      return NO_CHILDREN;
     }
-    
-    public ToifReportEntry[] getElementList(Object inputElement)
-    {
-        if (inputElement instanceof IToifProject)
-        {
-            project = (IToifProject) inputElement;
-            
-            List<ToifReportEntry> elements = new LinkedList<ToifReportEntry>();
-            
-            for (IFileGroup fileGroup : project.getFileGroup())
-            {
-                for (LocationGroup locationGroup : fileGroup.getLocationGroup())
-                {
-                    for (ToolGroup toolGroup : locationGroup.getToolGroups())
-                    {
-                        for (FindingEntry findingEntry : toolGroup.getFindingEntries())
-                        {
-                            ToifReportEntry entry = new ToifReportEntry(project, fileGroup, locationGroup, toolGroup, findingEntry);
-                            elements.add(entry);
-                        }
-                    }
-                }
+  }
+  
+  public ToifReportEntry[] getElementList(Object inputElement) {
+    if (inputElement instanceof IToifProject) {
+      project = (IToifProject) inputElement;
+      
+      List<ToifReportEntry> elements = new LinkedList<ToifReportEntry>();
+      
+      for (IFileGroup fileGroup : project.getFileGroup()) {
+        for (LocationGroup locationGroup : fileGroup.getLocationGroup()) {
+          for (ToolGroup toolGroup : locationGroup.getToolGroups()) {
+            for (FindingEntry findingEntry : toolGroup.getFindingEntries()) {
+              ToifReportEntry entry = new ToifReportEntry(project, fileGroup, locationGroup, toolGroup, findingEntry);
+              elements.add(entry);
             }
-            return elements.toArray(new ToifReportEntry[elements.size()]);
+          }
         }
-        
-        return null;
+      }
+      return elements.toArray(new ToifReportEntry[elements.size()]);
     }
     
-    public IToifProject getProject()
-    {
-        return project;
-    }
-    
+    return null;
+  }
+  
+  public IToifProject getProject() {
+    return project;
+  }
+  
 }

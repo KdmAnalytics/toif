@@ -74,7 +74,7 @@ public class StreamGobbler implements Runnable
                     
                 }
                 line = is.readLine();
-
+                
             }
             if (pw != null)
             {
