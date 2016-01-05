@@ -8,12 +8,11 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -103,7 +102,7 @@ class FindingContentProvider implements IStructuredContentProvider
 	 * @param workspaceRoot
 	 * @return A list of new findings
 	 */
-	private Collection<FindingEntry> updateFindings(IResource resource)
+	private List<FindingEntry> updateFindings(IResource resource)
 	{
 		List<FindingEntry> results = new LinkedList<FindingEntry>();
 		if(resource.exists())
@@ -188,49 +187,47 @@ class FindingContentProvider implements IStructuredContentProvider
 			public void run()
 			{
 				// Get old findings
-				Collection<FindingEntry> oldFindings = findings.get(file);
+				List<FindingEntry> oldFindings = findings.get(file);
 				if(oldFindings == null) oldFindings = new LinkedList<FindingEntry>();
 				// Get new findings
-				Collection<FindingEntry> newFindings = updateFindings(file);
+				List<FindingEntry> newFindings = updateFindings(file);
 
-				findings.remove(file);
-				if(oldFindings != null)
+				if(!equals(oldFindings, newFindings))
 				{
-					for (FindingEntry finding : oldFindings)
+					findings.remove(file);
+					if(oldFindings != null)
 					{
-						viewer.remove(finding);
+						for (FindingEntry finding : oldFindings)
+						{
+							viewer.remove(finding);
+						}
 					}
-				}
-				for (FindingEntry finding : newFindings)
-				{
-					viewer.add(finding);
-					addEntry(finding);
+					for (FindingEntry finding : newFindings)
+					{
+						viewer.add(finding);
+						addEntry(finding);
+					}
+
 				}
 			}
 
-			/** Check to see if there are any new findings
+			/** Determine if lists are equal by sorting them and then comparing
+			 * them.
 			 * 
-			 * @param oldFindings
-			 * @param newFindings
+			 * @param list1
+			 * @param list2
 			 * @return
 			 */
-			private boolean equals(Collection<FindingEntry> oldFindings, Collection<FindingEntry> newFindings)
-			{
-				Set<FindingEntry> copy = new HashSet<FindingEntry>();
-				copy.addAll(oldFindings);
-				for(FindingEntry finding: newFindings)
-				{
-					if(copy.contains(finding))
-					{
-						copy.remove(finding);
-					}
-					else
-					{
-						return false;
-					}
-				}
-				if(!copy.isEmpty()) return false;
-				return true;
+			private boolean equals(List<FindingEntry> list1, List<FindingEntry> list2)
+			{     
+				if (list1 == null && list2 == null) return true;
+				if(list1 == null) return false;
+				if(list2 == null) return false;
+				if(list1.size() != list2.size()) return false;
+
+				Collections.sort(list1);
+				Collections.sort(list2);      
+				return list1.equals(list2);
 			}
 		});
 	}

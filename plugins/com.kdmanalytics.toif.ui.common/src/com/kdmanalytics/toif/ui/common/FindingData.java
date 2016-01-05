@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Ken Duck
  *
  */
-public class FindingData
+public class FindingData implements Comparable<FindingData>
 {
 	/**
 	 * Set to false when we have performed a citing. This is used to
@@ -451,6 +451,23 @@ public class FindingData
 		{
 			return false;
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(FindingData o)
+	{
+		if(!resource.equals(o.resource)) return resource.toString().compareTo(o.resource.toString());
+		if(!description.equals(o.description)) return description.toString().compareTo(o.description.toString());
+		if(!cwe.equals(o.cwe)) return cwe.toString().compareTo(o.cwe.toString());
+		if(!sfp.equals(o.sfp)) return sfp.toString().compareTo(o.sfp.toString());
+		if(!tool.equals(o.tool)) return tool.toString().compareTo(o.tool.toString());
+		if(line != o.line) return o.line - line;
+		if(offset != o.offset) return o.offset - offset;
+		return 0;
 	}
 
 }
