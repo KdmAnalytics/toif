@@ -1,4 +1,4 @@
-syntax=Other.Implementation;SFP--1;CWE-398 
+syntax=Other.Implementation;SFP--1;CWE-398
 sysunrecog=;SFP--1;CWE--1;
 
 #/*
@@ -38,13 +38,13 @@ nullstate=;SFP-7;CWE-476
 #A possibly null pointer is reachable from a parameter or global 
 #variable that is not declared using a /*@null@*/ annotation.
 
-nullassign=;SFP-4;CWE-684
+nullassign=;SFP--1;CWE-684
 #inconsistent assignment or initialization involving null pointer
 #A reference with no null annotation is assigned or initialized 
 #to NULL.  Use /*@null@*/ to declare the reference as 
 #a possibly null pointer.
  
-nullinit=;SFP-4;CWE-684
+nullinit=;SFP--1;CWE-684
 #inconsistent initialization involving null pointer
 #A reference with no null annotation is initialized 
 #to NULL.  Use /*@null@*/ to declare the reference as 
@@ -85,11 +85,11 @@ initallelements=;SFP-1;CWE-456
 #initializer defines all array elements
 #Initializer does not define all elements of a declared array.
 
-initsize=;SFP-1;CWE-684
+initsize=;SFP--1;CWE-684
 #initializer defines extra array elements
 #Initializer block contains more elements than the size of a declared array.
 
-impouts=;SFP-1;CWE-684
+impouts=;SFP--1;CWE-684
 #pointer parameters to unspecified functions may be implicit out parameters
 
 
@@ -101,7 +101,7 @@ impouts=;SFP-1;CWE-684
 #  ** Types (Section 4)
 #  */
 
-incondefs=;SFP-1;CWE-710
+incondefs=;SFP--1;CWE-710
 #A function, variable or constant is redefined with a different type.
 
 matchfields=;SFP--1;CWE-710
@@ -133,7 +133,7 @@ unsignedcompare=;SFP--1;CWE-398
 #comparison using <, <=, >= between an unsigned integral and zero constant
 #An unsigned value is used in a comparison with zero in a way that is either a bug or confusing.
 
-ptrarith=;SFP-1;CWE-480
+ptrarith=;SFP--1;CWE-480
 #arithmetic involving pointer and integer
 #Pointer arithmetic using pointer and integer.
 
@@ -141,40 +141,40 @@ nullptrarith=;SFP-1;CWE-704
 #arithmetic involving possibly null pointer and integer
 #Pointer arithmetic using a possibly null pointer and integer.
 
-ptrcompare=;SFP-1;CWE-480
+ptrcompare=;SFP--1;CWE-480
 #comparison between pointer and number
 #A pointer is compared to a number.
 
-strictops=;SFP-1;CWE-480
+strictops=;SFP--1;CWE-480
 #primitive operation does not type check strictly
 #A primitive operation does not type check strictly.
 
-bitwisesigned=;SFP-1;CWE-480
+bitwisesigned=;SFP--1;CWE-480
 #a bitwise logical operator does not have unsigned operands
 #An operand to a bitwise operator is not an unsigned values.  This 
 #may have unexpected results depending on the signed 
 #representations.
  
-shiftnegative=;SFP-1;CWE-480
+shiftnegative=;SFP--1;CWE-480
 #a shift right operand may be negative
 #The right operand to a shift operator may be negative (behavior undefined).
 
-shiftimplementation=;SFP-1;CWE-480
+shiftimplementation=;SFP--1;CWE-480
 #a shift left operand may be negative
 #The left operand to a shift operator may be negative (behavior is implementation-defined).
 
-sizeoftype=;SFP-1;CWE-467
+sizeoftype=;SFP-10;CWE-467
 #sizeof operator has a type argument
 #Operand of sizeof operator is a type. (Safer to use expression, 
 #int *x = sizeof (*x); instead of sizeof (int).) 
 
-sizeofformalarray=;SFP-1;CWE-467
+sizeofformalarray=;SFP-10;CWE-467
 #sizeof operator has an array formal parameter argument
 #Operand of a sizeof operator is a function parameter declared as 
 #an array.  The value of sizeof will be the size of a pointer to the 
 #element type, not the number of elements in the array.
 
-fixedformalarray=;SFP-7;CWE-710
+fixedformalarray=;SFP--1;CWE-710
 #formal parameter of type array is declared with size
 #A formal parameter is declared as an array with size.  The size of the array 
 #is ignored in this context, since the array formal parameter is treated 
@@ -213,12 +213,12 @@ boolcompare=;SFP--1;CWE-398
 #The file bool.h (included in splint/lib) provides bool_equal 
 #for safe bool comparisons.
  
-boolops=;SFP-1;CWE-480
+boolops=;SFP--1;CWE-480
 #primitive operation (!, && or ||) does not has a boolean argument
 #The operand of a boolean operator is not a boolean. Use +ptrnegate 
 #to allow ! to be used on pointers.
 
-ptrnegate=;SFP-1;CWE-480
+ptrnegate=;SFP--1;CWE-480
 #allow ! to be used on pointer operand
 #The operand of ! operator is a pointer.
   
@@ -229,12 +229,12 @@ predassign=;SFP-1;CWE-481
 #extra parentheses nesting (e.g., if ((a = b)) ...) to suppress 
 #this message.
 
-predbool=;SFP-1;CWE-480
+predbool=;SFP--1;CWE-480
 #type of condition test (if, while or for) not bool (sets predboolint, 
 #predboolptr and predboolothers)
 #Test expression type is not boolean.
 
-predboolothers=;SFP-1;CWE-480
+predboolothers=;SFP--1;CWE-480
 
 predboolint=;SFP-1;CWE-704
 #type of condition test (if, while or for) is an integral type
@@ -262,7 +262,7 @@ abstract=;SFP--1;CWE-710
 #data abstraction barriers
 #An abstraction barrier is broken. If necessary, use /*@access <type>@*/ to allow access to an abstract type.
 
-abstractcompare=;SFP-1;CWE-480
+abstractcompare=;SFP--1;CWE-480
 #object equality comparison on abstract type operands
 #An object comparison (== or !=) is used on operands of abstract type.
 
@@ -270,11 +270,11 @@ numabstract=;SFP--1;CWE-710
 #data abstraction barriers
 #An abstraction barrier involving a numabstract type is broken. If necessary, use /*@access <type>@*/ to allow access to a numabstract type.
 
-numabstractcast=;SFP-1;CWE-710
+numabstractcast=;SFP--1;CWE-710
 #numeric literal cast to numabstract type
 #A numeric literal is cast to a numabstract type.
 
-numabstractlit=;SFP-1;CWE-710
+numabstractlit=;SFP--1;CWE-710
 #numeric literal can used as numabstract type
 #To allow a numeric literal to be used as a numabstract type, use +numabstractlit.
 
@@ -738,7 +738,7 @@ modsimpnoglobs=Other.Implementation;SFP--1;CWE-710
 #  ** Globals
 #  */
 
-globstate=;SFP-7;CWE-684
+globstate=;SFP--1;CWE-684
 #returns with global in inconsistent state (null or undefined)
 #A global variable does not satisfy its annotations when control is transferred.
 
@@ -957,7 +957,7 @@ looploopcontinue=;SFP--1;CWE-710
 
 #  /* 8.3.4 Loop and If Bodies */
  
-whileempty=;SFP--1;CWE--398
+whileempty=;SFP--1;CWE-398
 #a while statement has no body
 #While statement has no body.
 
@@ -1084,7 +1084,7 @@ boundsread=;SFP-8;CWE-125
 #possible out of bounds read
 #A memory read references memory beyond the allocated storage.
 
-boundswrite=;SFP-8;CWE-787
+boundswrite=;SFP--1;CWE-787
 #possible buffer overflow from an out of bounds write
 #A memory write may write to an address beyond the allocated buffer.
 
@@ -1675,7 +1675,7 @@ needspec=;SFP--1;CWE--1
 
 #  /* 14.1 Standard Libraries */
  
-warnposixheaders=;SFP-1;CWE-561
+warnposixheaders=;SFP-2;CWE-561
 #a POSIX header is included, but the POSIX library is not used
 #Header name matches a POSIX header, but the POSIX library is not selected.
 
@@ -1873,7 +1873,7 @@ legacy=;SFP--1;CWE-710
 #legacy declaration in Unix Standard
 #Use of a declarator that is marked as a legacy entry in the Unix Standard.
 
-multithreaded=;SFP-19;CWE-663
+multithreaded=;SFP--1;CWE-663
 #function is not reentrant
 #Non-reentrant function should not be used in multithreaded code.
 
