@@ -48,8 +48,9 @@
         <version>2.4.3</version>
         <executions>
           <execution>
+          <!-- Copy the examples into the windows build
+           -->
             <id>copy-windows-resources</id>
-            <!-- here the phase you need -->
             <phase>package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -65,8 +66,9 @@
             </configuration>
           </execution>
           <execution>
+          <!-- Copy the examples into the linux build
+           -->
             <id>copy-linux-resources</id>
-            <!-- here the phase you need -->
             <phase>package</phase>
             <goals>
               <goal>copy-resources</goal>
@@ -81,6 +83,44 @@
               </resources>
             </configuration>
           </execution>
+          
+          <execution>
+            <!-- This is a hack to copy the appropriate JRE into location because the product refuses to be build
+                 with features due to a javax.xml package collision (due to our need to operate with Java1.7)
+             -->
+            <id>copy-windows-jre</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/products/TOIF_RCP/win32/win32/x86_64/jre</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/../../../features/com.kdmanalytics.toif.cmd.feature/win32-64/jre</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- This is a hack to copy the appropriate JRE into location because the product refuses to be build
+                 with features due to a javax.xml package collision (due to our need to operate with Java1.7)
+             -->
+            <id>copy-linux-jre</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/products/TOIF_RCP/linux/gtk/x86_64/jre</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/../../../features/com.kdmanalytics.toif.cmd.feature/linux-64/jre</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          
         </executions>
       </plugin>
       <plugin>
