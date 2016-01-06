@@ -640,3 +640,17 @@ ID,Name
 775,Missing Release of File Descriptor or Handle after effective Lifetime
 785,Use of Path Manipulation Function without Maximum-sized Buffer
 120,Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')
+701,Weaknesses Introduced During Design
+780,Use of RSA Algorithm without OAEP
+783,Operator Precedence Logic Error
+787,Out-of-bounds Write
+807,Reliance on Untrusted Inputs in a Security Decision
+833,Deadlock
+835,Loop with Unreachable Exit Condition ('Infinite Loop')
+1,Location
+133,String Errors
+192,Integer Coercion Error
+295,Improper Certificate Validation
+310,Cryptographic Issues
+389,Error Conditions, Return Values, Status Codes
+569,Expression Issues
