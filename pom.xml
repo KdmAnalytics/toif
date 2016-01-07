@@ -11,8 +11,9 @@
   <packaging>pom</packaging>
 
   <properties>
+    <toif-version>2.1.0-SNAPSHOT</toif-version>
     <junit-version>4.8.1</junit-version>
-    <tycho-version>0.22.0</tycho-version>
+    <tycho-version>0.23.0</tycho-version>
   </properties>
 
   <modules>
@@ -26,6 +27,48 @@
   -->
   </modules>
 
+  <profiles>
+   <profile>
+      <id>platform-kepler</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>kepler</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>kepler</target-platform>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-luna</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>luna</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>luna</target-platform>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-mars</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>mars</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>mars</target-platform>
+      </properties>
+    </profile>  
+  </profiles>
+
+
+<!--
   <repositories>
     <repository>
        <id>eclipse-kepler</id>
@@ -43,6 +86,7 @@
        <layout>p2</layout>
     </repository>
   </repositories>
+-->
 
   <build>
     <plugins>
@@ -86,16 +130,14 @@
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho-version}</version>
           <configuration>
-            <!--
             <target>
               <artifact>
                 <groupId>com.kdmanalytics.toif</groupId>
-                <artifactId>targetdefinition</artifactId>
-                <version>2.1.0</version>
-                <classifier>juno</classifier>
+                <artifactId>target</artifactId>
+                <version>${toif-version}</version>
+                <classifier>${target-platform}</classifier>
               </artifact>
             </target>
-            -->
             <environments>
               <environment>
                 <os>win32</os>

@@ -18,7 +18,7 @@
   <modules>
     <module>com.google.guava</module>
     <module>com.lexicalscope.jewelcli</module>
-    <module>javax.xml</module>
+<!--    <module>javax.xml</module> -->
     <module>net.sf.trove4j</module>
     <module>org.apache.commons.csv</module>
     <module>org.apache.commons.io</module>

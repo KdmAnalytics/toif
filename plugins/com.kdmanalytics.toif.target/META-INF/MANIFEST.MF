@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Target Definition
-Bundle-SymbolicName: com.kdmanalytics.toif.targetdefinition
+Bundle-Name: Open TOIF Target Definitions
+Bundle-SymbolicName: com.kdmanalytics.toif.target
 Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: KDM Analytics Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
