@@ -28,7 +28,6 @@
         <artifactId>tycho-p2-repository-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <createArtifactRepository>true</createArtifactRepository>
           <includeAllDependencies>true</includeAllDependencies>
         </configuration>
       </plugin>
