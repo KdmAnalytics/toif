@@ -9,12 +9,12 @@
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
-  <artifactId>sites</artifactId>
+  <artifactId>products</artifactId>
   <name>Open TOIF Sites Module</name>
 
   <packaging>pom</packaging>
 
   <modules>
-      <module>com.kdmanalytics.toif.p2</module>
+      <module>com.kdmanalytics.toif.product</module>
   </modules>
 </project>

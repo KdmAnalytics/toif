@@ -1,0 +1,17 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>oss-toif-${project.version}.win32.win32.x86_64</id>
+  <baseDirectory>/</baseDirectory>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <outputDirectory>toif-${project.version}</outputDirectory>
+      <directory>${project.build.directory}/products/com.kdmanalytics.toif/win32/win32/x86_64</directory>
+      <excludes>
+        <exclude>**/p2/**</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+</assembly>
