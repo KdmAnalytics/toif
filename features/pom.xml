@@ -16,13 +16,11 @@
 
   <modules>
     <module>com.kdmanalytics.toif.complete.feature</module>
-    <!--
-      <module>com.kdmanalytics.toif.core.feature</module>
-      <module>com.kdmanalytics.toif.3rdparty.feature</module>
-      <module>com.kdmanalytics.toif.importer.feature</module>
-      <module>com.kdmanalytics.toif.report.feature</module>
-      <module>com.kdmanalytics.toif.cmd.feature</module>
-      <module>com.kdmanalytics.toif.feature</module>
-    -->
+    <module>com.kdmanalytics.toif.core.feature</module>
+    <module>com.kdmanalytics.toif.3rdparty.feature</module>
+    <module>com.kdmanalytics.toif.importer.feature</module>
+    <module>com.kdmanalytics.toif.report.feature</module>
+    <module>com.kdmanalytics.toif.cmd.feature</module>
+    <module>com.kdmanalytics.toif.feature</module>
   </modules>
 </project>

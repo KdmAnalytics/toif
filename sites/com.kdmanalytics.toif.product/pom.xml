@@ -11,9 +11,8 @@
     <version>2.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.kdmanalytics.toif.compile</groupId>
+  <groupId>com.kdmanalytics.toif.sites</groupId>
   <artifactId>com.kdmanalytics.toif.rcp</artifactId>
-
   <packaging>eclipse-repository</packaging>
 
   <name>Open TOIF CLI Product</name>
