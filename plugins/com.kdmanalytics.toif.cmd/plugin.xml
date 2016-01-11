@@ -15,7 +15,7 @@
          id="TOIF_RCP"
          point="org.eclipse.core.runtime.products">
       <product
-            application="com.kdmanalytics.toif.cmd.application"
+            application="org.eclipse.cdt.codan.core.application"
             name="com.kdmanalytics.toif.rcp.product">
          <property
                name="appName"

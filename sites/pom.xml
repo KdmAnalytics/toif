@@ -16,6 +16,5 @@
 
   <modules>
       <module>com.kdmanalytics.toif.p2</module>
-      <module>com.kdmanalytics.toif.product</module>
   </modules>
 </project>

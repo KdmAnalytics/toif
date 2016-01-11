@@ -11,7 +11,6 @@ Require-Bundle: org.apache.commons.lang3;bundle-version="[3.0.0,4.0.0)",
  com.google.guava;bundle-version="[14.0.1,15.0.0)",
  org.apache.log4j;bundle-version="[1.2.13,2.0.0)",
  com.lexicalscope.jewelcli;bundle-version="[0.8.5,1.0.0)",
- org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: com.lexicalscope.jewelcli

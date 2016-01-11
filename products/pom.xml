@@ -9,18 +9,12 @@
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
-  <artifactId>features</artifactId>
-  <name>Open TOIF Features Module</name>
+  <artifactId>products</artifactId>
+  <name>Open TOIF Sites Module</name>
 
   <packaging>pom</packaging>
 
   <modules>
-    <module>com.kdmanalytics.toif.complete.feature</module>
-    <module>com.kdmanalytics.toif.core.feature</module>
-    <module>com.kdmanalytics.toif.3rdparty.feature</module>
-    <module>com.kdmanalytics.toif.importer.feature</module>
-    <module>com.kdmanalytics.toif.report.feature</module>
-    <module>com.kdmanalytics.toif.cmd.feature</module>
-    <module>com.kdmanalytics.toif.feature</module>
+      <module>com.kdmanalytics.toif.product</module>
   </modules>
 </project>
