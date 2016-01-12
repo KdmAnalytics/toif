@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <toif-version>2.1.0-SNAPSHOT</toif-version>
+    <toif-version>2.1.0</toif-version>
     <junit-version>4.8.1</junit-version>
     <tycho-version>0.23.0</tycho-version>
   </properties>
@@ -65,7 +65,7 @@
       <properties>
         <target-platform>mars</target-platform>
       </properties>
-    </profile>  
+    </profile>
   </profiles>
 
 
