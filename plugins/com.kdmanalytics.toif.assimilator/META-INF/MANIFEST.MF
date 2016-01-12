@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TOIF Assimilator
 Bundle-SymbolicName: com.kdmanalytics.toif.assimilator;singleton:=true
-Bundle-Version: 2.1.0.qualifier
+Bundle-Version: 2.1.0
 Bundle-Activator: com.kdmanalytics.toif.assimilator.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.apache.xerces;bundle-version="[2.11.0,3.0.0)",
