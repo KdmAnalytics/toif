@@ -22,7 +22,7 @@ dns=;SFP-29;CWE-247
 pathbuf=;SFP-9;CWE-785
 
 #LoadLibrary will search several places for a library if no path is specified, allowing trojan DLL's to be inserted elsewhere even if the intended DLL is correctly protected from overwriting. Make sure to specify the full path
-dllload=Tainted Input;SPF--1;CWE-114
+dllload=Tainted Input;SFP--1;CWE-114
 
 #GetExtensionVersion() is called by IIS in the system's security context.  Be very careful what you do here, as you are basically suid root for the machine. If you are calling the function rather than implementing it, howabout *not* calling it in the system's security context if possible?
 iis_extension=;SFP--1;CWE-250
@@ -92,7 +92,7 @@ getEnv=;SFP-25;CWE-15
 multiByteToWideChar=;SFP-10;CWE-135
 
 #Be sure the destination buffer is at least MAXPATHLEN big. This function may still internally overflow a static buffer, try to avoid using it. If you must, check the size the path your pass in is no longer than MAXPATHLEN
-realPath=;SFP-9;CWE-785 
+realPath=;SFP-9;CWE-785
 
 #cin is unsafe.  No bounds checking is performed.  Buffer is easily overflowable by user.
 cin=;SFP-3;CWE-676
@@ -206,7 +206,7 @@ rubySystem=;SFP--1;CWE--1
 exec=;SFP-24;CWE-77
 
 #This method allows I/O access outside of the application.  All I/O should be validated.
-open=;SFP-24;CWE-20
+open=;SFP-25;CWE-20
 
 #Use of params, verify all user values are checked before using.  Never pass params directly to a new object i.e. Object.new(params[:user])
 params=;SFP-24;CWE-99
@@ -238,3 +238,4 @@ load=;SFP-27;CWE-545
 
 #Make sure this function is not being used for any security related tasks.
 rand=Predictability;SFP--1;CWE-340
+
