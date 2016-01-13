@@ -68,27 +68,6 @@
     </profile>
   </profiles>
 
-
-<!--
-  <repositories>
-    <repository>
-       <id>eclipse-kepler</id>
-       <url>http://download.eclipse.org/releases/kepler</url>
-       <layout>p2</layout>
-    </repository>
-    <repository>
-       <id>orbit</id>
-       <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository/</url>
-       <layout>p2</layout>
-    </repository>
-    <repository>
-       <id>ossindex-kepler</id>
-       <url>http://vorsecurity.com/eclipse/ossindex/builder/kepler/</url>
-       <layout>p2</layout>
-    </repository>
-  </repositories>
--->
-
   <build>
     <plugins>
       <plugin>
