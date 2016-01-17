@@ -2,6 +2,7 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -57,47 +58,18 @@ public class FilterAction extends Action {
     if (code == FiltersDialog.OK) {
       dialog.getFilters();
       
-      AndFilter andFilter = new AndFilter();
+      FilterUtility filterUtils = new FilterUtility(view, viewer);
       
-      // Hack to ensure that the term filter is applied in addition to the
-      // filters that are handled by the dialog
-      for (ViewerFilter filter : viewer.getFilters()) {
-        if (filter instanceof TermFilter) {
-          andFilter.add(filter);
-        }
-      }
+      handleTrustFilter(dialog, filterUtils);
       
-      handleTrustFilter(dialog, andFilter);
+      handleTwoToolFilter(dialog, filterUtils);
+      handleCWETwoToolFilter(dialog, filterUtils);
+      handleSFPTwoToolFilter(dialog, filterUtils);
       
-      handleTwoToolFilter(dialog, andFilter);
-      handleCWETwoToolFilter(dialog, andFilter);
-      handleSFPTwoToolFilter(dialog, andFilter);
-      
-      handleIsValidFilter(dialog, andFilter);
-      handleNotValidFilter(dialog, andFilter);
-      handleInvalidSfpFilter(dialog, andFilter);
-      
-      // InvalidSFP filter affects the operations of some filters, so
-      // we need to know if it is enabled
-      boolean acceptInvalidSfp = true;
-      for (ViewerFilter filter : andFilter.getFilters()) {
-        if (filter instanceof InvalidSfpFilter) {
-          acceptInvalidSfp = false;
-          break;
-        }
-      }
-      // Should we ignore invalid SFPs?
-      for (ViewerFilter filter : andFilter.getFilters()) {
-        if (filter instanceof AbstractTwoToolsFilter) {
-          ((AbstractTwoToolsFilter) filter).setAcceptInvalidSfp(acceptInvalidSfp);
-        }
-      }
-      
-      List<ViewerFilter> filterList = new ArrayList<ViewerFilter>();
-      if (!andFilter.isEmpty()) filterList.add(andFilter);
-      viewer.setFilters(filterList.toArray(new ViewerFilter[filterList.size()]));
-      viewer.refresh();
-      view.updateDefectCount();
+      handleIsValidFilter(dialog, filterUtils);
+      handleNotValidFilter(dialog, filterUtils);
+      handleInvalidSfpFilter(dialog, filterUtils);
+      filterUtils.applyFilters();
     }
   }
   
@@ -105,69 +77,84 @@ public class FilterAction extends Action {
    * handle the not valid filter. by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleNotValidFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleNotValidFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     NotValidFilter notValidFilter = dialog.getNotValidFilter();
     if (notValidFilter != null) {
-      filterList.add(notValidFilter);
+      filterUtils.add(notValidFilter);
     }
-    
+    else {
+      filterUtils.remove(NotValidFilter.class);
+    }
+
   }
   
   /**
    * handle the invalid sfp filter. by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleInvalidSfpFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleInvalidSfpFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     InvalidSfpFilter invalidSfpFilter = dialog.getInvalidSfpFilter();
     if (invalidSfpFilter != null) {
-      filterList.add(invalidSfpFilter);
+      filterUtils.add(invalidSfpFilter);
     }
-    
+    else {
+      filterUtils.remove(InvalidSfpFilter.class);
+    }
+
   }
   
   /**
    * handle the same cwe filter by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleCWETwoToolFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleCWETwoToolFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     CWETwoToolsFilter cweTwoToolsFilter = dialog.getCWETwoToolsFilter();
     if (cweTwoToolsFilter != null) {
-      filterList.add(cweTwoToolsFilter);
+      filterUtils.add(cweTwoToolsFilter);
     }
-    
+    else {
+      filterUtils.remove(CWETwoToolsFilter.class);
+    }
+
   }
   
   /**
    * handle the same sfp filter by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleSFPTwoToolFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleSFPTwoToolFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     SFPTwoToolsFilter sfpTwoToolsFilter = dialog.getSFPTwoToolsFilter();
     if (sfpTwoToolsFilter != null) {
-      filterList.add(sfpTwoToolsFilter);
+      filterUtils.add(sfpTwoToolsFilter);
     }
-    
+    else {
+      filterUtils.remove(SFPTwoToolsFilter.class);
+    }
+
   }
   
   /**
    * handle the trust filter by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleTrustFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleTrustFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     TrustFilter trustFilter = dialog.getTrustFilter();
     if (trustFilter != null) {
       trustFilter.setAmount(dialog.getTrustAmount());
-      filterList.add(trustFilter);
+      filterUtils.add(trustFilter);
+    }
+    else {
+      filterUtils.remove(TrustFilter.class);
     }
   }
   
@@ -175,12 +162,15 @@ public class FilterAction extends Action {
    * handle the two tools filter by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleTwoToolFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleTwoToolFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     TwoToolsFilter twoToolsFilter = dialog.getTwoToolsFilter();
     if (twoToolsFilter != null) {
-      filterList.add(twoToolsFilter);
+      filterUtils.add(twoToolsFilter);
+    }
+    else {
+      filterUtils.remove(TwoToolsFilter.class);
     }
   }
   
@@ -188,12 +178,15 @@ public class FilterAction extends Action {
    * handle the is valid filter by adding it to the filterList.
    * 
    * @param dialog
-   * @param filterList
+   * @param filterUtils
    */
-  private void handleIsValidFilter(FiltersDialog dialog, AndFilter filterList) {
+  private void handleIsValidFilter(FiltersDialog dialog, FilterUtility filterUtils) {
     IsValidFilter isValidFilter = dialog.getIsValidFilter();
     if (isValidFilter != null) {
-      filterList.add(isValidFilter);
+      filterUtils.add(isValidFilter);
+    }
+    else {
+      filterUtils.remove(IsValidFilter.class);
     }
   }
 }

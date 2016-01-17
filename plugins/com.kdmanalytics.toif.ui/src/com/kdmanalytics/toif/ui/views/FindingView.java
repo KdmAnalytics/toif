@@ -1097,7 +1097,9 @@ public class FindingView extends ViewPart
         }
         else
         {
-            viewer.addFilter(new TermFilter(terms));
+            FilterUtility filter = new FilterUtility(this, viewer);
+            filter.add(new TermFilter(terms));
+            filter.applyFilters();
             updateDefectCount();
             text.setMessage("Search for Everything...");
         }
@@ -1109,7 +1111,9 @@ public class FindingView extends ViewPart
      */
     private void handleTermFilterClear(Text text)
     {
-        viewer.setFilters(new ViewerFilter[0]);
+        FilterUtility filter = new FilterUtility(this, viewer);
+        filter.clear();
+        filter.applyFilters();
 
         updateDefectCount();
         text.setMessage("Search for Everything...");
@@ -1253,7 +1257,10 @@ public class FindingView extends ViewPart
             if(resource instanceof IProject) return;
             addFiles(selectedFiles, resource);
         }
-        viewer.addFilter(new ResourceFilter(selectedFiles));
+        
+        FilterUtility filter = new FilterUtility(this, viewer);
+        filter.add(new ResourceFilter(selectedFiles));
+        filter.applyFilters();
 
         updateDefectCount();
     }
