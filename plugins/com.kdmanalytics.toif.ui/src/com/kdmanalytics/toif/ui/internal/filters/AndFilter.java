@@ -9,6 +9,7 @@
 package com.kdmanalytics.toif.ui.internal.filters;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.Viewer;
@@ -67,6 +68,23 @@ public class AndFilter extends ViewerFilter {
    */
   public ViewerFilter[] getFilters() {
     return filterList.toArray(new ViewerFilter[filterList.size()]);
+  }
+
+  public void clear() {
+    filterList.clear();
+  }
+
+  /** Remove all filters of the specified class.
+   * 
+   * @param cls
+   */
+  public void remove(Class<? extends ViewerFilter> cls) {
+    for (Iterator<ViewerFilter> it = filterList.iterator(); it.hasNext();) {
+      ViewerFilter filter = it.next();
+      if(cls.isAssignableFrom(filter.getClass())) {
+        it.remove();
+      }
+    }
   }
   
 }

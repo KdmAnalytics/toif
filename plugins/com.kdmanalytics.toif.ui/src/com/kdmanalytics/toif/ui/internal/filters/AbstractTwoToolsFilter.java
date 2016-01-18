@@ -26,14 +26,41 @@ import com.kdmanalytics.toif.ui.common.FindingEntry;
  */
 public abstract class AbstractTwoToolsFilter extends ViewerFilter {
   
-  private boolean acceptInvalidSfp = true;
+  /**
+   * Filters that must hold true for all findings in order for this
+   * filter to be satisfied.
+   */
+  private List<ViewerFilter> subFilters = new LinkedList<ViewerFilter>();
   
-  public void setAcceptInvalidSfp(boolean b) {
-    acceptInvalidSfp = b;
+  /**
+   * Clear all of the subfilters
+   */
+  public void clearFilters()
+  {
+    subFilters.clear();
+  }
+  
+  /** Add a new filter that must hold true for all findings in order for this
+   * filter to be satisfied.
+   * 
+   * @param filter
+   */
+  public void add(ViewerFilter filter)
+  {
+    subFilters.add(filter);
+  }
+  
+  /** Set a new list of sub-filters
+   * 
+   * @param subFilters2
+   */
+  public void setSubFilters(List<ViewerFilter> subFilters) {
+    this.subFilters.addAll(subFilters);
   }
   
   /**
-   * Get all findings for the file, possibly ignoring ones with invalid SFPs.
+   * Get all findings for the file, ignoring ones not accepted by the
+   * sub-filters.
    * 
    * @param file
    * @return
@@ -47,7 +74,14 @@ public abstract class AbstractTwoToolsFilter extends ViewerFilter {
       String type = marker.getType();
       if (type != null && type.startsWith("com.kdmanalytics.toif")) {
         FindingEntry entry = new FindingEntry(marker);
-        if (acceptInvalidSfp || !"SFP--1".equals(entry.getSfp())) {
+        boolean accept = true;
+        for(ViewerFilter filter: subFilters) {
+          if(!filter.select(null, null, entry)) {
+            accept = false;
+            break;
+          }
+        }
+        if(accept) {
           results.add(entry);
         }
       }
