@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and the
  * accompanying materials are made available under the terms of the Open Source
  * Initiative OSI - Open Software License v3.0 which accompanies this
  * distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
@@ -11,83 +11,77 @@
 // Generated on: 2012.03.30 at 02:17:16 PM EDT 
 //
 
-
 package generated;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
-
 /**
- * This object contains factory methods for each 
- * Java content interface and Java element interface 
- * generated in the generated package. 
- * <p>An ObjectFactory allows you to programatically 
- * construct new instances of the Java representation 
- * for XML content. The Java representation of XML 
- * content can consist of schema derived interfaces 
- * and classes representing the binding of schema 
- * type definitions, element declarations and model 
- * groups.  Factory methods for each of these are 
- * provided in this class.
+ * This object contains factory methods for each Java content interface and Java element interface
+ * generated in the generated package.
+ * <p>
+ * An ObjectFactory allows you to programatically construct new instances of the Java representation
+ * for XML content. The Java representation of XML content can consist of schema derived interfaces
+ * and classes representing the binding of schema type definitions, element declarations and model
+ * groups. Factory methods for each of these are provided in this class.
  * 
  */
 @XmlRegistry
 public class ObjectFactory {
-
-
-    /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: generated
-     * 
-     */
-    public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaims }
-     * 
-     */
-    public CWECoverageClaims createCWECoverageClaims() {
-        return new CWECoverageClaims();
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaimType.Claims.Claim.RuleSet.Rule }
-     * 
-     */
-    public CWECoverageClaimType.Claims.Claim.RuleSet.Rule createCWECoverageClaimTypeClaimsClaimRuleSetRule() {
-        return new CWECoverageClaimType.Claims.Claim.RuleSet.Rule();
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaimType.Claims.Claim.RuleSet }
-     * 
-     */
-    public CWECoverageClaimType.Claims.Claim.RuleSet createCWECoverageClaimTypeClaimsClaimRuleSet() {
-        return new CWECoverageClaimType.Claims.Claim.RuleSet();
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaimType.Claims.Claim }
-     * 
-     */
-    public CWECoverageClaimType.Claims.Claim createCWECoverageClaimTypeClaimsClaim() {
-        return new CWECoverageClaimType.Claims.Claim();
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaimType }
-     * 
-     */
-    public CWECoverageClaimType createCWECoverageClaimType() {
-        return new CWECoverageClaimType();
-    }
-
-    /**
-     * Create an instance of {@link CWECoverageClaimType.Claims }
-     * 
-     */
-    public CWECoverageClaimType.Claims createCWECoverageClaimTypeClaims() {
-        return new CWECoverageClaimType.Claims();
-    }
-
+  
+  /**
+   * Create a new ObjectFactory that can be used to create new instances of schema derived classes
+   * for package: generated
+   * 
+   */
+  public ObjectFactory() {
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaims }
+   * 
+   */
+  public CWECoverageClaims createCWECoverageClaims() {
+    return new CWECoverageClaims();
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaimType.Claims.Claim.RuleSet.Rule }
+   * 
+   */
+  public CWECoverageClaimType.Claims.Claim.RuleSet.Rule createCWECoverageClaimTypeClaimsClaimRuleSetRule() {
+    return new CWECoverageClaimType.Claims.Claim.RuleSet.Rule();
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaimType.Claims.Claim.RuleSet }
+   * 
+   */
+  public CWECoverageClaimType.Claims.Claim.RuleSet createCWECoverageClaimTypeClaimsClaimRuleSet() {
+    return new CWECoverageClaimType.Claims.Claim.RuleSet();
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaimType.Claims.Claim }
+   * 
+   */
+  public CWECoverageClaimType.Claims.Claim createCWECoverageClaimTypeClaimsClaim() {
+    return new CWECoverageClaimType.Claims.Claim();
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaimType }
+   * 
+   */
+  public CWECoverageClaimType createCWECoverageClaimType() {
+    return new CWECoverageClaimType();
+  }
+  
+  /**
+   * Create an instance of {@link CWECoverageClaimType.Claims }
+   * 
+   */
+  public CWECoverageClaimType.Claims createCWECoverageClaimTypeClaims() {
+    return new CWECoverageClaimType.Claims();
+  }
+  
 }

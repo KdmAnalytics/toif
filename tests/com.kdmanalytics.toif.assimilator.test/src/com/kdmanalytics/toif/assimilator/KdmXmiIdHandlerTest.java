@@ -1,3 +1,4 @@
+
 package com.kdmanalytics.toif.assimilator;
 
 import static org.junit.Assert.*;
@@ -10,13 +11,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class KdmXmiIdHandlerTest {
   
   private KdmXmiIdHandler handler;
   
   private SAXParser saxParser;
- 
+  
   @Before
   public void setUp() throws Exception {
     SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -25,24 +25,24 @@ public class KdmXmiIdHandlerTest {
   }
   
   @Test
-  public void simpleMaxIdTest()  throws Exception {
+  public void simpleMaxIdTest() throws Exception {
     File simpleXml = new File("resources/simpleXml.xml");
     saxParser.parse(simpleXml, handler);
-    assertEquals(0L,handler.getMaxId());
+    assertEquals(0L, handler.getMaxId());
   }
   
   @Test
-  public void actionElementsMaxIdTest()  throws Exception {
+  public void actionElementsMaxIdTest() throws Exception {
     File simpleXml = new File("resources/actionElements.xml");
     saxParser.parse(simpleXml, handler);
-    assertEquals(3420961L,handler.getMaxId());
+    assertEquals(3420961L, handler.getMaxId());
   }
   
   @Test
-  public void overlapMaxIdTest()  throws Exception {
+  public void overlapMaxIdTest() throws Exception {
     File simpleXml = new File("resources/overlapId.xml");
     saxParser.parse(simpleXml, handler);
-    assertEquals(80L,handler.getMaxId());
+    assertEquals(80L, handler.getMaxId());
   }
   
 }

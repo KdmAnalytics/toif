@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the accompanying
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and the accompanying
  * materials are made available under the terms of the Open Source Initiative OSI - Open Software
  * License v3.0 which accompanies this distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
@@ -30,7 +30,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * 
  * @author Adam Nunn <adam@kdmanalytics.com>
- *
+ *        
  */
 public class KdmXmlHandler extends DefaultHandler {
   
@@ -57,8 +57,9 @@ public class KdmXmlHandler extends DefaultHandler {
   
   private final boolean debug = false;
   
-  //private Long nextId = 0L;
+  // private Long nextId = 0L;
   private long initialId;
+  
   private long nextId;
   
   private long smallestBigNumber = Long.MAX_VALUE;
@@ -72,9 +73,9 @@ public class KdmXmlHandler extends DefaultHandler {
   /**
    * Construct KdmXmlHandler
    * 
-   * @param initialMaxId the maximum id in the file to be parsed.  Used as an 
-   *                     initial subject id for those elements that are 
-   *                     missing xmi:id's
+   * @param initialMaxId
+   *          the maximum id in the file to be parsed. Used as an initial subject id for those
+   *          elements that are missing xmi:id's
    */
   public KdmXmlHandler(PrintWriter out, Repository repository, long initialMaxId) {
     this.out = out;
@@ -82,7 +83,6 @@ public class KdmXmlHandler extends DefaultHandler {
     nextId = initialMaxId + 1;
     initialId = nextId;
   }
-  
   
   /**
    * Add the specified child to the specified parent
@@ -117,8 +117,8 @@ public class KdmXmlHandler extends DefaultHandler {
     ValueFactory f = repository.getValueFactory();
     URI predicate = f.createURI(kdmNS, "contains");
     
-    TripleStatementWriter.addOrWrite(out, con, f.createURI(parent.getURIString()), predicate,
-        f.createURI(child.getURIString()));
+    TripleStatementWriter.addOrWrite(out, con, f.createURI(parent.getURIString()), predicate, f.createURI(child
+                                                                                                               .getURIString()));
     doCommit();
     
   }
@@ -131,7 +131,9 @@ public class KdmXmlHandler extends DefaultHandler {
    */
   protected void commitNode(XMLNode source) throws RepositoryException {
     // Attributes are handled differently to conserve space
-    if ("attribute".equals(source.getName())) { return; }
+    if ("attribute".equals(source.getName())) {
+      return;
+    }
     
     // This is a standard node, not an attribute.
     setRDFAttribute(source, "kdmType", source.getKDMType());
@@ -175,8 +177,8 @@ public class KdmXmlHandler extends DefaultHandler {
    * @throws RepositoryException
    */
   private void doCommit() throws RepositoryException {
-      LOG.debug("commiting...");
-      con.commit();
+    LOG.debug("commiting...");
+    con.commit();
   }
   
   /**
@@ -339,12 +341,10 @@ public class KdmXmlHandler extends DefaultHandler {
    * 
    */
   @Override
-  public void startElement(String namespaceURI, String sName, String qName, Attributes attrs)
-      throws SAXException {
+  public void startElement(String namespaceURI, String sName, String qName, Attributes attrs) throws SAXException {
     
     XMLNode node = new XMLNode(namespaceURI, sName, qName, attrs);
     String stringId = node.getAttribute("xmi:id");
-    
     
     if (stringId == null) {
       node.setId(++nextId);
@@ -354,26 +354,25 @@ public class KdmXmlHandler extends DefaultHandler {
         if (id > initialId) {
           throw new SAXException("ID Overlap:" + id);
         }
-      } catch (NumberFormatException e){
+      } catch (NumberFormatException e) {
         throw new SAXException(e);
       }
     }
     
-//    else {
-//      try {
-//        long id = Long.parseLong(stringId);
-//        if (id > nextId) {
-//          nextId = id;
-//        } else if (id == nextId) {
-//          ++nextId;
-//        }
-//      } catch (NumberFormatException e) {
-//        throw new SAXException(e);
-//      }
-//    }
+    // else {
+    // try {
+    // long id = Long.parseLong(stringId);
+    // if (id > nextId) {
+    // nextId = id;
+    // } else if (id == nextId) {
+    // ++nextId;
+    // }
+    // } catch (NumberFormatException e) {
+    // throw new SAXException(e);
+    // }
+    // }
     
-    if ("source/SourceRef".equals(node.getKDMType())
-        || "source/SourceRegion".equals(node.getKDMType())) {
+    if ("source/SourceRef".equals(node.getKDMType()) || "source/SourceRegion".equals(node.getKDMType())) {
       // These elements are represented in the repository in
       // a special "compressed" format and should not be output
       // using the conventional methods.
@@ -420,7 +419,7 @@ public class KdmXmlHandler extends DefaultHandler {
    * 
    */
   public void stopDocument() throws SAXException {
-    //Nothing to do
+    // Nothing to do
   }
   
 }

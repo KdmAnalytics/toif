@@ -1,6 +1,6 @@
 /*******************************************************************************
  * /////////////////////////////////////////////////////////////////////////////
- * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * ///// // Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This
  * program and the // accompanying materials are made available under the terms
  * of the Open Source // Initiative OSI - Open Software License v3.0 which
  * accompanies this // distribution, and is available at
@@ -74,7 +74,7 @@ public class StreamGobbler implements Runnable
                     
                 }
                 line = is.readLine();
-
+                
             }
             if (pw != null)
             {

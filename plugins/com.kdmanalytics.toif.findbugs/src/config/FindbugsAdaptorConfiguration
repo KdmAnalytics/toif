@@ -61,7 +61,7 @@ DE_MIGHT_IGNORE=;SFP-4;CWE-390
 DE_MIGHT_IGNOREMsg=This method might ignore an exception. In general, exceptions should be handled or reported in some way, or they should be thrown out of the method.
 
 #DMI: Adding elements of an entry set may fail due to reuse of Entry objects (DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS)
-DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS=;SFP-3;CWE-440;
+DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS=;SFP--1;CWE-440;
 DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTSMsg=The entrySet() method is allowed to return a view of the underlying Map in which a single Entry object is reused and returned during the iteration. As of Java 1.6, both IdentityHashMap and EnumMap did so. When iterating through such a Map, the Entry value is only valid until you advance to the next iteration. If, for example, you try to pass such an entrySet to an addAll method, things will go badly wrong.
 
 #DMI: Random object created and used only once (DMI_RANDOM_USED_ONLY_ONCE)
@@ -185,11 +185,11 @@ JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS=;SFP--1;CWE-710
 JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASSMsg=The class is annotated with net.jcip.annotations.Immutable, and the rules for that annotation require that all fields are final. .
 
 #ME: Public enum method unconditionally sets its field (ME_ENUM_FIELD_SETTER)
-ME_ENUM_FIELD_SETTER=;SFP-27;CWE-471
+ME_ENUM_FIELD_SETTER=;SFP--1;CWE-471
 ME_ENUM_FIELD_SETTERMsg=This public method declared in public enum unconditionally sets enum field, thus this field can be changed by malicious code or by accident from another package. Though mutable enum fields may be used for lazy initialization, it's a bad practice to expose them to the outer world. Consider removing this method or declaring it package-private.
 
 #ME: Enum field is public and mutable (ME_MUTABLE_ENUM_FIELD)
-ME_MUTABLE_ENUM_FIELD=;SFP-27;CWE-471
+ME_MUTABLE_ENUM_FIELD=;SFP--1;CWE-471
 ME_MUTABLE_ENUM_FIELDMsg=A mutable public field is defined inside a public enum, thus can be changed by malicious code or by accident from another package. Though mutable enum fields may be used for lazy initialization, it's a bad practice to expose them to the outer world. Consider declaring this field final and/or package-private.
 
 #NP: Method with Boolean return type returns explicit null (NP_BOOLEAN_RETURN_NULL)
@@ -345,11 +345,11 @@ SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION=API;SFP--1;CWE-684
 SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATIONMsg=This class implements the Externalizable interface, but does not define a void constructor. When Externalizable objects are deserialized, they first need to be constructed by invoking the void constructor. Since this class does not have one, serialization and deserialization will fail at runtime.
 
 #Se: The readResolve method must be declared with a return type of Object. (SE_READ_RESOLVE_MUST_RETURN_OBJECT)
-SE_READ_RESOLVE_MUST_RETURN_OBJECT=API;SFP-1;CWE-710
+SE_READ_RESOLVE_MUST_RETURN_OBJECT=API;SFP--1;CWE-710
 SE_READ_RESOLVE_MUST_RETURN_OBJECTMsg=In order for the readResolve method to be recognized by the serialization mechanism, it must be declared to have a return type of Object.
 
 #Se: Transient field that isn't set by deserialization. (SE_TRANSIENT_FIELD_NOT_RESTORED)
-SE_TRANSIENT_FIELD_NOT_RESTORED=API;SFP-1;CWE-710
+SE_TRANSIENT_FIELD_NOT_RESTORED=API;SFP--1;CWE-710
 SE_TRANSIENT_FIELD_NOT_RESTOREDMsg=This class contains a field that is updated at multiple places in the class, thus it seems to be part of the state of the class. However, since the field is marked as transient and not set in readObject or readResolve, it will contain the default value in any deserialized instance of the class.
 
 #SnVI: Class is Serializable, but doesn't define serialVersionUID (SE_NO_SERIALVERSIONID)
@@ -405,7 +405,7 @@ BOA_BADLY_OVERRIDDEN_ADAPTER=;SFP--1;CWE-684
 BOA_BADLY_OVERRIDDEN_ADAPTERMsg=This method overrides a method found in a parent class, where that class is an Adapter that implements a listener defined in the java.awt.event or javax.swing.event package. As a result, this method will not get called when the event occurs.
 
 #BSHIFT: Possible bad parsing of shift operation (BSHIFT_WRONG_ADD_PRIORITY)
-BSHIFT_WRONG_ADD_PRIORITY=;SFP-1;CWE-783
+BSHIFT_WRONG_ADD_PRIORITY=;SFP--1;CWE-783
 BSHIFT_WRONG_ADD_PRIORITYMsg=The code performs an operation like (x << 8 + y). Although this might be correct, probably it was meant to perform (x << 8) + y, but shift operation has a lower precedence, so it's actually parsed as x << (8 + y).
 
 #BSHIFT: 32 bit int shifted by an amount not in the range -31..31 (ICAST_BAD_SHIFT_AMOUNT)
@@ -413,7 +413,7 @@ ICAST_BAD_SHIFT_AMOUNT=;SFP--1;CWE--1
 ICAST_BAD_SHIFT_AMOUNTMsg=The code performs shift of a 32 bit int by a constant amount outside the range 0..31. The effect of this is to use the lower 5 bits of the integer value to decide how much to shift by (e.g., shifting by 40 bits is the same as shifting by 8 bits, and shifting by 32 bits is the same as shifting by zero bits). This probably isn't want was expected, and it at least confusing.
 
 #DLS: Useless increment in return statement (DLS_DEAD_LOCAL_INCREMENT_IN_RETURN)
-DLS_DEAD_LOCAL_INCREMENT_IN_RETURN=;SFP--1;CWE-563
+DLS_DEAD_LOCAL_INCREMENT_IN_RETURN=;SFP-2;CWE-563
 DLS_DEAD_LOCAL_INCREMENT_IN_RETURNMsg=This statement has a return such as return x++;. A postfix increment/decrement does not impact the value of the expression, so this increment/decrement has no effect. Please verify that this statement does the right thing.
 
 #DLS: Dead store of class literal (DLS_DEAD_STORE_OF_CLASS_LITERAL)
@@ -425,7 +425,7 @@ DLS_OVERWRITTEN_INCREMENT=;SFP--1;CWE-398
 DLS_OVERWRITTEN_INCREMENTMsg=The code performs an increment operation (e.g., i++) and then immediately overwrites it. For example, i = i++ immediately overwrites the incremented value with the original value.
 
 #DMI: Reversed method arguments (DMI_ARGUMENTS_WRONG_ORDER)
-DMI_ARGUMENTS_WRONG_ORDER=;SFP-1;CWE-683
+DMI_ARGUMENTS_WRONG_ORDER=;SFP--1;CWE-683
 DMI_ARGUMENTS_WRONG_ORDERMsg=The arguments to this method call seem to be in the wrong order. For example, a call Preconditions.checkNotNull("message", message) has reserved arguments: the value to be checked is the first argument.
 
 #DMI: Bad constant value for month (DMI_BAD_MONTH)
@@ -453,7 +453,7 @@ DMI_INVOKING_HASHCODE_ON_ARRAY=;SFP--1;CWE-398
 DMI_INVOKING_HASHCODE_ON_ARRAYMsg=The code invokes hashCode on an array. Calling hashCode on an array returns the same value as System.identityHashCode, and ingores the contents and length of the array. If you need a hashCode that depends on the contents of an array a, use java.util.Arrays.hashCode(a).
 
 #DMI: Double.longBitsToDouble invoked on an int (DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT)
-DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT=;SFP--1;CWE-686
+DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT=;SFP-1;CWE-686
 DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INTMsg=The Double.longBitsToDouble method is invoked, but a 32 bit int value is passed as an argument. This almostly certainly is not intended and is unlikely to give the intended result.
 
 #DMI: Vacuous call to collections (DMI_VACUOUS_SELF_COLLECTION_CALL)
@@ -481,15 +481,15 @@ DM_INVALID_MIN_MAX=;SFP--1;CWE-569
 DM_INVALID_MIN_MAXMsg=This code tries to limit the value bounds using the construct like Math.min(0, Math.max(100, value)). However the order of the constants is incorrect: it should be Math.min(100, Math.max(0, value)). As the result this code always produces the same result (or NaN if the value is NaN).
 
 #EC: equals() used to compare array and nonarray (EC_ARRAY_AND_NONARRAY)
-EC_ARRAY_AND_NONARRAY=;SFP-1;CWE-595
+EC_ARRAY_AND_NONARRAY=;SFP--1;CWE-595
 EC_ARRAY_AND_NONARRAYMsg=This method invokes the .equals(Object o) to compare an array and a reference that doesn't seem to be an array. If things being compared are of different types, they are guaranteed to be unequal and the comparison is almost certainly an error. Even if they are both arrays, the equals method on arrays only determines of the two arrays are the same object. To compare the contents of the arrays, use java.util.Arrays.equals(Object[], Object[]).
 
 #EC: Invocation of equals() on an array, which is equivalent to == (EC_BAD_ARRAY_COMPARE)
-EC_BAD_ARRAY_COMPARE=;SFP-1;CWE-595
+EC_BAD_ARRAY_COMPARE=;SFP--1;CWE-595
 EC_BAD_ARRAY_COMPAREMsg=This method invokes the .equals(Object o) method on an array. Since arrays do not override the equals method of Object, calling equals on an array is the same as comparing their addresses. To compare the contents of the arrays, use java.util.Arrays.equals(Object[], Object[]). To compare the addresses of the arrays, it would be less confusing to explicitly pointer equality using ==.
 
 #EC: equals(...) used to compare incompatible arrays (EC_INCOMPATIBLE_ARRAY_COMPARE)
-EC_INCOMPATIBLE_ARRAY_COMPARE=;SFP-1;CWE-595
+EC_INCOMPATIBLE_ARRAY_COMPARE=;SFP--1;CWE-595
 EC_INCOMPATIBLE_ARRAY_COMPAREMsg=This method invokes the .equals(Object o) to compare two arrays, but the arrays of of incompatible types (e.g., String[] and StringBuffer[], or String[] and int[]). They will never be equal. In addition, when equals(...) is used to compare arrays it only checks to see if they are the same array, and ignores the contents of the arrays.
 
 #EC: Call to equals(null) (EC_NULL_ARG)
@@ -549,11 +549,11 @@ FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER=;SFP-1;CWE-570
 FE_TEST_IF_EQUAL_TO_NOT_A_NUMBERMsg=This code checks to see if a floating point value is equal to the special Not A Number value (e.g., if (x == Double.NaN)). However, because of the special semantics of NaN, no value is equal to Nan, including NaN. Thus, x == Double.NaN always evaluates to false. To check to see if a value contained in x is the special Not A Number value, use Double.isNaN(x) (or Float.isNaN(x) if x is floating point precision).
 
 #FS: Format string placeholder incompatible with passed argument (VA_FORMAT_STRING_BAD_ARGUMENT)
-VA_FORMAT_STRING_BAD_ARGUMENT=;SFP-1;CWE-687
+VA_FORMAT_STRING_BAD_ARGUMENT=;SFP--1;CWE-687
 VA_FORMAT_STRING_BAD_ARGUMENTMsg=The format string placeholder is incompatible with the corresponding argument. For example, System.out.println("%dn", "hello"); The %d placeholder requires a numeric argument, but a string value is passed instead. A runtime exception will occur when this statement is executed.
 
 #FS: The type of a supplied argument doesn't match format specifier (VA_FORMAT_STRING_BAD_CONVERSION)
-VA_FORMAT_STRING_BAD_CONVERSION=;SFP-1;CWE-687
+VA_FORMAT_STRING_BAD_CONVERSION=;SFP--1;CWE-687
 VA_FORMAT_STRING_BAD_CONVERSIONMsg=One of the arguments is uncompatible with the corresponding format string specifier. As a result, this will generate a runtime exception when executed. For example, String.format("%d", "1") will generate an exception, since the String "1" is incompatible with the format specifier %d.
 
 #FS: MessageFormat supplied where printf style format expected (VA_FORMAT_STRING_EXPECTED_MESSAGE_FORMAT_SUPPLIED)
@@ -565,7 +565,7 @@ VA_FORMAT_STRING_EXTRA_ARGUMENTS_PASSED=;SFP-1;CWE-685
 VA_FORMAT_STRING_EXTRA_ARGUMENTS_PASSEDMsg=A format-string method with a variable number of arguments is called, but more arguments are passed than are actually used by the format string. This won't cause a runtime exception, but the code may be silently omitting information that was intended to be included in the formatted string.
 
 #FS: Illegal format string (VA_FORMAT_STRING_ILLEGAL)
-VA_FORMAT_STRING_ILLEGAL=;SFP-1;CWE-687
+VA_FORMAT_STRING_ILLEGAL=;SFP--1;CWE-687
 VA_FORMAT_STRING_ILLEGALMsg=The format string is syntactically invalid, and a runtime exception will occur when this statement is executed.
 
 #FS: Format string references missing argument (VA_FORMAT_STRING_MISSING_ARGUMENT)
@@ -641,7 +641,7 @@ IM_MULTIPLYING_RESULT_OF_IREM=;SFP--1;CWE-398
 IM_MULTIPLYING_RESULT_OF_IREMMsg=The code multiplies the result of an integer remaining by an integer constant. Be sure you don't have your operator precedence confused. For example i % 60 * 1000 is (i % 60) * 1000, not i % (60 * 1000).
 
 #INT: Bad comparison of int value with long constant (INT_BAD_COMPARISON_WITH_INT_VALUE)
-INT_BAD_COMPARISON_WITH_INT_VALUE=;SFP-1;CWE-398
+INT_BAD_COMPARISON_WITH_INT_VALUE=;SFP--1;CWE-398
 INT_BAD_COMPARISON_WITH_INT_VALUEMsg=This code compares an int value with a long constant that is outside the range of values that can be represented as an int value. This comparison is vacuous and possibily to be incorrect.
 
 #INT: Bad comparison of nonnegative value with negative constant or zero (INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE)
@@ -813,7 +813,7 @@ RV_ABSOLUTE_VALUE_OF_HASHCODE=;SFP-1;CWE-197
 RV_ABSOLUTE_VALUE_OF_HASHCODEMsg=This code generates a hashcode and then computes the absolute value of that hashcode. If the hashcode is Integer.MIN_VALUE, then the result will be negative as well (since Math.abs(Integer.MIN_VALUE) == Integer.MIN_VALUE). One out of 2^32 strings have a hashCode of Integer.MIN_VALUE, including "polygenelubricants" "GydZG_" and ""DESIGNING WORKHOUSES".
 
 #RV: Bad attempt to compute absolute value of signed random integer (RV_ABSOLUTE_VALUE_OF_RANDOM_INT)
-RV_ABSOLUTE_VALUE_OF_RANDOM_INT=;SFP-1;CWE--1
+RV_ABSOLUTE_VALUE_OF_RANDOM_INT=;SFP--1;CWE--1
 RV_ABSOLUTE_VALUE_OF_RANDOM_INTMsg=This code generates a random signed integer and then computes the absolute value of that random integer. If the number returned by the random number generator is Integer.MIN_VALUE, then the result will be negative as well (since Math.abs(Integer.MIN_VALUE) == Integer.MIN_VALUE).
 
 #RV: Code checks for specific values returned by compareTo (RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE)
@@ -873,11 +873,11 @@ SIO_SUPERFLUOUS_INSTANCEOF=;SFP--1;CWE-398
 SIO_SUPERFLUOUS_INSTANCEOFMsg=Type check performed using the instanceof operator where it can be statically determined whether the object is of the type requested.
 
 #SQL: Method attempts to access a prepared statement parameter with index 0 (SQL_BAD_PREPARED_STATEMENT_ACCESS)
-SQL_BAD_PREPARED_STATEMENT_ACCESS=;SFP-1;CWE-687
+SQL_BAD_PREPARED_STATEMENT_ACCESS=;SFP--1;CWE-687
 SQL_BAD_PREPARED_STATEMENT_ACCESSMsg=A call to a setXXX method of a prepared statement was made where the parameter index is 0. As parameter indexes start at index 1, this is always a mistake.
 
 #SQL: Method attempts to access a result set field with index 0 (SQL_BAD_RESULTSET_ACCESS)
-SQL_BAD_RESULTSET_ACCESS=;SFP-1;CWE-687
+SQL_BAD_RESULTSET_ACCESS=;SFP--1;CWE-687
 SQL_BAD_RESULTSET_ACCESSMsg=A call to getXXX or updateXXX methods of a result set was made where the field index is 0. As ResultSet fields start at index 1, this is always a mistake.
 
 #STI: Unneeded use of currentThread() call, to call interrupted() (STI_INTERRUPTED_ON_CURRENTTHREAD)
@@ -957,7 +957,7 @@ OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE=;SFP-14;CWE-459
 OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGEMsg=This method may fail to clean up (close, dispose of) a stream, database object, or other resource requiring an explicit cleanup operation.
 
 #Dm: Consider using Locale parameterized version of invoked method (DM_CONVERT_CASE)
-DM_CONVERT_CASE=;SFP-3;CWE-440
+DM_CONVERT_CASE=;SFP--1;CWE-440
 DM_CONVERT_CASEMsg=A String is being converted to upper or lowercase, using the platform's default encoding. This may result in improper conversions when used with international characters.
 
 #Dm: Reliance on default encoding (DM_DEFAULT_ENCODING)
@@ -965,11 +965,11 @@ DM_DEFAULT_ENCODING=;SFP-3;CWE-474
 DM_DEFAULT_ENCODINGMsg=Found a call to a method which will perform a byte to String (or String to byte) conversion, and will assume that the default platform encoding is suitable. This will cause the application behaviour to vary between platforms. Use an alternative API and specify a charset name or Charset object explicitly.
 
 #DP: Classloaders should only be created inside doPrivileged block (DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED)
-DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED=;SFP-36;CWE-269
+DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED=;SFP--1;CWE-269
 DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGEDMsg=This code creates a classloader, which requires a security manager. If this code will be granted security permissions, but might be invoked by code that does not have security permissions, then the classloader creation needs to occur inside a doPrivileged block.
 
 #DP: Method invoked that should be only be invoked inside a doPrivileged block (DP_DO_INSIDE_DO_PRIVILEGED)
-DP_DO_INSIDE_DO_PRIVILEGED=;SFP-36;CWE-269
+DP_DO_INSIDE_DO_PRIVILEGED=;SFP--1;CWE-269
 DP_DO_INSIDE_DO_PRIVILEGEDMsg=This code invokes a method that requires a security permission check. If this code will be granted security permissions, but might be invoked by code that does not have security permissions, then the invocation needs to occur inside a doPrivileged block.
 
 #EI: May expose internal representation by returning reference to mutable object (EI_EXPOSE_REP)
@@ -1033,7 +1033,7 @@ MS_SHOULD_BE_REFACTORED_TO_BE_FINAL=;SFP-28;CWE-500
 MS_SHOULD_BE_REFACTORED_TO_BE_FINALMsg=This static field public but not final, and could be changed by malicious code or by accident from another package. The field could be made final to avoid this vulnerability. However, the static initializer contains more than one write to the field, so doing so will require some refactoring.
 
 #AT: Sequence of calls to concurrent abstraction may not be atomic (AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION)
-AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION=;SFP-19;CWE-362
+AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION=;SFP--1;CWE-362
 AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTIONMsg=This code contains a sequence of calls to a concurrent abstraction (such as a concurrent hash map). These calls will not be executed atomically.
 
 #DC: Possible double check of field (DC_DOUBLECHECK)
@@ -1045,7 +1045,7 @@ DC_PARTIALLY_CONSTRUCTED=;SFP-19;CWE-567
 DC_PARTIALLY_CONSTRUCTEDMsg=This code contains a sequence of calls to a concurrent abstraction (such as a concurrent hash map). These calls will not be executed atomically.
 
 #DL: Synchronization on Boolean (DL_SYNCHRONIZATION_ON_BOOLEAN)
-DL_SYNCHRONIZATION_ON_BOOLEAN=;SFP-19;CWE-662 
+DL_SYNCHRONIZATION_ON_BOOLEAN=;SFP-19;CWE-662
 DL_SYNCHRONIZATION_ON_BOOLEANMsg=The code synchronizes on a boxed primitive constant, such as an Boolean. Since there normally exist only two Boolean objects, this code could be synchronizing on the same object as other, unrelated code, leading to unresponsiveness and possible deadlock
 
 #DL: Synchronization on boxed primitive (DL_SYNCHRONIZATION_ON_BOXED_PRIMITIVE)
@@ -1129,7 +1129,7 @@ NP_SYNC_AND_NULL_CHECK_FIELD=;SFP--1;CWE-398
 NP_SYNC_AND_NULL_CHECK_FIELDMsg=Since the field is synchronized on, it seems not likely to be null. If it is null and then synchronized on a NullPointerException will be thrown and the check would be pointless. Better to synchronize on another field.
 
 #No: Using notify() rather than notifyAll() (NO_NOTIFY_NOT_NOTIFYALL)
-NO_NOTIFY_NOT_NOTIFYALL=;SFP--1;CWE398
+NO_NOTIFY_NOT_NOTIFYALL=;SFP--1;CWE-398
 NO_NOTIFY_NOT_NOTIFYALLMsg=This method calls notify() rather than notifyAll(). Java monitors are often used for multiple conditions. Calling notify() only wakes up one thread, meaning that the thread woken up might not be the one waiting for the condition that the caller just satisfied.
 
 #RS: Class's readObject() method is synchronized (RS_READOBJECT_SYNC)
@@ -1173,7 +1173,7 @@ SWL_SLEEP_WITH_LOCK_HELD=;SFP-19;CWE-662
 SWL_SLEEP_WITH_LOCK_HELDMsg=This method calls Thread.sleep() with a lock held. This may result in very poor performance and scalability, or a deadlock, since other threads may be waiting to acquire the lock. It is a much better idea to call wait() on the lock, which releases the lock and allows other threads to run.
 
 #TLW: Wait with two locks held (TLW_TWO_LOCK_WAIT)
-TLW_TWO_LOCK_WAIT=;SFP-19;CWE-833
+TLW_TWO_LOCK_WAIT=;SFP--1;CWE-833
 TLW_TWO_LOCK_WAITMsg=Waiting on a monitor while two locks are held may cause deadlock. Performing a wait only releases the lock on the object being waited on, not any other locks. This not necessarily a bug, but is worth examining closely.
 
 #UG: Unsynchronized get method, synchronized set method (UG_SYNC_SET_UNSYNC_GET)
@@ -1201,7 +1201,7 @@ VO_VOLATILE_REFERENCE_TO_ARRAY=;SFP--1;CWE-398
 VO_VOLATILE_REFERENCE_TO_ARRAYMsg=This declares a volatile reference to an array, which might not be what you want. With a volatile reference to an array, reads and writes of the reference to the array are treated as volatile, but the array elements are non-volatile. To get volatile array elements, you will need to use one of the atomic array classes in java.util.concurrent (provided in Java 5.0).
 
 #WL: Synchronization on getClass rather than class literal (WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL)
-WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL=;SFP-19;CWE-398
+WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL=;SFP--1;CWE-398
 WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERALMsg=This instance method synchronizes on this.getClass(). If this class is subclassed, subclasses will synchronize on the class object for the subclass, which isn't likely what was intended.
 
 #WS: Class's writeObject() method is synchronized but nothing else is (WS_WRITEOBJECT_SYNC)
@@ -1337,11 +1337,11 @@ DMI_CONSTANT_DB_PASSWORD=;SFP-33;CWE-259
 DMI_CONSTANT_DB_PASSWORDMsg=This code creates a database connect using a hardcoded, constant password. Anyone with access to either the source code or the compiled code can easily learn the password.
 
 #Dm: Empty database password (DMI_EMPTY_DB_PASSWORD)
-DMI_EMPTY_DB_PASSWORD=;SFP-33;CWE-521
+DMI_EMPTY_DB_PASSWORD=;SFP--1;CWE-521
 DMI_EMPTY_DB_PASSWORDMsg=This code creates a database connect using a blank or empty password. This indicates that the database is not protected by a password.
 
 #HRS: HTTP cookie formed from untrusted input (HRS_REQUEST_PARAMETER_TO_COOKIE)
-HRS_REQUEST_PARAMETER_TO_COOKIE=;SFP-24;CWE-20
+HRS_REQUEST_PARAMETER_TO_COOKIE=;SFP-25;CWE-20
 HRS_REQUEST_PARAMETER_TO_COOKIEMsg=This code constructs an HTTP Cookie using an untrusted HTTP parameter. If this cookie is added to an HTTP response, it will allow a HTTP response splitting vulnerability. See http://en.wikipedia.org/wiki/HTTP_response_splitting for more information. FindBugs looks only for the most blatant, obvious cases of HTTP response splitting. If FindBugs found any, you almost certainly have more vulnerabilities that FindBugs doesn't report. If you are concerned about HTTP response splitting, you should seriously consider using a commercial static analysis or pen-testing tool.
 
 #HRS: HTTP Response splitting vulnerability (HRS_REQUEST_PARAMETER_TO_HTTP_HEADER)
@@ -1553,7 +1553,7 @@ PZLA_PREFER_ZERO_LENGTH_ARRAYS=;SFP--1;CWE-710
 PZLA_PREFER_ZERO_LENGTH_ARRAYSMsg=It is often a better design to return a length zero array rather than a null reference to indicate that there are no results (i.e., an empty list of results). This way, no explicit check for null is needed by clients of the method. On the other hand, using null to indicate "there is no answer to this question" is probably appropriate. For example, File.listFiles() returns an empty list if given a directory containing no files, and returns null if the file is not a directory.
 
 #QF: Complicated, subtle or wrong increment in for-loop (QF_QUESTIONABLE_FOR_LOOP)
-QF_QUESTIONABLE_FOR_LOOP=;SFP-1;CWE-835
+QF_QUESTIONABLE_FOR_LOOP=;SFP--1;CWE-835
 QF_QUESTIONABLE_FOR_LOOPMsg=Are you sure this for loop is incrementing the correct variable? It appears that another variable is being initialized and checked by the for loop.
 
 #RCN: Redundant comparison of non-null value to null (RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE)
@@ -1705,7 +1705,7 @@ XFB_XML_FACTORY_BYPASSMsg=This method allocates a specific implementation of an 
 PREDICTABLE_RANDOM=;SFP--1;CWE-330
 PREDICTABLE_RANDOMMsg=SECURITY_PLUGIN: Predictable Pseudo Random # Generator
 
-SERVLET_PARAMETER=;SFP-24;CWE-20
+SERVLET_PARAMETER=;SFP-25;CWE-20
 SERVLET_PARAMETERMsg=SECURITY_PLUGIN: Untrusted Servlet Parameter
 
 SERVLET_CONTENT_TYPE=;SFP--1;CWE-807
@@ -1714,10 +1714,10 @@ SERVLET_CONTENT_TYPEMsg=SECURITY_PLUGIN: Untrusted Content-Type Header
 SERVLET_SERVER_NAME=;SFP--1;CWE-807
 SERVLET_SERVER_NAMEMsg=SECURITY_PLUGIN: Untrusted Hostname Header
 
-SERVLET_SESSION_ID=;SFP-31;CWE-287
+SERVLET_SESSION_ID=;SFP--1;CWE-287
 SERVLET_SESSION_IDMsg=SECURITY_PLUGIN: Untrusted Session Cookie Value
 
-SERVLET_QUERY_STRING=;SFP-24;CWE-20
+SERVLET_QUERY_STRING=;SFP-25;CWE-20
 SERVLET_QUERY_STRINGMsg=SECURITY_PLUGIN: Untrusted Query String
 
 SERVLET_HEADER=;SFP--1;CWE-807
@@ -1792,10 +1792,10 @@ SQL_INJECTIONMsg=SECURITY_PLUGIN: Potential SQL Injection
 LDAP_INJECTION=;SFP-24;CWE-90
 LDAP_INJECTIONMsg=SECURITY_PLUGIN: Potential LDAP Injection
 
-SCRIPT_ENGINE_INJECTION=;SFP-24;CWE-94
+SCRIPT_ENGINE_INJECTION=;SFP--1;CWE-94
 SCRIPT_ENGINE_INJECTIONMsg=SECURITY_PLUGIN: Potential code injection when using Script Engine
 
-SPEL_INJECTION=;SFP-24;CWE-94
+SPEL_INJECTION=;SFP--1;CWE-94
 SPEL_INJECTIONMsg=SECURITY_PLUGIN: Potential code injection when using Spring Expression
 
 BAD_HEXA_CONVERSION=;SFP-1;CWE-704
@@ -1819,7 +1819,7 @@ RSA_NO_PADDINGMsg=SECURITY_PLUGIN: RSA NoPadding Unsafe
 HARD_CODE_PASSWORD=;SFP-33;CWE-259
 HARD_CODE_PASSWORDMsg=SECURITY_PLUGIN: Hard Coded Password
 
-STRUTS_FORM_VALIDATION=;SFP-24;CWE-20
+STRUTS_FORM_VALIDATION=;SFP-25;CWE-20
 STRUTS_FORM_VALIDATIONMsg=SECURITY_PLUGIN: Struts Form Without Input Validation
 
 XSS_REQUEST_WRAPPER=;SFP-24;CWE-79
@@ -1840,7 +1840,7 @@ XSS_JSP_PRINTMsg=SECURITY_PLUGIN: Potential XSS in JSP
 XSS_SERVLET=;SFP-24;CWE-79
 XSS_SERVLETMsg=SECURITY_PLUGIN: Potential XSS in Servlet
 
-XML_DECODER=;SFP-24;CWE-20
+XML_DECODER=;SFP-25;CWE-20
 XML_DECODERMsg=SECURITY_PLUGIN: XMLDecoder usage
 
 STATIC_IV=;SFP--1;CWE-329

@@ -23,9 +23,9 @@ import com.kdmanalytics.toif.common.exception.ToifException;
 public class DeriveIdTests {
   
   private static final String EXPECTED_WEAKNESS_FILE = "/resource/expectedWeaknesses";
-
+  
   private String expected;
-    
+  
   private String msg;
   
   private JlintAdaptor jla;
@@ -60,7 +60,9 @@ public class DeriveIdTests {
       
       if (split.length == 3) {
         
-        Object a[] = new Object[] {split[1], split[2]};
+        Object a[] = new Object[] {
+                                    split[1], split[2]
+        };
         
         res.add(a);
         
@@ -69,19 +71,17 @@ public class DeriveIdTests {
     
     return res;
   }
-
   
   @Test
   public void test_deriveId() {
-	  try {
-		String id = jla.deriveId(msg);
-		
-		assertEquals("Expected:"+expected+" got:"+id, expected,id);
-		
-		
-	} catch (ToifException e) {
-		fail("EXCEPTION when expected:"+expected+" EXCEPTION::"+e);
-	}
+    try {
+      String id = jla.deriveId(msg);
+      
+      assertEquals("Expected:" + expected + " got:" + id, expected, id);
+      
+    } catch (ToifException e) {
+      fail("EXCEPTION when expected:" + expected + " EXCEPTION::" + e);
+    }
   }
   
 }

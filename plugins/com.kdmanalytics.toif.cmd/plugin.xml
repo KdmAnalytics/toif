@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="com.kdmanalytics.toif.cmd.ToifApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="TOIF_RCP"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.cdt.codan.core.application"
+            name="com.kdmanalytics.toif.rcp.product">
+         <property
+               name="appName"
+               value="com.kdmanalytics.toif.rcp.product">
+         </property>
+      </product>
+   </extension>
+
+</plugin>

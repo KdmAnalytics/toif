@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="com.kdmanalytics.toif.report.sfp"
+            name="SFP/CWE">
+      </category>
+      <view
+            category="com.kdmanalytics.toif.report.sfp"
+            class="com.kdmanalytics.toif.ui.views.FindingView"
+            icon="icons/flag_blue.png"
+            id="com.kdmanalytics.toif.views.FindingView"
+            name="TOIF Findings">
+      </view>
+      <view
+            category="com.kdmanalytics.toif.report.sfp"
+            class="com.kdmanalytics.toif.ui.views.DefectDescriptionView"
+            icon="icons/flag_purple.png"
+            id="com.kdmanalytics.toif.ui.views.DefectDescriptionView"
+            name="Defect Description">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="com.kdmanalytics.toif.views.FindingView"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.cdt.ui.CPerspective">
+         <view
+               id="com.kdmanalytics.toif.views.FindingView"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="com.kdmanalytics.toif.ui.FilterToif"
+               label="Filter TOIF findings on selection"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
+         <command
+               commandId="com.kdmanalytics.toif.ui.FilterToif"
+               label="Filter TOIF findings on selection"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.kdmanalytics.toif.ui.handlers.FilterToifHandler"
+            id="com.kdmanalytics.toif.ui.FilterToif"
+            name="Filter TOIF findings on selection">
+      </command>
+   </extension>
+
+</plugin>

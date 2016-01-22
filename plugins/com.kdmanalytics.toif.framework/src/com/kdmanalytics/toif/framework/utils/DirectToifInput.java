@@ -1,6 +1,6 @@
 /*******************************************************************************
  * /////////////////////////////////////////////////////////////////////////////
- * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * ///// // Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This
  * program and the // accompanying materials are made available under the terms
  * of the Open Source // Initiative OSI - Open Software License v3.0 which
  * accompanies this // distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
@@ -29,7 +30,7 @@ import com.kdmanalytics.toif.framework.xmlElements.entities.Element;
  * toifAdaptor.
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 public class DirectToifInput extends AbstractAdaptor
 {
@@ -60,7 +61,7 @@ public class DirectToifInput extends AbstractAdaptor
      *            toif housekeeping file format
      * @param segmentFile
      *            The source file which is being analyzed.
-     * @throws ToifException 
+     * @throws ToifException
      */
     public DirectToifInput(File ouputDirectory, File housekeepingFile, File segmentFile) throws ToifException
     {
@@ -107,14 +108,15 @@ public class DirectToifInput extends AbstractAdaptor
         // file.
         com.kdmanalytics.toif.framework.xmlElements.entities.File toifFile = new com.kdmanalytics.toif.framework.xmlElements.entities.File(
                 file.getPath());
-        
+                
         // create the finding.
         creator.create(msg, id, lineNumber, offset, position, toifFile, dataElement, cwe);
     }
     
     /**
      * construct the xml after creating all the findings.
-     * @throws ToifException 
+     * 
+     * @throws ToifException
      */
     public void constructXml() throws ToifException
     {
@@ -239,8 +241,7 @@ public class DirectToifInput extends AbstractAdaptor
     }
     
     @Override
-    public ArrayList<Element> parse(File process, AdaptorOptions options, com.kdmanalytics.toif.framework.xmlElements.entities.File file,
-            boolean[] validLines, boolean unknownCWE)
+    public ArrayList<Element> parse(File process, AdaptorOptions options, IFileResolver resolver, boolean[] validLines, boolean unknownCWE)
     {
         
         // TODO Auto-generated method stub
