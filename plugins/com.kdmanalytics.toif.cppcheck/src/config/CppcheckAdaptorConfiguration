@@ -259,7 +259,7 @@ unusedStructMemberElement=struct or union member '#' is never used
 
 #(passedByValue, style) Function parameter 'parametername' is passed by value. It could be passed by reference instead.
 passedByValueElement=Function parameter '#' is passed by value. It could be passed by reference instead.
-passedByValue=;SFP-24;CWE-686
+passedByValue=;SFP-1;CWE-686
 
 #(charArrayIndex, style) Warning - using char variable as array index
 charArrayIndex=;SFP-1;CWE-195
@@ -385,7 +385,7 @@ useAutoPointerArray=;SFP-1;CWE-475
 useAutoPointerContainer=;SFP-7;CWE-476
 
 #(writeOutsideBufferSize, error) Writing 1 bytes outside buffer size.
-writeOutsideBufferSize=;SFP-10;CWE-131
+writeOutsideBufferSize=;SFP--1;CWE-131
 
 #(writeReadOnlyFile, error) Write operation on a file that was opened only for reading.
 writeReadOnlyFile=;SFP--1;CWE-398
@@ -410,3 +410,4 @@ cppcheckError=;SFP--1;CWE-1
 
 #(preprocessorErrorDirective, error) #error message
 preprocessorErrorDirective=;SFP--1;CWE-1
+
