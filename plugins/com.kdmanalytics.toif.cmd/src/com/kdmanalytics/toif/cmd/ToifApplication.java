@@ -54,6 +54,9 @@ public class ToifApplication implements IApplication {
     String[] toifArgs = toifArgList.toArray(new String[toifArgList.size()]);
     String[] adaptorArgs = adaptorArgList.toArray(new String[adaptorArgList.size()]);
     
+    if (LOG.isDebugEnabled()){
+      LOG.debug("Starting headless TOIF..." );
+    }
     UserConsole uc = new UserConsole(toifArgs, adaptorArgs);
     uc.execute();
     

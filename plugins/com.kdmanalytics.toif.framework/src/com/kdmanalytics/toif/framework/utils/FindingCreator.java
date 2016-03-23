@@ -217,7 +217,6 @@ public class FindingCreator
         java.io.File tempDir = new java.io.File(System.getProperty("java.io.tmpdir"));
         java.io.File tempFile = new java.io.File(tempDir, "toifLog");
         FileWriter fileWriter = new FileWriter(tempFile, true);
-        // System.out.println(tempFile.getAbsolutePath());
         BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(sb);
         bw.close();

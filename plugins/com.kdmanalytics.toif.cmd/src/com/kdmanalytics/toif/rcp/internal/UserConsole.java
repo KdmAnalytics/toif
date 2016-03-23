@@ -46,13 +46,13 @@ public class UserConsole {
       }
       toifCli = CliFactory.parseArguments(ToifCli.class, toifArgs);
     } catch (Exception ex) {
-      System.err.println("Invalid Arguments: " + ex.getMessage());
+      LOG.error("Invalid Arguments: " + ex.getMessage());
       return;
     }
     
     // Check if supplied options are valid
     if (argsValid(toifCli) == false) {
-      System.err.println("Invalid arguments");
+      LOG.error("Invalid arguments");
       return;
     }
     
@@ -71,7 +71,7 @@ public class UserConsole {
   private void doAdaptor(ToifCli toifCli) {
     // Ensure that output directory is specifed
     if (!toifCli.isOutputdirectory()) {
-      System.err.println("Output directory needs to be specified");
+      LOG.error("Output directory needs to be specified");
       return;
     }
     
@@ -96,7 +96,7 @@ public class UserConsole {
     
     // Check that we are only doing a single command
     if (cli.isMerge() && cli.isAdaptor()) {
-      System.err.println("Can only do adaptor or merge");
+      LOG.error("Can only do adaptor or merge");
       return false;
     }
     
@@ -104,12 +104,12 @@ public class UserConsole {
     if (cli.isInputfile()) {
       for (File file : cli.getInputfile()) {
         if (!file.exists()) {
-          System.err.println("Specified inputfile does not exist: " + file.getAbsolutePath());
+          LOG.error("Specified inputfile does not exist: " + file.getAbsolutePath());
           return false;
         }
         
         if (!file.isFile() && !file.isDirectory()) {
-          System.err.println("Specified inputfile not valid: " + file.getAbsolutePath());
+          LOG.error("Specified inputfile not valid: " + file.getAbsolutePath());
           return false;
         }
         
@@ -120,8 +120,16 @@ public class UserConsole {
     // Check house keeping
     if (cli.isHousekeeping()) {
       if (!cli.getHousekeeping().isFile()) {
-        System.err.println("Specified housekeeping file not valid: " + cli.getHousekeeping());
+        LOG.error("Specified housekeeping file not valid: " + cli.getHousekeeping());
         return false;
+      }
+    }
+    
+    if (cli.isKdmfile()) {
+      if (!cli.getKdmfile().isFile()) {
+        LOG.error("Specified kdm file not valid: " + cli.getKdmfile());
+        return false;
+        
       }
     }
     

@@ -835,17 +835,10 @@ public class ToifMerger {
       
       fileNum++;
       
-      float fraction = 100f / listSize;
-      int percent = (int) Math.ceil(fraction * fileNum);
+      float fraction = (float)fileNum / (float)listSize;
+      int percent = (int) Math.floor(fraction * 100f);
       
-      if (percent > 100) {
-        percent = 100;
-      }
-      
-      LOG.info(file.toString());
-      LOG.info("processing TOIF... " + percent + "%");
-//      System.out.print("\r" + file);
-//      System.out.print("\nprocessing TOIF... " + percent + "%");
+      consoleOutput("Processing TOIF files: \"" + file.toString() + "\"... " + percent + "%");
       
       currentFile = file;
       
@@ -914,18 +907,16 @@ public class ToifMerger {
       depositResources();
       
       if (DEBUG) {
-        System.err.println("End of file: " + file);
-        
+        LOG.error("End of file: {}",file);
       }
       // end of file.
     }
-    LOG.info("");
-    //System.out.println("");
+    consoleOutput("");
     
     try {
       con.close();
     } catch (RepositoryException e) {
-      System.err.println("Repository exception during merge. " + e);
+      LOG.error("Repository exception during merge. {}", e);
     }
     
     return offset;
@@ -1186,4 +1177,18 @@ public class ToifMerger {
     final boolean seen = !seenStatements.add(seenStatement);
     return seen;
   }
+  
+  
+  /**
+   * Console output.
+   *
+   * @param consoleOutput the console output
+   */
+  private void consoleOutput(String consoleOutput) {
+    System.out.println(consoleOutput);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(consoleOutput);
+    }
+  }
+  
 }

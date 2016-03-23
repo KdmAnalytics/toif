@@ -103,7 +103,6 @@ public class SplintAdaptor extends AbstractAdaptor {
     File tempDir = new File(System.getProperty("java.io.tmpdir"));
     File tempFile = new File(tempDir, "toifLog");
     FileWriter fileWriter = new FileWriter(tempFile, true);
-    // System.out.println(tempFile.getAbsolutePath());
     BufferedWriter bw = new BufferedWriter(fileWriter);
     bw.write(sb);
     bw.close();

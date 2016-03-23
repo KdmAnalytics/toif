@@ -331,8 +331,7 @@ public class Assimilator {
    * 
    */
   public boolean assimilate(final String[] args) throws ToifException, IOException {
-    LOG.info("Running, this may take some time...");
-    //System.out.println("Running, this may take some time...");
+    consoleOutput("Running, this may take some time...");
     try {
       outputLocation = getOutputLocation(args);
       
@@ -409,11 +408,10 @@ public class Assimilator {
       
     } catch (final AssimilatorArgumentException e) {
       final String msg = "Bad argument:";
-      LOG.error(msg, e);
+      LOG.error("Bad argument: " + e.getMessage());
       throw new IllegalArgumentException(msg, e);
     } catch (RepositoryException e) {
       LOG.error("Repository Exception: ", e);
-      //e.printStackTrace();
     }
     /*
      * catch (IOException e) { e.printStackTrace(); }
@@ -429,12 +427,9 @@ public class Assimilator {
         outputLocation = null;
       } catch (RepositoryException e) {
         LOG.error("There was a problem closing the connection to the repository. ", e);
-        //System.err.println("There was a problem closing the connection to the repository. " + e);
       }
       
-      LOG.info("Complete.");
-//      System.out.println("\nComplete.");
-//      
+      consoleOutput("Complete.");
     }
     return true;
   }
@@ -504,20 +499,15 @@ public class Assimilator {
     File file = null;
     try {
       file = kdmFiles.get(0);
-      
       fis = new FileInputStream(file);
       // Read from the ZipInputStream as you would normally from any other
       // input stream
       LOG.info(file.getAbsolutePath());
-      //System.out.println("\n" + file.getAbsolutePath());
       streamStatementsToRepo(fis);
     } catch (FileNotFoundException e) {
       LOG.error("Error while processing kdm file:", e);
-//      e.printStackTrace();
     } catch (IOException e) {
       LOG.error("Error while processing kdm file:", e);
-      // TODO Auto-generated catch block
-//      e.printStackTrace();
     } finally {
       try {
         if (fis != null) {
@@ -541,6 +531,20 @@ public class Assimilator {
     }
   }
   
+  private void consoleOutputUpdate(String consoleOutput) {
+    System.out.print(consoleOutput + "\r");
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(consoleOutput);
+    }
+  }
+  
+  private void consoleOutput(String consoleOutput) {
+    System.out.println(consoleOutput);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(consoleOutput);
+    }
+  }
+  
   /**
    * try to find matching locations in the toif and the kdm namespaces.
    * 
@@ -560,18 +564,12 @@ public class Assimilator {
         createCommonNode(toifStatement.getSubject(), bestFitResource);
         continue;
       }
-      
       statements++;
-      
+
       float fraction = 100f / toifPaths.size();
-      int percent = (int) Math.ceil(fraction * statements);
+      int percent = (int) Math.floor(fraction * statements);
       
-      if (percent > 100) {
-        percent = 100;
-      }
-      
-      //System.out.print("\rAssimilating TOIF and KDM Locations... " + percent + "%");
-      LOG.info("Assimilating TOIF and KDM Locations... " + percent + "%");
+      consoleOutputUpdate("Assimilating TOIF and KDM Locations... " + percent + "%");
       
       // given a toif statement
       Resource kdmResourceFile = findBestFitSourceFile(tries, toifStatement);
@@ -591,11 +589,6 @@ public class Assimilator {
         
         bestFitResource = findBestKdmElementForToifStatement(toifStatement, kdmResourceFile, reductionAmount, false);
         
-        // if (bestFitResource == null)
-        // {
-        // findBestKdmElementForToifStatement(toifStatement,
-        // kdmResourceFile, reductionAmount * -1, false);
-        // }
         
         reductionAmount++;
       }
@@ -1455,17 +1448,11 @@ public class Assimilator {
     for (final File file : tkdmFiles) {
       fileNum++;
       
-      float fraction = 100f / listSize;
-      int percent = (int) Math.ceil(fraction * fileNum);
+      int percent = 0;
+      float fraction = (float)fileNum / (float)listSize;
+      percent = (int) Math.floor(fraction * 100f);
       
-      if (percent > 100) {
-        percent = 100;
-      }
-      
-      LOG.info("\r" + file);
-      //System.out.print("\r" + file);
-      LOG.info("processing TKDM... " + percent + "%");
-      //System.out.print("\nprocessing TKDM... " + percent + "%");
+      consoleOutputUpdate("Processing TKDM files: \"" + file.toString() + "\"... " + percent + "%");
       
       try {
         File temp = Files.createTempDir();
@@ -1485,18 +1472,13 @@ public class Assimilator {
         FileUtils.deleteDirectory(temp);
       } catch (final RepositoryException e) {
         LOG.error("There was an exception when merging the tkdmFiles. ",e);
-//        e.printStackTrace();
       } catch (final FileNotFoundException e) {
         LOG.error("The Kdm file has not been found. ",e);
-//        e.printStackTrace();
       } catch (final IOException e) {
         LOG.error("There was an IO Exception when trying to merge the KDM files. ",e);
-//        e.printStackTrace();
       }
     }
-    
-    LOG.info("");
-    //System.out.println("");
+    consoleOutput("");
   }
   
   /**
@@ -1531,7 +1513,6 @@ public class Assimilator {
         final Statement st = statements.next();
         // print statements.
         LOG.info(st.toString());
-        //System.out.println(st.toString());
         
       }
       
@@ -1679,7 +1660,6 @@ public class Assimilator {
       // Read from the ZipInputStream as you would normally from any other
       // input stream
       LOG.info(file.getAbsolutePath());
-      //System.out.println("\n" + file.getAbsolutePath());
       streamStatementsToRepo(zip);
     }
     
@@ -1881,7 +1861,6 @@ public class Assimilator {
         
         if ("-m".equals(rOption) && (count % 10000 == 0)) {
           LOG.info("processing KDM file... statement: " + count + "          ");
-          //System.out.print("\rprocessing KDM file... statement: " + count + "          ");
         }
         count++;
         
