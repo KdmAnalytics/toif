@@ -29,7 +29,7 @@ public interface ToifCli {
   
   boolean isAdaptor();
   
-  @Option(shortName = "v",description = "Verbose TOIF output")
+  @Option(shortName = "v",description = "Enable verbose TOIF progress output")
   boolean isVerbose();
   
   // --------------------------------------------
@@ -40,7 +40,7 @@ public interface ToifCli {
   
   boolean isInputfile();
   
-  @Option(shortName = "o")
+  @Option(shortName = "o",description = "Directory to contain TOIF output")
   File getOutputdirectory();
   
   boolean isOutputdirectory();
