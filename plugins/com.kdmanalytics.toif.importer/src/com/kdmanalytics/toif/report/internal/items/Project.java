@@ -163,8 +163,8 @@ public class Project extends ReportItem implements IToifProject {
    * @return
    */
   private IRepositoryMaker getRepositoryMaker(IFolder folder) {
-    IConfigurationElement[] config = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                                                                                                 "com.kdmanalytics.toif.report.repositoryMaker.extensionpoint");
+    IConfigurationElement[] config = Platform.getExtensionRegistry()
+                                             .getConfigurationElementsFor("com.kdmanalytics.toif.report.repositoryMaker.extensionpoint");
     try {
       for (IConfigurationElement e : config) {
         System.out.println("Evaluating extension");

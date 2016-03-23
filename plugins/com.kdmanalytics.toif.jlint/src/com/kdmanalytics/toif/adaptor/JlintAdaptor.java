@@ -20,7 +20,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.framework.files.IFileResolver;
@@ -41,7 +42,7 @@ public class JlintAdaptor extends AbstractAdaptor {
   /**
    * the logger.
    */
-  private static Logger LOG = Logger.getLogger(JlintAdaptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JlintAdaptor.class);
   
   /**
    * By default we expect the executable to be in path

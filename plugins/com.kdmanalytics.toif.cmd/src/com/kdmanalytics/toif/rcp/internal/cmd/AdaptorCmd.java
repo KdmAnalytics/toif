@@ -10,6 +10,9 @@ package com.kdmanalytics.toif.rcp.internal.cmd;
  ******************************************************************************/
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.facade.ToifFacade;
 import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
@@ -19,14 +22,15 @@ import com.kdmanalytics.toif.rcp.internal.ToifCli;
 
 public class AdaptorCmd implements IToifCmd {
   
+  private static Logger LOG = LoggerFactory.getLogger(AdaptorCmd.class);
+  
   @Override
   public void execute(ToifCli toifCli, String userArgs[]) {
     // Expand each adaptor as required
     for (String toolName : toifCli.getAdaptor()) {
-      System.out.println("tool name=" + toolName);
+      LOG.debug("tool name={}",toolName);
       
       for (AbstractAdaptor adaptor : ToolAdaptorUtil.getAdaptors()) {
-        // System.out.println( adaptor.getAdaptorName());
         if (toolName.equalsIgnoreCase(adaptor.getRuntoolName())) {
           ToifFacade toif = new ToifFacade();
           

@@ -15,7 +15,10 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -34,7 +37,9 @@ public class RatsParser extends DefaultHandler {
   /**
    * the logger.
    */
-  private static Logger LOG = Logger.getLogger(RatsParser.class);
+  private Marker fatal = MarkerFactory.getMarker("FATAL");
+
+  private static final Logger LOG = LoggerFactory.getLogger(RatsParser.class);
   
   private FindingCreator findingCreator;
   
@@ -196,7 +201,7 @@ public class RatsParser extends DefaultHandler {
       }
     } catch (Exception e) {
       final String msg = "Could not access the idConfig file.";
-      LOG.fatal(msg, e);
+      LOG.error(fatal, msg, e);
       
     } finally {
       if (scan != null) scan.close();

@@ -20,9 +20,7 @@
     <!--<module>com.kdmanalytics.toif.targetdefinition</module>-->
     <module>3rdParty</module>
     <module>plugins</module>
-  <!--
     <module>tests</module>
-  -->
     <module>features</module>
     <module>products</module>
     <module>sites</module>

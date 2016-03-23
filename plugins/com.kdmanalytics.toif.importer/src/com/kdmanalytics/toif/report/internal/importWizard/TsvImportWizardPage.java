@@ -20,7 +20,6 @@ import java.util.Map;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.Logger;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
@@ -52,6 +51,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownComposite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.report.internal.items.FileGroup;
 import com.kdmanalytics.toif.report.internal.providers.TOIFImportTreeContentProvider;
@@ -68,7 +69,7 @@ import com.kdmanalytics.toif.util.MemberUtil;
  */
 public class TsvImportWizardPage extends WizardPage implements Listener, ISelectionChangedListener, ModifyListener {
   
-  private static final Logger LOG = Logger.getLogger(TsvImportWizardPage.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TsvImportWizardPage.class);
   
   private static final int SIZING_CONTAINER_GROUP_HEIGHT = 250;
   

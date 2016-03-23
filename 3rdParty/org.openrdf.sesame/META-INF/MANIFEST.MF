@@ -121,5 +121,4 @@ Export-Package: info.aduna.collections,
  org.openrdf.sail.rdbms.schema,
  org.openrdf.sail.rdbms.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.slf4j.api;bundle-version="1.7.5";visibility:=reexport,
- org.slf4j.log4j;bundle-version="1.7.5";visibility:=reexport
+Require-Bundle: org.slf4j.api;bundle-version="1.7.2";visibility:=reexport

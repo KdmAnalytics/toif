@@ -27,7 +27,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.framework.files.ExplicitFileResolver;
@@ -113,7 +114,7 @@ public class ToolAdaptor
     /**
      * the logger.
      */
-    private static Logger LOG = Logger.getLogger(ToolAdaptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ToolAdaptor.class);
     
     /**
      * The implementation of the specific adaptor.
@@ -1396,7 +1397,7 @@ public class ToolAdaptor
             }
             catch (IOException e)
             {
-                LOG.error(e);
+                LOG.error("", e);
                 throw new ToifException();
             }
             if (tmp != null)

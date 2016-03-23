@@ -16,6 +16,7 @@
 
 
   <modules>
+    <module>com.kdmanalytics.toif.log4j</module>
     <module>com.kdmanalytics.toif.target</module>
     <module>com.kdmanalytics.toif.ui.common</module>
     <module>com.kdmanalytics.toif.common</module>

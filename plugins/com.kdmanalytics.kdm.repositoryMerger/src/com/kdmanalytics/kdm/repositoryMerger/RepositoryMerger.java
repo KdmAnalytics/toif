@@ -1,10 +1,6 @@
 
 package com.kdmanalytics.kdm.repositoryMerger;
 
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
-import info.aduna.iteration.CloseableIteration;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -16,7 +12,6 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.log4j.Logger;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -26,6 +21,8 @@ import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.IntUtils;
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.KdmConstants;
@@ -39,6 +36,10 @@ import com.kdmanalytics.kdm.repositoryMerger.Utilities.MergerUtilities;
 import com.kdmanalytics.kdm.repositoryMerger.linkconfig.MergeConfig;
 import com.kdmanalytics.kdm.repositoryMerger.ranges.Range;
 import com.kdmanalytics.kdm.repositoryMerger.ranges.RangeSet;
+
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+import info.aduna.iteration.CloseableIteration;
 
 /**
  * 
@@ -113,7 +114,7 @@ public class RepositoryMerger {
   /**
    * log4j logger.
    */
-  private static final Logger LOG = Logger.getLogger(RepositoryMerger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RepositoryMerger.class);
   
   public static final int LOWMEM = 0x0C;
   
@@ -1641,7 +1642,7 @@ public class RepositoryMerger {
  */
 class ValidationData {
   
-  private static final Logger LOG = Logger.getLogger(RepositoryMerger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RepositoryMerger.class);
   
   private final Map<URI, URI> validation_relationshipFrom;
   

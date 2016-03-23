@@ -2,25 +2,34 @@
 package com.kdmanalytics.toif.rcp.internal;
 
 /*******************************************************************************
- * Copyright (c) 2013 KDM Analytics, Inc. All rights reserved. This program and
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
  * Source Initiative OSI - Open Software License v3.0 which accompanies this
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.File;
+import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.io.Files;
 import com.kdmanalytics.toif.rcp.internal.cmd.AdaptorCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.MergeCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.VersionCmd;
-import com.lexicalscope.jewel.cli.ArgumentValidationException;
+import com.lexicalscope.jewel.cli.Cli;
 import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.HelpRequestedException;
 
 public class UserConsole {
   
-  String toifArgs[] = null;
+  private static final Logger LOG = LoggerFactory.getLogger(UserConsole.class);
+
   
-  String AdaptorArgs[] = null;
+  private String toifArgs[] = null;
+  
+  private String AdaptorArgs[] = null;
   
   public UserConsole() {
   }
@@ -31,21 +40,26 @@ public class UserConsole {
   }
   
   public void execute() {
+    
+    Cli<ToifCli> cli = CliFactory.createCli(ToifCli.class);
     // Check out CLI options
     ToifCli toifCli = null;
     try {
       if (toifArgs.length == 0) {
-        throw new ArgumentValidationException(CliFactory.createCli(ToifCli.class).getHelpMessage());
+        System.out.println(cli.getHelpMessage());
+        return;
       }
       toifCli = CliFactory.parseArguments(ToifCli.class, toifArgs);
+    } catch (HelpRequestedException ex) {
+      System.out.println(cli.getHelpMessage());
+      return;
     } catch (Exception ex) {
-      System.err.println("Invalid Arguments: " + ex.getMessage());
+      LOG.error("Invalid Arguments: " + ex.getMessage());
       return;
     }
     
     // Check if supplied options are valid
     if (argsValid(toifCli) == false) {
-      System.err.println("Invalid arguments");
       return;
     }
     
@@ -64,7 +78,7 @@ public class UserConsole {
   private void doAdaptor(ToifCli toifCli) {
     // Ensure that output directory is specifed
     if (!toifCli.isOutputdirectory()) {
-      System.err.println("Output directory needs to be specified");
+      LOG.error("Output directory needs to be specified");
       return;
     }
     
@@ -89,7 +103,7 @@ public class UserConsole {
     
     // Check that we are only doing a single command
     if (cli.isMerge() && cli.isAdaptor()) {
-      System.err.println("Can only do adaptor or merge");
+      LOG.error("Can only do adaptor or merge");
       return false;
     }
     
@@ -97,12 +111,12 @@ public class UserConsole {
     if (cli.isInputfile()) {
       for (File file : cli.getInputfile()) {
         if (!file.exists()) {
-          System.err.println("Specified inputfile does not exist: " + file.getAbsolutePath());
+          LOG.error("Specified inputfile does not exist: " + file.getAbsolutePath());
           return false;
         }
         
         if (!file.isFile() && !file.isDirectory()) {
-          System.err.println("Specified inputfile not valid: " + file.getAbsolutePath());
+          LOG.error("Specified inputfile not valid: " + file.getAbsolutePath());
           return false;
         }
         
@@ -113,7 +127,19 @@ public class UserConsole {
     // Check house keeping
     if (cli.isHousekeeping()) {
       if (!cli.getHousekeeping().isFile()) {
-        System.err.println("Specified housekeeping file not valid: " + cli.getHousekeeping());
+        LOG.error("Specified housekeeping file not valid: " + cli.getHousekeeping());
+        return false;
+      }
+    }
+    
+    
+    //Check KDM file output file
+    if (cli.isKdmfile()) {
+      File kFile = cli.getKdmfile();
+      try {
+        Files.createParentDirs(kFile);
+      } catch (IOException ex) {
+        LOG.error("Unable to create parent directory of specified parent file: " + cli.getKdmfile());
         return false;
       }
     }

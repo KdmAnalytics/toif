@@ -41,7 +41,7 @@ public class ToifFacade implements IToifFacade {
   
   @Override
   public Set<AbstractAdaptor> availableAdapters(Language lang) {
-    Set<AbstractAdaptor> aset = new HashSet<AbstractAdaptor>();
+    Set<AbstractAdaptor> aset = new HashSet<>();
     
     for (AbstractAdaptor adaptor : ToolAdaptorUtil.getAdaptors()) {
       if (adaptor.getLanguage() == lang) aset.add(adaptor);
@@ -51,7 +51,7 @@ public class ToifFacade implements IToifFacade {
   
   @Override
   public Set<AbstractAdaptor> runnableAdapterReportingTool() {
-    Set<AbstractAdaptor> result = new HashSet<AbstractAdaptor>();
+    Set<AbstractAdaptor> result = new HashSet<>();
     
     for (AbstractAdaptor instance : ToolAdaptorUtil.getAdaptors()) {
       String runtimeName = instance.getRuntoolName();
@@ -64,7 +64,7 @@ public class ToifFacade implements IToifFacade {
         // own.
         if ("Linux".equals(System.getProperty("os.name"))) {
           process = new ProcessBuilder();
-          ArrayList<String> commands = new ArrayList<String>();
+          ArrayList<String> commands = new ArrayList<>();
           commands.add(runtimeName);
           commands.add("-textui");
           process.command(commands);

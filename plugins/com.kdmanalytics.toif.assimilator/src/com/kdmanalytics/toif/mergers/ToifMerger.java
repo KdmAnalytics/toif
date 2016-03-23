@@ -36,7 +36,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -50,6 +49,8 @@ import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.openrdf.sail.memory.MemoryStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -81,7 +82,7 @@ public class ToifMerger {
   /**
    * The logger for this class.
    */
-  private static Logger LOG = Logger.getLogger(ToifMerger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ToifMerger.class);
   
   private File currentFile;
   
@@ -644,7 +645,8 @@ public class ToifMerger {
                                                                                        object.getElement(),
                                                                                        currentFile));
           } else {
-            System.err.println("This should have not happened.");
+            LOG.error("This should have not happened.");
+            //System.err.println("This should have not happened.");
           }
         }
         
@@ -833,15 +835,10 @@ public class ToifMerger {
       
       fileNum++;
       
-      float fraction = 100f / listSize;
-      int percent = (int) Math.ceil(fraction * fileNum);
+      float fraction = (float)fileNum / (float)listSize;
+      int percent = (int) Math.floor(fraction * 100f);
       
-      if (percent > 100) {
-        percent = 100;
-      }
-      
-      System.out.print("\r" + file);
-      System.out.print("\nprocessing TOIF... " + percent + "%");
+      consoleOutput("Processing TOIF files: \"" + file.toString() + "\"... " + percent + "%");
       
       currentFile = file;
       
@@ -910,17 +907,16 @@ public class ToifMerger {
       depositResources();
       
       if (DEBUG) {
-        System.err.println("End of file: " + file);
-        
+        LOG.error("End of file: {}",file);
       }
       // end of file.
     }
-    System.out.println("");
+    consoleOutput("");
     
     try {
       con.close();
     } catch (RepositoryException e) {
-      System.err.println("Repository exception during merge. " + e);
+      LOG.error("Repository exception during merge. {}", e);
     }
     
     return offset;
@@ -1181,4 +1177,18 @@ public class ToifMerger {
     final boolean seen = !seenStatements.add(seenStatement);
     return seen;
   }
+  
+  
+  /**
+   * Console output.
+   *
+   * @param consoleOutput the console output
+   */
+  private void consoleOutput(String consoleOutput) {
+    System.out.println(consoleOutput);
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(consoleOutput);
+    }
+  }
+  
 }

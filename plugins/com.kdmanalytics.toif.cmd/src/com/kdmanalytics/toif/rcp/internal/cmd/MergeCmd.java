@@ -1,6 +1,9 @@
 
 package com.kdmanalytics.toif.rcp.internal.cmd;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*******************************************************************************
  * Copyright (c) 2013 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
@@ -16,6 +19,8 @@ import com.kdmanalytics.toif.rcp.internal.ToifCli;
 
 public class MergeCmd implements IToifCmd {
   
+  private static final Logger LOG = LoggerFactory.getLogger(MergeCmd.class);
+  
   @Override
   public void execute(ToifCli toifCli, String userArgs[]) {
     
@@ -23,8 +28,7 @@ public class MergeCmd implements IToifCmd {
     try {
       toif.merge(toifCli.getKdmfile(), toifCli.getInputfile(), true);
     } catch (ToifException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error(e.getMessage());
     }
     
   }
