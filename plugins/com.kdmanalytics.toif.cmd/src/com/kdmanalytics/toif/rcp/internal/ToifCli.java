@@ -21,10 +21,10 @@ public interface ToifCli {
   @Option(description = "Display TOIF version and exit")
   boolean isVersion();
   
-  @Option
+  @Option (description = "Runs toif assimilator to merge inputfile(s)")
   boolean isMerge();
   
-  @Option(shortName = "a")
+  @Option(shortName = "a", description = "Defines the name of the adaptor class")
   Set<String> getAdaptor();
   
   boolean isAdaptor();
@@ -35,7 +35,7 @@ public interface ToifCli {
   // --------------------------------------------
   // Adaptor specific options
   // --------------------------------------------
-  @Option(shortName = "i")
+  @Option(shortName = "i", description = "Defines the path to the toif file(s) to be merged")
   Set<File> getInputfile();
   
   boolean isInputfile();
@@ -45,7 +45,7 @@ public interface ToifCli {
   
   boolean isOutputdirectory();
   
-  @Option(shortName = "H")
+  @Option(shortName = "H", description = "Defines the path to the file containing the facts about the project's housekeeping")
   File getHousekeeping();
   
   boolean isHousekeeping();
