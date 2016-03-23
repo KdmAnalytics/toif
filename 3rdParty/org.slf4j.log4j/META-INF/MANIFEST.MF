@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: SLF4J Log4j Integration
-Bundle-SymbolicName: org.slf4j.log4j
-Bundle-Version: 1.7.5
-Bundle-Vendor: KDM Analytics Inc.
-Export-Package: org.slf4j.impl;version="1.7.5"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.apache.log4j
