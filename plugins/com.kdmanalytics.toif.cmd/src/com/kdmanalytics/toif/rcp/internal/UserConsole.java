@@ -2,17 +2,19 @@
 package com.kdmanalytics.toif.rcp.internal;
 
 /*******************************************************************************
- * Copyright (c) 2013 KDM Analytics, Inc. All rights reserved. This program and
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
  * Source Initiative OSI - Open Software License v3.0 which accompanies this
  * distribution, and is available at
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.File;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.io.Files;
 import com.kdmanalytics.toif.rcp.internal.cmd.AdaptorCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.MergeCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.VersionCmd;
@@ -25,9 +27,9 @@ public class UserConsole {
   private static final Logger LOG = LoggerFactory.getLogger(UserConsole.class);
 
   
-  String toifArgs[] = null;
+  private String toifArgs[] = null;
   
-  String AdaptorArgs[] = null;
+  private String AdaptorArgs[] = null;
   
   public UserConsole() {
   }
@@ -58,7 +60,6 @@ public class UserConsole {
     
     // Check if supplied options are valid
     if (argsValid(toifCli) == false) {
-      LOG.error("Invalid arguments");
       return;
     }
     
@@ -132,13 +133,23 @@ public class UserConsole {
     }
     
     
-    //Check KDM file
+    //Check KDM file output file
     if (cli.isKdmfile()) {
       File kFile = cli.getKdmfile();
-      if (!kFile.isFile() || !kFile.exists()) {
-        LOG.error("Specified kdm file not valid: " + cli.getKdmfile());
+      boolean badFile = false;
+      if (kFile.isFile()) {
+        try {
+          Files.createParentDirs(kFile);
+        } catch (IOException ex) {
+          badFile = true;
+        }
+      } else {
+        badFile = true;
+      }
+      
+      if (badFile) {
+        LOG.error("Unable to create specified KDM file: " + cli.getKdmfile());
         return false;
-        
       }
     }
     
