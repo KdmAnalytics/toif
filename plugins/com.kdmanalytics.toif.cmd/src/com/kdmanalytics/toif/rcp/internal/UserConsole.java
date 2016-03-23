@@ -131,6 +131,8 @@ public class UserConsole {
       }
     }
     
+    
+    //Check KDM file
     if (cli.isKdmfile()) {
       File kFile = cli.getKdmfile();
       if (!kFile.isFile() || !kFile.exists()) {
