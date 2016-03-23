@@ -136,19 +136,10 @@ public class UserConsole {
     //Check KDM file output file
     if (cli.isKdmfile()) {
       File kFile = cli.getKdmfile();
-      boolean badFile = false;
-      if (kFile.isFile()) {
-        try {
-          Files.createParentDirs(kFile);
-        } catch (IOException ex) {
-          badFile = true;
-        }
-      } else {
-        badFile = true;
-      }
-      
-      if (badFile) {
-        LOG.error("Unable to create specified KDM file: " + cli.getKdmfile());
+      try {
+        Files.createParentDirs(kFile);
+      } catch (IOException ex) {
+        LOG.error("Unable to create parent directory of specified parent file: " + cli.getKdmfile());
         return false;
       }
     }
