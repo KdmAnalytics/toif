@@ -53,20 +53,20 @@ public interface ToifCli {
   // --------------------------------------------
   // Merge specific options
   // --------------------------------------------
-  @Option(shortName = "r")
-  File getRepository();
-  
-  boolean isRepository();
+//  @Option(shortName = "r")
+//  File getRepository();
+//  
+//  boolean isRepository();
   
   @Option(shortName = "k",description = "Path to generated KDM file. Note: KDM file is zipped.")
   File getKdmfile();
   
   boolean isKdmfile();
   
-  @Option
-  String getRootname();
-  
-  boolean isRootname();
+//  @Option
+//  String getRootname();
+//  
+//  boolean isRootname();
   
   @Option(shortName = "e", longName = "exec", description = "Override path to the vulnerability detection tool executable.")
   File getExecutablePath();
