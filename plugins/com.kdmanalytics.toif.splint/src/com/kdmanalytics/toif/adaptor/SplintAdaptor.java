@@ -22,7 +22,8 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
 import com.kdmanalytics.toif.framework.files.IFileResolver;
@@ -37,7 +38,7 @@ public class SplintAdaptor extends AbstractAdaptor {
   /**
    * the logger.
    */
-  private static Logger LOG = Logger.getLogger(SplintAdaptor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SplintAdaptor.class);
   
   private File tmpFile = null;
   

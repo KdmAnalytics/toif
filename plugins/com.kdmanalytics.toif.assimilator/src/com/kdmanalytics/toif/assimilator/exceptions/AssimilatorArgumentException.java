@@ -29,6 +29,17 @@ public class AssimilatorArgumentException extends Exception {
     super(message);
     this.message = message;
   }
+
+  /**
+   * constructor with a message.
+   * 
+   * @param message
+   *          the exception message.
+   */
+  public AssimilatorArgumentException(String message, Throwable cause) {
+    super(message, cause);
+    this.message = message;
+  }
   
   /**
    * constructor no arguments. makes an unknown exception.

@@ -11,16 +11,18 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class DelayedRelation {
   
-  private static final Logger LOG = Logger.getLogger(DelayedRelation.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DelayedRelation.class);
+
   
   URI subject = null;
   

@@ -3,21 +3,21 @@ package com.kdmanalytics.toif.adaptor;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.kdmanalytics.toif.adaptor.JlintAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 
+import junit.framework.TestCase;
+
 public class JlintTests extends TestCase {
   
-  private static Logger LOG = Logger.getLogger(JlintTests.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JlintTests.class);
   
   /**
    * The findbugs adaptor to test.

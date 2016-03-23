@@ -21,7 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -49,8 +50,8 @@ public class FindbugsAdaptor extends AbstractAdaptor {
   
   private static final String FINDBUGS_VERSION = "3.0.0";
   
-  private static Logger LOG = Logger.getLogger(FindbugsAdaptor.class);
-  
+  private static final Logger LOG = LoggerFactory.getLogger(FindbugsAdaptor.class);
+ 
   /**
    * By default we expect the executable to be in path
    */

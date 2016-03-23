@@ -20,12 +20,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 
 public class XMLNode {
   
-  private static final Logger LOG = Logger.getLogger(XMLNode.class);
+  private static final Logger LOG = LoggerFactory.getLogger(XMLNode.class);
   
   /**
    * Init size for hashmaps, done for optimization reasons

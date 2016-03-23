@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.mockito.Mockito;
 import org.openrdf.model.Statement;
 import org.openrdf.repository.Repository;
@@ -30,6 +32,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.kdm.repositoryMerger.RepositoryMerger;
 import com.kdmanalytics.toif.assimilator.exceptions.AssimilatorArgumentException;
@@ -41,6 +45,15 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
  *         
  */
 public class AssimilatorTest {
+  
+  public static final Logger LOG = LoggerFactory.getLogger(AssimilatorTest.class);
+  
+  @Rule 
+  public TestWatcher watchman = new TestWatcher() {
+    public void starting(Description desc) {
+      LOG.info("{} being run...",(desc.getMethodName()));
+    }
+  };
   
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
@@ -313,4 +326,12 @@ public class AssimilatorTest {
                                                                                                   FileInputStream.class));
     Mockito.verify(kdmMerger, Mockito.times(2)).merge(Mockito.anyString(), Mockito.any(Repository.class));
   }
+  
+  
+  @Test (expected = AssimilatorArgumentException.class)
+  public void testGetValidFileLocation() throws Exception {
+    File f = assimilator.getValidFileLocation("/does/not/exist");
+    assertNotNull(f);
+  }
+  
 }

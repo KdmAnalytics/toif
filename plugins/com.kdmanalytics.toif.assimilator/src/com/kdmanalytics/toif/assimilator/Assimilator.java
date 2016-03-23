@@ -43,7 +43,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.log4j.Logger;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -60,6 +59,8 @@ import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -77,11 +78,11 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
  * domain is merged with its self first, then integrated with each other.
  * 
  * @author adam
- *         
+ * 
  */
 public class Assimilator {
   
-  public static void debug(Logger logger, Object message) {
+  public static void debug(Logger logger, String message) {
     logger.debug(message);
   }
   
@@ -108,7 +109,7 @@ public class Assimilator {
    *          since we are now using RCP app and can be a security hole/ public static void
    *          main(String[] args) { Assimilator assimilator = new Assimilator(); // assimilate the
    *          files. assimilator.assimilate(args);
-   *          
+   * 
    *          }
    * 
    *          /** do we continue if exceptions are found.
@@ -123,8 +124,7 @@ public class Assimilator {
   /**
    * the logger.
    */
-  private static Logger LOG = Logger.getLogger(Assimilator.class);
-  
+  private static final Logger LOG = LoggerFactory.getLogger(Assimilator.class);
   /**
    * the model namespace.
    */
@@ -206,7 +206,7 @@ public class Assimilator {
    * constructor for the assimilator.
    */
   public Assimilator() {
-    sourceFiles = new HashMap<String, Resource>();
+    sourceFiles = new HashMap<>();
   }
   
   /**
@@ -214,7 +214,7 @@ public class Assimilator {
    */
   public Assimilator(boolean createZip) {
     this.createZip = createZip;
-    sourceFiles = new HashMap<String, Resource>();
+    sourceFiles = new HashMap<>();
   }
   
   /**
@@ -294,7 +294,8 @@ public class Assimilator {
     }
     
     if (debug) {
-      System.err.println("repository: " + con.getRepository());
+      LOG.debug("repository: " + con.getRepository());
+//      System.err.println("repository: " + con.getRepository());
     }
     
     con.add(statement, (Resource) null);
@@ -310,8 +311,9 @@ public class Assimilator {
     try {
       ass.assimilate(args);
     } catch (Exception e) {
-      System.err.println("running in stand alone context, exception occured.");
-      e.printStackTrace();
+      LOG.error("running in stand alone context exception occured.", e);
+//      System.err.println("running in stand alone context, exception occured.");
+//      e.printStackTrace();
     }
     
   }
@@ -326,10 +328,11 @@ public class Assimilator {
    *          locations.
    * @throws ToifException
    * @throws IOException
-   *           
+   * 
    */
-  public boolean assimilate(String[] args) throws ToifException, IOException {
-    System.out.println("Running, this may take some time...");
+  public boolean assimilate(final String[] args) throws ToifException, IOException {
+    LOG.info("Running, this may take some time...");
+    //System.out.println("Running, this may take some time...");
     try {
       outputLocation = getOutputLocation(args);
       
@@ -375,7 +378,8 @@ public class Assimilator {
       }
       
       if (debug) {
-        System.err.println("repository is: " + repository);
+        LOG.debug("repository is: " + repository);
+        //System.err.println("repository is: " + repository);
       }
       
       // if the migrate option has not been set. (future functionality)
@@ -390,7 +394,7 @@ public class Assimilator {
         setNextId(kdmMerger.getId());
         
       } else {
-      
+        
       }
       
       String blacklistPath = getBlackListPath(args);
@@ -408,7 +412,8 @@ public class Assimilator {
       LOG.error(msg, e);
       throw new IllegalArgumentException(msg, e);
     } catch (RepositoryException e) {
-      e.printStackTrace();
+      LOG.error("Repository Exception: ", e);
+      //e.printStackTrace();
     }
     /*
      * catch (IOException e) { e.printStackTrace(); }
@@ -423,11 +428,13 @@ public class Assimilator {
         }
         outputLocation = null;
       } catch (RepositoryException e) {
-        System.err.println("There was a problem closing the connection to the repository. " + e);
+        LOG.error("There was a problem closing the connection to the repository. ", e);
+        //System.err.println("There was a problem closing the connection to the repository. " + e);
       }
       
-      System.out.println("\nComplete.");
-      
+      LOG.info("Complete.");
+//      System.out.println("\nComplete.");
+//      
     }
     return true;
   }
@@ -501,22 +508,23 @@ public class Assimilator {
       fis = new FileInputStream(file);
       // Read from the ZipInputStream as you would normally from any other
       // input stream
-      System.out.println("\n" + file.getAbsolutePath());
+      LOG.info(file.getAbsolutePath());
+      //System.out.println("\n" + file.getAbsolutePath());
       streamStatementsToRepo(fis);
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error while processing kdm file:", e);
+//      e.printStackTrace();
     } catch (IOException e) {
+      LOG.error("Error while processing kdm file:", e);
       // TODO Auto-generated catch block
-      e.printStackTrace();
+//      e.printStackTrace();
     } finally {
       try {
         if (fis != null) {
           fis.close();
         }
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        //Ignore
       }
     }
     
@@ -528,12 +536,9 @@ public class Assimilator {
   private void createFileWriter() {
     try {
       writer = new PrintWriter(outputLocation);
-      
     } catch (FileNotFoundException e) {
       LOG.error("The file " + outputLocation + " has not been found.");
-      
     }
-    
   }
   
   /**
@@ -544,10 +549,10 @@ public class Assimilator {
    * @throws RepositoryException
    */
   private boolean compareLocations() throws RepositoryException {
-    HashMap<String, Resource> bestFitMap = new HashMap<String, Resource>();
+    HashMap<String, Resource> bestFitMap = new HashMap<>();
     
     int statements = 0;
-    Map<Resource, FilePathTrie> tries = new HashMap<Resource, FilePathTrie>();
+    Map<Resource, FilePathTrie> tries = new HashMap<>();
     // for all the toif statements that are a path
     for (Statement toifStatement : toifPaths) {
       Resource bestFitResource = bestFitMap.get(toifStatement.getSubject().stringValue());
@@ -565,7 +570,8 @@ public class Assimilator {
         percent = 100;
       }
       
-      System.out.print("\rAssimilating TOIF and KDM Locations... " + percent + "%");
+      //System.out.print("\rAssimilating TOIF and KDM Locations... " + percent + "%");
+      LOG.info("Assimilating TOIF and KDM Locations... " + percent + "%");
       
       // given a toif statement
       Resource kdmResourceFile = findBestFitSourceFile(tries, toifStatement);
@@ -639,7 +645,7 @@ public class Assimilator {
    * create the disk repository which the files will be merged into.
    * 
    * @param repositoryLocation
-   *          
+   * 
    * @return the repository in its initialized state.
    */
   Repository createRepository(File repositoryLocation) {
@@ -652,7 +658,7 @@ public class Assimilator {
         MemoryStore memoryStore = new MemoryStore();
         repository = new SailRepository(memoryStore);
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("Exception: ", e);
       }
       
     }
@@ -669,8 +675,8 @@ public class Assimilator {
       // con.clear((Resource)null);
       factory = repository.getValueFactory();
     } catch (final RepositoryException e) {
-      LOG.error("Repository could not be initialized. " + e);
-      e.printStackTrace();
+      LOG.error("Repository could not be initialized. ", e);
+//      e.printStackTrace();
     }
     
     // return the repository.
@@ -691,11 +697,14 @@ public class Assimilator {
       writer = new PrintWriter(new OutputStreamWriter(zos));
       
     } catch (FileNotFoundException e) {
-      System.err.println("The file " + outputLocation + " has not been found.");
-      e.printStackTrace();
+      LOG.error("The file " + outputLocation + " has not been found.", e);
+//      System.err.println("The file " + outputLocation + " has not been found.");
+//      e.printStackTrace();
     } catch (IOException e) {
-      System.err.println("There has been a IO exception while creating the zip file.");
-      e.printStackTrace();
+      LOG.error("There has been a IO exception while creating the zip file.", e);
+//      
+//      System.err.println("There has been a IO exception while creating the zip file.");
+//      e.printStackTrace();
     }
   }
   
@@ -831,7 +840,7 @@ public class Assimilator {
    */
   private Resource findBestKdmElementForToifStatement(Statement st, Resource bestFit, int reductionAmount,
                                                       boolean searchForParent) {
-                                                      
+    
     if (st == null || bestFit == null) {
       return null;
     }
@@ -907,6 +916,7 @@ public class Assimilator {
     
     // set up a file filter.
     IOFileFilter fileFilter = new IOFileFilter() {
+      
       
       @Override
       public boolean accept(File arg0) {
@@ -989,13 +999,13 @@ public class Assimilator {
   }
   
   /**
-   * return the file that represents this repository location
+   * Return the file that represents this repository location.
    * 
    * @param args
    *          the command line arguments
    * @return the output location.
    */
-  File getOutputLocation(String[] args) throws AssimilatorArgumentException {
+  File getOutputLocation(final String[] args) throws AssimilatorArgumentException {
     checkNotNull(args);
     
     // the location of the repository, this will be a directory.
@@ -1061,30 +1071,6 @@ public class Assimilator {
    */
   private Resource getParent(String sourceFileRef) {
     return (Resource) factory.createURI("http://kdmanalytics.com/" + sourceFileRef);
-    // String result = kdmContains.get(KdmElementWithSourceRef);
-    //
-    // if (result != null)
-    // {
-    // return (Resource) factory.createURI(result);
-    // }
-    // else
-    // {
-    // return null;
-    // }
-    // for (Statement containsStatement : kdmContains)
-    // {
-    // String containedObjectString =
-    // containsStatement.getObject().stringValue();
-    //
-    // // if the contained element is the element with the source ref.
-    // if (containedObjectString.equals(KdmElementWithSourceRef))
-    // {
-    // // return the element that contains the element with sourceRef.
-    // return (Resource)
-    // factory.createURI(containsStatement.getSubject().stringValue());
-    // }
-    // }
-    // return null;
   }
   
   /**
@@ -1149,7 +1135,7 @@ public class Assimilator {
    * @throws AssimilatorArgumentException
    * @throws IOException
    */
-  private File getValidFileLocation(String location) throws AssimilatorArgumentException {
+  File getValidFileLocation(String location) throws AssimilatorArgumentException {
     if (location == null) {
       throw new AssimilatorArgumentException("Kdm file location is null");
     }
@@ -1160,9 +1146,7 @@ public class Assimilator {
       try {
         file.createNewFile();
       } catch (IOException e) {
-        e.printStackTrace();
-        throw new AssimilatorArgumentException("Kdm file could not be created");
-        
+        throw new AssimilatorArgumentException("Unable to create Kdm file: " + file);
       }
       Assimilator.debug(LOG, "Kdm File has been created.");
     }
@@ -1186,7 +1170,7 @@ public class Assimilator {
    * 
    * @param location
    *          the location of the output repository.
-   *          
+   * 
    * @return the output file.
    * @throws AssimilatorArgumentException
    */
@@ -1442,7 +1426,7 @@ public class Assimilator {
         con.add(subject, predicate, object);
       } catch (final ArrayIndexOutOfBoundsException e) {
         LOG.error("Parse error on ntriples line " + count, e);
-        e.printStackTrace();
+//        e.printStackTrace();
       }
       line = in.readLine();
     }
@@ -1478,8 +1462,10 @@ public class Assimilator {
         percent = 100;
       }
       
-      System.out.print("\r" + file);
-      System.out.print("\nprocessing TKDM... " + percent + "%");
+      LOG.info("\r" + file);
+      //System.out.print("\r" + file);
+      LOG.info("processing TKDM... " + percent + "%");
+      //System.out.print("\nprocessing TKDM... " + percent + "%");
       
       try {
         File temp = Files.createTempDir();
@@ -1498,18 +1484,19 @@ public class Assimilator {
         tempRepository.shutDown();
         FileUtils.deleteDirectory(temp);
       } catch (final RepositoryException e) {
-        LOG.error("There was an exception when merging the tkdmFiles. " + e);
-        e.printStackTrace();
+        LOG.error("There was an exception when merging the tkdmFiles. ",e);
+//        e.printStackTrace();
       } catch (final FileNotFoundException e) {
-        LOG.error("The Kdm file has not been found. " + e);
-        e.printStackTrace();
+        LOG.error("The Kdm file has not been found. ",e);
+//        e.printStackTrace();
       } catch (final IOException e) {
-        LOG.error("There was an IO Exception when trying to merge the KDM files. " + e);
-        e.printStackTrace();
+        LOG.error("There was an IO Exception when trying to merge the KDM files. ",e);
+//        e.printStackTrace();
       }
     }
     
-    System.out.println("");
+    LOG.info("");
+    //System.out.println("");
   }
   
   /**
@@ -1543,14 +1530,15 @@ public class Assimilator {
       while (statements.hasNext()) {
         final Statement st = statements.next();
         // print statements.
-        System.out.println(st.toString());
+        LOG.info(st.toString());
+        //System.out.println(st.toString());
         
       }
       
       statements.close();
     } catch (final RepositoryException e) {
-      LOG.error("There was a repository error while printing the database. " + e);
-      e.printStackTrace();
+      LOG.error("There was a repository error while printing the database. ",e);
+      //e.printStackTrace();
     }
     
   }
@@ -1567,6 +1555,7 @@ public class Assimilator {
   
   class ThreadStatus {
     
+    
     protected Exception exception;
     
     ThreadStatus() {
@@ -1577,7 +1566,8 @@ public class Assimilator {
   private void processKdmXmlFile(final List<File> kdmFiles) throws FileNotFoundException, IOException,
       RepositoryException, ToifException {
     if (debug) {
-      System.err.println("processing kdm file...");
+      LOG.debug("processing kdm file...");
+      //System.err.println("processing kdm file...");
     }
     
     PipedInputStream in = new PipedInputStream();
@@ -1585,6 +1575,7 @@ public class Assimilator {
     final ThreadStatus status = new ThreadStatus();
     
     Thread t = new Thread(new Runnable() {
+      
       
       @Override
       public void run() {
@@ -1611,13 +1602,13 @@ public class Assimilator {
         } catch (IOException e) {
           final String msg = "IO exception whilst processing kdm file. "
                              + ". Possibly an existing kdm file is in your input path!";
-                             
+          
           LOG.error(msg, e);
           status.exception = new ToifException(msg, e);
         } catch (RepositoryException e) {
           final String msg = "Repository Exception whilst processing kdm file. "
                              + ". Possibly an existing kdm file is in your input path!";
-                             
+          
           LOG.error(msg, e);
           status.exception = new ToifException(msg, e);
         } catch (ToifException e) {
@@ -1643,6 +1634,7 @@ public class Assimilator {
     // adding a means to catch unknown exceptions in thread
     // ----------------------------------------------------------
     Thread.UncaughtExceptionHandler tueh = new Thread.UncaughtExceptionHandler() {
+      
       
       public void uncaughtException(Thread th, Throwable ex) {
         LOG.error("Uncaught exception: " + ex);
@@ -1686,7 +1678,8 @@ public class Assimilator {
       
       // Read from the ZipInputStream as you would normally from any other
       // input stream
-      System.out.println("\n" + file.getAbsolutePath());
+      LOG.info(file.getAbsolutePath());
+      //System.out.println("\n" + file.getAbsolutePath());
       streamStatementsToRepo(zip);
     }
     
@@ -1725,6 +1718,7 @@ public class Assimilator {
     final RepositoryMerger kdmMerger = getTkdmMerger(new PrintWriter(out), assemblyName);
     new Thread(new Runnable() {
       
+      
       @Override
       public void run() {
         mergeTkdm(kdmMerger, tkdmFiles);
@@ -1732,7 +1726,8 @@ public class Assimilator {
         try {
           out.close();
         } catch (IOException e) {
-          e.printStackTrace();
+         LOG.error("", e);
+         //e.printStackTrace();
         }
       }
     }).start();
@@ -1767,6 +1762,7 @@ public class Assimilator {
     final ToifMerger toifMerger = getToifMerger(w, id, smallestBigNumber2, blacklistPath);
     new Thread(new Runnable() {
       
+      
       @Override
       public void run() {
         Long offset = mergeToif(toifMerger, toifFiles);
@@ -1775,7 +1771,8 @@ public class Assimilator {
         try {
           toifOut.close();
         } catch (IOException e) {
-          e.printStackTrace();
+          LOG.error("", e);
+          //e.printStackTrace();
         }
       }
       
@@ -1883,7 +1880,8 @@ public class Assimilator {
         // System.err.println(line);
         
         if ("-m".equals(rOption) && (count % 10000 == 0)) {
-          System.out.print("\rprocessing KDM file... statement: " + count + "          ");
+          LOG.info("processing KDM file... statement: " + count + "          ");
+          //System.out.print("\rprocessing KDM file... statement: " + count + "          ");
         }
         count++;
         

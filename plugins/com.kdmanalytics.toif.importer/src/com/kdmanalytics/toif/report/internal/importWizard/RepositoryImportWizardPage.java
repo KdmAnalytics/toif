@@ -8,7 +8,6 @@
 
 package com.kdmanalytics.toif.report.internal.importWizard;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IContainer;
@@ -41,6 +40,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.DrillDownComposite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.report.internal.providers.TOIFImportTreeContentProvider;
 
@@ -53,7 +54,7 @@ import com.kdmanalytics.toif.report.internal.providers.TOIFImportTreeContentProv
 public class RepositoryImportWizardPage extends WizardPage implements Listener, ISelectionChangedListener,
     ModifyListener {
     
-  private static final Logger LOG = Logger.getLogger(RepositoryImportWizardPage.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RepositoryImportWizardPage.class);
   
   private static final int SIZING_CONTAINER_GROUP_HEIGHT = 250;
   

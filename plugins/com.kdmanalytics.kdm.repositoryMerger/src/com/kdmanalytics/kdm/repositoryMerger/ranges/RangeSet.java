@@ -1,8 +1,6 @@
 
 package com.kdmanalytics.kdm.repositoryMerger.ranges;
 
-import info.aduna.iteration.CloseableIteration;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,18 +10,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.IntUtils;
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.KdmConstants.WorkbenchPredicate;
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.MergerURI;
 import com.kdmanalytics.kdm.repositoryMerger.Utilities.StringTokenIterator;
+
+import info.aduna.iteration.CloseableIteration;
 
 /**
  * Class that tracks a list of ranges, providing operations to add and remove ranges from the
@@ -41,8 +42,8 @@ import com.kdmanalytics.kdm.repositoryMerger.Utilities.StringTokenIterator;
  */
 public class RangeSet implements List<Range> {
   
-  private static final Logger LOG = Logger.getLogger(RangeSet.class);
-  
+  private static final Logger LOG = LoggerFactory.getLogger(RangeSet.class);
+ 
   /**
    * 
    */

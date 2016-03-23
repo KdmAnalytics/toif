@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.kdmanalytics.toif.rcp.internal.UserConsole;
@@ -21,7 +23,8 @@ import com.kdmanalytics.toif.rcp.internal.UserConsole;
  * This class controls all aspects of the application's execution
  */
 public class ToifApplication implements IApplication {
-  
+  private static final Logger LOG = LoggerFactory.getLogger(ToifApplication.class);
+ 
   /*
    * (non-Javadoc)
    * 

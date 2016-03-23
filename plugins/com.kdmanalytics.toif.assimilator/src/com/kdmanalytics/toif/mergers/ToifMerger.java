@@ -36,7 +36,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -50,6 +49,8 @@ import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.ntriples.NTriplesWriter;
 import org.openrdf.sail.memory.MemoryStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -81,7 +82,7 @@ public class ToifMerger {
   /**
    * The logger for this class.
    */
-  private static Logger LOG = Logger.getLogger(ToifMerger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ToifMerger.class);
   
   private File currentFile;
   
@@ -644,7 +645,8 @@ public class ToifMerger {
                                                                                        object.getElement(),
                                                                                        currentFile));
           } else {
-            System.err.println("This should have not happened.");
+            LOG.error("This should have not happened.");
+            //System.err.println("This should have not happened.");
           }
         }
         
@@ -840,8 +842,10 @@ public class ToifMerger {
         percent = 100;
       }
       
-      System.out.print("\r" + file);
-      System.out.print("\nprocessing TOIF... " + percent + "%");
+      LOG.info(file.toString());
+      LOG.info("processing TOIF... " + percent + "%");
+//      System.out.print("\r" + file);
+//      System.out.print("\nprocessing TOIF... " + percent + "%");
       
       currentFile = file;
       
@@ -915,7 +919,8 @@ public class ToifMerger {
       }
       // end of file.
     }
-    System.out.println("");
+    LOG.info("");
+    //System.out.println("");
     
     try {
       con.close();

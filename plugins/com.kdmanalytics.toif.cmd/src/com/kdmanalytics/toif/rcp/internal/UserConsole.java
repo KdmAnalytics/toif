@@ -10,6 +10,9 @@ package com.kdmanalytics.toif.rcp.internal;
  ******************************************************************************/
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.kdmanalytics.toif.rcp.internal.cmd.AdaptorCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.MergeCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.VersionCmd;
@@ -17,6 +20,9 @@ import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.CliFactory;
 
 public class UserConsole {
+  
+  private static final Logger LOG = LoggerFactory.getLogger(UserConsole.class);
+
   
   String toifArgs[] = null;
   
@@ -31,6 +37,7 @@ public class UserConsole {
   }
   
   public void execute() {
+    
     // Check out CLI options
     ToifCli toifCli = null;
     try {

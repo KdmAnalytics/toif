@@ -3,13 +3,14 @@ package com.kdmanalytics.kdm.repositoryMerger;
 
 import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.ntriples.NTriplesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a utility class used to provide output assistance for various KDM output formats.
@@ -21,7 +22,7 @@ import org.openrdf.rio.ntriples.NTriplesUtil;
  */
 public class StatementWriter {
   
-  private static final Logger LOG = Logger.getLogger(StatementWriter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StatementWriter.class);
   
   /**
    * In the repository output solution, repository connection is stored here

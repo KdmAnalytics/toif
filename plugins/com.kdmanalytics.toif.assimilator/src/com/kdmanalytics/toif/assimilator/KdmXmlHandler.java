@@ -16,13 +16,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.log4j.Logger;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -39,8 +40,8 @@ public class KdmXmlHandler extends DefaultHandler {
   private static final String kdmNS = "http://" + kdmNSHost + "/";
   
   /** Logger for the KdmXmlHandler class. */
-  private static final Logger LOG = Logger.getLogger(KdmXmlHandler.class);
-  
+  private static final Logger LOG = LoggerFactory.getLogger(KdmXmlHandler.class);
+
   private Repository repository = null;
   
   private RepositoryConnection con = null;
