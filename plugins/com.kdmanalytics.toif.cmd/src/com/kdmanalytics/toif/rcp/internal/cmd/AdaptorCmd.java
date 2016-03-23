@@ -28,7 +28,7 @@ public class AdaptorCmd implements IToifCmd {
   public void execute(ToifCli toifCli, String userArgs[]) {
     // Expand each adaptor as required
     for (String toolName : toifCli.getAdaptor()) {
-      LOG.info("tool name={}",toolName);
+      LOG.debug("tool name={}",toolName);
       
       for (AbstractAdaptor adaptor : ToolAdaptorUtil.getAdaptors()) {
         if (toolName.equalsIgnoreCase(adaptor.getRuntoolName())) {
