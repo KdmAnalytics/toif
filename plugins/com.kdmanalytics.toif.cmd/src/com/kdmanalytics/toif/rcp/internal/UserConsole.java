@@ -16,8 +16,9 @@ import org.slf4j.LoggerFactory;
 import com.kdmanalytics.toif.rcp.internal.cmd.AdaptorCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.MergeCmd;
 import com.kdmanalytics.toif.rcp.internal.cmd.VersionCmd;
-import com.lexicalscope.jewel.cli.ArgumentValidationException;
+import com.lexicalscope.jewel.cli.Cli;
 import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.HelpRequestedException;
 
 public class UserConsole {
   
@@ -38,13 +39,18 @@ public class UserConsole {
   
   public void execute() {
     
+    Cli<ToifCli> cli = CliFactory.createCli(ToifCli.class);
     // Check out CLI options
     ToifCli toifCli = null;
     try {
       if (toifArgs.length == 0) {
-        throw new ArgumentValidationException(CliFactory.createCli(ToifCli.class).getHelpMessage());
+        System.out.println(cli.getHelpMessage());
+        return;
       }
       toifCli = CliFactory.parseArguments(ToifCli.class, toifArgs);
+    } catch (HelpRequestedException ex) {
+      System.out.println(cli.getHelpMessage());
+      return;
     } catch (Exception ex) {
       LOG.error("Invalid Arguments: " + ex.getMessage());
       return;

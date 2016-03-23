@@ -12,22 +12,24 @@ package com.kdmanalytics.toif.rcp.internal;
 import java.io.File;
 import java.util.Set;
 
+import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
 
+@CommandLineInterface(application="toif")
 public interface ToifCli {
   
-  @Option
+  @Option(description = "Display TOIF version and exit")
   boolean isVersion();
   
   @Option
   boolean isMerge();
   
-  @Option
+  @Option(shortName = "a")
   Set<String> getAdaptor();
   
   boolean isAdaptor();
   
-  @Option(shortName = "v")
+  @Option(shortName = "v",description = "Verbose TOIF output")
   boolean isVerbose();
   
   // --------------------------------------------
@@ -43,7 +45,7 @@ public interface ToifCli {
   
   boolean isOutputdirectory();
   
-  @Option
+  @Option(shortName = "H")
   File getHousekeeping();
   
   boolean isHousekeeping();
@@ -66,7 +68,7 @@ public interface ToifCli {
   
   boolean isRootname();
   
-  @Option(longName = "exec", description = "Override path to the vulnerability detection tool executable.")
+  @Option(shortName = "e", longName = "exec", description = "Override path to the vulnerability detection tool executable.")
   File getExecutablePath();
   
   boolean isExecutablePath();
@@ -76,7 +78,7 @@ public interface ToifCli {
    * 
    * @return returns true?
    */
-  @Option(description = "Display this help message", helpRequest = true, shortName = "h")
+  @Option(description = "Display this help message and exit", helpRequest = true, shortName = "h")
   boolean getHelp();
   
 }

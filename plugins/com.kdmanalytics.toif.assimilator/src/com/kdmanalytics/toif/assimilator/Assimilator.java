@@ -378,7 +378,6 @@ public class Assimilator {
       
       if (debug) {
         LOG.debug("repository is: " + repository);
-        //System.err.println("repository is: " + repository);
       }
       
       // if the migrate option has not been set. (future functionality)
@@ -601,6 +600,7 @@ public class Assimilator {
       createCommonNode(toifSubject, bestFitResource);
       
     }
+    consoleOutput("");
     
     return false;
     
@@ -1752,7 +1752,6 @@ public class Assimilator {
           toifOut.close();
         } catch (IOException e) {
           LOG.error("", e);
-          //e.printStackTrace();
         }
       }
       
