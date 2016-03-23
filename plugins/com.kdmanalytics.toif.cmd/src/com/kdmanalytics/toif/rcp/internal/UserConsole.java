@@ -132,7 +132,8 @@ public class UserConsole {
     }
     
     if (cli.isKdmfile()) {
-      if (!cli.getKdmfile().isFile()) {
+      File kFile = cli.getKdmfile();
+      if (!kFile.isFile() || !kFile.exists()) {
         LOG.error("Specified kdm file not valid: " + cli.getKdmfile());
         return false;
         
