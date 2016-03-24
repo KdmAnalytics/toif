@@ -17,6 +17,16 @@
             Import a file from the local file system into the workspace.
          </description>
       </wizard>
+      <wizard
+            category="com.kdmanalytics.toif.report.category"
+            class="com.kdmanalytics.toif.report.internal.importWizard.TsvImportWizard"
+            icon="src/icons/table_add.png"
+            id="com.kdmanalytics.toif.report.importTsvWizard"
+            name="Import Citing File (*.tsv)">
+         <description>
+            Import a CWE/SFP Citing File (*.tsv)
+         </description>
+      </wizard>
    </extension>
 
 </plugin>
