@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.mockito.Mockito;
 import org.openrdf.model.Statement;
 import org.openrdf.repository.Repository;
@@ -30,6 +32,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.kdm.repositoryMerger.RepositoryMerger;
 import com.kdmanalytics.toif.assimilator.exceptions.AssimilatorArgumentException;
@@ -38,9 +42,18 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
 
 /**
  * @author adam
- * 
+ *         
  */
 public class AssimilatorTest {
+  
+  public static final Logger LOG = LoggerFactory.getLogger(AssimilatorTest.class);
+  
+  @Rule 
+  public TestWatcher watchman = new TestWatcher() {
+    public void starting(Description desc) {
+      LOG.info("{} being run...",(desc.getMethodName()));
+    }
+  };
   
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
@@ -63,9 +76,9 @@ public class AssimilatorTest {
    */
   @After
   public void after() throws Exception {
-    //Thread.sleep(1000);
+    // Thread.sleep(1000);
   }
-   
+  
   /**
    * Test method for
    * {@link com.kdmanalytics.toif.assimilator.Assimilator#assimilate(java.lang.String[])} .
@@ -75,17 +88,14 @@ public class AssimilatorTest {
   @Test
   public void testAssimilate() throws AssimilatorArgumentException {
     String[] args = {
-        "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
+                      "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
     };
-    try
-		{
-		assimilator.assimilate(args);
-		}
-	catch (ToifException | IOException e)
-		{
-		fail( e.getMessage());
-		}
-	
+    try {
+      assimilator.assimilate(args);
+    } catch (ToifException | IOException e) {
+      fail(e.getMessage());
+    }
+    
   }
   
   /**
@@ -99,7 +109,7 @@ public class AssimilatorTest {
   @Test(expected = AssimilatorArgumentException.class)
   public void testGetRepositoryLocationNoRepositoryOption() throws AssimilatorArgumentException {
     String[] args = {
-        outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
+                      outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
     };
     assimilator.getOutputLocation(args);
   }
@@ -115,7 +125,7 @@ public class AssimilatorTest {
   @Test(expected = AssimilatorArgumentException.class)
   public void testGetRepositoryLocationNoRepositoryLocation() throws AssimilatorArgumentException {
     String[] args = {
-        "-r", "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
+                      "-r", "resources/function_pointer.tkdm", "resources/segment.c.toif.xml"
     };
     assimilator.getOutputLocation(args);
   }
@@ -123,9 +133,10 @@ public class AssimilatorTest {
   /**
    * Test method for
    * {@link com.kdmanalytics.toif.assimilator.Assimilator#createRepository(java.io.File)} .
+ * @throws IOException 
    */
   @Test
-  public void testCreateRepository() {
+  public void testCreateRepository() throws Exception {
     File out = folder.newFolder("testRepo");
     Repository repository = assimilator.createRepository(out);
     assertNotNull("The repository returned should not be null", repository);
@@ -142,23 +153,19 @@ public class AssimilatorTest {
   @Test
   public void testGetFilesTkdm() {
     String[] args = {
-        "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml",
-        "resources/defs.tkdm", "resources/GENERAL_INFORMATION.toif.xml"
+                      "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml",
+                      "resources/defs.tkdm", "resources/GENERAL_INFORMATION.toif.xml"
     };
     
     List<File> files;
-	try
-		{
-		files = assimilator.getFiles(args, ".tkdm");
-		assertTrue(files.contains(new File("resources/function_pointer.tkdm")));
-		assertTrue(files.contains(new File("resources/defs.tkdm")));
-		}
-	catch (ToifException e)
-		{
-		fail("Unexpected TOIF Exception: " + e.getMessage());
-		}
+    try {
+      files = assimilator.getFiles(args, ".tkdm");
+      assertTrue(files.contains(new File("resources/function_pointer.tkdm")));
+      assertTrue(files.contains(new File("resources/defs.tkdm")));
+    } catch (ToifException e) {
+      fail("Unexpected TOIF Exception: " + e.getMessage());
+    }
     
-   
   }
   
   /**
@@ -171,23 +178,19 @@ public class AssimilatorTest {
   @Test
   public void testGetFilesToif() {
     String[] args = {
-        "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml",
-        "resources/defs.tkdm", "resources/GENERAL_INFORMATION.toif.xml"
+                      "-r", outputDir.toString(), "resources/function_pointer.tkdm", "resources/segment.c.toif.xml",
+                      "resources/defs.tkdm", "resources/GENERAL_INFORMATION.toif.xml"
     };
     
     List<File> files;
-	try
-		{
-		files = assimilator.getFiles(args, ".toif.xml");
-	    assertTrue(files.contains(new File("resources/segment.c.toif.xml")));
-		assertTrue(files.contains(new File("resources/GENERAL_INFORMATION.toif.xml")));
-		}
-	catch (ToifException e)
-		{
-		fail("Unexpected TOIF Exception: " + e.getMessage());
-		}
+    try {
+      files = assimilator.getFiles(args, ".toif.xml");
+      assertTrue(files.contains(new File("resources/segment.c.toif.xml")));
+      assertTrue(files.contains(new File("resources/GENERAL_INFORMATION.toif.xml")));
+    } catch (ToifException e) {
+      fail("Unexpected TOIF Exception: " + e.getMessage());
+    }
     
- 
   }
   
   /**
@@ -204,8 +207,7 @@ public class AssimilatorTest {
    */
   @Test
   public void testGetToifMerger() {
-    ToifMerger merger = assimilator.getToifMerger(new PrintWriter(System.out), 0L, Long.MAX_VALUE,
-        null);
+    ToifMerger merger = assimilator.getToifMerger(new PrintWriter(System.out), 0L, Long.MAX_VALUE, null);
     assertNotNull("The returned merger should not be null", merger);
   }
   
@@ -291,13 +293,15 @@ public class AssimilatorTest {
     while (statements.hasNext()) {
       Statement st = statements.next();
       
-      assertTrue("The Subject should always have the kdmanalytics namespace", st.getSubject()
-          .toString().startsWith("http://kdmanalytics.com"));
-      assertTrue("The Predicate should always have the org.omg.kdm namespace", st.getPredicate()
-          .toString().startsWith("http://org.omg.kdm"));
-      assertTrue("The Object should either be a literal or have the kdmanalytics namespace.", st
-          .getObject().toString().startsWith("\"")
-          || st.getObject().toString().startsWith("http://kdmanalytics.com"));
+      assertTrue("The Subject should always have the kdmanalytics namespace", st.getSubject().toString().startsWith(
+                                                                                                                    "http://kdmanalytics.com"));
+      assertTrue("The Predicate should always have the org.omg.kdm namespace", st.getPredicate().toString().startsWith(
+                                                                                                                       "http://org.omg.kdm"));
+      assertTrue("The Object should either be a literal or have the kdmanalytics namespace.", st.getObject().toString()
+                                                                                                .startsWith("\"") || st
+                                                                                                                       .getObject()
+                                                                                                                       .toString()
+                                                                                                                       .startsWith("http://kdmanalytics.com"));
     }
     
   }
@@ -318,9 +322,16 @@ public class AssimilatorTest {
     tkdmFiles.add(new File("resources/function_pointer.tkdm"));
     assimilator.mergeTkdm(kdmMerger, tkdmFiles);
     
-    Mockito.verify(assimilator, Mockito.times(2)).load(Mockito.any(Repository.class),
-        Mockito.any(FileInputStream.class));
-    Mockito.verify(kdmMerger, Mockito.times(2)).merge(Mockito.anyString(),
-        Mockito.any(Repository.class));
+    Mockito.verify(assimilator, Mockito.times(2)).load(Mockito.any(Repository.class), Mockito.any(
+                                                                                                  FileInputStream.class));
+    Mockito.verify(kdmMerger, Mockito.times(2)).merge(Mockito.anyString(), Mockito.any(Repository.class));
   }
+  
+  
+  @Test (expected = AssimilatorArgumentException.class)
+  public void testGetValidFileLocation() throws Exception {
+    File f = assimilator.getValidFileLocation("/does/not/exist");
+    assertNotNull(f);
+  }
+  
 }

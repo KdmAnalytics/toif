@@ -5,20 +5,22 @@
   <parent>
     <groupId>com.kdmanalytics</groupId>
     <artifactId>toif</artifactId>
-    <version>1.16.0</version>
+    <version>2.2.0</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>features</artifactId>
-  <name>TOIF Features Module</name>
+  <name>Open TOIF Features Module</name>
 
   <packaging>pom</packaging>
 
   <modules>
-      <module>com.kdmanalytics.standAlone.toif.report.feature</module>
-      <module>com.kdmanalytics.toif.rcp.feature</module>
-      <module>com.kdmanalytics.toif.core.feature</module>
-      <module>com.kdmanalytics.toif.3rdparty.feature</module>
-      <module>com.kdmanalytics.toif.report.feature</module>
+    <module>com.kdmanalytics.toif.complete.feature</module>
+    <module>com.kdmanalytics.toif.core.feature</module>
+    <module>com.kdmanalytics.toif.3rdparty.feature</module>
+    <module>com.kdmanalytics.toif.importer.feature</module>
+    <module>com.kdmanalytics.toif.report.feature</module>
+    <module>com.kdmanalytics.toif.cmd.feature</module>
+    <module>com.kdmanalytics.toif.feature</module>
   </modules>
 </project>

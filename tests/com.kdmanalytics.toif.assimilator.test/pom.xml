@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.kdmanalytics.toif</groupId>
     <artifactId>tests</artifactId>
-    <version>1.16.0</version>
+    <version>2.2.0</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif.tests</groupId>
@@ -28,6 +28,28 @@
           </includes>
         </configuration>
       </plugin>
+      <plugin>
+         <groupId>org.eclipse.tycho</groupId>
+         <artifactId>target-platform-configuration</artifactId>
+         <version>${tycho-version}</version>
+         <configuration>
+           <dependency-resolution>
+              <extraRequirements>
+                 <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.slf4j.impl.log4j12</id>
+                    <versionRange>1.7.2</versionRange>
+                 </requirement>
+                 <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>com.kdmanalytics.toif.log4j</id>
+                    <versionRange>0.0.0</versionRange>
+                 </requirement>
+              </extraRequirements>
+           </dependency-resolution>
+         </configuration>
+      </plugin>      
+      
     </plugins>
   </build>
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="com.kdmanalytics.toif.report.category"
+            name="SFP/CWE">
+      </category>
+      <wizard
+            category="com.kdmanalytics.toif.report.category"
+            class="com.kdmanalytics.toif.report.internal.importWizard.ToifReportImportWizard"
+            icon="src/icons/flag_blue.png"
+            id="com.kdmanalytics.toif.report.importWizard"
+            name="Import Integrated SFP/CWE File">
+         <description>
+            Import a file from the local file system into the workspace.
+         </description>
+      </wizard>
+      <wizard
+            category="com.kdmanalytics.toif.report.category"
+            class="com.kdmanalytics.toif.report.internal.importWizard.TsvImportWizard"
+            icon="src/icons/table_add.png"
+            id="com.kdmanalytics.toif.report.importTsvWizard"
+            name="Import Citing File (*.tsv)">
+         <description>
+            Import a CWE/SFP Citing File (*.tsv)
+         </description>
+      </wizard>
+   </extension>
+
+</plugin>

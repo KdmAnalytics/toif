@@ -6,21 +6,23 @@
   <parent>
     <groupId>com.kdmanalytics</groupId>
     <artifactId>toif</artifactId>
-    <version>1.16.0</version>
+    <version>2.2.0</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
   <artifactId>plugins</artifactId>
-  <name>TOIF Plugins Module</name>
+  <name>Open TOIF Plugins Module</name>
   <packaging>pom</packaging>
 
 
   <modules>
+    <module>com.kdmanalytics.toif.log4j</module>
+    <module>com.kdmanalytics.toif.target</module>
+    <module>com.kdmanalytics.toif.ui.common</module>
     <module>com.kdmanalytics.toif.common</module>
-    <module>com.kdmanalytics.toif.report</module>
-    <module>com.kdmanalytics.standAlone.toif.report</module>
     <module>com.kdmanalytics.toif.ccr</module>
     <module>com.kdmanalytics.toif.framework</module>
+    <module>com.kdmanalytics.toif.ui</module>
     <module>com.kdmanalytics.toif.assimilator</module>
     <module>com.kdmanalytics.toif.facade</module>
     <module>com.kdmanalytics.toif.splint</module>
@@ -28,7 +30,8 @@
     <module>com.kdmanalytics.toif.rats</module>
     <module>com.kdmanalytics.toif.jlint</module>
     <module>com.kdmanalytics.toif.findbugs</module>
-    <module>com.kdmanalytics.toif.rcp</module>
+    <module>com.kdmanalytics.toif.importer</module>
+    <module>com.kdmanalytics.toif.cmd</module>
     <module>com.kdmanalytics.kdm.repositoryMerger</module>
   </modules>
 </project>

@@ -1,0 +1,40 @@
+SFP#,Primary Cluster,Software Fault Pattern (SFP)
+-1,-,Not Mappable
+1,Risky values,Glitch in computation
+2,Unused entities,Unused entities
+3,API,Use of an Improper API
+4,Exception Management,Unchecked status condition
+5,Exception Management,Ambiguous Exception Type
+6,Exception Management,Incorrect Exception Behavior
+7,Memory Access,Faulty pointer use
+8,Memory Access,Faulty buffer access
+9,Memory Access,Faulty string expansion
+10,Memory Access,Incorrect bufer length calculation
+11,Memory Access,Improper NULL termination
+12,Memory Management,Faulty memory release
+13,Resource Management,Unrestricted Consumption
+14,Resource Management,Failure to release resource
+15,Resource Management,Faulty resource use
+16,Path resolution,Path Traversal
+17,Path resolution,Failed chroot jail
+18,Path resolution,Link in resource name resolution
+19,Synchronization,Missing lock
+20,Synchronization,Race condition window
+21,Synchronization,Multiple locks/unlocks
+22,Synchronization,Unrestricted lock
+23,Information leak,Exposed Data 
+24,Tainted Input,Tainted Input to Command 
+25,Tainted Input,Tainted Input to Variable
+26,Tainted Input,Composite tainted data
+27,Tainted Input,Tainted Input to Environment
+28,Entry points,Unexpected access points
+29,Authentication,Faulty endpoint  authentication
+30,Authentication,Missing endpoint authentication
+31,Authentication,Missing authentication
+32,Authentication,Multiple binds to the same port
+33,Authentication,Hardcoded sensitive data
+34,Authentication,Unrestricted authentication
+35,Access control,Insecure resource access
+36,Privilege,Privilege
+37,Resource Management,Faulty resource release
+38,Memory Management,Failure to release memory

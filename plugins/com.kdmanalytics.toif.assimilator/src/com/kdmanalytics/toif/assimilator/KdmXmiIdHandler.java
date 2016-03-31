@@ -22,16 +22,15 @@ public class KdmXmiIdHandler extends DefaultHandler {
   private long maxId = 0;
   
   /**
-   * If this element has an xmi:id, if it has an id check against the current 
-   * maximum id and record a new max if required.
+   * If this element has an xmi:id, if it has an id check against the current maximum id and record
+   * a new max if required.
    * 
-   * @throws SAXException if the id is malformed
+   * @throws SAXException
+   *           if the id is malformed
    */
   @Override
-  public void startElement(final String namespaceURI, 
-                           final String sName, 
-                           final String qName,
-                           final Attributes attrs) throws SAXException {
+  public void startElement(final String namespaceURI, final String sName, final String qName, final Attributes attrs)
+      throws SAXException {
     XMLNode node = new XMLNode(namespaceURI, sName, qName, attrs);
     String stringId = node.getAttribute("xmi:id");
     if (stringId != null) {

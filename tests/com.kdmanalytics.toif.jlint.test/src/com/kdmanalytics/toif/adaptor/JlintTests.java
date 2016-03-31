@@ -3,21 +3,21 @@ package com.kdmanalytics.toif.adaptor;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.kdmanalytics.toif.adaptor.JlintAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.AdaptorOptions;
 import com.kdmanalytics.toif.framework.toolAdaptor.Language;
 
+import junit.framework.TestCase;
+
 public class JlintTests extends TestCase {
   
-  private static Logger LOG = Logger.getLogger(JlintTests.class);
+  private static final Logger LOG = LoggerFactory.getLogger(JlintTests.class);
   
   /**
    * The findbugs adaptor to test.
@@ -32,7 +32,6 @@ public class JlintTests extends TestCase {
   
   @Test
   public void testGetLanguage() {
-    Language l = jla.getLanguage();
     assertEquals(Language.JAVA, jla.getLanguage());
   }
   
@@ -97,8 +96,8 @@ public class JlintTests extends TestCase {
   
   @Test
   public void testGetGeneratorVendorDescription() {
-    assertEquals("We develop tools for web pages with dynamic content of medium size",
-                 jla.getGeneratorVendorDescription());
+    assertEquals("We develop tools for web pages with dynamic content of medium size", jla
+                                                                                          .getGeneratorVendorDescription());
   }
   
   @Test
@@ -127,15 +126,15 @@ public class JlintTests extends TestCase {
     
     Mockito.when(mockoptions.getInputFile()).thenReturn(new File("Test.class"));
     
-    //trying to break it. jlint doesnt actually use these options.
+    // trying to break it. jlint doesnt actually use these options.
     String additional[] = new String[] {
-        "-Dblah", "-Ifoo"
+                                         "-Dblah", "-Ifoo"
     };
     
     String[] runToolCommands = jla.runToolCommands(mockoptions, additional);
     
     String expected[] = new String[] {
-        "jlint", "Test.class"
+                                       "jlint", "Test.class"
     };
     
     Assert.assertArrayEquals(expected, runToolCommands);

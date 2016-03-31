@@ -1,6 +1,6 @@
 /*******************************************************************************
  * /////////////////////////////////////////////////////////////////////////////
- * ///// // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This
+ * ///// // Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This
  * program and the // accompanying materials are made available under the terms
  * of the Open Source // Initiative OSI - Open Software License v3.0 which
  * accompanies this // distribution, and is available at
@@ -27,9 +27,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.kdmanalytics.toif.common.exception.ToifException;
+import com.kdmanalytics.toif.framework.files.ExplicitFileResolver;
+import com.kdmanalytics.toif.framework.files.IFileResolver;
+import com.kdmanalytics.toif.framework.files.RootFileResolver;
 import com.kdmanalytics.toif.framework.utils.ElementComparator;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Adaptor;
 import com.kdmanalytics.toif.framework.xmlElements.entities.Address;
@@ -101,7 +105,7 @@ import com.lexicalscope.jewel.cli.CliFactory;
  * the implementation of the specific adaptor to get the finding elements.
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 
 public class ToolAdaptor
@@ -110,7 +114,7 @@ public class ToolAdaptor
     /**
      * the logger.
      */
-    private static Logger LOG = Logger.getLogger(ToolAdaptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ToolAdaptor.class);
     
     /**
      * The implementation of the specific adaptor.
@@ -258,6 +262,16 @@ public class ToolAdaptor
         constructXml();
         
         return true;
+    }
+    
+    /**
+     * Set the working directory
+     * 
+     * @param workingDirectory
+     */
+    public void setWorkingDirectory(java.io.File workingDirectory)
+    {
+        this.workingDirectory = workingDirectory;
     }
     
     /**
@@ -548,11 +562,11 @@ public class ToolAdaptor
     private void createAdaptorIsSuppliedByVendor(Properties props)
     {
         // create the entities for the fact.
-        final Adaptor adaptor = (Adaptor) addToList(new Adaptor(adaptorImpl.getAdaptorName(), adaptorImpl.getAdaptorDescription(),
-                adaptorImpl.getAdaptorVersion()));
+        final Adaptor adaptor = (Adaptor) addToList(
+                new Adaptor(adaptorImpl.getAdaptorName(), adaptorImpl.getAdaptorDescription(), adaptorImpl.getAdaptorVersion()));
         final Vendor vendor = (Vendor) addToList(new Vendor(adaptorImpl.getAdaptorVendorName(), adaptorImpl.getAdaptorVendorDescription(),
                 adaptorImpl.getAdaptorVendorAddress(), adaptorImpl.getAdaptorVendorPhone(), adaptorImpl.getAdaptorVendorEmail()));
-        
+                
         // create the fact
         final Fact fact = new AdaptorIsSuppliedByVendor(adaptor, vendor);
         // add the fact.
@@ -568,11 +582,11 @@ public class ToolAdaptor
     private void createAdaptorSupportsGenerator(Properties props) throws NullPointerException
     {
         // create the entities.
-        final Generator gen = (Generator) addToList(new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(),
-                adaptorImpl.getGeneratorVersion()));
-        final Adaptor adaptor = (Adaptor) addToList(new Adaptor(adaptorImpl.getAdaptorName(), adaptorImpl.getAdaptorDescription(),
-                adaptorImpl.getAdaptorVersion()));
-        
+        final Generator gen = (Generator) addToList(
+                new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(), adaptorImpl.getGeneratorVersion()));
+        final Adaptor adaptor = (Adaptor) addToList(
+                new Adaptor(adaptorImpl.getAdaptorName(), adaptorImpl.getAdaptorDescription(), adaptorImpl.getAdaptorVersion()));
+                
         // create the fact
         final Fact fact = new AdaptorSupportsGenerator(adaptor, gen);
         // add the fact.
@@ -602,11 +616,11 @@ public class ToolAdaptor
     private void createGeneratorIsSuppliedByVendor(Properties props)
     {
         // create the entities for this fact.
-        final Generator gen = (Generator) addToList(new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(),
-                adaptorImpl.getGeneratorVersion()));
+        final Generator gen = (Generator) addToList(
+                new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(), adaptorImpl.getGeneratorVersion()));
         final Vendor vendor = (Vendor) addToList(new Vendor(adaptorImpl.getGeneratorVendorName(), adaptorImpl.getGeneratorVendorDescription(),
                 adaptorImpl.getGeneratorVendorAddress(), adaptorImpl.getGeneratorVendorPhone(), adaptorImpl.getGeneratorVendorEmail()));
-        
+                
         // add the fact.
         final Fact fact = new GeneratorIsSuppliedByVendor(gen, vendor);
         housekeepingElements.put(fact.hashCode(), fact);
@@ -654,10 +668,10 @@ public class ToolAdaptor
         final String[] roleDetails = props.getProperty(factDetails[2]).split(";");
         
         // create the entities relating to this fact.
-        final Organization org1 = (Organization) addToList(new Organization(org1Details[0], org1Details[1], org1Details[2], org1Details[3],
-                org1Details[4]));
-        final Organization org2 = (Organization) addToList(new Organization(org2Details[0], org2Details[1], org2Details[2], org2Details[3],
-                org2Details[4]));
+        final Organization org1 = (Organization) addToList(
+                new Organization(org1Details[0], org1Details[1], org1Details[2], org1Details[3], org1Details[4]));
+        final Organization org2 = (Organization) addToList(
+                new Organization(org2Details[0], org2Details[1], org2Details[2], org2Details[3], org2Details[4]));
         final Role role = (Role) addToList(new Role(roleDetails[0], roleDetails[1]));
         
         // create the fact
@@ -683,8 +697,8 @@ public class ToolAdaptor
         
         // create the required entities.
         final Person person = (Person) addToList(new Person(personDetails[0], personDetails[1], personDetails[2]));
-        final Organization org1 = (Organization) addToList(new Organization(org1Details[0], org1Details[1], org1Details[2], org1Details[3],
-                org1Details[4]));
+        final Organization org1 = (Organization) addToList(
+                new Organization(org1Details[0], org1Details[1], org1Details[2], org1Details[3], org1Details[4]));
         final Role role = (Role) addToList(new Role(roleDetails[0], roleDetails[1]));
         
         // create the fact, and add it to the table.
@@ -759,9 +773,9 @@ public class ToolAdaptor
     {
         // create a new generator. the addToList() method makes sure that there
         // is only one of this generator in the list.
-        final Generator gen = (Generator) addToList(new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(),
-                adaptorImpl.getGeneratorVersion()));
-        
+        final Generator gen = (Generator) addToList(
+                new Generator(adaptorImpl.getGeneratorName(), adaptorImpl.getGeneratorDescription(), adaptorImpl.getGeneratorVersion()));
+                
         // create the fact linking the generator and segment.
         final Fact fact = new TOIFSegmentIsGeneratedByGenerator(segment, gen);
         
@@ -804,9 +818,9 @@ public class ToolAdaptor
         final String[] orgDetails = props.getProperty(orgName).split(";");
         
         // create the entity
-        final Organization organization = (Organization) addToList(new Organization(orgDetails[0], orgDetails[1], orgDetails[2], orgDetails[3],
-                orgDetails[4]));
-        
+        final Organization organization = (Organization) addToList(
+                new Organization(orgDetails[0], orgDetails[1], orgDetails[2], orgDetails[3], orgDetails[4]));
+                
         final Fact fact = new TOIFSegmentIsOwnedByOrganization(segment, organization);
         
         // add the fact to the table.
@@ -827,9 +841,9 @@ public class ToolAdaptor
         final String[] orgDetails = props.getProperty(orgName).split(";");
         
         // create the entity
-        final Organization organization = (Organization) addToList(new Organization(orgDetails[0], orgDetails[1], orgDetails[2], orgDetails[3],
-                orgDetails[4]));
-        
+        final Organization organization = (Organization) addToList(
+                new Organization(orgDetails[0], orgDetails[1], orgDetails[2], orgDetails[3], orgDetails[4]));
+                
         final Fact fact = new TOIFSegmentIsProducedByOrganization(segment, organization);
         
         // add the fact to the table.
@@ -1162,7 +1176,7 @@ public class ToolAdaptor
                     Text.class, Description.class, Address.class, EmailAddress.class, Checksum.class, SFPIdentifier.class,
                     FindingHasSFPIdentifier.class, ClusterIdentifier.class, FindingHasClusterIdentifier.class, Offset.class, Position.class,
                     DataElementIsInvolvedInStatement.class, TOIFSegmentReferencesFile.class, StatementIsProceededByStatement.class);
-            
+                    
             final Marshaller m = context.createMarshaller();
             
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -1195,10 +1209,82 @@ public class ToolAdaptor
     }
     
     /**
+     * Get the command line that will be run
+     * 
+     * @return
+     */
+    public String[] getCommands()
+    {
+        /*
+         * CppCheck command. Tool executable location (taken from the options
+         * provided to main), enable style error reporting, output in xml,
+         * location to run the tool on.
+         */
+        
+        String[] commands = adaptorImpl.runToolCommands(options, otherOpts);
+        
+        if (commands == null)
+        {
+            return null;
+        }
+        
+        // DISABLED Nicing Windows. It seems that the cmd is dodgy and
+        // occasionally loses the path that we set in the environment,
+        // and it certainly does not like having absolute paths to
+        // executables (at least ones with spaces).
+        //
+        // If the path to the executable is absolute, then put it in path and
+        // use a relative name to the executable. This is required because
+        // windows gets very cranky with how its command shell is used.
+        // java.io.File execDir = null;
+        // if(SystemUtils.IS_OS_WINDOWS)
+        // {
+        // String execPath = commands[0];
+        // java.io.File execFile = new java.io.File(execPath);
+        // if(execFile.isAbsolute())
+        // {
+        // execDir = execFile.getParentFile();
+        // commands[0] = execFile.getName().replace(".exe", "");
+        // }
+        // }
+        
+        List<String> niceCommands = new ArrayList<String>();
+        
+        if (SystemUtils.IS_OS_WINDOWS)
+        {
+            // Explicit nicing required on windows. It seems that the cmd is
+            // dodgy.
+            if (adaptorImpl instanceof INiceable)
+            {
+                niceCommands.add("C:\\Windows\\System32\\cmd.exe");
+                niceCommands.add("/c");
+                niceCommands.add("start");
+                niceCommands.add("\"\"");
+                niceCommands.add("/B");
+                niceCommands.add("/BELOWNORMAL");
+                niceCommands.add("/WAIT");
+            }
+        }
+        else
+        {
+            niceCommands.add("nice");
+        }
+        
+        for (String cmd : commands)
+        {
+            if (cmd.contains(" "))
+                niceCommands.add("\"" + cmd + "\"");
+            else niceCommands.add(cmd);
+        }
+        
+        return niceCommands.toArray(new String[niceCommands.size()]);
+    }
+    
+    /**
      * Parse the output of the tool and generate a list of the findings.
      * 
      * @param file
-     * 
+     *            
      * @param inputStream
      *            - The error-stream from the running process.
      * @return - An ArrayList of the found findings.
@@ -1207,7 +1293,21 @@ public class ToolAdaptor
     ArrayList<Element> parse(java.io.File process, File file) throws ToifException
     {
         options.getOutputDirectory().mkdirs();
-        return adaptorImpl.parse(adaptorImpl, process, options, file, validLines, options.getUnknownCWE());
+        
+        // Depending on the input file we will create a reasonable file resolver
+        IFileResolver resolver = null;
+        String path = file.getPath();
+        java.io.File afile = new java.io.File(path);
+        if (afile.isFile())
+        {
+            resolver = new ExplicitFileResolver(file);
+        }
+        else
+        {
+            resolver = new RootFileResolver(path);
+        }
+        
+        return adaptorImpl.parse(adaptorImpl, process, options, resolver, validLines, options.getUnknownCWE());
     }
     
     /**
@@ -1219,42 +1319,61 @@ public class ToolAdaptor
      */
     public java.io.File runTool() throws ToifException
     {
+        ProcessBuilder process = null;
+        java.io.File file = null;
         
-        /*
-         * CppCheck command. Tool executable location (taken from the options
-         * provided to main), enable style error reporting, output in xml,
-         * location to run the tool on.
-         */
+        final String[] command = getCommands();
         
-        final String[] commands = adaptorImpl.runToolCommands(options, otherOpts);
-        // final String[] command = adaptorImpl.runToolCommands(options,
-        // options.getAdditionalArgs().toArray(new
-        // String[options.getAdditionalArgs().size()]));
-        
-        if (commands == null)
+        synchronized (this)
         {
-            return null;
+            StringBuilder sb = new StringBuilder();
+            for (String cmd : command)
+            {
+                sb.append(cmd).append(" ");
+            }
         }
         
-        List<String> niceCommands = new ArrayList<String>();
+        process = new ProcessBuilder(command);
         
-        if (SystemUtils.IS_OS_WINDOWS)
-        {
-            niceCommands.add("C:\\Windows\\System32\\cmd.exe");
-            niceCommands.add("/c");
-            niceCommands.add("start");
-            niceCommands.add("/B");
-            niceCommands.add("/BELOWNORMAL");
-            niceCommands.add("/WAIT");
-        }
-        else
-        {
-            niceCommands.add("nice");
-        }
+        // DISABLED Nicing Windows. It seems that the cmd is dodgy and
+        // occasionally loses the path that we set in the environment,
+        // and it certainly does not like having absolute paths to
+        // executables (at least ones with spaces).
+        // Put the executable directory in path
+        // if(SystemUtils.IS_OS_WINDOWS && execDir != null)
+        // {
+        // Map<String,String> env = process.environment();
+        // String envPath = env.get("PATH");
+        // if(envPath != null)
+        // {
+        // envPath = execDir.toString() + ";" + envPath;
+        // }
+        // else
+        // {
+        // envPath = execDir.toString();
+        // }
+        // System.err.println("SETTING PATH: " + envPath);
+        // env.put("PATH", envPath);
+        // }
         
-        niceCommands.addAll(Arrays.asList(commands));
-        final String[] command = niceCommands.toArray(new String[niceCommands.size()]);
-        final ProcessBuilder process = new ProcessBuilder(command);
+        // This doesn't work without spawning a bat or shell wrapper
+        // // Extra path information
+        // java.io.File paths = options.getPaths();
+        // if(paths != null)
+        // {
+        // Map<String,String> env = process.environment();
+        // String envPath = env.get("PATH");
+        // if(envPath != null)
+        // {
+        // envPath = paths + ";" + envPath;
+        // }
+        // else
+        // {
+        // envPath = paths.toString();
+        // }
+        // System.err.println("SETTING PATH: " + envPath);
+        // env.put("PATH", envPath);
+        // }
         
         if (workingDirectory != null)
         {
@@ -1264,7 +1383,7 @@ public class ToolAdaptor
         java.io.File outputDirectory = options.getOutputDirectory();
         outputDirectory.mkdirs();
         
-        java.io.File file = null;
+        file = null;
         if (adaptorImpl.getAdaptorName().equals("Splint"))
         {
             file = new java.io.File(outputDirectory, options.getInputFile().getName() + "." + adaptorImpl.getRuntoolName());
@@ -1278,7 +1397,7 @@ public class ToolAdaptor
             }
             catch (IOException e)
             {
-                LOG.error(e);
+                LOG.error("", e);
                 throw new ToifException();
             }
             if (tmp != null)
@@ -1308,7 +1427,6 @@ public class ToolAdaptor
             process.redirectOutput(file);
             process.redirectError(file2);
         }
-        
         try
         {
             Process p = process.start();
@@ -1321,7 +1439,7 @@ public class ToolAdaptor
             if ((p.exitValue() != 0) && (!"Splint".equals(name)))
             {
                 int status = p.exitValue();
-                final String msg = "Adaptor process failure detected: status=" + status + " " + options.getAdaptor().toString();
+                final String msg = "Adaptor process failure detected for '" + name + "': status=" + status + " " + options.getAdaptor().toString();
                 
                 LOG.error(msg);
                 throw new ToifException(msg);
@@ -1394,9 +1512,6 @@ public class ToolAdaptor
      */
     public void setOptions(String[] args) throws ArgumentValidationException
     {
-        // create the command line interface.
-        final Cli<AdaptorOptions> CLI = CliFactory.createCli(AdaptorOptions.class);
-        
         // List<String> options = Arrays.asList(args);
         String[] adaptorOpts = {};
         
@@ -1413,6 +1528,14 @@ public class ToolAdaptor
                 argsLimit += 2;
             }
             if ("-n".equals(string))
+            {
+                argsLimit += 2;
+            }
+            if ("--exec".equals(string))
+            {
+                argsLimit += 2;
+            }
+            if ("--extraPath".equals(string))
             {
                 argsLimit += 2;
             }
@@ -1436,8 +1559,9 @@ public class ToolAdaptor
         }
         // Collect the arguments
         
+        // create the command line interface.
+        final Cli<AdaptorOptions> CLI = CliFactory.createCli(AdaptorOptions.class);
         options = CLI.parseArguments(adaptorOpts);
-        
     }
     
     /**

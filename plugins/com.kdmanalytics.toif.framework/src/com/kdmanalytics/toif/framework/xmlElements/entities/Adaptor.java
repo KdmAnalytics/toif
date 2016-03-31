@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.entities;
 
 import javax.xml.bind.annotation.XmlElementRef;
@@ -15,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Class representing the adaptor entity
  * 
  * @author Adam Nunn
- * 
+ *         
  */
 @XmlRootElement(name = "fact")
 public class Adaptor extends Entity
@@ -66,7 +69,7 @@ public class Adaptor extends Entity
      * 
      * @return the name
      */
-    @XmlElementRef(name="name")
+    @XmlElementRef(name = "name")
     public Name getName()
     {
         return name;
@@ -88,7 +91,7 @@ public class Adaptor extends Entity
      * 
      * @return the description
      */
-    @XmlElementRef(name="name")
+    @XmlElementRef(name = "name")
     public Description getDescription()
     {
         return description;
@@ -110,7 +113,7 @@ public class Adaptor extends Entity
      * 
      * @return the version
      */
-    @XmlElementRef(name="version")
+    @XmlElementRef(name = "version")
     public Version getVersion()
     {
         return version;
@@ -139,7 +142,8 @@ public class Adaptor extends Entity
         {
             Adaptor adaptor = (Adaptor) obj;
             
-            return name.getName().equals(adaptor.getName().getName()) && description.getText().equals(adaptor.getDescription().getText()) && version.getVersion().equals(adaptor.getVersion().getVersion());
+            return name.getName().equals(adaptor.getName().getName()) && description.getText().equals(adaptor.getDescription().getText())
+                    && version.getVersion().equals(adaptor.getVersion().getVersion());
         }
         return false;
         

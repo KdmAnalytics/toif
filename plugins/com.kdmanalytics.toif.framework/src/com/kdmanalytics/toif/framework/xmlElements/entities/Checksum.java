@@ -1,11 +1,14 @@
 /*******************************************************************************
- * //////////////////////////////////////////////////////////////////////////////////
- * // Copyright (c) 2015 KDM Analytics, Inc. All rights reserved. This program and the
- * // accompanying materials are made available under the terms of the Open Source
- * // Initiative OSI - Open Software License v3.0 which accompanies this
- * // distribution, and is available at http://www.opensource.org/licenses/osl-3.0.php/
- * //////////////////////////////////////////////////////////////////////////////////
+ * /////////////////////////////////////////////////////////////////////////////
+ * ///// // Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This
+ * program and the // accompanying materials are made available under the terms
+ * of the Open Source // Initiative OSI - Open Software License v3.0 which
+ * accompanies this // distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ * /////////////////////////////////////////////////////////////////////////////
+ * /////
  ******************************************************************************/
+
 package com.kdmanalytics.toif.framework.xmlElements.entities;
 
 import java.io.FileInputStream;
@@ -19,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Represents the checksum for the file entities.
  * 
  * @author adam
- * 
+ *         
  */
 @XmlRootElement(name = "checksum")
 public class Checksum
@@ -39,7 +42,8 @@ public class Checksum
         
         this.checksum = checksum(file);
         
-        if(checksum == null) {
+        if (checksum == null)
+        {
             checksum = "none";
         }
     }
@@ -103,7 +107,7 @@ public class Checksum
             
             if (digest == null)
                 return null;
-            
+                
             String strDigest = "0x";
             
             // compile the md5 string.

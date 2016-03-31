@@ -1,14 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: TOIF Code Coverage report
+Bundle-Name: ETOIF Code Coverage report
 Bundle-SymbolicName: com.kdmanalytics.toif.ccr;singleton:=true
-Bundle-Version: 1.16.0
-Bundle-Activator: com.kdmanalytics.toif.ccr.Activator
+Bundle-Version: 2.2.0
 Bundle-Vendor: KDM Analytics Inc.
-Require-Bundle: org.eclipse.ui;bundle-version="[3.7.0,4.2.0)",
- org.eclipse.core.runtime;bundle-version="[3.7.0,4.2.0)",
- org.openrdf.sesame;bundle-version="[2.4.0,2.5.0)",
- org.apache.log4j;bundle-version="[1.2.0,1.3.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ActivationPolicy: lazy
-Export-Package: com.kdmanalytics.toif.ccr
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: com.kdmanalytics.etoif.ccr
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.8.0,4.0.0)",
+ org.eclipse.core.resources;bundle-version="[3.8.0,4.0.0)",
+ com.kdmanalytics.toif.ui.common;bundle-version="2.1.0"

@@ -14,46 +14,42 @@ import org.openrdf.model.BNode;
  * class representing an anonymous bnode.
  * 
  * @author adam
- * 
+ *         
  */
-public class ToifRdfBnode extends ToifRdfResource
-{
+public class ToifRdfBnode extends ToifRdfResource {
+  
+  private BNode object;
+  
+  /**
+   * create a toif bnode object.
+   * 
+   * @param createBNode
+   *          the rdf bnode
+   * @param currentFile
+   *          the current file.
+   */
+  public ToifRdfBnode(BNode bnode, File currentFile) {
     
-    private BNode object;
-    
-    /**
-     * create a toif bnode object.
-     * 
-     * @param createBNode
-     *            the rdf bnode
-     * @param currentFile
-     *            the current file.
-     */
-    public ToifRdfBnode(BNode bnode, File currentFile)
-    {
-        
-        this.file = currentFile;
-        this.object = bnode;
-    }
-    
-    /**
-     * get the bnode.
-     * 
-     * @return the object
-     */
-    public BNode getObject()
-    {
-        return object;
-    }
-    
-    /**
-     * get the details for this object.
-     */
-    @Override
-    public List<String> getDetails()
-    {
-        List<String> list = new ArrayList<String>();
-        list.add(object.toString());
-        return list;
-    }
+    this.file = currentFile;
+    this.object = bnode;
+  }
+  
+  /**
+   * get the bnode.
+   * 
+   * @return the object
+   */
+  public BNode getObject() {
+    return object;
+  }
+  
+  /**
+   * get the details for this object.
+   */
+  @Override
+  public List<String> getDetails() {
+    List<String> list = new ArrayList<String>();
+    list.add(object.toString());
+    return list;
+  }
 }

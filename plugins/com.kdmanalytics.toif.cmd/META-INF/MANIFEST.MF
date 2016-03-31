@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CMD
+Bundle-SymbolicName: com.kdmanalytics.toif.cmd;singleton:=true
+Bundle-Version: 2.2.0
+Bundle-Vendor: KDM Analytics Inc.
+Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
+Require-Bundle: org.slf4j.api;bundle-version="1.7.2",
+ org.eclipse.core.runtime,
+ com.google.guava;bundle-version="14.0.1",
+ com.lexicalscope.jewelcli;bundle-version="0.8.5",
+ com.kdmanalytics.toif.common;bundle-version="2.1.0",
+ com.kdmanalytics.toif.facade;bundle-version="2.1.0",
+ com.kdmanalytics.toif.framework;bundle-version="2.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
