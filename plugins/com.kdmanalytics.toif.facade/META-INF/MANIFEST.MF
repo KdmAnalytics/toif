@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ExtractorInterface
 Bundle-SymbolicName: com.kdmanalytics.toif.facade
-Bundle-Version: 2.2.0
+Bundle-Version: 2.3.0.qualifier
 Bundle-Activator: com.kdmanalytics.toif.facade.internal.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: com.google.guava;bundle-version="[14.0.1,15.0.0)",
