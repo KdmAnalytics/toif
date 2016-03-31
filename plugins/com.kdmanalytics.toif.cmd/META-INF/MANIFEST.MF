@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CMD
 Bundle-SymbolicName: com.kdmanalytics.toif.cmd;singleton:=true
-Bundle-Version: 2.1.1.qualifier
+Bundle-Version: 2.2.0
 Bundle-Vendor: KDM Analytics Inc.
 Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
 Require-Bundle: org.slf4j.api;bundle-version="1.7.2",

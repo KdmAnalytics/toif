@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.kdmanalytics.toif.complete.feature_2.1.1.qualifier.jar" id="com.kdmanalytics.toif.complete.feature" version="2.1.1.qualifier">
+   <feature url="features/com.kdmanalytics.toif.complete.feature_2.2.0.jar" id="com.kdmanalytics.toif.complete.feature" version="2.2.0">
       <category name="sfpcategory"/>
    </feature>
    <category-def name="sfpcategory" label="SFP/CWE">
