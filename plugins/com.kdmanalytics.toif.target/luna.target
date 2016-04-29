@@ -25,55 +25,38 @@
 </locations>
 <includeBundles>
 <plugin id="com.ibm.icu" version="52.1.1.v201501240615"/>
-<plugin id="com.ibm.icu" version="52.1.1.v201501240615"/>
-<plugin id="com.ibm.icu.source" version="52.1.1.v201501240615"/>
 <plugin id="com.ibm.icu.source" version="52.1.1.v201501240615"/>
 <plugin id="com.jcraft.jsch"/>
 <plugin id="com.jcraft.jsch.source"/>
 <plugin id="com.sun.el"/>
 <plugin id="com.sun.el.source"/>
 <plugin id="javax.annotation" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation" version="1.2.0.v201401042248"/>
-<plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
 <plugin id="javax.annotation.source" version="1.2.0.v201401042248"/>
 <plugin id="javax.el"/>
 <plugin id="javax.el.source"/>
 <plugin id="javax.inject" version="1.0.0.v20091030"/>
-<plugin id="javax.inject" version="1.0.0.v20091030"/>
-<plugin id="javax.inject.source" version="1.0.0.v20091030"/>
 <plugin id="javax.inject.source" version="1.0.0.v20091030"/>
 <plugin id="javax.servlet"/>
 <plugin id="javax.servlet.jsp"/>
 <plugin id="javax.servlet.jsp.source"/>
 <plugin id="javax.servlet.source"/>
 <plugin id="javax.xml" version="1.3.4.v201005080400"/>
-<plugin id="javax.xml" version="1.3.4.v201005080400"/>
 <plugin id="net.ossindex.eclipse.common.builder"/>
 <plugin id="org.apache.ant"/>
 <plugin id="org.apache.ant.source"/>
 <plugin id="org.apache.batik.css" version="1.7.0.v201011041433"/>
-<plugin id="org.apache.batik.css" version="1.7.0.v201011041433"/>
-<plugin id="org.apache.batik.css.source" version="1.7.0.v201011041433"/>
 <plugin id="org.apache.batik.css.source" version="1.7.0.v201011041433"/>
 <plugin id="org.apache.batik.util" version="1.7.0.v201011041433"/>
-<plugin id="org.apache.batik.util" version="1.7.0.v201011041433"/>
-<plugin id="org.apache.batik.util.gui" version="1.7.0.v200903091627"/>
 <plugin id="org.apache.batik.util.gui" version="1.7.0.v200903091627"/>
 <plugin id="org.apache.batik.util.gui.source" version="1.7.0.v200903091627"/>
-<plugin id="org.apache.batik.util.gui.source" version="1.7.0.v200903091627"/>
-<plugin id="org.apache.batik.util.source" version="1.7.0.v201011041433"/>
 <plugin id="org.apache.batik.util.source" version="1.7.0.v201011041433"/>
 <plugin id="org.apache.commons.codec"/>
 <plugin id="org.apache.commons.codec.source"/>
 <plugin id="org.apache.commons.logging"/>
 <plugin id="org.apache.commons.logging.source"/>
 <plugin id="org.apache.felix.gogo.command" version="0.10.0.v201209301215"/>
-<plugin id="org.apache.felix.gogo.command" version="0.10.0.v201209301215"/>
-<plugin id="org.apache.felix.gogo.command.source" version="0.10.0.v201209301215"/>
 <plugin id="org.apache.felix.gogo.command.source" version="0.10.0.v201209301215"/>
 <plugin id="org.apache.felix.gogo.runtime" version="0.10.0.v201209301036"/>
-<plugin id="org.apache.felix.gogo.runtime" version="0.10.0.v201209301036"/>
-<plugin id="org.apache.felix.gogo.runtime.source" version="0.10.0.v201209301036"/>
 <plugin id="org.apache.felix.gogo.runtime.source" version="0.10.0.v201209301036"/>
 <plugin id="org.apache.felix.gogo.shell"/>
 <plugin id="org.apache.felix.gogo.shell.source"/>
@@ -115,6 +98,8 @@
 <plugin id="org.eclipse.cdt.core.native"/>
 <plugin id="org.eclipse.cdt.core.native.source"/>
 <plugin id="org.eclipse.cdt.core.source"/>
+<plugin id="org.eclipse.cdt.core.win32"/>
+<plugin id="org.eclipse.cdt.core.win32.x86_64"/>
 <plugin id="org.eclipse.cdt.debug.core"/>
 <plugin id="org.eclipse.cdt.debug.core.source"/>
 <plugin id="org.eclipse.cdt.debug.mi.core"/>
@@ -154,61 +139,45 @@
 <plugin id="org.eclipse.compare.core"/>
 <plugin id="org.eclipse.compare.core.source"/>
 <plugin id="org.eclipse.compare.source"/>
-<plugin id="org.eclipse.core.commands" version="3.6.100.v20140528-1422"/>
+<plugin id="org.eclipse.compare.win32"/>
 <plugin id="org.eclipse.core.commands" version="3.6.100.v20140528-1422"/>
 <plugin id="org.eclipse.core.commands.source" version="3.6.100.v20140528-1422"/>
-<plugin id="org.eclipse.core.commands.source" version="3.6.100.v20140528-1422"/>
-<plugin id="org.eclipse.core.contenttype" version="3.4.200.v20140207-1251"/>
 <plugin id="org.eclipse.core.contenttype" version="3.4.200.v20140207-1251"/>
 <plugin id="org.eclipse.core.contenttype.source" version="3.4.200.v20140207-1251"/>
-<plugin id="org.eclipse.core.contenttype.source" version="3.4.200.v20140207-1251"/>
-<plugin id="org.eclipse.core.databinding" version="1.4.2.v20140729-1044"/>
 <plugin id="org.eclipse.core.databinding" version="1.4.2.v20140729-1044"/>
 <plugin id="org.eclipse.core.databinding.beans"/>
 <plugin id="org.eclipse.core.databinding.beans.source"/>
 <plugin id="org.eclipse.core.databinding.observable" version="1.4.1.v20140210-1835"/>
-<plugin id="org.eclipse.core.databinding.observable" version="1.4.1.v20140210-1835"/>
-<plugin id="org.eclipse.core.databinding.observable.source" version="1.4.1.v20140210-1835"/>
 <plugin id="org.eclipse.core.databinding.observable.source" version="1.4.1.v20140210-1835"/>
 <plugin id="org.eclipse.core.databinding.property" version="1.4.200.v20140214-0004"/>
-<plugin id="org.eclipse.core.databinding.property" version="1.4.200.v20140214-0004"/>
-<plugin id="org.eclipse.core.databinding.property.source" version="1.4.200.v20140214-0004"/>
 <plugin id="org.eclipse.core.databinding.property.source" version="1.4.200.v20140214-0004"/>
 <plugin id="org.eclipse.core.databinding.source" version="1.4.2.v20140729-1044"/>
-<plugin id="org.eclipse.core.databinding.source" version="1.4.2.v20140729-1044"/>
 <plugin id="org.eclipse.core.expressions" version="3.4.600.v20140128-0851"/>
-<plugin id="org.eclipse.core.expressions" version="3.4.600.v20140128-0851"/>
-<plugin id="org.eclipse.core.expressions.source" version="3.4.600.v20140128-0851"/>
 <plugin id="org.eclipse.core.expressions.source" version="3.4.600.v20140128-0851"/>
 <plugin id="org.eclipse.core.externaltools"/>
 <plugin id="org.eclipse.core.externaltools.source"/>
 <plugin id="org.eclipse.core.filebuffers"/>
 <plugin id="org.eclipse.core.filebuffers.source"/>
 <plugin id="org.eclipse.core.filesystem" version="1.4.100.v20140514-1614"/>
-<plugin id="org.eclipse.core.filesystem" version="1.4.100.v20140514-1614"/>
 <plugin id="org.eclipse.core.filesystem.java7"/>
 <plugin id="org.eclipse.core.filesystem.java7.source"/>
 <plugin id="org.eclipse.core.filesystem.linux.x86_64"/>
 <plugin id="org.eclipse.core.filesystem.source" version="1.4.100.v20140514-1614"/>
-<plugin id="org.eclipse.core.filesystem.source" version="1.4.100.v20140514-1614"/>
+<plugin id="org.eclipse.core.filesystem.win32.x86_64"/>
 <plugin id="org.eclipse.core.jobs" version="3.6.1.v20141014-1248"/>
-<plugin id="org.eclipse.core.jobs" version="3.6.1.v20141014-1248"/>
-<plugin id="org.eclipse.core.jobs.source" version="3.6.1.v20141014-1248"/>
 <plugin id="org.eclipse.core.jobs.source" version="3.6.1.v20141014-1248"/>
 <plugin id="org.eclipse.core.net"/>
 <plugin id="org.eclipse.core.net.linux.x86_64"/>
 <plugin id="org.eclipse.core.net.source"/>
-<plugin id="org.eclipse.core.resources" version="3.9.1.v20140825-1431"/>
+<plugin id="org.eclipse.core.net.win32.x86_64"/>
 <plugin id="org.eclipse.core.resources" version="3.9.1.v20140825-1431"/>
 <plugin id="org.eclipse.core.resources.source" version="3.9.1.v20140825-1431"/>
-<plugin id="org.eclipse.core.resources.source" version="3.9.1.v20140825-1431"/>
-<plugin id="org.eclipse.core.runtime" version="3.10.0.v20140318-2214"/>
+<plugin id="org.eclipse.core.resources.win32.x86_64"/>
 <plugin id="org.eclipse.core.runtime" version="3.10.0.v20140318-2214"/>
 <plugin id="org.eclipse.core.runtime.compatibility"/>
 <plugin id="org.eclipse.core.runtime.compatibility.registry"/>
 <plugin id="org.eclipse.core.runtime.compatibility.registry.source"/>
 <plugin id="org.eclipse.core.runtime.compatibility.source"/>
-<plugin id="org.eclipse.core.runtime.source" version="3.10.0.v20140318-2214"/>
 <plugin id="org.eclipse.core.runtime.source" version="3.10.0.v20140318-2214"/>
 <plugin id="org.eclipse.core.variables"/>
 <plugin id="org.eclipse.core.variables.source"/>
@@ -217,76 +186,40 @@
 <plugin id="org.eclipse.debug.ui"/>
 <plugin id="org.eclipse.debug.ui.source"/>
 <plugin id="org.eclipse.e4.core.commands" version="0.10.2.v20140424-2344"/>
-<plugin id="org.eclipse.e4.core.commands" version="0.10.2.v20140424-2344"/>
-<plugin id="org.eclipse.e4.core.commands.source" version="0.10.2.v20140424-2344"/>
 <plugin id="org.eclipse.e4.core.commands.source" version="0.10.2.v20140424-2344"/>
 <plugin id="org.eclipse.e4.core.contexts" version="1.3.100.v20140407-1019"/>
-<plugin id="org.eclipse.e4.core.contexts" version="1.3.100.v20140407-1019"/>
-<plugin id="org.eclipse.e4.core.contexts.source" version="1.3.100.v20140407-1019"/>
 <plugin id="org.eclipse.e4.core.contexts.source" version="1.3.100.v20140407-1019"/>
 <plugin id="org.eclipse.e4.core.di" version="1.4.0.v20140414-1837"/>
-<plugin id="org.eclipse.e4.core.di" version="1.4.0.v20140414-1837"/>
-<plugin id="org.eclipse.e4.core.di.extensions" version="0.12.0.v20140417-2033"/>
 <plugin id="org.eclipse.e4.core.di.extensions" version="0.12.0.v20140417-2033"/>
 <plugin id="org.eclipse.e4.core.di.extensions.source" version="0.12.0.v20140417-2033"/>
-<plugin id="org.eclipse.e4.core.di.extensions.source" version="0.12.0.v20140417-2033"/>
-<plugin id="org.eclipse.e4.core.di.source" version="1.4.0.v20140414-1837"/>
 <plugin id="org.eclipse.e4.core.di.source" version="1.4.0.v20140414-1837"/>
 <plugin id="org.eclipse.e4.core.services" version="1.2.1.v20140808-1251"/>
-<plugin id="org.eclipse.e4.core.services" version="1.2.1.v20140808-1251"/>
-<plugin id="org.eclipse.e4.core.services.source" version="1.2.1.v20140808-1251"/>
 <plugin id="org.eclipse.e4.core.services.source" version="1.2.1.v20140808-1251"/>
 <plugin id="org.eclipse.e4.ui.bindings" version="0.10.200.v20140424-2042"/>
-<plugin id="org.eclipse.e4.ui.bindings" version="0.10.200.v20140424-2042"/>
-<plugin id="org.eclipse.e4.ui.bindings.source" version="0.10.200.v20140424-2042"/>
 <plugin id="org.eclipse.e4.ui.bindings.source" version="0.10.200.v20140424-2042"/>
 <plugin id="org.eclipse.e4.ui.css.core" version="0.10.100.v20140424-2042"/>
-<plugin id="org.eclipse.e4.ui.css.core" version="0.10.100.v20140424-2042"/>
-<plugin id="org.eclipse.e4.ui.css.core.source" version="0.10.100.v20140424-2042"/>
 <plugin id="org.eclipse.e4.ui.css.core.source" version="0.10.100.v20140424-2042"/>
 <plugin id="org.eclipse.e4.ui.css.swt" version="0.11.101.v20140818-1343"/>
-<plugin id="org.eclipse.e4.ui.css.swt" version="0.11.101.v20140818-1343"/>
-<plugin id="org.eclipse.e4.ui.css.swt.source" version="0.11.101.v20140818-1343"/>
 <plugin id="org.eclipse.e4.ui.css.swt.source" version="0.11.101.v20140818-1343"/>
 <plugin id="org.eclipse.e4.ui.css.swt.theme" version="0.9.300.v20141126-1957"/>
-<plugin id="org.eclipse.e4.ui.css.swt.theme" version="0.9.300.v20141126-1957"/>
-<plugin id="org.eclipse.e4.ui.css.swt.theme.source" version="0.9.300.v20141126-1957"/>
 <plugin id="org.eclipse.e4.ui.css.swt.theme.source" version="0.9.300.v20141126-1957"/>
 <plugin id="org.eclipse.e4.ui.di" version="1.0.0.v20140328-2112"/>
-<plugin id="org.eclipse.e4.ui.di" version="1.0.0.v20140328-2112"/>
-<plugin id="org.eclipse.e4.ui.di.source" version="1.0.0.v20140328-2112"/>
 <plugin id="org.eclipse.e4.ui.di.source" version="1.0.0.v20140328-2112"/>
 <plugin id="org.eclipse.e4.ui.model.workbench" version="1.1.0.v20140512-1820"/>
-<plugin id="org.eclipse.e4.ui.model.workbench" version="1.1.0.v20140512-1820"/>
-<plugin id="org.eclipse.e4.ui.model.workbench.source" version="1.1.0.v20140512-1820"/>
 <plugin id="org.eclipse.e4.ui.model.workbench.source" version="1.1.0.v20140512-1820"/>
 <plugin id="org.eclipse.e4.ui.services" version="1.1.0.v20140328-1925"/>
-<plugin id="org.eclipse.e4.ui.services" version="1.1.0.v20140328-1925"/>
-<plugin id="org.eclipse.e4.ui.services.source" version="1.1.0.v20140328-1925"/>
 <plugin id="org.eclipse.e4.ui.services.source" version="1.1.0.v20140328-1925"/>
 <plugin id="org.eclipse.e4.ui.widgets" version="1.0.0.v20140514-1823"/>
-<plugin id="org.eclipse.e4.ui.widgets" version="1.0.0.v20140514-1823"/>
-<plugin id="org.eclipse.e4.ui.widgets.source" version="1.0.0.v20140514-1823"/>
 <plugin id="org.eclipse.e4.ui.widgets.source" version="1.0.0.v20140514-1823"/>
 <plugin id="org.eclipse.e4.ui.workbench" version="1.2.2.v20141212-1259"/>
-<plugin id="org.eclipse.e4.ui.workbench" version="1.2.2.v20141212-1259"/>
-<plugin id="org.eclipse.e4.ui.workbench.addons.swt" version="1.1.2.v20141126-1310"/>
 <plugin id="org.eclipse.e4.ui.workbench.addons.swt" version="1.1.2.v20141126-1310"/>
 <plugin id="org.eclipse.e4.ui.workbench.addons.swt.source" version="1.1.2.v20141126-1310"/>
-<plugin id="org.eclipse.e4.ui.workbench.addons.swt.source" version="1.1.2.v20141126-1310"/>
-<plugin id="org.eclipse.e4.ui.workbench.renderers.swt" version="0.12.2.v20150204-1353"/>
 <plugin id="org.eclipse.e4.ui.workbench.renderers.swt" version="0.12.2.v20150204-1353"/>
 <plugin id="org.eclipse.e4.ui.workbench.renderers.swt.source" version="0.12.2.v20150204-1353"/>
-<plugin id="org.eclipse.e4.ui.workbench.renderers.swt.source" version="0.12.2.v20150204-1353"/>
-<plugin id="org.eclipse.e4.ui.workbench.source" version="1.2.2.v20141212-1259"/>
 <plugin id="org.eclipse.e4.ui.workbench.source" version="1.2.2.v20141212-1259"/>
 <plugin id="org.eclipse.e4.ui.workbench.swt" version="0.12.100.v20141126-1150"/>
-<plugin id="org.eclipse.e4.ui.workbench.swt" version="0.12.100.v20141126-1150"/>
-<plugin id="org.eclipse.e4.ui.workbench.swt.source" version="0.12.100.v20141126-1150"/>
 <plugin id="org.eclipse.e4.ui.workbench.swt.source" version="0.12.100.v20141126-1150"/>
 <plugin id="org.eclipse.e4.ui.workbench3" version="0.12.0.v20140227-2118"/>
-<plugin id="org.eclipse.e4.ui.workbench3" version="0.12.0.v20140227-2118"/>
-<plugin id="org.eclipse.e4.ui.workbench3.source" version="0.12.0.v20140227-2118"/>
 <plugin id="org.eclipse.e4.ui.workbench3.source" version="0.12.0.v20140227-2118"/>
 <plugin id="org.eclipse.ecf"/>
 <plugin id="org.eclipse.ecf.filetransfer"/>
@@ -311,38 +244,24 @@
 <plugin id="org.eclipse.emf.codegen.ecore.source"/>
 <plugin id="org.eclipse.emf.codegen.source"/>
 <plugin id="org.eclipse.emf.common" version="2.10.1.v20150123-0348"/>
-<plugin id="org.eclipse.emf.common" version="2.10.1.v20150123-0348"/>
-<plugin id="org.eclipse.emf.common.source" version="2.10.1.v20150123-0348"/>
 <plugin id="org.eclipse.emf.common.source" version="2.10.1.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore" version="2.10.2.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore" version="2.10.2.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore.change" version="2.10.0.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore.change" version="2.10.0.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore.change.source" version="2.10.0.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore.change.source" version="2.10.0.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore.source" version="2.10.2.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore.source" version="2.10.2.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore.xmi" version="2.10.2.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore.xmi" version="2.10.2.v20150123-0348"/>
-<plugin id="org.eclipse.emf.ecore.xmi.source" version="2.10.2.v20150123-0348"/>
 <plugin id="org.eclipse.emf.ecore.xmi.source" version="2.10.2.v20150123-0348"/>
 <plugin id="org.eclipse.equinox.app" version="1.3.200.v20130910-1609"/>
-<plugin id="org.eclipse.equinox.app" version="1.3.200.v20130910-1609"/>
-<plugin id="org.eclipse.equinox.app.source" version="1.3.200.v20130910-1609"/>
 <plugin id="org.eclipse.equinox.app.source" version="1.3.200.v20130910-1609"/>
 <plugin id="org.eclipse.equinox.bidi"/>
 <plugin id="org.eclipse.equinox.bidi.source"/>
 <plugin id="org.eclipse.equinox.common" version="3.6.200.v20130402-1505"/>
-<plugin id="org.eclipse.equinox.common" version="3.6.200.v20130402-1505"/>
-<plugin id="org.eclipse.equinox.common.source" version="3.6.200.v20130402-1505"/>
 <plugin id="org.eclipse.equinox.common.source" version="3.6.200.v20130402-1505"/>
 <plugin id="org.eclipse.equinox.concurrent"/>
 <plugin id="org.eclipse.equinox.concurrent.source"/>
 <plugin id="org.eclipse.equinox.console"/>
 <plugin id="org.eclipse.equinox.console.source"/>
 <plugin id="org.eclipse.equinox.ds" version="1.4.200.v20131126-2331"/>
-<plugin id="org.eclipse.equinox.ds" version="1.4.200.v20131126-2331"/>
-<plugin id="org.eclipse.equinox.ds.source" version="1.4.200.v20131126-2331"/>
 <plugin id="org.eclipse.equinox.ds.source" version="1.4.200.v20131126-2331"/>
 <plugin id="org.eclipse.equinox.event"/>
 <plugin id="org.eclipse.equinox.event.source"/>
@@ -363,6 +282,7 @@
 <plugin id="org.eclipse.equinox.launcher"/>
 <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86_64"/>
 <plugin id="org.eclipse.equinox.launcher.source"/>
+<plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64"/>
 <plugin id="org.eclipse.equinox.p2.artifact.repository"/>
 <plugin id="org.eclipse.equinox.p2.artifact.repository.source"/>
 <plugin id="org.eclipse.equinox.p2.console"/>
@@ -420,30 +340,23 @@
 <plugin id="org.eclipse.equinox.p2.updatesite"/>
 <plugin id="org.eclipse.equinox.p2.updatesite.source"/>
 <plugin id="org.eclipse.equinox.preferences" version="3.5.200.v20140224-1527"/>
-<plugin id="org.eclipse.equinox.preferences" version="3.5.200.v20140224-1527"/>
-<plugin id="org.eclipse.equinox.preferences.source" version="3.5.200.v20140224-1527"/>
 <plugin id="org.eclipse.equinox.preferences.source" version="3.5.200.v20140224-1527"/>
 <plugin id="org.eclipse.equinox.registry" version="3.5.400.v20140428-1507"/>
-<plugin id="org.eclipse.equinox.registry" version="3.5.400.v20140428-1507"/>
-<plugin id="org.eclipse.equinox.registry.source" version="3.5.400.v20140428-1507"/>
 <plugin id="org.eclipse.equinox.registry.source" version="3.5.400.v20140428-1507"/>
 <plugin id="org.eclipse.equinox.security"/>
 <plugin id="org.eclipse.equinox.security.source"/>
 <plugin id="org.eclipse.equinox.security.ui"/>
 <plugin id="org.eclipse.equinox.security.ui.source"/>
+<plugin id="org.eclipse.equinox.security.win32.x86_64"/>
 <plugin id="org.eclipse.equinox.simpleconfigurator"/>
 <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator"/>
 <plugin id="org.eclipse.equinox.simpleconfigurator.manipulator.source"/>
 <plugin id="org.eclipse.equinox.simpleconfigurator.source"/>
 <plugin id="org.eclipse.equinox.util" version="1.0.500.v20130404-1337"/>
-<plugin id="org.eclipse.equinox.util" version="1.0.500.v20130404-1337"/>
 <plugin id="org.eclipse.equinox.util.source" version="1.0.500.v20130404-1337"/>
-<plugin id="org.eclipse.equinox.util.source" version="1.0.500.v20130404-1337"/>
-<plugin id="org.eclipse.help" version="3.6.0.v20130326-1254"/>
 <plugin id="org.eclipse.help" version="3.6.0.v20130326-1254"/>
 <plugin id="org.eclipse.help.base"/>
 <plugin id="org.eclipse.help.base.source"/>
-<plugin id="org.eclipse.help.source" version="3.6.0.v20130326-1254"/>
 <plugin id="org.eclipse.help.source" version="3.6.0.v20130326-1254"/>
 <plugin id="org.eclipse.help.ui"/>
 <plugin id="org.eclipse.help.ui.source"/>
@@ -500,12 +413,8 @@
 <plugin id="org.eclipse.jetty.util"/>
 <plugin id="org.eclipse.jetty.util.source"/>
 <plugin id="org.eclipse.jface" version="3.10.2.v20141021-1035"/>
-<plugin id="org.eclipse.jface" version="3.10.2.v20141021-1035"/>
-<plugin id="org.eclipse.jface.databinding" version="1.6.200.v20140528-1422"/>
 <plugin id="org.eclipse.jface.databinding" version="1.6.200.v20140528-1422"/>
 <plugin id="org.eclipse.jface.databinding.source" version="1.6.200.v20140528-1422"/>
-<plugin id="org.eclipse.jface.databinding.source" version="1.6.200.v20140528-1422"/>
-<plugin id="org.eclipse.jface.source" version="3.10.2.v20141021-1035"/>
 <plugin id="org.eclipse.jface.source" version="3.10.2.v20141021-1035"/>
 <plugin id="org.eclipse.jface.text"/>
 <plugin id="org.eclipse.jface.text.source"/>
@@ -518,14 +427,10 @@
 <plugin id="org.eclipse.ltk.ui.refactoring"/>
 <plugin id="org.eclipse.ltk.ui.refactoring.source"/>
 <plugin id="org.eclipse.osgi" version="3.10.2.v20150203-1939"/>
-<plugin id="org.eclipse.osgi" version="3.10.2.v20150203-1939"/>
 <plugin id="org.eclipse.osgi.compatibility.state"/>
 <plugin id="org.eclipse.osgi.compatibility.state.source"/>
 <plugin id="org.eclipse.osgi.services" version="3.4.0.v20140312-2051"/>
-<plugin id="org.eclipse.osgi.services" version="3.4.0.v20140312-2051"/>
 <plugin id="org.eclipse.osgi.services.source" version="3.4.0.v20140312-2051"/>
-<plugin id="org.eclipse.osgi.services.source" version="3.4.0.v20140312-2051"/>
-<plugin id="org.eclipse.osgi.source" version="3.10.2.v20150203-1939"/>
 <plugin id="org.eclipse.osgi.source" version="3.10.2.v20150203-1939"/>
 <plugin id="org.eclipse.osgi.util"/>
 <plugin id="org.eclipse.osgi.util.source"/>
@@ -566,16 +471,16 @@
 <plugin id="org.eclipse.search"/>
 <plugin id="org.eclipse.search.source"/>
 <plugin id="org.eclipse.swt" version="3.103.2.v20150203-1313"/>
-<plugin id="org.eclipse.swt" version="3.103.2.v20150203-1313"/>
 <plugin id="org.eclipse.swt.gtk.linux.x86_64"/>
 <plugin id="org.eclipse.swt.gtk.linux.x86_64.source"/>
+<plugin id="org.eclipse.swt.win32.win32.x86_64"/>
+<plugin id="org.eclipse.swt.win32.win32.x86_64.source"/>
 <plugin id="org.eclipse.team.core"/>
 <plugin id="org.eclipse.team.core.source"/>
 <plugin id="org.eclipse.team.ui"/>
 <plugin id="org.eclipse.team.ui.source"/>
 <plugin id="org.eclipse.text"/>
 <plugin id="org.eclipse.text.source"/>
-<plugin id="org.eclipse.ui" version="3.106.1.v20141002-1150"/>
 <plugin id="org.eclipse.ui" version="3.106.1.v20141002-1150"/>
 <plugin id="org.eclipse.ui.browser"/>
 <plugin id="org.eclipse.ui.browser.source"/>
@@ -604,7 +509,6 @@
 <plugin id="org.eclipse.ui.net"/>
 <plugin id="org.eclipse.ui.net.source"/>
 <plugin id="org.eclipse.ui.source" version="3.106.1.v20141002-1150"/>
-<plugin id="org.eclipse.ui.source" version="3.106.1.v20141002-1150"/>
 <plugin id="org.eclipse.ui.themes"/>
 <plugin id="org.eclipse.ui.themes.source"/>
 <plugin id="org.eclipse.ui.trace"/>
@@ -615,9 +519,8 @@
 <plugin id="org.eclipse.ui.views.properties.tabbed"/>
 <plugin id="org.eclipse.ui.views.properties.tabbed.source"/>
 <plugin id="org.eclipse.ui.views.source"/>
+<plugin id="org.eclipse.ui.win32"/>
 <plugin id="org.eclipse.ui.workbench" version="3.106.2.v20150204-1030"/>
-<plugin id="org.eclipse.ui.workbench" version="3.106.2.v20150204-1030"/>
-<plugin id="org.eclipse.ui.workbench.source" version="3.106.2.v20150204-1030"/>
 <plugin id="org.eclipse.ui.workbench.source" version="3.106.2.v20150204-1030"/>
 <plugin id="org.eclipse.ui.workbench.texteditor"/>
 <plugin id="org.eclipse.ui.workbench.texteditor.source"/>
@@ -638,20 +541,12 @@
 <plugin id="org.slf4j.impl.log4j12"/>
 <plugin id="org.slf4j.impl.log4j12.source"/>
 <plugin id="org.w3c.css.sac" version="1.3.1.v200903091627"/>
-<plugin id="org.w3c.css.sac" version="1.3.1.v200903091627"/>
-<plugin id="org.w3c.css.sac.source" version="1.3.1.v200903091627"/>
 <plugin id="org.w3c.css.sac.source" version="1.3.1.v200903091627"/>
 <plugin id="org.w3c.dom.events" version="3.0.0.draft20060413_v201105210656"/>
-<plugin id="org.w3c.dom.events" version="3.0.0.draft20060413_v201105210656"/>
-<plugin id="org.w3c.dom.events.source" version="3.0.0.draft20060413_v201105210656"/>
 <plugin id="org.w3c.dom.events.source" version="3.0.0.draft20060413_v201105210656"/>
 <plugin id="org.w3c.dom.smil" version="1.0.0.v200806040011"/>
-<plugin id="org.w3c.dom.smil" version="1.0.0.v200806040011"/>
-<plugin id="org.w3c.dom.smil.source" version="1.0.0.v200806040011"/>
 <plugin id="org.w3c.dom.smil.source" version="1.0.0.v200806040011"/>
 <plugin id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
-<plugin id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
-<plugin id="org.w3c.dom.svg.source" version="1.1.0.v201011041433"/>
 <plugin id="org.w3c.dom.svg.source" version="1.1.0.v201011041433"/>
 </includeBundles>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-7-openjdk-amd64"/>
