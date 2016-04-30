@@ -115,6 +115,8 @@ public class AdaptorConfiguration {
    */
   private File configFile;
   
+  private boolean dirty;
+  
   private AdaptorConfiguration() {
   }
   
@@ -135,14 +137,28 @@ public class AdaptorConfiguration {
    * This is done in the Activator.
    */
   public void init(IPath stateLocation) {
-    boolean updated = false;
+    File location = stateLocation.toFile();
+    System.err.println("STATE LOCATION: " + location);
+    configFile = new File(location, FILENAME);
+    
     // Load from the state location first.
+    loadLocalConfig();
+    
+    // Now update with the distribution data. This will not replace anything.
+    loadDefaults();
+    
+    if (dirty) {
+      save();
+    }
+  }
+  
+  /**
+   * Load configuration information from the local file
+   */
+  private void loadLocalConfig() {
     try {
       InputStream is = null;
       try {
-        File location = stateLocation.toFile();
-        System.err.println("STATE LOCATION: " + location);
-        configFile = new File(location, FILENAME);
         if (configFile.exists()) {
           is = new FileInputStream(configFile);
           load(is);
@@ -153,13 +169,6 @@ public class AdaptorConfiguration {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    
-    // Now update with the distribution data. This will not replace anything.
-    updated = loadDefaults();
-    
-    if (updated) {
-      save();
-    }
   }
   
   /**
@@ -167,20 +176,18 @@ public class AdaptorConfiguration {
    * 
    * @return True if the default definitions changed the config set.
    */
-  private boolean loadDefaults() {
-    boolean updated = false;
+  private void loadDefaults() {
     try {
       InputStream is = null;
       try {
         is = getClass().getResourceAsStream("/resources/" + FILENAME);
-        updated = load(is);
+        load(is);
       } finally {
         if (is != null) is.close();
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return updated;
   }
   
   /**
@@ -190,8 +197,7 @@ public class AdaptorConfiguration {
    * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  private synchronized boolean load(InputStream is) throws IOException {
-    boolean changed = false;
+  private synchronized void load(InputStream is) throws IOException {
     InputStreamReader in = null;
     CSVParser parser = null;
     try {
@@ -247,17 +253,18 @@ public class AdaptorConfiguration {
         if (header) {
           header = false;
         } else {
-          if (!row.isEmpty()) {
+          if (row.size() > COLUMN_CWE) {
             String cwe = (String) row.get(COLUMN_CWE);
             // Only add a new row if this is a non-empty row and the CWE
             // does not exist in the map yet.
             if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
               data.add(row);
               rowMap.put((String) row.get(COLUMN_CWE), rcount);
-              visibilityMap.put((String) row.get(COLUMN_CWE), !"No".equals(row.get(COLUMN_SHOW)));
+              ShowField showState = (ShowField) row.get(COLUMN_SHOW);
+              visibilityMap.put((String) row.get(COLUMN_CWE), showState.toBoolean());
               // We just added a new row
               rcount++;
-              changed = true;
+              dirty = true;
             }
           }
         }
@@ -270,11 +277,10 @@ public class AdaptorConfiguration {
         parser.close();
       }
     }
-    return changed;
   }
   
-  /** Convert the input text into an appropriate representative object
-   * for the cell.
+  /**
+   * Convert the input text into an appropriate representative object for the cell.
    * 
    * @param header
    * @param index
@@ -284,7 +290,10 @@ public class AdaptorConfiguration {
   private Object getCell(boolean header, int index, String text) {
     if (!header) {
       if (index == COLUMN_SHOW) {
-        return YesNoUnsetState.fromString(text);
+        return ShowField.fromString(text);
+      }
+      if (index == COLUMN_CPPCHECK) {
+        return TrustField.fromString(text);
       }
     }
     return text;
@@ -297,25 +306,28 @@ public class AdaptorConfiguration {
    * @throws IOException
    */
   public synchronized void save() {
-    try {
-      OutputStream os = null;
-      CSVPrinter printer = null;
+    if (dirty) {
       try {
-        os = new FileOutputStream(configFile);
-        // Create the CSVFormat object with "\n" as a record delimiter
-        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
-        OutputStreamWriter out = new OutputStreamWriter(os);
-        printer = new CSVPrinter(out, csvFileFormat);
-        printer.printRecord(headers);
-        for (List<?> row : data) {
-          printer.printRecord(row.toString());
+        OutputStream os = null;
+        CSVPrinter printer = null;
+        try {
+          os = new FileOutputStream(configFile);
+          // Create the CSVFormat object with "\n" as a record delimiter
+          CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+          OutputStreamWriter out = new OutputStreamWriter(os);
+          printer = new CSVPrinter(out, csvFileFormat);
+          printer.printRecord(headers);
+          for (List<?> row : data) {
+            printer.printRecord(row);
+          }
+        } finally {
+          if (printer != null) printer.close();
+          if (os != null) os.close();
         }
-      } finally {
-        if (printer != null) printer.close();
-        if (os != null) os.close();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    } catch (IOException e) {
-      e.printStackTrace();
+      dirty = false;
     }
   }
   
@@ -344,10 +356,25 @@ public class AdaptorConfiguration {
   }
   
   /**
+   * Reload the local configuration.
+   */
+  public void reset() {
+    data.clear();
+    rowMap.clear();
+    visibilityMap.clear();
+    headers = null;
+    // Load from the state location first.
+    loadLocalConfig();
+    
+    // Now update with the distribution data. This will not replace anything.
+    loadDefaults();
+  }
+  
+  /**
    * Completely reload the configuration data from the system default set. This will not overwrite
    * the local copy unless save is called.
    */
-  public void reset() {
+  public void resetToDefault() {
     data.clear();
     rowMap.clear();
     visibilityMap.clear();
@@ -389,5 +416,26 @@ public class AdaptorConfiguration {
    */
   public int getCweColumnIndex() {
     return COLUMN_CWE;
+  }
+  
+  public int getShowColumnIndex() {
+    return COLUMN_SHOW;
+  }
+  
+  /**
+   * Replace a row's data
+   * 
+   * @param row
+   */
+  public void update(List<Object> row) {
+    String cwe = (String) row.get(COLUMN_CWE);
+    int rowNum = rowMap.get(cwe);
+    data.remove(rowNum);
+    data.add(rowNum, row);
+    
+    ShowField state = (ShowField) row.get(COLUMN_SHOW);
+    visibilityMap.put(cwe, state.toBoolean());
+    
+    dirty = true;
   }
 }

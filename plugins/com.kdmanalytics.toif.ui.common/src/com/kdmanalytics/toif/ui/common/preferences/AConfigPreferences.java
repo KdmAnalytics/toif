@@ -10,11 +10,8 @@ import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -32,9 +29,6 @@ import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
  *
  */
 public class AConfigPreferences extends PreferencePage implements IWorkbenchPreferencePage {
-  
-  
-  private Button reloadButton = null;
 
   /**
    * 
@@ -77,7 +71,6 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     composite.setLayout(layout);
     
     addTable(composite);
-    addReloadButton(composite);
     
     return composite;
   }
@@ -104,6 +97,7 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     //
     Table table = viewer.getTable();
     GridData gridData = new GridData();
+    gridData.heightHint = 400;
     gridData.horizontalAlignment = GridData.FILL;
     gridData.verticalAlignment = GridData.FILL;
     gridData.grabExcessHorizontalSpace = true;
@@ -123,6 +117,9 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     for(int i = 0; i < header.size(); i++) {
       TableViewerColumn col = createTableViewerColumn(viewer, header.get(i), 50, 0, true);
       col.setLabelProvider(new AConfigStyledLabelProvider(config));
+      if (config.getShowColumnIndex() == i) {
+        col.setEditingSupport(new ShowEditingSupport(viewer, config));
+      }
     }
     
     //    // File Column
@@ -176,45 +173,6 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
       return viewerColumn;
   }
 
-  /**
-   * Add the reload button, which loads default configuration information into the config file. This
-   * will not SAVE the new file.
-   * 
-   * @param composite
-   */
-  private void addReloadButton(Composite composite) {
-    reloadButton = new Button(composite, SWT.PUSH);
-    reloadButton.setText("Reload defaults");
-    GridData gridData = new GridData(SWT.FILL);
-    gridData.horizontalSpan = 3;
-    reloadButton.addSelectionListener(new SelectionListener() {
-      
-      
-      /*
-       * (non-Javadoc)
-       * 
-       * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.
-       * SelectionEvent)
-       */
-      @Override
-      public void widgetSelected(SelectionEvent e) {
-        config.reset();
-      }
-      
-      /*
-       * (non-Javadoc)
-       * 
-       * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.
-       * SelectionEvent)
-       */
-      @Override
-      public void widgetDefaultSelected(SelectionEvent e) {
-        widgetSelected(e);
-      }
-    });
-    reloadButton.setLayoutData(gridData);
-  }
-  
   /*
    * (non-Javadoc)
    * 
@@ -225,6 +183,17 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     doApply();
   }
   
+  @Override
+  protected void performDefaults() {
+    config.resetToDefault();
+    viewer.refresh();
+  };
+  
+  @Override
+  public boolean performCancel() {
+    config.reset();
+    return super.performCancel();
+  }
   /*
    * (non-Javadoc)
    * 

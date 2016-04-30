@@ -9,7 +9,7 @@ package com.kdmanalytics.toif.ui.common;
  * @author Ken Duck
  *
  */
-public enum YesNoUnsetState {
+public enum ShowField {
   YES,
   NO,
   UNSET;
@@ -30,12 +30,24 @@ public enum YesNoUnsetState {
    */
   public static Object fromString(String text) {
     if (text != null) {
-      for (YesNoUnsetState state : YesNoUnsetState.values()) {
+      for (ShowField state : ShowField.values()) {
         if (text.equalsIgnoreCase(state.toString())) {
           return state;
         }
       }
     }
     return UNSET;
+  }
+
+  /** Get a simple boolean value.
+   * 
+   * @return
+   */
+  public Boolean toBoolean() {
+    switch(this) {
+      case YES: return true;
+      case NO: return false;
+      default: return true;
+    }
   }
 }
