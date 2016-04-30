@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.kdmanalytics.toif.ui.internal.filters.AbstractTwoToolsFilter;
 import com.kdmanalytics.toif.ui.internal.filters.AndFilter;
+import com.kdmanalytics.toif.ui.internal.filters.ConfiguredVisibilityFilter;
 import com.kdmanalytics.toif.ui.internal.filters.InvalidSfpFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
 
@@ -22,7 +23,7 @@ public class FilterUtility {
   
   private FindingView view;
   private TableViewer viewer;
-  private AndFilter andFilter = new AndFilter();
+  private AndFilter andFilter;
 
   /** Instantiate the utilities. Find important filters.
    * 
@@ -31,6 +32,10 @@ public class FilterUtility {
   public FilterUtility(FindingView view, TableViewer viewer) {
     this.viewer = viewer;
     this.view = view;
+    
+    andFilter = new AndFilter();
+    // The visibility filter is ALWAYS enabled
+    andFilter.add(new ConfiguredVisibilityFilter());
     
     ViewerFilter[] filters = viewer.getFilters();
     if(filters != null) {
@@ -96,6 +101,8 @@ public class FilterUtility {
    */
   public void clear() {
     andFilter.clear();
+    // The visibility filter is ALWAYS enabled
+    andFilter.add(new ConfiguredVisibilityFilter());
   }
 
   /** Remove all filters of the specified class.

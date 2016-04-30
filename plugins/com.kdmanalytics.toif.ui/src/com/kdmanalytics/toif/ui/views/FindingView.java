@@ -469,6 +469,11 @@ public class FindingView extends ViewPart
         // Listen to change events so we know what to run actions upon
         selection = new FindingSelectionChangedListener();
         viewer.addSelectionChangedListener(selection);
+        
+        // Enable the default filters
+        FilterUtility filter = new FilterUtility(this, viewer);
+        filter.applyFilters();
+
 
         Table table = viewer.getTable();
         GridData gridData = new GridData();
