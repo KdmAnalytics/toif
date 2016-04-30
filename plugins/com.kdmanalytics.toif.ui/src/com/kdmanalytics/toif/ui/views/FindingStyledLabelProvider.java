@@ -114,10 +114,10 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
         return entry.getTool();
       }
       case 3: {
-        return entry.getSfp();
+        return fixSfpCweIdentifier(entry.getSfp());
       }
       case 4: {
-        return entry.getCwe();
+        return fixSfpCweIdentifier(entry.getCwe());
       }
       case 5: {
         return Integer.toString(entry.getTrust());
@@ -129,6 +129,15 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
     return null;
   }
   
+  /** CWE and SFP identifiers should not have single hyphens in them.
+   * 
+   * @param name
+   * @return
+   */
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
+  }
+
   /**
    * Gets the image.
    * 

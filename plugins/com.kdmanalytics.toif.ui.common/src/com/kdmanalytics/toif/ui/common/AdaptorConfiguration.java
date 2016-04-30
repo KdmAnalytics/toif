@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved.
+ */
 
 package com.kdmanalytics.toif.ui.common;
 
@@ -25,7 +28,8 @@ import org.eclipse.core.runtime.IPath;
  * this includes various UI components.
  * 
  * CSV code samples can be found here:
- *    https://examples.javacodegeeks.com/core-java/apache/commons/csv-commons/writeread-csv-files-with-apache-commons-csv-example/
+ * https://examples.javacodegeeks.com/core-java/apache/commons/csv-commons/writeread-csv-files-with-
+ * apache-commons-csv-example/
  * 
  * @author Ken Duck
  *
@@ -34,36 +38,54 @@ public class AdaptorConfiguration {
   
   
   private static final String FILENAME = "AllAdaptorConfiguration.csv";
-  //Delimiter used in CSV file
+  
+  // Delimiter used in CSV file
   private static final String NEW_LINE_SEPARATOR = "\n";
   
   /**
    * The strings expected in the header.
    */
   private static String COLUMN_SFP_STRING = "SFP";
+  
   private static String COLUMN_CWE_STRING = "CWE";
+  
   private static String COLUMN_SHOW_STRING = "Show?";
+  
   private static String COLUMN_CPPCHECK_STRING = "Cppcheck";
+  
   private static String COLUMN_RATS_STRING = "RATS";
+  
   private static String COLUMN_SPLINT_STRING = "Splint";
+  
   private static String COLUMN_JLINT_STRING = "Jlint";
+  
   private static String COLUMN_FINDBUGS_STRING = "Findbugs";
+  
   private static String COLUMN_COUNT_C_STRING = "Count C/C++";
+  
   private static String COLUMN_COUNT_JAVA_STRING = "Count Java";
   
   /**
-   * The column numbers might very well change. They are determined by the
-   * header location.
+   * The column numbers might very well change. They are determined by the header location.
    */
   private static int COLUMN_SFP = 0;
+  
   private static int COLUMN_CWE = 1;
+  
   private static int COLUMN_SHOW = 2;
+  
   private static int COLUMN_CPPCHECK = 3;
+  
   private static int COLUMN_RATS = 4;
+  
   private static int COLUMN_SPLINT = 5;
+  
   private static int COLUMN_JLINT = 6;
+  
   private static int COLUMN_FINDBUGS = 7;
+  
   private static int COLUMN_COUNT_C = 8;
+  
   private static int COLUMN_COUNT_JAVA = 9;
   
   private static AdaptorConfiguration instance;
@@ -76,18 +98,18 @@ public class AdaptorConfiguration {
   /**
    * Table data
    */
-  private List<List<String>> data = new LinkedList<List<String>>();
+  private List<List<?>> data = new LinkedList<List<?>>();
   
   /**
    * Map of cwe to data position
    */
-  private Map<String,Integer> rowMap = new HashMap<String,Integer>();
+  private Map<String, Integer> rowMap = new HashMap<String, Integer>();
   
   /**
    * Map of cwe to visibility
    */
-  private Map<String,Boolean> visibilityMap = new HashMap<String,Boolean>();
-
+  private Map<String, Boolean> visibilityMap = new HashMap<String, Boolean>();
+  
   /**
    * Location of the "local" config file copy. This is the working copy.
    */
@@ -133,6 +155,20 @@ public class AdaptorConfiguration {
     }
     
     // Now update with the distribution data. This will not replace anything.
+    updated = loadDefaults();
+    
+    if (updated) {
+      save();
+    }
+  }
+  
+  /**
+   * Load the default definitions into the current set.
+   * 
+   * @return True if the default definitions changed the config set.
+   */
+  private boolean loadDefaults() {
+    boolean updated = false;
     try {
       InputStream is = null;
       try {
@@ -144,10 +180,7 @@ public class AdaptorConfiguration {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    
-    if (updated) {
-      save();
-    }
+    return updated;
   }
   
   /**
@@ -156,6 +189,7 @@ public class AdaptorConfiguration {
    * @param is
    * @throws IOException
    */
+  @SuppressWarnings("unchecked")
   private synchronized boolean load(InputStream is) throws IOException {
     boolean changed = false;
     InputStreamReader in = null;
@@ -174,13 +208,13 @@ public class AdaptorConfiguration {
       for (CSVRecord record : parser) {
         int size = record.size();
         
-        List<String> row = null;
+        @SuppressWarnings("rawtypes")
+        List row = null;
         if (header) {
-          if(headers == null) {
+          if (headers == null) {
             headers = new LinkedList<String>();
             row = headers;
-          }
-          else {
+          } else {
             // This will be thrown out. Duplicate header.
             // FIXME: This is actually a NEW header which should be used
             // to figure out the proper column ordering in case it changed
@@ -188,25 +222,25 @@ public class AdaptorConfiguration {
             row = new LinkedList<String>();
           }
         } else {
-          row = new LinkedList<String>();
+          row = new LinkedList<Object>();
         }
         
         // Import the cells
         for (int i = 0; i < size; i++) {
           String text = record.get(i);
-          row.add(text);
+          row.add(getCell(header, i, text));
           
-          if(header) {
-            if(COLUMN_SFP_STRING.equals(text)) COLUMN_SFP = i;
-            if(COLUMN_CWE_STRING.equals(text)) COLUMN_CWE = i;
-            if(COLUMN_SHOW_STRING.equals(text)) COLUMN_SHOW = i;
-            if(COLUMN_CPPCHECK_STRING.equals(text)) COLUMN_CPPCHECK = i;
-            if(COLUMN_RATS_STRING.equals(text)) COLUMN_RATS = i;
-            if(COLUMN_SPLINT_STRING.equals(text)) COLUMN_SPLINT = i;
-            if(COLUMN_JLINT_STRING.equals(text)) COLUMN_JLINT = i;
-            if(COLUMN_FINDBUGS_STRING.equals(text)) COLUMN_FINDBUGS = i;
-            if(COLUMN_COUNT_C_STRING.equals(text)) COLUMN_COUNT_C = i;
-            if(COLUMN_COUNT_JAVA_STRING.equals(text)) COLUMN_COUNT_JAVA = i;
+          if (header) {
+            if (COLUMN_SFP_STRING.equals(text)) COLUMN_SFP = i;
+            if (COLUMN_CWE_STRING.equals(text)) COLUMN_CWE = i;
+            if (COLUMN_SHOW_STRING.equals(text)) COLUMN_SHOW = i;
+            if (COLUMN_CPPCHECK_STRING.equals(text)) COLUMN_CPPCHECK = i;
+            if (COLUMN_RATS_STRING.equals(text)) COLUMN_RATS = i;
+            if (COLUMN_SPLINT_STRING.equals(text)) COLUMN_SPLINT = i;
+            if (COLUMN_JLINT_STRING.equals(text)) COLUMN_JLINT = i;
+            if (COLUMN_FINDBUGS_STRING.equals(text)) COLUMN_FINDBUGS = i;
+            if (COLUMN_COUNT_C_STRING.equals(text)) COLUMN_COUNT_C = i;
+            if (COLUMN_COUNT_JAVA_STRING.equals(text)) COLUMN_COUNT_JAVA = i;
           }
         }
         
@@ -214,13 +248,13 @@ public class AdaptorConfiguration {
           header = false;
         } else {
           if (!row.isEmpty()) {
-            String cwe = row.get(COLUMN_CWE);
+            String cwe = (String) row.get(COLUMN_CWE);
             // Only add a new row if this is a non-empty row and the CWE
             // does not exist in the map yet.
             if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
               data.add(row);
-              rowMap.put(row.get(COLUMN_CWE), rcount);
-              visibilityMap.put(row.get(COLUMN_CWE), !"No".equals(row.get(COLUMN_SHOW)));
+              rowMap.put((String) row.get(COLUMN_CWE), rcount);
+              visibilityMap.put((String) row.get(COLUMN_CWE), !"No".equals(row.get(COLUMN_SHOW)));
               // We just added a new row
               rcount++;
               changed = true;
@@ -239,11 +273,28 @@ public class AdaptorConfiguration {
     return changed;
   }
   
+  /** Convert the input text into an appropriate representative object
+   * for the cell.
+   * 
+   * @param header
+   * @param index
+   * @param text
+   * @return
+   */
+  private Object getCell(boolean header, int index, String text) {
+    if (!header) {
+      if (index == COLUMN_SHOW) {
+        return YesNoUnsetState.fromString(text);
+      }
+    }
+    return text;
+  }
+  
   /**
    * Save the data to the specified output stream
    * 
    * @param os
-   * @throws IOException 
+   * @throws IOException
    */
   public synchronized void save() {
     try {
@@ -251,16 +302,16 @@ public class AdaptorConfiguration {
       CSVPrinter printer = null;
       try {
         os = new FileOutputStream(configFile);
-        //Create the CSVFormat object with "\n" as a record delimiter
+        // Create the CSVFormat object with "\n" as a record delimiter
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
         OutputStreamWriter out = new OutputStreamWriter(os);
         printer = new CSVPrinter(out, csvFileFormat);
         printer.printRecord(headers);
-        for (List<String> row : data) {
-          printer.printRecord(row);
+        for (List<?> row : data) {
+          printer.printRecord(row.toString());
         }
       } finally {
-        if(printer != null) printer.close();
+        if (printer != null) printer.close();
         if (os != null) os.close();
       }
     } catch (IOException e) {
@@ -268,27 +319,75 @@ public class AdaptorConfiguration {
     }
   }
   
-  /** Get the weight used for sorting. 0 is at the top.
+  /**
+   * Get the weight used for sorting. 0 is at the top.
    * 
    * @param cwe
    * @return
    */
-  public int getWeight(String cwe)
-  {
-    if(rowMap.containsKey(cwe)) return rowMap.get(cwe);
+  public int getWeight(String cwe) {
+    if (rowMap.containsKey(cwe)) return rowMap.get(cwe);
     return rowMap.size();
   }
   
-  /** Return true if the CWE is visible.
+  /**
+   * Return true if the CWE is visible.
    * 
    * @param cwe
    * @return
    */
-  public boolean getVisibility(String cwe)
-  {
-    if(visibilityMap.containsKey(cwe)) {
+  public boolean getVisibility(String cwe) {
+    if (visibilityMap.containsKey(cwe)) {
       return visibilityMap.get(cwe);
     }
     return true;
+  }
+  
+  /**
+   * Completely reload the configuration data from the system default set. This will not overwrite
+   * the local copy unless save is called.
+   */
+  public void reset() {
+    data.clear();
+    rowMap.clear();
+    visibilityMap.clear();
+    headers = null;
+    loadDefaults();
+  }
+  
+  /**
+   * Get the headers.
+   * 
+   * @return
+   */
+  public List<String> getHeaders() {
+    return headers;
+  }
+  
+  /**
+   * Get the data as an array.
+   * 
+   * @return
+   */
+  public Object[] getDataArray() {
+    return data.toArray();
+  }
+  
+  /**
+   * Get the index for the SFP column
+   * 
+   * @return
+   */
+  public int getSfpColumnIndex() {
+    return COLUMN_SFP;
+  }
+  
+  /**
+   * Get the index for the CWE column
+   * 
+   * @return
+   */
+  public int getCweColumnIndex() {
+    return COLUMN_CWE;
   }
 }

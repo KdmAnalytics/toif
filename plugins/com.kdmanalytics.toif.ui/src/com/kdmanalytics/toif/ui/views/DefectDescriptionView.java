@@ -314,7 +314,10 @@ public class DefectDescriptionView extends ViewPart {
         DefectNode node = (DefectNode) element;
         switch (columnIndex) {
           case 0:
-            return node.getName();
+            String name = node.getName();
+            // CWE and SFP identifiers should not have single hyphens in them.
+            name = name.replaceAll("([^-])-([^-])", "$1$2");
+            return name;
           case 1:
             return node.getDescription();
         }
