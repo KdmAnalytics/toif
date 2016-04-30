@@ -140,6 +140,9 @@ public class FindingView extends ViewPart
 
     /** The Constant FILTER_KEY. */
     private static final String FILTER_KEY = "filter";
+    
+    /** The Constant SORT_KEY. */
+    private static final String SORT_KEY = "sort";
 
     /** The Constant FILTER_KEY. */
     private static final String NOT_WEAKNESS_KEY = "not_weakness";
@@ -172,10 +175,12 @@ public class FindingView extends ViewPart
     private FindingContentProvider contentProvider;
 
     private TableViewer viewer;
+    private Action defaultSortActionButton;
     private Action descriptionAction;
     private Action exportAction;
     private Action coverageAction;
     private Action filterAction;
+    private Action defaultSortAction;
     private Action doubleClickAction;
     private Action notAWeaknessAction;
     private Action isAWeaknessAction;
@@ -400,6 +405,12 @@ public class FindingView extends ViewPart
         {
             final URL url = this.getClass().getResource("/icons/filter.gif");
             imgReg.put(FILTER_KEY, ImageDescriptor.createFromURL(url));
+        }
+        
+        if(imgReg.get(SORT_KEY) == null)
+        {
+          final URL url = this.getClass().getResource("/icons/table_sort.png");
+          imgReg.put(SORT_KEY, ImageDescriptor.createFromURL(url));
         }
 
         if (imgReg.get(NOT_WEAKNESS_KEY) == null)
@@ -707,6 +718,7 @@ public class FindingView extends ViewPart
     private void fillLocalPullDown(IMenuManager manager)
     {
         manager.add(filterAction);
+        manager.add(defaultSortAction);
     }
 
     /**
@@ -729,6 +741,7 @@ public class FindingView extends ViewPart
      */
     private void fillLocalToolBar(IToolBarManager manager)
     {
+        manager.add(defaultSortActionButton);
         manager.add(descriptionAction);
         manager.add(exportAction);
         manager.add(coverageAction);
@@ -740,6 +753,12 @@ public class FindingView extends ViewPart
     private void makeActions()
     {
         final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
+
+        // Export Action
+        defaultSortActionButton = new DefaultSortAction(this, viewer);
+        defaultSortActionButton.setText("Default sort");
+        defaultSortActionButton.setToolTipText("Default sort");
+        defaultSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
 
         // Export Action
         descriptionAction = new Action()
@@ -859,7 +878,9 @@ public class FindingView extends ViewPart
         filterAction.setText("Filters...");
         filterAction.setImageDescriptor(imgReg.getDescriptor(FILTER_KEY));
 
-
+        defaultSortAction = new DefaultSortAction(this, viewer);
+        defaultSortAction.setText("Default sort");
+        defaultSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
 
         // Not a Weakness
         notAWeaknessAction = new Action()
@@ -871,7 +892,6 @@ public class FindingView extends ViewPart
             }
         };
         notAWeaknessAction.setText("Not a Weakness");
-        //filterAction.setToolTipText("Filters...");
         notAWeaknessAction.setImageDescriptor(imgReg.getDescriptor(NOT_WEAKNESS_KEY));
 
 
@@ -885,7 +905,6 @@ public class FindingView extends ViewPart
             }
         };
         isAWeaknessAction.setText("Is a Weakness");
-        //filterAction.setToolTipText("Filters...");
         isAWeaknessAction.setImageDescriptor(imgReg.getDescriptor(IS_WEAKNESS_KEY));
 
 
@@ -899,7 +918,6 @@ public class FindingView extends ViewPart
             }
         };
         unciteWeaknessAction.setText("Uncite Weakness");
-        //filterAction.setToolTipText("Filters...");
         unciteWeaknessAction.setImageDescriptor(imgReg.getDescriptor(UNCITE_WEAKNESS_KEY));
 
 
@@ -929,7 +947,6 @@ public class FindingView extends ViewPart
             }
         };
         setTrustLevelAction.setText("Set Trust Level");
-        //filterAction.setToolTipText("Filters...");
         setTrustLevelAction.setImageDescriptor(imgReg.getDescriptor(SET_TRUST_KEY));
 
 
@@ -942,7 +959,6 @@ public class FindingView extends ViewPart
             }
         };
         traceAction.setText("Trace");
-        //filterAction.setToolTipText("Filters...");
         traceAction.setImageDescriptor(imgReg.getDescriptor(TRACE_KEY));
         // Disable trace since no tools support it yet.
         traceAction.setEnabled(false);
@@ -957,7 +973,6 @@ public class FindingView extends ViewPart
             }
         };
         moreInformationAction.setText("More Information");
-        //filterAction.setToolTipText("Filters...");
         moreInformationAction.setImageDescriptor(imgReg.getDescriptor(MORE_INFO_KEY));
 
 

@@ -18,6 +18,7 @@ http://creativecommons.org/licenses/by/2.5/
 -page.png
 -page_white_stack.png
 -table_go.png
+-table_sort.png
 -tick.png
 -trace.png
 -up.png
