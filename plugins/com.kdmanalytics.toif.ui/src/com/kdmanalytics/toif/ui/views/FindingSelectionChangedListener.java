@@ -9,14 +9,13 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
 
@@ -31,7 +30,7 @@ public class FindingSelectionChangedListener extends FindingSelection implements
   /**
    * Table that owns the selection
    */
-  private TableViewer viewer = null;
+  private TreeViewer viewer = null;
   
   /*
    * (non-Javadoc)
@@ -42,7 +41,7 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    */
   @Override
   public void selectionChanged(SelectionChangedEvent event) {
-    viewer = (TableViewer) event.getSource();
+    viewer = (TreeViewer) event.getSource();
     
     IStructuredSelection selection = (IStructuredSelection) event.getSelection();
     clear();
@@ -78,22 +77,23 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    * @return Set of finding type IDs that were affected by the trust change
    */
   public Set<String> setTrust(int val) {
-    Set<String> types = super.setTrust(val);
-    
-    // Find everybody who needs updating
-    FindingContentProvider contents = (FindingContentProvider) viewer.getContentProvider();
-    FindingEntry[] findings = contents.getEntries();
-    List<FindingEntry> updatedFindings = new LinkedList<FindingEntry>();
-    if (findings != null) {
-      for (FindingEntry finding : findings) {
-        String tid = finding.getTypeId();
-        if (types.contains(tid)) {
-          updatedFindings.add(finding);
-        }
-      }
-    }
-    viewer.update(updatedFindings.toArray(), null);
-    return types;
+//    Set<String> types = super.setTrust(val);
+//    
+//    // Find everybody who needs updating
+//    FindingContentProvider contents = (FindingContentProvider) viewer.getContentProvider();
+//    FindingEntry[] findings = contents.getEntries();
+//    List<FindingEntry> updatedFindings = new LinkedList<FindingEntry>();
+//    if (findings != null) {
+//      for (FindingEntry finding : findings) {
+//        String tid = finding.getTypeId();
+//        if (types.contains(tid)) {
+//          updatedFindings.add(finding);
+//        }
+//      }
+//    }
+//    viewer.update(updatedFindings.toArray(), null);
+//    return types;
+    throw new UnsupportedOperationException();
   }
   
 }

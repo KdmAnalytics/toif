@@ -58,8 +58,8 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -76,9 +76,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -92,6 +92,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.kdmanalytics.etoif.ccr.CoverageClaimGenerator;
 import com.kdmanalytics.toif.ui.Activator;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
 
@@ -174,7 +175,7 @@ public class FindingView extends ViewPart
      */
     private FindingContentProvider contentProvider;
 
-    private TableViewer viewer;
+    private TreeViewer viewer;
     private Action defaultSortActionButton;
     private Action descriptionAction;
     private Action exportAction;
@@ -460,7 +461,7 @@ public class FindingView extends ViewPart
 
         createSearchControl(composite);
 
-        viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer = new TreeViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
         contentProvider = new FindingContentProvider();
         viewer.setContentProvider(contentProvider);
@@ -475,24 +476,24 @@ public class FindingView extends ViewPart
         filter.applyFilters();
 
 
-        Table table = viewer.getTable();
+        Tree tree = viewer.getTree();
         GridData gridData = new GridData();
         gridData.horizontalAlignment = GridData.FILL;
         gridData.verticalAlignment = GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalSpan = 3;
-        table.setLayoutData(gridData);
+        tree.setLayoutData(gridData);
 
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+        tree.setHeaderVisible(true);
+        tree.setLinesVisible(true);
         ColumnViewerToolTipSupport.enableFor(viewer);
 
         String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Trust", "Description" };
         int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
 
         // File Column
-        TableViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
+        TreeViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
         col.setLabelProvider(new FindingStyledLabelProvider());
 
         // Location Column
@@ -646,10 +647,10 @@ public class FindingView extends ViewPart
      * @param enableSorting
      * @return
      */
-    private TableViewerColumn createTableViewerColumn(TableViewer viewer, final String title, final int bound, final int colNumber, boolean enableSorting)
+    private TreeViewerColumn createTableViewerColumn(TreeViewer viewer, final String title, final int bound, final int colNumber, boolean enableSorting)
     {
-        TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.LEFT);
-        final TableColumn column = viewerColumn.getColumn();
+        TreeViewerColumn viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
+        final TreeColumn column = viewerColumn.getColumn();
         column.setText(title);
         column.setWidth(bound);
         column.setResizable(true);
@@ -668,19 +669,19 @@ public class FindingView extends ViewPart
      * @param index
      * @return
      */
-    private SelectionAdapter getSelectionAdapter(final TableViewer viewer, final TableColumn column, final int index)
+    private SelectionAdapter getSelectionAdapter(final TreeViewer viewer2, final TreeColumn column, final int index)
     {
         SelectionAdapter selectionAdaptor = new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                FindingViewerComparator comparator = (FindingViewerComparator) viewer.getComparator();
+                FindingViewerComparator comparator = (FindingViewerComparator) viewer2.getComparator();
                 comparator.setColumn(index);
                 int dir = comparator.getDirection();
-                viewer.getTable().setSortDirection(dir);
-                viewer.getTable().setSortColumn(column);
-                viewer.refresh();
+                viewer2.getTree().setSortDirection(dir);
+                viewer2.getTree().setSortColumn(column);
+                viewer2.refresh();
             }
         };
         return selectionAdaptor;
@@ -735,7 +736,8 @@ public class FindingView extends ViewPart
         manager.add(notAWeaknessAction);
         manager.add(isAWeaknessAction);
         manager.add(unciteWeaknessAction);
-        manager.add(setTrustLevelAction);
+        // Remove the setTrustLevel since it should be set by the Adaptor Configuration preferences
+        //manager.add(setTrustLevelAction);
         manager.add(traceAction);
         manager.add(moreInformationAction);
     }
@@ -857,7 +859,7 @@ public class FindingView extends ViewPart
                                 // Make and run the coverage generator on the workspace for now. We probably want to
                                 // restrict to the active project?
                                 FindingContentProvider contents = (FindingContentProvider)viewer.getContentProvider();
-                                FindingEntry[] findings = contents.getEntries();
+                                FindingEntry[] findings = contents.getFindingEntries();
                                 new CoverageClaimGenerator(findings, new File(savePath), false);
                                 return Status.OK_STATUS;
                             }
@@ -1043,7 +1045,7 @@ public class FindingView extends ViewPart
 
             // Save the findings
             FindingContentProvider contents = (FindingContentProvider)viewer.getContentProvider();
-            FindingEntry[] findings = contents.getEntries();
+            FindingEntry[] findings = contents.getFindingEntries();
             FindingSelection selection = new FindingSelection(findings, true);
 
             selection.exportTsv(saveFile.getLocation().toFile());
@@ -1237,7 +1239,7 @@ public class FindingView extends ViewPart
             public void run()
             {
                 final int totalEntries = contentProvider.getEntries().length;
-                final int visibleEntries = viewer.getTable().getItemCount();
+                final int visibleEntries = viewer.getTree().getItemCount();
 
                 setLabel("Number of Defects: " + visibleEntries + " (" + (totalEntries - visibleEntries) + " filtered from view)");
             }

@@ -20,12 +20,14 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Provides content to the view. Beyond working like a simple content provider, this class provides
@@ -37,13 +39,13 @@ import com.kdmanalytics.toif.ui.common.FindingEntry;
  * @author Ken Duck
  *        
  */
-class FindingContentProvider implements IStructuredContentProvider
+class FindingContentProvider implements ITreeContentProvider
 {
     /**
      * A map of entries to files. This makes it easier for us to update
      * entries on a per-file basis.
      */
-    private Map<IFile,List<FindingEntry>> findings = new HashMap<IFile,List<FindingEntry>>();
+    private Map<IFile,List<IFindingEntry>> findings = new HashMap<IFile,List<IFindingEntry>>();
 
     /**
      * Project we are currently showing issues for
@@ -82,10 +84,10 @@ class FindingContentProvider implements IStructuredContentProvider
         {
             if(currentProject != null && currentProject.isOpen())
             {
-                Collection<FindingEntry> findings = updateFindings(currentProject);
+                Collection<IFindingEntry> findings = updateFindings(currentProject);
                 if(findings != null)
                 {
-                    for (FindingEntry finding : findings)
+                    for (IFindingEntry finding : findings)
                     {
                         addEntry(finding);
                     }
@@ -103,9 +105,9 @@ class FindingContentProvider implements IStructuredContentProvider
      * @param workspaceRoot
      * @return A list of new findings
      */
-    private List<FindingEntry> updateFindings(IResource resource)
+    private List<IFindingEntry> updateFindings(IResource resource)
     {
-        List<FindingEntry> results = new LinkedList<FindingEntry>();
+        List<IFindingEntry> results = new LinkedList<IFindingEntry>();
         if(resource.exists())
         {
             if(resource.getProject().isOpen())
@@ -119,7 +121,7 @@ class FindingContentProvider implements IStructuredContentProvider
                         String type = marker.getType();
                         if(type != null && type.startsWith("com.kdmanalytics.toif"))
                         {
-                            FindingEntry entry = new FindingEntry(marker);
+                          IFindingEntry entry = new FindingEntry(marker);
                             results.add(entry);
                         }
                     }
@@ -137,9 +139,9 @@ class FindingContentProvider implements IStructuredContentProvider
      * 
      * @return
      */
-    public FindingEntry[] getEntries()
+    public IFindingEntry[] getEntries()
     {
-        List<FindingEntry> results = new LinkedList<FindingEntry>();
+        List<IFindingEntry> results = new LinkedList<IFindingEntry>();
 
         // Force update if the findings are currently empty
         if(findings.isEmpty() && currentProject != null)
@@ -147,9 +149,9 @@ class FindingContentProvider implements IStructuredContentProvider
             updateFindings(currentProject);
         }
 
-        for(List<FindingEntry> list: findings.values())
+        for(List<IFindingEntry> list: findings.values())
         {
-            for (FindingEntry entry : list)
+            for (IFindingEntry entry : list)
             {
                 results.add(entry);
             }
@@ -162,14 +164,14 @@ class FindingContentProvider implements IStructuredContentProvider
      * 
      * @param entry
      */
-    private void addEntry(FindingEntry entry)
+    private void addEntry(IFindingEntry entry)
     {
         IFile file = entry.getFile();
         if(!findings.containsKey(file))
         {
-            findings.put(file, new LinkedList<FindingEntry>());
+            findings.put(file, new LinkedList<IFindingEntry>());
         }
-        List<FindingEntry> list = findings.get(file);
+        List<IFindingEntry> list = findings.get(file);
         list.add(entry);
     }
 
@@ -178,7 +180,7 @@ class FindingContentProvider implements IStructuredContentProvider
      * 
      * @param resource
      */
-    public void update(final TableViewer viewer, final IFile file)
+    public void update(final TreeViewer viewer, final IFile file)
     {
         if(file == null) return;
         if(file.getProject() != this.currentProject) return;
@@ -188,24 +190,24 @@ class FindingContentProvider implements IStructuredContentProvider
             public void run()
             {
                 // Get old findings
-                List<FindingEntry> oldFindings = findings.get(file);
-                if(oldFindings == null) oldFindings = new LinkedList<FindingEntry>();
+                List<IFindingEntry> oldFindings = findings.get(file);
+                if(oldFindings == null) oldFindings = new LinkedList<IFindingEntry>();
                 // Get new findings
-                List<FindingEntry> newFindings = updateFindings(file);
+                List<IFindingEntry> newFindings = updateFindings(file);
 
                 if(!equals(oldFindings, newFindings))
                 {
                     findings.remove(file);
                     if(oldFindings != null)
                     {
-                        for (FindingEntry finding : oldFindings)
+                        for (IFindingEntry finding : oldFindings)
                         {
                             viewer.remove(finding);
                         }
                     }
-                    for (FindingEntry finding : newFindings)
+                    viewer.add(null, newFindings.toArray());
+                    for (IFindingEntry finding : newFindings)
                     {
-                        viewer.add(finding);
                         addEntry(finding);
                     }
 
@@ -219,16 +221,35 @@ class FindingContentProvider implements IStructuredContentProvider
              * @param list2
              * @return
              */
-            private boolean equals(List<FindingEntry> list1, List<FindingEntry> list2)
+            private boolean equals(List<IFindingEntry> list1, List<IFindingEntry> list2)
             {     
                 if (list1 == null && list2 == null) return true;
                 if(list1 == null) return false;
                 if(list2 == null) return false;
                 if(list1.size() != list2.size()) return false;
+                
+                List<FindingEntry> c1 = new LinkedList<FindingEntry>();
+                List<FindingEntry> c2 = new LinkedList<FindingEntry>();
+                
+                for (IFindingEntry entry: list1) {
+                  if (entry instanceof FindingEntry) {
+                    c1.add((FindingEntry)entry);
+                  } else {
+                    c1.addAll(((FindingGroup)entry).getFindingEntries());
+                  }
+                }
 
-                Collections.sort(list1);
-                Collections.sort(list2);      
-                return list1.equals(list2);
+                for (IFindingEntry entry: list2) {
+                  if (entry instanceof FindingEntry) {
+                    c2.add((FindingEntry)entry);
+                  } else {
+                    c2.addAll(((FindingGroup)entry).getFindingEntries());
+                  }
+                }
+
+                Collections.sort(c1);
+                Collections.sort(c2);      
+                return c1.equals(c2);
             }
         });
     }
@@ -239,5 +260,37 @@ class FindingContentProvider implements IStructuredContentProvider
     public void clear()
     {
         findings.clear();
+    }
+
+    @Override
+    public Object[] getChildren(Object parentElement) {
+      return getEntries();
+    }
+
+    @Override
+    public Object getParent(Object element) {
+      return null;
+    }
+
+    @Override
+    public boolean hasChildren(Object element) {
+      return false;
+    }
+
+    /** Get all of the entries themselves
+     * 
+     * @return
+     */
+    public FindingEntry[] getFindingEntries() {
+      IFindingEntry[] entries = getEntries();
+      List<FindingEntry> results = new LinkedList<FindingEntry>();
+      for (IFindingEntry entry : entries) {
+        if (entry instanceof FindingEntry) {
+          results.add((FindingEntry)entry);
+        } else {
+          results.addAll(((FindingGroup)entry).getFindingEntries());
+        }
+      }
+      return results.toArray(new FindingEntry[results.size()]);
     }
 }

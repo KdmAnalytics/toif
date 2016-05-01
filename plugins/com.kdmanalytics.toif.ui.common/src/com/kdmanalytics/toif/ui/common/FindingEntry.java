@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.CoreException;
  * @author Ken Duck
  *        
  */
-public class FindingEntry extends FindingData {
+public class FindingEntry extends FindingData implements IFindingEntry {
   
   /**
    * Pull the interesting information out of the marker.

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.kdmanalytics.toif.ui.internal.filters.AbstractTwoToolsFilter;
@@ -22,22 +23,22 @@ import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
 public class FilterUtility {
   
   private FindingView view;
-  private TableViewer viewer;
+  private TreeViewer viewer;
   private AndFilter andFilter;
 
   /** Instantiate the utilities. Find important filters.
    * 
-   * @param viewer
+   * @param viewer2
    */
-  public FilterUtility(FindingView view, TableViewer viewer) {
-    this.viewer = viewer;
+  public FilterUtility(FindingView view, TreeViewer viewer2) {
+    this.viewer = viewer2;
     this.view = view;
     
     andFilter = new AndFilter();
     // The visibility filter is ALWAYS enabled
     andFilter.add(new ConfiguredVisibilityFilter());
     
-    ViewerFilter[] filters = viewer.getFilters();
+    ViewerFilter[] filters = viewer2.getFilters();
     if(filters != null) {
       for (ViewerFilter filter : filters) {
         if(filter instanceof AndFilter) {

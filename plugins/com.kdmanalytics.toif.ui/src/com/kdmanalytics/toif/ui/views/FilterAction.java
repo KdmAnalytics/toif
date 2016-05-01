@@ -2,7 +2,7 @@
 package com.kdmanalytics.toif.ui.views;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 
 import com.kdmanalytics.toif.ui.internal.filters.CWETwoToolsFilter;
 import com.kdmanalytics.toif.ui.internal.filters.FiltersDialog;
@@ -26,14 +26,14 @@ public class FilterAction extends Action {
   /**
    * Viewer the filters will be applied to.
    */
-  private TableViewer viewer;
+  private TreeViewer viewer;
   
   /**
    * Used to update the count label
    */
   private FindingView view;
   
-  public FilterAction(FindingView view, TableViewer viewer) {
+  public FilterAction(FindingView view, TreeViewer viewer) {
     this.viewer = viewer;
     this.view = view;
   }
