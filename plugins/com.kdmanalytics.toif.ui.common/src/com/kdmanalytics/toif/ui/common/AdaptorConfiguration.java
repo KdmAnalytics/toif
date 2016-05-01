@@ -13,9 +13,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -437,5 +439,70 @@ public class AdaptorConfiguration {
     visibilityMap.put(cwe, state.toBoolean());
     
     dirty = true;
+  }
+  
+  /** Return true if the given index is one of the adaptors
+   * 
+   * @param index
+   * @return
+   */
+  public boolean isAdaptorIndex(int index) {
+    if(COLUMN_CPPCHECK == index) return true;
+    if(COLUMN_RATS == index) return true;
+    if(COLUMN_SPLINT == index) return true;
+    if(COLUMN_JLINT == index) return true;
+    if(COLUMN_FINDBUGS == index) return true;
+    return false;
+  }
+  
+  /** Get the size of the configuration
+   * 
+   * @return
+   */
+  public int getSize() {
+    return data.size();
+  }
+  
+  /** Get the location of the specified CWE
+   * 
+   * @param cwe
+   * @return
+   */
+  public int getIndex(String cwe) {
+    if(rowMap.containsKey(cwe)) {
+      return rowMap.get(cwe);
+    }
+    return data.size();
+  }
+
+  /** Remove the row
+   * 
+   * @param row
+   * @return The index of the removed row
+   */
+  public int remove(List<?> row) {
+    String cwe = (String) row.get(COLUMN_CWE);
+    int rowNum = rowMap.get(cwe);
+    data.remove(rowNum);
+    rowMap.remove(cwe);
+    visibilityMap.remove(cwe);
+    dirty = true;
+    return rowNum;
+  }
+
+  /** Add a row into the data set at the specified location
+   * 
+   * @param index
+   * @param row
+   */
+  public void add(int index, List<?> newRow) {
+    data.add(index, newRow);
+    
+    rowMap.clear();
+    int count = 0;
+    for(List<?> row: data) {
+      String cwe = (String) row.get(COLUMN_CWE);
+      rowMap.put(cwe, count++);
+    }
   }
 }

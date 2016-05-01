@@ -9,7 +9,10 @@ import java.util.List;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -21,6 +24,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.kdmanalytics.toif.ui.common.Activator;
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
+import com.kdmanalytics.toif.ui.common.dnd.ConfigDragListener;
+import com.kdmanalytics.toif.ui.common.dnd.ConfigDropListener;
 
 /**
  * View and edit the adaptor configuration file.
@@ -29,17 +34,18 @@ import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
  *
  */
 public class AConfigPreferences extends PreferencePage implements IWorkbenchPreferencePage {
-
+  
+  
   /**
    * 
    */
   private AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
-
+  
   /**
    * The table
    */
   private TableViewer viewer;
-
+  
   /**
    * Table contents, wraps around the configuration file
    */
@@ -75,24 +81,33 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     return composite;
   }
   
-  /** Add the configuration editing table to the layout
+  /**
+   * Add the configuration editing table to the layout
    * 
    * @param composite
    */
   private void addTable(Composite composite) {
     viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
     
-        contentProvider = new AConfigContentProvider();
-        viewer.setContentProvider(contentProvider);
-    //    viewer.setComparator(new FindingViewerComparator());
+    contentProvider = new AConfigContentProvider();
+    viewer.setContentProvider(contentProvider);
+    
+    // Drag and drop enablement
+    int ops = DND.DROP_MOVE;
+    Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer()};
+    viewer.addDragSupport(ops, transfers, new ConfigDragListener(viewer));
+    viewer.addDropSupport(ops, transfers, new ConfigDropListener(viewer));
+    //viewer.addDropSupport(ops, transfers, new GadgetTreeDropAdapter(viewer));
+    
+    // viewer.setComparator(new FindingViewerComparator());
     //
-    //    // Listen to change events so we know what to run actions upon
-    //    selection = new FindingSelectionChangedListener();
-    //    viewer.addSelectionChangedListener(selection);
-    //    
-    //    // Enable the default filters
-    //    FilterUtility filter = new FilterUtility(this, viewer);
-    //    filter.applyFilters();
+    // // Listen to change events so we know what to run actions upon
+    // selection = new FindingSelectionChangedListener();
+    // viewer.addSelectionChangedListener(selection);
+    //
+    // // Enable the default filters
+    // FilterUtility filter = new FilterUtility(this, viewer);
+    // filter.applyFilters();
     //
     //
     Table table = viewer.getTable();
@@ -107,53 +122,64 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     
     table.setHeaderVisible(true);
     table.setLinesVisible(true);
-    //    ColumnViewerToolTipSupport.enableFor(viewer);
+    // ColumnViewerToolTipSupport.enableFor(viewer);
     
     List<String> header = config.getHeaders();
     
-    //    String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Trust", "Description" };
-    //    int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
+    // String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Trust", "Description" };
+    // int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
     
-    for(int i = 0; i < header.size(); i++) {
+    for (int i = 0; i < header.size(); i++) {
       TableViewerColumn col = createTableViewerColumn(viewer, header.get(i), 50, 0, true);
       col.setLabelProvider(new AConfigStyledLabelProvider(config));
       if (config.getShowColumnIndex() == i) {
         col.setEditingSupport(new ShowEditingSupport(viewer, config));
       }
+      if (config.isAdaptorIndex(i)) {
+        col.setEditingSupport(new TrustEditingSupport(viewer, config, i));
+      }
     }
     
-    //    // File Column
-    //    TableViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // File Column
+    // TableViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // Location Column
-    //    col = createTableViewerColumn(viewer, titles[1], bounds[1], 1, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // Location Column
+    // col = createTableViewerColumn(viewer, titles[1], bounds[1], 1, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // Tool Column
-    //    col = createTableViewerColumn(viewer, titles[2], bounds[2], 2, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // Tool Column
+    // col = createTableViewerColumn(viewer, titles[2], bounds[2], 2, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // SFP Column
-    //    col = createTableViewerColumn(viewer, titles[3], bounds[3], 3, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // SFP Column
+    // col = createTableViewerColumn(viewer, titles[3], bounds[3], 3, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // CWE Column
-    //    col = createTableViewerColumn(viewer, titles[4], bounds[4], 4, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // CWE Column
+    // col = createTableViewerColumn(viewer, titles[4], bounds[4], 4, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // Trust Column
-    //    col = createTableViewerColumn(viewer, titles[5], bounds[5], 5, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // Trust Column
+    // col = createTableViewerColumn(viewer, titles[5], bounds[5], 5, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     //
-    //    // Description Column
-    //    col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
-    //    col.setLabelProvider(new FindingStyledLabelProvider());
+    // // Description Column
+    // col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
+    // col.setLabelProvider(new FindingStyledLabelProvider());
     
+    // Set the table data
     viewer.setInput(config);
+    
+    // Resize the columns to fit the data
+    TableColumn[] columns = table.getColumns();
+    for (TableColumn column : columns) {
+      column.pack();
+    }
   }
   
-  /** Create a column for the table.
+  /**
+   * Create a column for the table.
    * 
    * @param viewer
    * @param title
@@ -162,17 +188,17 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
    * @param enableSorting
    * @return
    */
-  private TableViewerColumn createTableViewerColumn(TableViewer viewer, final String title, final int bound, final int colNumber, boolean enableSorting)
-  {
-      TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.LEFT);
-      final TableColumn column = viewerColumn.getColumn();
-      column.setText(title);
-      column.setWidth(bound);
-      column.setResizable(true);
-      column.setMoveable(true);
-      return viewerColumn;
+  private TableViewerColumn createTableViewerColumn(TableViewer viewer, final String title, final int bound,
+                                                    final int colNumber, boolean enableSorting) {
+    TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.LEFT);
+    final TableColumn column = viewerColumn.getColumn();
+    column.setText(title);
+    column.setWidth(bound);
+    column.setResizable(true);
+    column.setMoveable(true);
+    return viewerColumn;
   }
-
+  
   /*
    * (non-Javadoc)
    * 
@@ -194,6 +220,7 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     config.reset();
     return super.performCancel();
   }
+  
   /*
    * (non-Javadoc)
    * 

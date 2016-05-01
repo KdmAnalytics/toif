@@ -62,4 +62,12 @@ public class TrustField {
     }
     return value.toString();
   }
+
+  /** Return true if this field represents a valid (editable) value.
+   * 
+   * @return
+   */
+  public boolean isValid() {
+    return value != null;
+  }
 }

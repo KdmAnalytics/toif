@@ -7,15 +7,15 @@ package com.kdmanalytics.toif.ui.common.preferences;
 import java.util.List;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
-import com.kdmanalytics.toif.ui.common.ShowField;
+import com.kdmanalytics.toif.ui.common.TrustField;
 
 /**
- * Editing support for the show column.
+ * Editing support for the Adaptor "trust" columns.
  * 
  * Editor help here:
  *   o http://www.vogella.com/tutorials/EclipseJFaceTableAdvanced/article.html
@@ -23,17 +23,23 @@ import com.kdmanalytics.toif.ui.common.ShowField;
  * @author Ken Duck
  *
  */
-public class ShowEditingSupport extends EditingSupport {
+public class TrustEditingSupport extends EditingSupport {
   
   private final TableViewer viewer;
   private final CellEditor editor;
   private AdaptorConfiguration config;
   
-  public ShowEditingSupport(TableViewer viewer, AdaptorConfiguration config) {
+  /**
+   * Column this editor is being configured for
+   */
+  private int index;
+  
+  public TrustEditingSupport(TableViewer viewer, AdaptorConfiguration config, int index) {
     super(viewer);
     this.viewer = viewer;
     this.config = config;
-    this.editor = new CheckboxCellEditor(viewer.getTable());
+    this.editor = new TextCellEditor(viewer.getTable());
+    this.index = index;
   }
   
   /*
@@ -53,11 +59,8 @@ public class ShowEditingSupport extends EditingSupport {
   protected boolean canEdit(Object element) {
     @SuppressWarnings("unchecked")
     List<Object> row = (List<Object>)element;
-    ShowField state = (ShowField) row.get(config.getShowColumnIndex());
-    switch(state) {
-      case UNSET: return false;
-      default: return true;
-    }
+    TrustField state = (TrustField) row.get(index);
+    return state.isValid();
   }
   
   /*
@@ -68,12 +71,8 @@ public class ShowEditingSupport extends EditingSupport {
   protected Object getValue(Object element) {
     @SuppressWarnings("unchecked")
     List<Object> row = (List<Object>)element;
-    ShowField state = (ShowField) row.get(config.getShowColumnIndex());
-    switch(state) {
-      case YES: return true;
-      case NO: return false;
-      default: throw new IllegalArgumentException("Unsupported editor state: " + state);
-    }
+    TrustField state = (TrustField) row.get(index);
+    return state.toString();
   }
   
   /*
@@ -84,12 +83,8 @@ public class ShowEditingSupport extends EditingSupport {
   protected void setValue(Object element, Object value) {
     @SuppressWarnings("unchecked")
     List<Object> row = (List<Object>)element;
-    Boolean b = (Boolean)value;
-    if(b) {
-      row.set(config.getShowColumnIndex(), ShowField.YES);
-    } else {
-      row.set(config.getShowColumnIndex(), ShowField.NO);
-    }
+    String text = (String)value;
+      row.set(index, TrustField.fromString(text));
     config.update(row);
     viewer.update(element, null);
   }
