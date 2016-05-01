@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Filter that shows only findings with the same location and the same sfp
@@ -68,9 +69,9 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
     HashMap<String, List<String>> sfpMap = new HashMap<String, List<String>>();
     
     try {
-      List<FindingEntry> findings = getFindings(file);
+      List<IFindingEntry> findings = getFindings(file);
       
-      for (FindingEntry entry : findings) {
+      for (IFindingEntry entry : findings) {
         int line = entry.getLineNumber();
         if (line == targetLine) {
           String tool = entry.getTool();

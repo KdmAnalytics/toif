@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Creates a filter which filters out all elements that don't have/aren't findingEntrys with a trust
@@ -49,9 +49,9 @@ public class TrustFilter extends ViewerFilter {
   
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry entry = (FindingEntry) element;
-      List<FindingEntry> list = new ArrayList<FindingEntry>();
+    if (element instanceof IFindingEntry) {
+      IFindingEntry entry = (IFindingEntry) element;
+      List<IFindingEntry> list = new ArrayList<IFindingEntry>();
       list.add(entry);
       return trustIsHighEnough(list);
     }
@@ -70,8 +70,8 @@ public class TrustFilter extends ViewerFilter {
    * 
    * @param element
    */
-  private boolean trustIsHighEnough(List<FindingEntry> list) {
-    for (FindingEntry findingEntry : list) {
+  private boolean trustIsHighEnough(List<IFindingEntry> list) {
+    for (IFindingEntry findingEntry : list) {
       int trust = findingEntry.getTrust();
       if (trust >= amount) {
         return true;

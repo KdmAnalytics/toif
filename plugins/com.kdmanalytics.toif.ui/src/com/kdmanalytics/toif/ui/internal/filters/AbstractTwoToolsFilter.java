@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Base filter allows special handling of SFP--1
@@ -66,14 +67,14 @@ public abstract class AbstractTwoToolsFilter extends ViewerFilter {
    * @return
    * @throws CoreException
    */
-  protected List<FindingEntry> getFindings(IFile file) throws CoreException {
-    List<FindingEntry> results = new LinkedList<FindingEntry>();
+  protected List<IFindingEntry> getFindings(IFile file) throws CoreException {
+    List<IFindingEntry> results = new LinkedList<IFindingEntry>();
     IMarker[] problems = file.findMarkers(IMarker.TEXT, true, IResource.DEPTH_INFINITE);
     
     for (IMarker marker : problems) {
       String type = marker.getType();
       if (type != null && type.startsWith("com.kdmanalytics.toif")) {
-        FindingEntry entry = new FindingEntry(marker);
+        IFindingEntry entry = new FindingEntry(marker);
         boolean accept = true;
         for(ViewerFilter filter: subFilters) {
           if(!filter.select(null, null, entry)) {

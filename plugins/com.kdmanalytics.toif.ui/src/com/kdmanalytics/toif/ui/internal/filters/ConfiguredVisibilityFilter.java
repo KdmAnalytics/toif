@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /** Filter that rejects findings whose CWEs are marked as "No" for "Show?" in the
  * adaptor configuration.
@@ -33,8 +34,8 @@ public class ConfiguredVisibilityFilter extends AbstractValidFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      String cwe = ((FindingEntry) element).getCwe();
+    if (element instanceof IFindingEntry) {
+      String cwe = ((IFindingEntry) element).getCwe();
       if (cwe != null) {
         return config.getVisibility(cwe);
       }

@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Provides column sorting.
@@ -79,8 +80,8 @@ public class FindingViewerComparator extends ViewerComparator {
   @Override
   public int compare(Viewer viewer, Object e1, Object e2) {
     int result = 0;
-    FindingEntry entry1 = (FindingEntry) e1;
-    FindingEntry entry2 = (FindingEntry) e2;
+    IFindingEntry entry1 = (IFindingEntry) e1;
+    IFindingEntry entry2 = (IFindingEntry) e2;
     
     switch (columnIndex) {
       case 0: {

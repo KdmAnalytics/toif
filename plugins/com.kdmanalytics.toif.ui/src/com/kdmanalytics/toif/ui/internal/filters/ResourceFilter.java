@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Filter based on a set of acceptable resources
@@ -41,8 +41,8 @@ public class ResourceFilter extends ViewerFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      IFile file = ((FindingEntry) element).getFile();
+    if (element instanceof IFindingEntry) {
+      IFile file = ((IFindingEntry) element).getFile();
       if (accept.contains(file)) {
         return true;
       }

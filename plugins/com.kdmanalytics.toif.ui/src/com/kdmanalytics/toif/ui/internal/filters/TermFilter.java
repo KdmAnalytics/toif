@@ -11,7 +11,7 @@ package com.kdmanalytics.toif.ui.internal.filters;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Originally from TOIF code. Updated for EToif.
@@ -47,8 +47,8 @@ public class TermFilter extends ViewerFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry findingEntry = (FindingEntry) element;
+    if (element instanceof IFindingEntry) {
+      IFindingEntry findingEntry = (IFindingEntry) element;
       String text = findingEntry.getSearchableText().toLowerCase();
       
       String[] textarray = text.split("\\|");

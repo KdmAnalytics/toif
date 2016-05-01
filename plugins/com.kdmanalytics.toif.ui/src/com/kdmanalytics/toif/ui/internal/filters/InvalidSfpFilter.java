@@ -11,7 +11,7 @@ package com.kdmanalytics.toif.ui.internal.filters;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * ViewerFilter that returns true for SFPs findings that are NOT SFP--1
@@ -29,8 +29,8 @@ public class InvalidSfpFilter extends ViewerFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      String sfp = ((FindingEntry) element).getSfp();
+    if (element instanceof IFindingEntry) {
+      String sfp = ((IFindingEntry) element).getSfp();
       return !"SFP--1".equals(sfp);
     }
     return false;

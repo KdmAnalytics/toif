@@ -11,6 +11,7 @@ package com.kdmanalytics.toif.ui.views;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -75,26 +76,11 @@ class FindingContentProvider implements ITreeContentProvider
 
     /*
      * (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getElements(java.lang.Object)
      */
     public Object[] getElements(Object parent)
     {
-        // Make sure the findings are only fully instantiated *once*
-        if(findings.isEmpty())
-        {
-            if(currentProject != null && currentProject.isOpen())
-            {
-                Collection<IFindingEntry> findings = updateFindings(currentProject);
-                if(findings != null)
-                {
-                    for (IFindingEntry finding : findings)
-                    {
-                        addEntry(finding);
-                    }
-                }
-            }
-        }
-        return getEntries();
+      return getChildren(parent);
     }
 
     /** Update the findings in the findings map for all IFiles found
@@ -105,9 +91,9 @@ class FindingContentProvider implements ITreeContentProvider
      * @param workspaceRoot
      * @return A list of new findings
      */
-    private List<IFindingEntry> updateFindings(IResource resource)
+    private List<FindingEntry> updateFindings(IResource resource)
     {
-        List<IFindingEntry> results = new LinkedList<IFindingEntry>();
+        List<FindingEntry> results = new LinkedList<FindingEntry>();
         if(resource.exists())
         {
             if(resource.getProject().isOpen())
@@ -121,7 +107,7 @@ class FindingContentProvider implements ITreeContentProvider
                         String type = marker.getType();
                         if(type != null && type.startsWith("com.kdmanalytics.toif"))
                         {
-                          IFindingEntry entry = new FindingEntry(marker);
+                          FindingEntry entry = new FindingEntry(marker);
                             results.add(entry);
                         }
                     }
@@ -157,14 +143,14 @@ class FindingContentProvider implements ITreeContentProvider
             }
         }
 
-        return results.toArray(new FindingEntry[results.size()]);
+        return results.toArray(new IFindingEntry[results.size()]);
     }
 
     /** Add an entry to the map
      * 
      * @param entry
      */
-    private void addEntry(IFindingEntry entry)
+    private void addEntry(FindingEntry entry)
     {
         IFile file = entry.getFile();
         if(!findings.containsKey(file))
@@ -172,7 +158,40 @@ class FindingContentProvider implements ITreeContentProvider
             findings.put(file, new LinkedList<IFindingEntry>());
         }
         List<IFindingEntry> list = findings.get(file);
-        list.add(entry);
+        
+        boolean grouped = false;
+        for (Iterator<IFindingEntry> it = list.iterator(); it.hasNext();) {
+          IFindingEntry fe = it.next();
+          if(canGroup(fe, entry)) {
+            grouped = true;
+            if (fe instanceof FindingGroup) {
+              ((FindingGroup)fe).add(entry);
+            } else {
+              it.remove();
+              FindingGroup group = new FindingGroup(fe.getFile(), fe.getLineNumber(), fe.getSfp(), fe.getCwe());
+              group.add((FindingEntry)fe);
+              group.add(entry);
+              list.add(0, group);
+            }
+            break;
+          }
+        }
+        if (!grouped) {
+          list.add(entry);
+        }
+    }
+
+    /**
+     * 
+     * @param e1
+     * @param e2
+     * @return
+     */
+    private boolean canGroup(IFindingEntry e1, FindingEntry e2) {
+      if (!e1.getFile().equals(e2.getFile())) return false;
+      if (e1.getLineNumber() != e2.getLineNumber()) return false;
+      if (!e1.getCwe().equals(e2.getCwe())) return false;
+      return true;
     }
 
     /** Update the information for the specified resource. Tell the view about
@@ -193,7 +212,7 @@ class FindingContentProvider implements ITreeContentProvider
                 List<IFindingEntry> oldFindings = findings.get(file);
                 if(oldFindings == null) oldFindings = new LinkedList<IFindingEntry>();
                 // Get new findings
-                List<IFindingEntry> newFindings = updateFindings(file);
+                List<FindingEntry> newFindings = updateFindings(file);
 
                 if(!equals(oldFindings, newFindings))
                 {
@@ -206,7 +225,7 @@ class FindingContentProvider implements ITreeContentProvider
                         }
                     }
                     viewer.add(null, newFindings.toArray());
-                    for (IFindingEntry finding : newFindings)
+                    for (FindingEntry finding : newFindings)
                     {
                         addEntry(finding);
                     }
@@ -218,15 +237,15 @@ class FindingContentProvider implements ITreeContentProvider
              * them.
              * 
              * @param list1
-             * @param list2
+             * @param newFindings
              * @return
              */
-            private boolean equals(List<IFindingEntry> list1, List<IFindingEntry> list2)
+            private boolean equals(List<IFindingEntry> list1, List<FindingEntry> newFindings)
             {     
-                if (list1 == null && list2 == null) return true;
+                if (list1 == null && newFindings == null) return true;
                 if(list1 == null) return false;
-                if(list2 == null) return false;
-                if(list1.size() != list2.size()) return false;
+                if(newFindings == null) return false;
+                if(list1.size() != newFindings.size()) return false;
                 
                 List<FindingEntry> c1 = new LinkedList<FindingEntry>();
                 List<FindingEntry> c2 = new LinkedList<FindingEntry>();
@@ -239,7 +258,7 @@ class FindingContentProvider implements ITreeContentProvider
                   }
                 }
 
-                for (IFindingEntry entry: list2) {
+                for (IFindingEntry entry: newFindings) {
                   if (entry instanceof FindingEntry) {
                     c2.add((FindingEntry)entry);
                   } else {
@@ -262,9 +281,33 @@ class FindingContentProvider implements ITreeContentProvider
         findings.clear();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+     */
     @Override
-    public Object[] getChildren(Object parentElement) {
-      return getEntries();
+    public Object[] getChildren(Object parent) {
+      if (parent instanceof FindingGroup) {
+        return ((FindingGroup)parent).getFindingEntryArray();
+      }
+      else {
+        // Make sure the findings are only fully instantiated *once*
+        if(findings.isEmpty())
+        {
+            if(currentProject != null && currentProject.isOpen())
+            {
+                Collection<FindingEntry> findings = updateFindings(currentProject);
+                if(findings != null)
+                {
+                    for (FindingEntry finding : findings)
+                    {
+                        addEntry(finding);
+                    }
+                }
+            }
+        }
+        return getEntries();
+      }
     }
 
     @Override
@@ -274,6 +317,9 @@ class FindingContentProvider implements ITreeContentProvider
 
     @Override
     public boolean hasChildren(Object element) {
+      if (element instanceof FindingGroup) {
+        return true;
+      }
       return false;
     }
 

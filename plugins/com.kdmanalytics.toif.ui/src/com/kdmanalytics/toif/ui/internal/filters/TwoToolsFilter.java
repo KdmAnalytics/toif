@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * ViewerFilter that filters entries where location group for a toifreport entry has more than 1
@@ -45,9 +46,9 @@ public class TwoToolsFilter extends AbstractTwoToolsFilter {
       Set<String> tools = new HashSet<String>();
       
       try {
-        List<FindingEntry> findings = getFindings(file);
+        List<IFindingEntry> findings = getFindings(file);
         
-        for (FindingEntry entry : findings) {
+        for (IFindingEntry entry : findings) {
           int line = entry.getLineNumber();
           if (line == targetLine) {
             String tool = entry.getTool();

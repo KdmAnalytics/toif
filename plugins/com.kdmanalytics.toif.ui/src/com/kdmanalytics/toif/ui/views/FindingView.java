@@ -991,7 +991,7 @@ public class FindingView extends ViewPart
             public void run()
             {
                 ISelection selection = viewer.getSelection();
-                FindingEntry finding = (FindingEntry)((IStructuredSelection)selection).getFirstElement();
+                IFindingEntry finding = (IFindingEntry)((IStructuredSelection)selection).getFirstElement();
                 IFile file = finding.getFile();
 
                 if(!file.exists() || file.getProjectRelativePath().toString().startsWith(".KDM/TOIF"))

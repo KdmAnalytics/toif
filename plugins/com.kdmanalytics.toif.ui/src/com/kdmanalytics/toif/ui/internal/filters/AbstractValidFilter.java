@@ -10,7 +10,7 @@ package com.kdmanalytics.toif.ui.internal.filters;
 
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Base class for the family of ValidFilters
@@ -29,7 +29,7 @@ public abstract class AbstractValidFilter extends ViewerFilter {
    *          
    * @return true if the entry has been cited as "true"
    */
-  protected boolean valid(FindingEntry entry) {
+  protected boolean valid(IFindingEntry entry) {
     Boolean b = entry.getCiting();
     if (b != null) return b;
     return false;

@@ -22,6 +22,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.kdmanalytics.toif.ui.Activator;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * 
@@ -102,7 +103,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    * @param colIndex
    * @return
    */
-  private String getColumnText(FindingEntry entry, int colIndex) {
+  private String getColumnText(IFindingEntry entry, int colIndex) {
     switch (colIndex) {
       case 0: {
         return entry.getFileName();
@@ -145,7 +146,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    *          the element
    * @return the image
    */
-  public Image getImage(FindingEntry entry, int colIndex) {
+  public Image getImage(IFindingEntry entry, int colIndex) {
     final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
     
     switch (colIndex) {
@@ -185,8 +186,8 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    */
   @Override
   public String getToolTipText(Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry entry = ((FindingEntry) element);
+    if (element instanceof IFindingEntry) {
+      IFindingEntry entry = ((IFindingEntry) element);
       return entry.getPath();
     }
     return null;
@@ -199,7 +200,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    * org.eclipse.jface.viewers.StyledCellLabelProvider#update(org.eclipse.jface.viewers.ViewerCell)
    */
   public void update(final ViewerCell cell) {
-    final FindingEntry entry = (FindingEntry) cell.getElement();
+    final IFindingEntry entry = (IFindingEntry) cell.getElement();
     final StyledString styledString = new StyledString(getColumnText(entry, cell.getColumnIndex()));
     
     Boolean citing = entry.getCiting();
