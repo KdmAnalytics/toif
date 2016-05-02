@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
@@ -37,8 +38,14 @@ public class TwoToolsFilter extends AbstractTwoToolsFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry targetEntry = (FindingEntry) element;
+    if (element instanceof IFindingEntry) {
+      IFindingEntry targetEntry = (IFindingEntry) element;
+      
+      // If this is a group, then by definition it satisfies the filter
+      if (targetEntry instanceof FindingGroup) {
+        return true;
+      }
+      
       IFile file = targetEntry.getFile();
       int targetLine = targetEntry.getLineNumber();
       
