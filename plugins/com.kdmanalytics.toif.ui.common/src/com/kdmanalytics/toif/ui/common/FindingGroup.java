@@ -7,6 +7,7 @@
  ******************************************************************************/
 package com.kdmanalytics.toif.ui.common;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class FindingGroup implements IFindingEntry {
    */
   public void add(FindingEntry entry) {
     entries.add(entry);
+    entry.setParent(this);
   }
 
   /*
@@ -229,6 +231,50 @@ public class FindingGroup implements IFindingEntry {
       sb.append(entry.getTool());
     }
     return sb.toString();
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.ui.common.IFindingEntry#cite(java.lang.Boolean)
+   */
+  @Override
+  public void cite(Boolean b) {
+    for(FindingEntry entry: entries) {
+      entry.cite(b);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.ui.common.IFindingEntry#setTrust(int)
+   */
+  @Override
+  public void setTrust(int val) {
+    for(FindingEntry entry: entries) {
+      entry.setTrust(val);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.ui.common.IFindingEntry#getTypeId()
+   */
+  @Override
+  public Collection<String> getTypeIds() {
+    List<String> results = new ArrayList<String>(entries.size());
+    for(FindingEntry entry: entries) {
+      results.add(entry.getTypeId());
+    }
+    return results;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.ui.common.IFindingEntry#getKdmLine()
+   */
+  @Override
+  public int getKdmLine() {
+    return line;
   }
   
 }

@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class FindingEntry extends FindingData implements IFindingEntry {
   
+  private FindingGroup group;
+
   /**
    * Pull the interesting information out of the marker.
    * 
@@ -50,5 +52,21 @@ public class FindingEntry extends FindingData implements IFindingEntry {
     } catch (CoreException e) {
       e.printStackTrace();
     }
+  }
+
+  /** The entry may be part of a group. This sets the group.
+   * 
+   * @param findingGroup
+   */
+  public void setParent(FindingGroup findingGroup) {
+    this.group = findingGroup;
+  }
+  
+  /**The entry may be part of a group. This gets the group.
+   * 
+   * @return
+   */
+  public FindingGroup getParent() {
+    return group;
   }
 }

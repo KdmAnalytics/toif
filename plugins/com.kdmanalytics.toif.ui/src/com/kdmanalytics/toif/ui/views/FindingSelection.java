@@ -25,6 +25,8 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Provide generic operations that might be run against a selection of findings.
@@ -39,7 +41,7 @@ public class FindingSelection {
   /**
    * Current selected element
    */
-  private List<FindingEntry> selection = new LinkedList<FindingEntry>();
+  private List<IFindingEntry> selection = new LinkedList<IFindingEntry>();
   
   /**
    * Create an empty selection
@@ -52,8 +54,8 @@ public class FindingSelection {
    * 
    * @param findings
    */
-  public FindingSelection(FindingEntry[] findings) {
-    for (FindingEntry entry : findings) {
+  public FindingSelection(IFindingEntry[] findings) {
+    for (IFindingEntry entry : findings) {
       add(entry);
     }
   }
@@ -64,8 +66,8 @@ public class FindingSelection {
    * @param findings
    * @param cited
    */
-  public FindingSelection(FindingEntry[] findings, boolean cited) {
-    for (FindingEntry entry : findings) {
+  public FindingSelection(IFindingEntry[] findings, boolean cited) {
+    for (IFindingEntry entry : findings) {
       if (cited) {
         Boolean citing = entry.getCiting();
         int trust = entry.getTrust();
@@ -95,7 +97,7 @@ public class FindingSelection {
    * 
    * @param entry
    */
-  protected void add(FindingEntry entry) {
+  protected void add(IFindingEntry entry) {
     selection.add(entry);
   }
   
@@ -107,7 +109,14 @@ public class FindingSelection {
    * @param b
    */
   public void cite(Boolean b) {
-    for (FindingEntry finding : selection) {
+    for (IFindingEntry finding : selection) {
+      if (finding instanceof FindingEntry) {
+        // If this finding is part of a group, then cite the entire group
+        FindingGroup parent = ((FindingEntry)finding).getParent();
+        if(parent != null) {
+          finding = parent;
+        }
+      }
       finding.cite(b);
     }
   }
@@ -125,9 +134,9 @@ public class FindingSelection {
    */
   public Set<String> setTrust(int val) {
     Set<String> types = new HashSet<String>();
-    for (FindingEntry finding : selection) {
+    for (IFindingEntry finding : selection) {
       finding.setTrust(val);
-      types.add(finding.getTypeId());
+      types.addAll(finding.getTypeIds());
     }
     return types;
   }
@@ -139,7 +148,7 @@ public class FindingSelection {
    */
   public int getTrust() {
     if (!selection.isEmpty()) {
-      FindingEntry entry = selection.get(0);
+      IFindingEntry entry = selection.get(0);
       return entry.getTrust();
     }
     return 0;
@@ -151,7 +160,7 @@ public class FindingSelection {
   public void moreInfo() {
     Set<String> cwes = new HashSet<String>();
     
-    for (FindingEntry finding : selection) {
+    for (IFindingEntry finding : selection) {
       String cwe = finding.getCwe();
       if (cwe != null && !cwe.isEmpty() && !NO_CWE.equals(cwe)) {
         cwes.add(cwe);
@@ -184,7 +193,7 @@ public class FindingSelection {
     try {
       out.println("SFP\tCWE\tCiting Status\tTrust\tResource\tLine Number\tKDM Line Number\tSCA tool\tWeakness Description");
       
-      for (FindingEntry finding : selection) {
+      for (IFindingEntry finding : selection) {
         out.print(finding.getSfp());
         out.print('\t');
         out.print(finding.getCwe());

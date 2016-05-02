@@ -9,15 +9,18 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Tracks current selection of the Finding View.
@@ -47,8 +50,8 @@ public class FindingSelectionChangedListener extends FindingSelection implements
     clear();
     for (Iterator<?> it = selection.iterator(); it.hasNext();) {
       Object o = it.next();
-      if (o instanceof FindingEntry) {
-        add((FindingEntry) o);
+      if (o instanceof IFindingEntry) {
+        add((IFindingEntry) o);
       }
     }
   }
@@ -62,7 +65,26 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    */
   public void cite(Boolean b) {
     super.cite(b);
-    viewer.update(getSelectionArray(), null);
+    List<Object> updateThese = new LinkedList<Object>();
+    Object[] selected = getSelectionArray();
+    for (Object object : selected) {
+      if (object instanceof FindingEntry) {
+        // If this finding is part of a group, then change the entire group
+        FindingGroup parent = ((FindingEntry)object).getParent();
+        if(parent != null) {
+          object = parent;
+        }
+      }
+      
+      // Update all children
+      if (object instanceof FindingGroup) {
+        updateThese.addAll(((FindingGroup)object).getFindingEntries());
+      }
+      
+      // Update myself
+      updateThese.add(object);
+    }
+    viewer.update(updateThese.toArray(), null);
   }
   
   /**

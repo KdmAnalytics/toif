@@ -7,6 +7,8 @@
  ******************************************************************************/
 package com.kdmanalytics.toif.ui.common;
 
+import java.util.Collection;
+
 import org.eclipse.core.resources.IFile;
 
 /** Common finding interface
@@ -39,5 +41,13 @@ public interface IFindingEntry {
   String getPath();
 
   String getSearchableText();
+
+  void cite(Boolean b);
+
+  void setTrust(int val);
+
+  Collection<String> getTypeIds();
+
+  int getKdmLine();
   
 }

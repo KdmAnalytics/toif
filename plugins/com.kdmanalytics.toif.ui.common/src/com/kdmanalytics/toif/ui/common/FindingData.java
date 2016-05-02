@@ -3,6 +3,9 @@ package com.kdmanalytics.toif.ui.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourceAttributes;
@@ -143,6 +146,15 @@ public class FindingData implements Comparable<FindingData>
         return tool + ":" + cwe;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.kdmanalytics.toif.ui.common.IFindingEntry#getTypeId()
+     */
+    public Collection<String> getTypeIds() {
+      List<String> results = new ArrayList<String>(1);
+      results.add(getTypeId());
+      return results;
+    }
 
     /** Get the name of the file with the finding
      * 
