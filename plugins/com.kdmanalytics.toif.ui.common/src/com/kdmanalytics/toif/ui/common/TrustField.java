@@ -46,7 +46,7 @@ public class TrustField {
       Integer value = Integer.parseInt(text);
       return new TrustField(value);
     } catch (NumberFormatException e) {
-      return new TrustField(null);
+      return new TrustField(0);
     }
   }
   
