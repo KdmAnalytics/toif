@@ -117,8 +117,11 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public int getTrust() {
-    // TODO Auto-generated method stub
-    return 0;
+    int trust = 0;
+    for(FindingEntry entry: entries) {
+      trust = Math.max(trust, entry.getTrust());
+    }
+    return trust;
   }
 
   /*
@@ -136,7 +139,25 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public Boolean getCiting() {
-    return null;
+    boolean first = true;
+    Boolean citing = null;
+    for(FindingEntry entry: entries) {
+      Boolean eCiting = entry.getCiting();
+      
+      // On the first pass we just accept whatever value we get
+      if (first) {
+        // If one is null, then the group is null
+        if (eCiting == null) return null;
+        citing = entry.getCiting();
+        first = false;
+      } else {
+        // If the cites are different, then group is null
+        if (!citing.equals(eCiting)) {
+          return null;
+        }
+      }
+    }
+    return citing;
   }
 
   /*
