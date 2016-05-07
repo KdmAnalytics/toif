@@ -6,14 +6,13 @@
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 
-package com.kdmanalytics.toif.ui.views;
+package com.kdmanalytics.toif.ui.views.sort;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
@@ -24,7 +23,7 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  * @author Ken Duck
  *        
  */
-public class FindingViewerComparator extends ViewerComparator {
+public class FindingViewColumnComparator extends ViewerComparator {
   
   /** The column index. */
   private int columnIndex;
@@ -40,7 +39,7 @@ public class FindingViewerComparator extends ViewerComparator {
   /**
    * Instantiates a new report viewer comparator.
    */
-  public FindingViewerComparator() {
+  public FindingViewColumnComparator() {
     this.columnIndex = 0;
     direction = ASCENDING;
   }

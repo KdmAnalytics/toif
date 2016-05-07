@@ -2,17 +2,10 @@
 package com.kdmanalytics.toif.ui.views;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 
-import com.kdmanalytics.toif.ui.internal.filters.CWETwoToolsFilter;
-import com.kdmanalytics.toif.ui.internal.filters.FiltersDialog;
-import com.kdmanalytics.toif.ui.internal.filters.InvalidSfpFilter;
-import com.kdmanalytics.toif.ui.internal.filters.IsValidFilter;
-import com.kdmanalytics.toif.ui.internal.filters.NotValidFilter;
-import com.kdmanalytics.toif.ui.internal.filters.SFPTwoToolsFilter;
-import com.kdmanalytics.toif.ui.internal.filters.TrustFilter;
-import com.kdmanalytics.toif.ui.internal.filters.TwoToolsFilter;
+import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
 
 /**
  * Pop up the filter dialog and apply appropriate filters.
@@ -29,14 +22,8 @@ public class DefaultSortAction extends Action {
    */
   private TreeViewer viewer;
   
-  /**
-   * Used to update the count label
-   */
-  private FindingView view;
-  
   public DefaultSortAction(FindingView view, TreeViewer viewer2) {
     this.viewer = viewer2;
-    this.view = view;
   }
   
   /*
@@ -46,24 +33,7 @@ public class DefaultSortAction extends Action {
    */
   @Override
   public void run() {
-    //    FiltersDialog dialog = new FiltersDialog(viewer.getControl().getShell(), viewer.getFilters());
-    //    int code = dialog.open();
-    //    if (code == FiltersDialog.OK) {
-    //      dialog.getFilters();
-    //      
-    //      FilterUtility filterUtils = new FilterUtility(view, viewer);
-    //      
-    //      handleTrustFilter(dialog, filterUtils);
-    //      
-    //      handleTwoToolFilter(dialog, filterUtils);
-    //      handleCWETwoToolFilter(dialog, filterUtils);
-    //      handleSFPTwoToolFilter(dialog, filterUtils);
-    //      
-    //      handleIsValidFilter(dialog, filterUtils);
-    //      handleNotValidFilter(dialog, filterUtils);
-    //      handleInvalidSfpFilter(dialog, filterUtils);
-    //      filterUtils.applyFilters();
-    //    }
-    System.err.println("DEFAULT SORT");
+    viewer.getTree().setSortDirection(SWT.NONE);
+    viewer.setComparator(new AdaptorConfigWeightComparator());
   }
 }

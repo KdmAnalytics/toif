@@ -60,6 +60,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -95,6 +96,8 @@ import com.kdmanalytics.toif.ui.common.FindingEntry;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
+import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
+import com.kdmanalytics.toif.ui.views.sort.FindingViewColumnComparator;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -465,7 +468,9 @@ public class FindingView extends ViewPart
 
         contentProvider = new FindingContentProvider();
         viewer.setContentProvider(contentProvider);
-        viewer.setComparator(new FindingViewerComparator());
+        
+        // Set the default comparator. Selecting columns will change the comparator.
+        viewer.setComparator(new AdaptorConfigWeightComparator());
 
         // Listen to change events so we know what to run actions upon
         selection = new FindingSelectionChangedListener();
@@ -527,7 +532,7 @@ public class FindingView extends ViewPart
         //        getSite().registerContextMenu(menuManager, viewer);
 
 
-        //		viewer.setSorter(new NameSorter());
+//        viewer.setSorter(new NameSorter());
         viewer.setInput(getViewSite());
         getSite().setSelectionProvider(viewer);
 
@@ -676,12 +681,16 @@ public class FindingView extends ViewPart
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                FindingViewerComparator comparator = (FindingViewerComparator) viewer2.getComparator();
-                comparator.setColumn(index);
-                int dir = comparator.getDirection();
-                viewer2.getTree().setSortDirection(dir);
-                viewer2.getTree().setSortColumn(column);
-                viewer2.refresh();
+              ViewerComparator comparator = viewer2.getComparator();
+              if (!(comparator instanceof FindingViewColumnComparator)) {
+                comparator = new FindingViewColumnComparator();
+                viewer2.setComparator(comparator);
+              }
+              ((FindingViewColumnComparator)comparator).setColumn(index);
+              int dir = ((FindingViewColumnComparator)comparator).getDirection();
+              viewer2.getTree().setSortDirection(dir);
+              viewer2.getTree().setSortColumn(column);
+              viewer2.refresh();
             }
         };
         return selectionAdaptor;
@@ -780,7 +789,7 @@ public class FindingView extends ViewPart
                         IWorkbenchPage page = window.getActivePage();
                         try
                         {
-                            page.showView(DefectDescriptionView.ID);
+                          page.showView(DefectDescriptionView.ID);
                         }
                         catch (PartInitException e)
                         {
