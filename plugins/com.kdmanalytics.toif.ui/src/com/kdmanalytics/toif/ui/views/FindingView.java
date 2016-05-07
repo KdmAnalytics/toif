@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -51,6 +52,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -184,11 +186,15 @@ public class FindingView extends ViewPart
 
     private TreeViewer viewer;
     
+    // Button actions
     private Action aConfigSortActionButton;
     private Action findingGroupSortActionButton;
     
     private Action aConfigSortAction;
     private Action findingGroupSortAction;
+    
+    // Column ordering action
+    private SaveColumnOrderAction preserveColumnOrderAction;
 
     private Action descriptionAction;
     private Action exportAction;
@@ -544,14 +550,6 @@ public class FindingView extends ViewPart
         col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
         col.setLabelProvider(new FindingStyledLabelProvider());
 
-        //        MenuManager menuManager = new MenuManager();
-        //        Menu menu = menuManager.createContextMenu(viewer.getTable());
-        //        
-        //        viewer.getTable().setMenu(menu);
-        //        getSite().registerContextMenu(menuManager, viewer);
-
-
-//        viewer.setSorter(new NameSorter());
         viewer.setInput(getViewSite());
         getSite().setSelectionProvider(viewer);
 
@@ -757,6 +755,7 @@ public class FindingView extends ViewPart
         menu1.add(aConfigSortAction);
         menu1.add(findingGroupSortAction);
         manager.add(menu1);
+        manager.add(preserveColumnOrderAction);
     }
 
     /**
@@ -932,6 +931,12 @@ public class FindingView extends ViewPart
         findingGroupSortAction = new FindingGroupSortAction(this, viewer);
         findingGroupSortAction.setText("Duplicates");
         findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        
+        // Column ordering action
+        preserveColumnOrderAction = new SaveColumnOrderAction(this, viewer);
+        preserveColumnOrderAction.setText("Preserve column order");
+        // Restore the column order
+        preserveColumnOrderAction.restore();
 
         // Not a Weakness
         notAWeaknessAction = new Action()
