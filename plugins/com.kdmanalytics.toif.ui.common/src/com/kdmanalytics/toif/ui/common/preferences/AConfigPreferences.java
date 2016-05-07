@@ -140,34 +140,6 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
       }
     }
     
-    // // File Column
-    // TableViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // Location Column
-    // col = createTableViewerColumn(viewer, titles[1], bounds[1], 1, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // Tool Column
-    // col = createTableViewerColumn(viewer, titles[2], bounds[2], 2, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // SFP Column
-    // col = createTableViewerColumn(viewer, titles[3], bounds[3], 3, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // CWE Column
-    // col = createTableViewerColumn(viewer, titles[4], bounds[4], 4, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // Trust Column
-    // col = createTableViewerColumn(viewer, titles[5], bounds[5], 5, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    //
-    // // Description Column
-    // col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
-    // col.setLabelProvider(new FindingStyledLabelProvider());
-    
     // Set the table data
     viewer.setInput(config);
     

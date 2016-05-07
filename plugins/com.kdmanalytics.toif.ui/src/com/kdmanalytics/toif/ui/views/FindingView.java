@@ -92,7 +92,9 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.kdmanalytics.etoif.ccr.CoverageClaimGenerator;
 import com.kdmanalytics.toif.ui.Activator;
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IAdaptorConfigurationListener;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
@@ -172,7 +174,7 @@ public class FindingView extends ViewPart
     private IProject currentProject;
 
     private FindingSelectionChangedListener selection = null;
-
+    
     /**
      * Conent for table
      */
@@ -241,7 +243,7 @@ public class FindingView extends ViewPart
             }
         }
     };
-
+    
     /**
      * The constructor.
      */
@@ -320,6 +322,16 @@ public class FindingView extends ViewPart
         };
 
         workspace.addResourceChangeListener(projectListener);
+        
+        // Listen for configuration changes and update the view accordingly.
+        IAdaptorConfigurationListener configListener = new IAdaptorConfigurationListener() {
+          @Override
+          public void configChanged() {
+            viewer.refresh();
+          }
+        };
+        AdaptorConfiguration.getAdaptorConfiguration().addConfigurationListsner(configListener);
+
     }
 
     /**

@@ -1,6 +1,10 @@
-/**
- * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved.
- */
+/*******************************************************************************
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Open
+ * Source Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ ******************************************************************************/
 
 package com.kdmanalytics.toif.ui.common;
 
@@ -119,6 +123,11 @@ public class AdaptorConfiguration {
   
   private boolean dirty;
   
+  /**
+   * Allow for code to listen for configuration changes
+   */
+  private Set<IAdaptorConfigurationListener> listeners = new HashSet<IAdaptorConfigurationListener>();
+  
   private AdaptorConfiguration() {
   }
   
@@ -132,6 +141,22 @@ public class AdaptorConfiguration {
       instance = new AdaptorConfiguration();
     }
     return instance;
+  }
+  
+  /** Add a new listener
+   * 
+   * @param listener
+   */
+  public void addConfigurationListsner(IAdaptorConfigurationListener listener) {
+    listeners.add(listener);
+  }
+  
+  /** Remove a listener
+   * 
+   * @param listener
+   */
+  public void removeConfigurationListsner(IAdaptorConfigurationListener listener) {
+    listeners.remove(listener);
   }
   
   /**
@@ -297,7 +322,19 @@ public class AdaptorConfiguration {
       if (index == COLUMN_CPPCHECK) {
         return TrustField.fromString(text);
       }
-    }
+      if (index == COLUMN_RATS) {
+        return TrustField.fromString(text);
+      }
+      if (index == COLUMN_SPLINT) {
+        return TrustField.fromString(text);
+      }
+      if (index == COLUMN_JLINT) {
+        return TrustField.fromString(text);
+      }
+      if (index == COLUMN_FINDBUGS) {
+        return TrustField.fromString(text);
+      }
+   }
     return text;
   }
   
@@ -328,6 +365,11 @@ public class AdaptorConfiguration {
         }
       } catch (IOException e) {
         e.printStackTrace();
+      }
+      
+      // Tell all the listeners about changes
+      for(IAdaptorConfigurationListener listener: listeners) {
+        listener.configChanged();
       }
       dirty = false;
     }
