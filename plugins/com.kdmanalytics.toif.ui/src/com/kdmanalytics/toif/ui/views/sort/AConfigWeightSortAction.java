@@ -1,11 +1,11 @@
 
-package com.kdmanalytics.toif.ui.views;
+package com.kdmanalytics.toif.ui.views.sort;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 
-import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
+import com.kdmanalytics.toif.ui.views.FindingView;
 
 /**
  * Pop up the filter dialog and apply appropriate filters.
@@ -15,14 +15,14 @@ import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
  * @author Ken Duck
  *        
  */
-public class DefaultSortAction extends Action {
+public class AConfigWeightSortAction extends Action {
   
   /**
    * Viewer the filters will be applied to.
    */
   private TreeViewer viewer;
   
-  public DefaultSortAction(FindingView view, TreeViewer viewer2) {
+  public AConfigWeightSortAction(FindingView view, TreeViewer viewer2) {
     this.viewer = viewer2;
   }
   

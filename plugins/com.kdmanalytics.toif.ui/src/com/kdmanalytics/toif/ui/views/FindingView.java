@@ -98,7 +98,9 @@ import com.kdmanalytics.toif.ui.common.IAdaptorConfigurationListener;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
+import com.kdmanalytics.toif.ui.views.sort.AConfigWeightSortAction;
 import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
+import com.kdmanalytics.toif.ui.views.sort.FindingGroupSortAction;
 import com.kdmanalytics.toif.ui.views.sort.FindingViewColumnComparator;
 
 /**
@@ -181,12 +183,17 @@ public class FindingView extends ViewPart
     private FindingContentProvider contentProvider;
 
     private TreeViewer viewer;
-    private Action defaultSortActionButton;
+    
+    private Action aConfigSortActionButton;
+    private Action findingGroupSortActionButton;
+    
+    private Action aConfigSortAction;
+    private Action findingGroupSortAction;
+
     private Action descriptionAction;
     private Action exportAction;
     private Action coverageAction;
     private Action filterAction;
-    private Action defaultSortAction;
     private Action doubleClickAction;
     private Action notAWeaknessAction;
     private Action isAWeaknessAction;
@@ -506,7 +513,7 @@ public class FindingView extends ViewPart
         tree.setLinesVisible(true);
         ColumnViewerToolTipSupport.enableFor(viewer);
 
-        String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Trust", "Description" };
+        String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Confidence", "Description" };
         int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
 
         // File Column
@@ -745,7 +752,11 @@ public class FindingView extends ViewPart
     private void fillLocalPullDown(IMenuManager manager)
     {
         manager.add(filterAction);
-        manager.add(defaultSortAction);
+        
+        MenuManager menu1 = new MenuManager("Sort", "sortid");
+        menu1.add(aConfigSortAction);
+        menu1.add(findingGroupSortAction);
+        manager.add(menu1);
     }
 
     /**
@@ -769,10 +780,12 @@ public class FindingView extends ViewPart
      */
     private void fillLocalToolBar(IToolBarManager manager)
     {
-        manager.add(defaultSortActionButton);
-        manager.add(descriptionAction);
-        manager.add(exportAction);
-        manager.add(coverageAction);
+      manager.add(aConfigSortActionButton);
+      manager.add(findingGroupSortActionButton);
+      
+      manager.add(descriptionAction);
+      manager.add(exportAction);
+      manager.add(coverageAction);
     }
 
     /**
@@ -782,11 +795,16 @@ public class FindingView extends ViewPart
     {
         final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
 
-        // Export Action
-        defaultSortActionButton = new DefaultSortAction(this, viewer);
-        defaultSortActionButton.setText("Default sort");
-        defaultSortActionButton.setToolTipText("Default sort");
-        defaultSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        // Sort Actions
+        aConfigSortActionButton = new AConfigWeightSortAction(this, viewer);
+        aConfigSortActionButton.setText("User defined sort order");
+        aConfigSortActionButton.setToolTipText("User defined sort order");
+        aConfigSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+
+        findingGroupSortActionButton = new FindingGroupSortAction(this, viewer);
+        findingGroupSortActionButton.setText("Duplicate sort order");
+        findingGroupSortActionButton.setToolTipText("Duplicate sort order");
+        findingGroupSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
 
         // Export Action
         descriptionAction = new Action()
@@ -906,9 +924,14 @@ public class FindingView extends ViewPart
         filterAction.setText("Filters...");
         filterAction.setImageDescriptor(imgReg.getDescriptor(FILTER_KEY));
 
-        defaultSortAction = new DefaultSortAction(this, viewer);
-        defaultSortAction.setText("Default sort");
-        defaultSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        // Sort actions
+        aConfigSortAction = new AConfigWeightSortAction(this, viewer);
+        aConfigSortAction.setText("User defined");
+        aConfigSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        
+        findingGroupSortAction = new FindingGroupSortAction(this, viewer);
+        findingGroupSortAction.setText("Duplicates");
+        findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
 
         // Not a Weakness
         notAWeaknessAction = new Action()

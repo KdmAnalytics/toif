@@ -13,8 +13,8 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /** Comparator that uses the AdaptorConfiguration file order:
  * 
- *     1. Calculated weighting (see REQ 9.x for details) 
- *     2. Number of tools defining defects on same file/line 
+ *     1. Number of tools defining defects on same file/line 
+ *     2. Calculated weighting (see REQ 9.x for details) 
  *     3. Confidence 
  *     4. File 
  *     5. Line
@@ -22,7 +22,7 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  * @author Ken Duck
  *
  */
-public class AdaptorConfigWeightComparator extends ViewerComparator {
+public class FindingGroupComparator extends ViewerComparator {
   /**
    * Use the adaptor configuration for ordering
    */
@@ -39,13 +39,7 @@ public class AdaptorConfigWeightComparator extends ViewerComparator {
     String cwe1 = entry1.getCwe();
     String cwe2 = entry2.getCwe();
     
-    // Primary sort: Calculated weighting
-    int i1 = config.getIndex(cwe1);
-    int i2 = config.getIndex(cwe2);
-    int diff = i1 - i2;
-    if (diff != 0) return diff;
-    
-    // Secondary sort: Number of tools defining defects on same file/line
+    // Primary sort: Number of tools defining defects on same file/line
     if (entry1 instanceof FindingGroup) {
       if (entry2 instanceof FindingGroup) {
         // As long as there are duplicates we consider them the same. The *number* of
@@ -57,6 +51,11 @@ public class AdaptorConfigWeightComparator extends ViewerComparator {
       return 1;
     }
     
+    // Secondary sort: Calculated weighting
+    int i1 = config.getIndex(cwe1);
+    int i2 = config.getIndex(cwe2);
+    int diff = i1 - i2;
+    if (diff != 0) return diff;
     
     // Tertiary sort: Confidence
     i1 = entry1.getTrust();
