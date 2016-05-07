@@ -51,25 +51,25 @@ public class AdaptorConfiguration {
   /**
    * The strings expected in the header.
    */
-  private static String COLUMN_SFP_STRING = "SFP";
+  private static final String COLUMN_SFP_STRING = "sfp";
   
-  private static String COLUMN_CWE_STRING = "CWE";
+  private static final String COLUMN_CWE_STRING = "cwe";
   
-  private static String COLUMN_SHOW_STRING = "Show?";
+  private static final String COLUMN_SHOW_STRING = "show?";
   
-  private static String COLUMN_CPPCHECK_STRING = "Cppcheck";
+  private static final String COLUMN_CPPCHECK_STRING = "cppcheck";
   
-  private static String COLUMN_RATS_STRING = "RATS";
+  private static final String COLUMN_RATS_STRING = "rats";
   
-  private static String COLUMN_SPLINT_STRING = "Splint";
+  private static final String COLUMN_SPLINT_STRING = "splint";
   
-  private static String COLUMN_JLINT_STRING = "Jlint";
+  private static final String COLUMN_JLINT_STRING = "jlint";
   
-  private static String COLUMN_FINDBUGS_STRING = "Findbugs";
+  private static final String COLUMN_FINDBUGS_STRING = "findbugs";
   
-  private static String COLUMN_COUNT_C_STRING = "Count C/C++";
+  private static final String COLUMN_COUNT_C_STRING = "count c/c++";
   
-  private static String COLUMN_COUNT_JAVA_STRING = "Count Java";
+  private static final String COLUMN_COUNT_JAVA_STRING = "count java";
   
   /**
    * The column numbers might very well change. They are determined by the header location.
@@ -264,16 +264,16 @@ public class AdaptorConfiguration {
           row.add(getCell(header, i, text));
           
           if (header) {
-            if (COLUMN_SFP_STRING.equals(text)) COLUMN_SFP = i;
-            if (COLUMN_CWE_STRING.equals(text)) COLUMN_CWE = i;
-            if (COLUMN_SHOW_STRING.equals(text)) COLUMN_SHOW = i;
-            if (COLUMN_CPPCHECK_STRING.equals(text)) COLUMN_CPPCHECK = i;
-            if (COLUMN_RATS_STRING.equals(text)) COLUMN_RATS = i;
-            if (COLUMN_SPLINT_STRING.equals(text)) COLUMN_SPLINT = i;
-            if (COLUMN_JLINT_STRING.equals(text)) COLUMN_JLINT = i;
-            if (COLUMN_FINDBUGS_STRING.equals(text)) COLUMN_FINDBUGS = i;
-            if (COLUMN_COUNT_C_STRING.equals(text)) COLUMN_COUNT_C = i;
-            if (COLUMN_COUNT_JAVA_STRING.equals(text)) COLUMN_COUNT_JAVA = i;
+            if (COLUMN_SFP_STRING.equalsIgnoreCase(text)) COLUMN_SFP = i;
+            if (COLUMN_CWE_STRING.equalsIgnoreCase(text)) COLUMN_CWE = i;
+            if (COLUMN_SHOW_STRING.equalsIgnoreCase(text)) COLUMN_SHOW = i;
+            if (COLUMN_CPPCHECK_STRING.equalsIgnoreCase(text)) COLUMN_CPPCHECK = i;
+            if (COLUMN_RATS_STRING.equalsIgnoreCase(text)) COLUMN_RATS = i;
+            if (COLUMN_SPLINT_STRING.equalsIgnoreCase(text)) COLUMN_SPLINT = i;
+            if (COLUMN_JLINT_STRING.equalsIgnoreCase(text)) COLUMN_JLINT = i;
+            if (COLUMN_FINDBUGS_STRING.equalsIgnoreCase(text)) COLUMN_FINDBUGS = i;
+            if (COLUMN_COUNT_C_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
+            if (COLUMN_COUNT_JAVA_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
           }
         }
         
@@ -546,5 +546,30 @@ public class AdaptorConfiguration {
       String cwe = (String) row.get(COLUMN_CWE);
       rowMap.put(cwe, count++);
     }
+  }
+
+  /** Get the trust for the specified cwe/tool
+   * 
+   * @param cwe
+   * @return
+   */
+  public int getTrust(String cwe, String tool) {
+    Integer index = rowMap.get(cwe);
+    if (index != null) {
+      tool = tool.toLowerCase();
+      List<?> row = data.get(index);
+      TrustField trust = null;
+      switch(tool) {
+        case COLUMN_CPPCHECK_STRING: trust = (TrustField) row.get(COLUMN_CPPCHECK); break;
+        case COLUMN_RATS_STRING: trust = (TrustField) row.get(COLUMN_RATS); break;
+        case COLUMN_SPLINT_STRING: trust = (TrustField) row.get(COLUMN_SPLINT); break;
+        case COLUMN_JLINT_STRING: trust = (TrustField) row.get(COLUMN_JLINT); break;
+        case COLUMN_FINDBUGS_STRING: trust = (TrustField) row.get(COLUMN_FINDBUGS); break;
+      }
+      if (trust != null) {
+        return trust.intValue();
+      }
+    }
+    return 0;
   }
 }

@@ -24,6 +24,11 @@ import org.eclipse.ui.PlatformUI;
  */
 public class FindingData implements Comparable<FindingData>
 {
+  /**
+   * Use the configuration to get trust values
+   */
+  private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+  
     /**
      * Set to false when we have performed a citing. This is used to
      * pop up a warning on the first citing of any Eclipse run.
@@ -253,14 +258,17 @@ public class FindingData implements Comparable<FindingData>
      */
     public void setTrust(int val)
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        if(val < 0 || val > 100)
-        {
-            // This should never happen. It is checked at entry time.
-            throw new IllegalArgumentException("Trust value [" + val + "] must be >=0 and <=100");
-        }
-        String type = getTypeId();
-        store.setValue(Activator.PLUGIN_ID + ".trust." + type, val);
+//        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//        if(val < 0 || val > 100)
+//        {
+//            // This should never happen. It is checked at entry time.
+//            throw new IllegalArgumentException("Trust value [" + val + "] must be >=0 and <=100");
+//        }
+//        String type = getTypeId();
+//        store.setValue(Activator.PLUGIN_ID + ".trust." + type, val);
+      
+      // This method should no longer be used.
+      throw new UnsupportedOperationException();
     }
 
     /** Get the trust level for the finding
@@ -269,12 +277,15 @@ public class FindingData implements Comparable<FindingData>
      */
     public int getTrust()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        String type = getTypeId();
-        int trust = store.getInt(Activator.PLUGIN_ID + ".trust." + type);
-        // The value should always be good, it is checked at entry time.
-        if(trust >= 0 && trust <= 100) return trust;
-        return 0;
+//        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//        String type = getTypeId();
+//        int trust = store.getInt(Activator.PLUGIN_ID + ".trust." + type);
+//        // The value should always be good, it is checked at entry time.
+//        if(trust >= 0 && trust <= 100) return trust;
+//        return 0;
+      
+      // We get trust from the configuration file now
+      return config.getTrust(cwe, tool);
     }
 
 

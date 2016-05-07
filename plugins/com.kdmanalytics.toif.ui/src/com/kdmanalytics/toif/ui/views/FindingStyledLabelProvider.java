@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.PlatformUI;
 
 import com.kdmanalytics.toif.ui.Activator;
-import com.kdmanalytics.toif.ui.common.FindingEntry;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**

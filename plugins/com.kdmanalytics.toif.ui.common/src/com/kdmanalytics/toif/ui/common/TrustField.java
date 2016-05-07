@@ -74,4 +74,15 @@ public class TrustField {
   public boolean isValid() {
     return value != null;
   }
+
+  /** Return the integer value of the trust. Use Zero for undefined.
+   * 
+   * @return
+   */
+  public int intValue() {
+    if (value != null) {
+      return value;
+    }
+    return 0;
+  }
 }
