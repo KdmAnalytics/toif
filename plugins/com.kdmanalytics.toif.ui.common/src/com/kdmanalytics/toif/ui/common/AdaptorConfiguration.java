@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -74,25 +75,25 @@ public class AdaptorConfiguration {
   /**
    * The column numbers might very well change. They are determined by the header location.
    */
-  private static int COLUMN_SFP = 0;
+  private int COLUMN_SFP = 0;
   
-  private static int COLUMN_CWE = 1;
+  private int COLUMN_CWE = 1;
   
-  private static int COLUMN_SHOW = 2;
+  private int COLUMN_SHOW = 2;
   
-  private static int COLUMN_CPPCHECK = 3;
+  private int COLUMN_CPPCHECK = 3;
   
-  private static int COLUMN_RATS = 4;
+  private int COLUMN_RATS = 4;
   
-  private static int COLUMN_SPLINT = 5;
+  private int COLUMN_SPLINT = 5;
   
-  private static int COLUMN_JLINT = 6;
+  private int COLUMN_JLINT = 6;
   
-  private static int COLUMN_FINDBUGS = 7;
+  private int COLUMN_FINDBUGS = 7;
   
-  private static int COLUMN_COUNT_C = 8;
+  private int COLUMN_COUNT_C = 8;
   
-  private static int COLUMN_COUNT_JAVA = 9;
+  private int COLUMN_COUNT_JAVA = 9;
   
   private static AdaptorConfiguration instance;
   
@@ -115,6 +116,16 @@ public class AdaptorConfiguration {
    * Map of cwe to visibility
    */
   private Map<String, Boolean> visibilityMap = new HashMap<String, Boolean>();
+  
+  /**
+   * Map of the column name to its integer value
+   */
+  private Map<String, Integer> columnMap = new HashMap<String, Integer>();
+  
+  /**
+   * List of "extra" columns. These will show up in the finding view.
+   */
+  private List<String> extraColumns = new LinkedList<String>();
   
   /**
    * Location of the "local" config file copy. This is the working copy.
@@ -143,7 +154,8 @@ public class AdaptorConfiguration {
     return instance;
   }
   
-  /** Add a new listener
+  /**
+   * Add a new listener
    * 
    * @param listener
    */
@@ -151,7 +163,8 @@ public class AdaptorConfiguration {
     listeners.add(listener);
   }
   
-  /** Remove a listener
+  /**
+   * Remove a listener
    * 
    * @param listener
    */
@@ -184,15 +197,7 @@ public class AdaptorConfiguration {
    */
   private void loadLocalConfig() {
     try {
-      InputStream is = null;
-      try {
-        if (configFile.exists()) {
-          is = new FileInputStream(configFile);
-          load(is);
-        }
-      } finally {
-        if (is != null) is.close();
-      }
+      load(configFile);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -205,15 +210,43 @@ public class AdaptorConfiguration {
    */
   private void loadDefaults() {
     try {
-      InputStream is = null;
-      try {
-        is = getClass().getResourceAsStream("/resources/" + FILENAME);
-        load(is);
-      } finally {
-        if (is != null) is.close();
-      }
+      loadResource("/resources/" + FILENAME);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Load configuration from the given file.
+   * 
+   * @param file
+   * @throws IOException
+   */
+  public void load(File file) throws IOException {
+    InputStream is = null;
+    try {
+      if (file.exists()) {
+        is = new FileInputStream(file);
+        load(is);
+      }
+    } finally {
+      if (is != null) is.close();
+    }
+  }
+  
+  /**
+   * Load a resource (file embedded in the jar)
+   * 
+   * @param path
+   * @throws IOException
+   */
+  public void loadResource(String path) throws IOException {
+    InputStream is = null;
+    try {
+      is = getClass().getResourceAsStream(path);
+      load(is);
+    } finally {
+      if (is != null) is.close();
     }
   }
   
@@ -223,87 +256,198 @@ public class AdaptorConfiguration {
    * @param is
    * @throws IOException
    */
-  @SuppressWarnings("unchecked")
   private synchronized void load(InputStream is) throws IOException {
-    InputStreamReader in = null;
-    CSVParser parser = null;
-    try {
-      in = new InputStreamReader(is);
-      CSVFormat format = CSVFormat.EXCEL.withDelimiter(',').withIgnoreEmptyLines();
-      
-      parser = new CSVParser(in, format);
-      
-      // Set to false once the header is read
-      boolean header = true;
-      // Number of rows we have loaded so far
-      int rcount = data.size();
-      // Import all new rows
-      for (CSVRecord record : parser) {
-        int size = record.size();
+    if (!isEmpty()) {
+      // If there is already data loaded, we want to merge the new data
+      merge(is);
+    } else {
+      InputStreamReader in = null;
+      CSVParser parser = null;
+      try {
+        in = new InputStreamReader(is);
+        CSVFormat format = CSVFormat.EXCEL.withDelimiter(',').withIgnoreEmptyLines();
         
-        @SuppressWarnings("rawtypes")
-        List row = null;
-        if (header) {
-          if (headers == null) {
-            headers = new LinkedList<String>();
-            row = headers;
-          } else {
-            // This will be thrown out. Duplicate header.
-            // FIXME: This is actually a NEW header which should be used
-            // to figure out the proper column ordering in case it changed
-            // between releases.
-            row = new LinkedList<String>();
-          }
-        } else {
-          row = new LinkedList<Object>();
-        }
+        parser = new CSVParser(in, format);
         
-        // Import the cells
-        for (int i = 0; i < size; i++) {
-          String text = record.get(i);
-          row.add(getCell(header, i, text));
-          
+        // Set to false once the header is read
+        boolean header = true;
+        // Number of rows we have loaded so far
+        int rcount = data.size();
+        // Import all new rows
+        for (CSVRecord record : parser) {
           if (header) {
-            if (COLUMN_SFP_STRING.equalsIgnoreCase(text)) COLUMN_SFP = i;
-            if (COLUMN_CWE_STRING.equalsIgnoreCase(text)) COLUMN_CWE = i;
-            if (COLUMN_SHOW_STRING.equalsIgnoreCase(text)) COLUMN_SHOW = i;
-            if (COLUMN_CPPCHECK_STRING.equalsIgnoreCase(text)) COLUMN_CPPCHECK = i;
-            if (COLUMN_RATS_STRING.equalsIgnoreCase(text)) COLUMN_RATS = i;
-            if (COLUMN_SPLINT_STRING.equalsIgnoreCase(text)) COLUMN_SPLINT = i;
-            if (COLUMN_JLINT_STRING.equalsIgnoreCase(text)) COLUMN_JLINT = i;
-            if (COLUMN_FINDBUGS_STRING.equalsIgnoreCase(text)) COLUMN_FINDBUGS = i;
-            if (COLUMN_COUNT_C_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
-            if (COLUMN_COUNT_JAVA_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
+            parseHeader(record);
+            header = false;
+          } else {
+            rcount = parseData(record, rcount);
           }
         }
-        
-        if (header) {
-          header = false;
-        } else {
-          if (row.size() > COLUMN_CWE) {
-            String cwe = (String) row.get(COLUMN_CWE);
-            // Only add a new row if this is a non-empty row and the CWE
-            // does not exist in the map yet.
-            if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
-              data.add(row);
-              rowMap.put((String) row.get(COLUMN_CWE), rcount);
-              ShowField showState = (ShowField) row.get(COLUMN_SHOW);
-              visibilityMap.put((String) row.get(COLUMN_CWE), showState.toBoolean());
-              // We just added a new row
-              rcount++;
-              dirty = true;
-            }
-          }
+      } finally {
+        if (in != null) {
+          in.close();
         }
-      }
-    } finally {
-      if (in != null) {
-        in.close();
-      }
-      if (parser != null) {
-        parser.close();
+        if (parser != null) {
+          parser.close();
+        }
       }
     }
+  }
+  
+  /**
+   * Merge data from a different configuration stream with the currently loaded data.
+   * 
+   * @param is
+   * @throws IOException
+   */
+  private void merge(InputStream is) throws IOException {
+    // Load the stream into an empty configuration file
+    AdaptorConfiguration config = new AdaptorConfiguration();
+    config.load(is);
+    
+    // Are there new columns?
+    String[] myNames = getExtraColumnNames();
+    String[] yourNames = config.getExtraColumnNames();
+    
+    Set<String> myNameSet = new HashSet<String>();
+    for (String name : myNames) {
+      myNameSet.add(name.toLowerCase());
+    }
+    
+    List<String> newNames = new LinkedList<String>();
+    for (String name : yourNames) {
+      if (!myNameSet.contains(name.toLowerCase())) {
+        newNames.add(name);
+      }
+    }
+    
+    // Add columns
+    for (String name : newNames) {
+      addColumn(name);
+    }
+    
+    // Look through all new rows of data. If there are new rows then append them to
+    // our data. If there are new columns, add it to the appropriate row.
+    List<String> yourHeaders = config.getHeaders();
+    int yourCweIndex = config.getCweColumnIndex();
+    Object[] yourData = config.getDataArray();
+    for (Object object : yourData) {
+      List<?> yourRow = (List<?>) object;
+      String yourCwe = (String) yourRow.get(yourCweIndex);
+      
+      // Do we have the row yet? If no, then add it
+      if (!hasCwe(yourCwe)) {
+        addRow(yourHeaders, yourRow);
+      } else {
+        // This code is not particularly efficient
+        for (String name : newNames) {
+          int yourIndex = config.getColumnIndex(name);
+          Object yourCell = config.getCell(yourCwe, yourIndex);
+          int myIndex = getColumnIndex(name);
+          setCell(yourCwe, myIndex, yourCell);
+        }
+      }
+    }
+  }
+  
+  /**
+   * 
+   * @param cwe
+   * @return
+   */
+  public boolean hasCwe(String cwe) {
+    return rowMap.containsKey(cwe);
+  }
+  
+  /**
+   * Add a new column to the configuration
+   * 
+   * @param name
+   */
+  private void addColumn(String name) {
+    int index = columnMap.size();
+    columnMap.put(name.toLowerCase(), index);
+    extraColumns.add(name);
+    
+    // Stub values in data
+    for (List<?> row : data) {
+      row.add(null);
+    }
+  }
+  
+  /**
+   * Return true if the configuration is empty
+   * 
+   * @return
+   */
+  public boolean isEmpty() {
+    return data.isEmpty();
+  }
+  
+  /**
+   * Parse the header row
+   * 
+   * @param record
+   */
+  private void parseHeader(CSVRecord record) {
+    int size = record.size();
+    
+    headers = new LinkedList<String>();
+    
+    // Import the cells
+    for (int i = 0; i < size; i++) {
+      String text = record.get(i);
+      headers.add(text);
+      
+      if (COLUMN_SFP_STRING.equalsIgnoreCase(text)) COLUMN_SFP = i;
+      else if (COLUMN_CWE_STRING.equalsIgnoreCase(text)) COLUMN_CWE = i;
+      else if (COLUMN_SHOW_STRING.equalsIgnoreCase(text)) COLUMN_SHOW = i;
+      else if (COLUMN_CPPCHECK_STRING.equalsIgnoreCase(text)) COLUMN_CPPCHECK = i;
+      else if (COLUMN_RATS_STRING.equalsIgnoreCase(text)) COLUMN_RATS = i;
+      else if (COLUMN_SPLINT_STRING.equalsIgnoreCase(text)) COLUMN_SPLINT = i;
+      else if (COLUMN_JLINT_STRING.equalsIgnoreCase(text)) COLUMN_JLINT = i;
+      else if (COLUMN_FINDBUGS_STRING.equalsIgnoreCase(text)) COLUMN_FINDBUGS = i;
+      else if (COLUMN_COUNT_C_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
+      else if (COLUMN_COUNT_JAVA_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
+      else {
+        extraColumns.add(text);
+      }
+      columnMap.put(text.toLowerCase(), i);
+    }
+  }
+  
+  /**
+   * Parse the record as a row of data
+   * 
+   * @param record
+   * @param rcount
+   * @return
+   */
+  private int parseData(CSVRecord record, int rcount) {
+    int size = record.size();
+    
+    List<Object> row = new LinkedList<Object>();
+    
+    // Import the cells
+    for (int i = 0; i < size; i++) {
+      String text = record.get(i);
+      row.add(getCell(i, text));
+    }
+    
+    if (row.size() > COLUMN_CWE) {
+      String cwe = (String) row.get(COLUMN_CWE);
+      // Only add a new row if this is a non-empty row and the CWE
+      // does not exist in the map yet.
+      if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
+        data.add(row);
+        rowMap.put((String) row.get(COLUMN_CWE), rcount);
+        ShowField showState = (ShowField) row.get(COLUMN_SHOW);
+        visibilityMap.put((String) row.get(COLUMN_CWE), showState.toBoolean());
+        // We just added a new row
+        rcount++;
+        dirty = true;
+      }
+    }
+    return rcount;
   }
   
   /**
@@ -314,27 +458,25 @@ public class AdaptorConfiguration {
    * @param text
    * @return
    */
-  private Object getCell(boolean header, int index, String text) {
-    if (!header) {
-      if (index == COLUMN_SHOW) {
-        return ShowField.fromString(text);
-      }
-      if (index == COLUMN_CPPCHECK) {
-        return TrustField.fromString(text);
-      }
-      if (index == COLUMN_RATS) {
-        return TrustField.fromString(text);
-      }
-      if (index == COLUMN_SPLINT) {
-        return TrustField.fromString(text);
-      }
-      if (index == COLUMN_JLINT) {
-        return TrustField.fromString(text);
-      }
-      if (index == COLUMN_FINDBUGS) {
-        return TrustField.fromString(text);
-      }
-   }
+  private Object getCell(int index, String text) {
+    if (index == COLUMN_SHOW) {
+      return ShowField.fromString(text);
+    }
+    if (index == COLUMN_CPPCHECK) {
+      return TrustField.fromString(text);
+    }
+    if (index == COLUMN_RATS) {
+      return TrustField.fromString(text);
+    }
+    if (index == COLUMN_SPLINT) {
+      return TrustField.fromString(text);
+    }
+    if (index == COLUMN_JLINT) {
+      return TrustField.fromString(text);
+    }
+    if (index == COLUMN_FINDBUGS) {
+      return TrustField.fromString(text);
+    }
     return text;
   }
   
@@ -368,7 +510,7 @@ public class AdaptorConfiguration {
       }
       
       // Tell all the listeners about changes
-      for(IAdaptorConfigurationListener listener: listeners) {
+      for (IAdaptorConfigurationListener listener : listeners) {
         listener.configChanged();
       }
       dirty = false;
@@ -382,8 +524,7 @@ public class AdaptorConfiguration {
    * @return
    */
   public int getWeight(String cwe) {
-    if (rowMap.containsKey(cwe)) return rowMap.get(cwe);
-    return rowMap.size();
+    return getIndex(cwe);
   }
   
   /**
@@ -400,13 +541,23 @@ public class AdaptorConfiguration {
   }
   
   /**
-   * Reload the local configuration.
+   * Clear all of the internal data
    */
-  public void reset() {
+  public void clear() {
     data.clear();
     rowMap.clear();
     visibilityMap.clear();
     headers = null;
+    columnMap.clear();
+    extraColumns.clear();
+  }
+  
+  /**
+   * Reload the local configuration.
+   */
+  public void reset() {
+    clear();
+    
     // Load from the state location first.
     loadLocalConfig();
     
@@ -419,10 +570,7 @@ public class AdaptorConfiguration {
    * the local copy unless save is called.
    */
   public void resetToDefault() {
-    data.clear();
-    rowMap.clear();
-    visibilityMap.clear();
-    headers = null;
+    clear();
     loadDefaults();
   }
   
@@ -483,21 +631,23 @@ public class AdaptorConfiguration {
     dirty = true;
   }
   
-  /** Return true if the given index is one of the adaptors
+  /**
+   * Return true if the given index is one of the adaptors
    * 
    * @param index
    * @return
    */
   public boolean isAdaptorIndex(int index) {
-    if(COLUMN_CPPCHECK == index) return true;
-    if(COLUMN_RATS == index) return true;
-    if(COLUMN_SPLINT == index) return true;
-    if(COLUMN_JLINT == index) return true;
-    if(COLUMN_FINDBUGS == index) return true;
+    if (COLUMN_CPPCHECK == index) return true;
+    if (COLUMN_RATS == index) return true;
+    if (COLUMN_SPLINT == index) return true;
+    if (COLUMN_JLINT == index) return true;
+    if (COLUMN_FINDBUGS == index) return true;
     return false;
   }
   
-  /** Get the size of the configuration
+  /**
+   * Get the size of the configuration
    * 
    * @return
    */
@@ -505,19 +655,21 @@ public class AdaptorConfiguration {
     return data.size();
   }
   
-  /** Get the location of the specified CWE
+  /**
+   * Get the location of the specified CWE
    * 
    * @param cwe
    * @return
    */
   public int getIndex(String cwe) {
-    if(rowMap.containsKey(cwe)) {
+    if (rowMap.containsKey(cwe)) {
       return rowMap.get(cwe);
     }
     return data.size();
   }
-
-  /** Remove the row
+  
+  /**
+   * Remove the row
    * 
    * @param row
    * @return The index of the removed row
@@ -531,8 +683,9 @@ public class AdaptorConfiguration {
     dirty = true;
     return rowNum;
   }
-
-  /** Add a row into the data set at the specified location
+  
+  /**
+   * Add a row into the data set at the specified location
    * 
    * @param index
    * @param row
@@ -542,13 +695,14 @@ public class AdaptorConfiguration {
     
     rowMap.clear();
     int count = 0;
-    for(List<?> row: data) {
+    for (List<?> row : data) {
       String cwe = (String) row.get(COLUMN_CWE);
       rowMap.put(cwe, count++);
     }
   }
-
-  /** Get the trust for the specified cwe/tool
+  
+  /**
+   * Get the trust for the specified cwe/tool
    * 
    * @param cwe
    * @return
@@ -559,17 +713,129 @@ public class AdaptorConfiguration {
       tool = tool.toLowerCase();
       List<?> row = data.get(index);
       TrustField trust = null;
-      switch(tool) {
-        case COLUMN_CPPCHECK_STRING: trust = (TrustField) row.get(COLUMN_CPPCHECK); break;
-        case COLUMN_RATS_STRING: trust = (TrustField) row.get(COLUMN_RATS); break;
-        case COLUMN_SPLINT_STRING: trust = (TrustField) row.get(COLUMN_SPLINT); break;
-        case COLUMN_JLINT_STRING: trust = (TrustField) row.get(COLUMN_JLINT); break;
-        case COLUMN_FINDBUGS_STRING: trust = (TrustField) row.get(COLUMN_FINDBUGS); break;
+      switch (tool) {
+        case COLUMN_CPPCHECK_STRING:
+          trust = (TrustField) row.get(COLUMN_CPPCHECK);
+          break;
+        case COLUMN_RATS_STRING:
+          trust = (TrustField) row.get(COLUMN_RATS);
+          break;
+        case COLUMN_SPLINT_STRING:
+          trust = (TrustField) row.get(COLUMN_SPLINT);
+          break;
+        case COLUMN_JLINT_STRING:
+          trust = (TrustField) row.get(COLUMN_JLINT);
+          break;
+        case COLUMN_FINDBUGS_STRING:
+          trust = (TrustField) row.get(COLUMN_FINDBUGS);
+          break;
       }
       if (trust != null) {
         return trust.intValue();
       }
     }
     return 0;
+  }
+  
+  /**
+   * Get the index of the specified column (by name)
+   * 
+   * @param name
+   * @return
+   */
+  public int getColumnIndex(String name) {
+    return columnMap.get(name.toLowerCase());
+  }
+  
+  /**
+   * Get the cell value for the specified CWE and index.
+   * 
+   * @param cwe
+   * @param index
+   * @return
+   */
+  public Object getCell(String cwe, int index) {
+    List<?> row = getRow(cwe);
+    if (row != null) {
+      if (row.size() > index) {
+        return row.get(index);
+      }
+    }
+    return null;
+  }
+  
+  /**
+   * Set the value of the cell at the specified cwe/index
+   * 
+   * @param cwe
+   * @param index
+   * @param yourCell
+   */
+  private void setCell(String cwe, int index, Object yourCell) {
+    List<Object> row = getRow(cwe);
+    row.remove(index);
+    row.add(index, yourCell);
+  }
+  
+  /**
+   * Get the row for the specified CWE
+   * 
+   * @param cwe
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public List<Object> getRow(String cwe) {
+    int rowIndex = rowMap.get(cwe);
+    List<?> row = data.get(rowIndex);
+    return (List<Object>) row;
+  }
+  
+  /**
+   * Append a new row to our data. The columns may need reordering.
+   * 
+   * @param rowHeaders
+   * @param row
+   */
+  private void addRow(List<String> rowHeaders, List<?> row) {
+    // Create the new row in an array. This is done to simplify the steps
+    Object[] newRow = new Object[columnMap.size()];
+    String yourCwe = null;
+    boolean yourShow = true;
+    
+    for (int i = 0; i < rowHeaders.size(); i++) {
+      String name = rowHeaders.get(i);
+      Object cell = row.get(i);
+      if ("cwe".equalsIgnoreCase(name)) {
+        yourCwe = (String) cell;
+      }
+      if ("show?".equalsIgnoreCase(name)) {
+        Boolean b = ((ShowField) cell).toBoolean();
+        if (b == false) {
+          yourShow = false;
+        }
+      }
+      int myIndex = getColumnIndex(name.toLowerCase());
+      newRow[myIndex] = cell;
+    }
+    
+    if (yourCwe != null) {
+      List<Object> newRowList = Arrays.asList(newRow);
+      int count = data.size();
+      data.add(newRowList);
+      rowMap.put(yourCwe, count);
+      visibilityMap.put(yourCwe, yourShow);
+    } else {
+      System.err.println("Cannot add a row; missing CWE column");
+    }
+  }
+  
+  /**
+   * Get the list of "extra" column names, which are any of the non-standard columns. These columns
+   * will show up in the finding view.
+   * 
+   * @return
+   */
+  public String[] getExtraColumnNames() {
+    return extraColumns.toArray(new String[extraColumns.size()]);
   }
 }
