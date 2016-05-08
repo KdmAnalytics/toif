@@ -9,6 +9,8 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -21,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.PlatformUI;
 
 import com.kdmanalytics.toif.ui.Activator;
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
@@ -62,10 +65,26 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
   private static final String WRENCH_KEY = "wrench";
   
   /**
+   * Use the configuration to get extra column values
+   */
+  private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+  
+  /**
+   * Cache the index numbers for the extra columns
+   */
+  private List<Integer> extraColumnIndices = new LinkedList<Integer>();
+
+  /**
    * 
    */
   public FindingStyledLabelProvider() {
     loadImagesIntoRegistry();
+    
+    String[] names = config.getExtraColumnNames();
+    for (String name : names) {
+      int index = config.getColumnIndex(name);
+      extraColumnIndices.add(index);
+    }
   }
   
   /**
@@ -124,6 +143,16 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       }
       case 6: {
         return entry.getDescription();
+      }
+      default: {
+        int index = colIndex - 7;
+        if (index < extraColumnIndices.size()) {
+          // Get the config index matching this column
+          index = extraColumnIndices.get(index);
+          String cwe = entry.getCwe();
+          String value = (String)config.getCell(cwe, index);
+          return value;
+        }
       }
     }
     return null;

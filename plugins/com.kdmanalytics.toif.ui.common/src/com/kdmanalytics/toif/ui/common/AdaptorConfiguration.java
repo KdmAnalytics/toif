@@ -45,6 +45,7 @@ public class AdaptorConfiguration {
   
   
   private static final String FILENAME = "AllAdaptorConfiguration.csv";
+  private static final String EXTRA_COLUMNS_FILENAME = "AppendedColumn.csv";
   
   // Delimiter used in CSV file
   private static final String NEW_LINE_SEPARATOR = "\n";
@@ -178,7 +179,6 @@ public class AdaptorConfiguration {
    */
   public void init(IPath stateLocation) {
     File location = stateLocation.toFile();
-    System.err.println("STATE LOCATION: " + location);
     configFile = new File(location, FILENAME);
     
     // Load from the state location first.
@@ -210,7 +210,8 @@ public class AdaptorConfiguration {
    */
   private void loadDefaults() {
     try {
-      loadResource("/resources/" + FILENAME);
+      //loadResource("/resources/" + FILENAME);
+      loadResource("/resources/" + EXTRA_COLUMNS_FILENAME);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -367,6 +368,7 @@ public class AdaptorConfiguration {
     int index = columnMap.size();
     columnMap.put(name.toLowerCase(), index);
     extraColumns.add(name);
+    headers.add(name);
     
     // Stub values in data
     for (List<?> row : data) {

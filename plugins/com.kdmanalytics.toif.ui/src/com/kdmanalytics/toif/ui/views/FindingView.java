@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -52,7 +51,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -518,37 +516,27 @@ public class FindingView extends ViewPart
         tree.setHeaderVisible(true);
         tree.setLinesVisible(true);
         ColumnViewerToolTipSupport.enableFor(viewer);
-
+        
         String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Confidence", "Description" };
-        int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
+        Integer[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
+        
+        List<String> headings = new LinkedList<String>();
+        for(String heading: titles) headings.add(heading);
+        List<Integer> boundsList = new LinkedList<Integer>();
+        for(Integer i: bounds) boundsList.add(i);
+        String[] extraHeadings = AdaptorConfiguration.getAdaptorConfiguration().getExtraColumnNames();
+        for (String heading : extraHeadings) {
+          headings.add(heading);
+          boundsList.add(70);
+        }
+        titles = headings.toArray(new String[headings.size()]);
+        bounds = boundsList.toArray(new Integer[boundsList.size()]);
 
-        // File Column
-        TreeViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Location Column
-        col = createTableViewerColumn(viewer, titles[1], bounds[1], 1, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Tool Column
-        col = createTableViewerColumn(viewer, titles[2], bounds[2], 2, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // SFP Column
-        col = createTableViewerColumn(viewer, titles[3], bounds[3], 3, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // CWE Column
-        col = createTableViewerColumn(viewer, titles[4], bounds[4], 4, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Trust Column
-        col = createTableViewerColumn(viewer, titles[5], bounds[5], 5, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Description Column
-        col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
+        // Create the columns
+        for (int i = 0; i < titles.length; i++) {
+          TreeViewerColumn col = createTableViewerColumn(viewer, titles[i], bounds[i], i, true);
+          col.setLabelProvider(new FindingStyledLabelProvider());
+        }
 
         viewer.setInput(getViewSite());
         getSite().setSelectionProvider(viewer);
