@@ -210,8 +210,8 @@ public class AdaptorConfiguration {
    */
   private void loadDefaults() {
     try {
-      //loadResource("/resources/" + FILENAME);
-      loadResource("/resources/" + EXTRA_COLUMNS_FILENAME);
+      loadResource("/resources/" + FILENAME);
+//      loadResource("/resources/" + EXTRA_COLUMNS_FILENAME);
     } catch (IOException e) {
       e.printStackTrace();
     }
