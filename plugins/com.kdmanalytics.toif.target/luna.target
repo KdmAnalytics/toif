@@ -2,10 +2,6 @@
 <?pde version="3.8"?><target name="luna" sequenceNumber="20">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="net.ossindex.eclipse.common.builder.feature.feature.group" version="1.0.2.201512131945"/>
-<repository location="http://vorsecurity.com/eclipse/ossindex/builder/kepler"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.common.feature.group" version="2.10.1.v20150123-0348"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.102.v20150204-1316"/>
 <unit id="org.eclipse.emf.codegen.ecore.feature.group" version="2.10.2.v20150123-0452"/>
