@@ -134,7 +134,11 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     // int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
     
     for (int i = 0; i < header.size(); i++) {
-      TableViewerColumn col = createTableViewerColumn(viewer, header.get(i), 50, 0, true);
+      int width = 50;
+      switch(i) {
+        case 1: width = 70; break;
+      }
+      TableViewerColumn col = createTableViewerColumn(viewer, header.get(i), width, 0, true);
       col.setLabelProvider(new AConfigStyledLabelProvider(config));
       if (config.getShowColumnIndex() == i) {
         col.setEditingSupport(new ShowEditingSupport(viewer, config));
@@ -146,12 +150,6 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     
     // Set the table data
     viewer.setInput(config);
-    
-    // Resize the columns to fit the data
-    TableColumn[] columns = table.getColumns();
-    for (TableColumn column : columns) {
-      column.pack();
-    }
   }
   
   /**

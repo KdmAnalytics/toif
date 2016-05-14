@@ -93,7 +93,37 @@ public class AConfigWeightSortTests {
    * @throws IOException 
    */
   @Test
-  public void testConfigSortByGrouping() throws IOException {
+  public void testConfigSortByGrouping1() throws IOException {
+    File file = new File(new File("."), sortedBySfpConfig);
+    assertTrue("Test file: " + file.getAbsolutePath(), file.exists());
+    AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+    config.load(file);
+    
+    List<IFindingEntry> findings = new LinkedList<IFindingEntry>();
+    findings.add(new FindingEntry(new File("A"), "Findbugs", "VA_FORMAT_STRING", 172, 0, "CWE-785", "SFP--1"));
+    findings.add(new FindingEntry(new File("B"), "Jlint", "shadow_local", 175, 0, "CWE-125", "SFP--1"));
+    findings.add(new FindingGroup(new File("C"), 188, "SFP--1", "CWE-133"));
+    
+    AdaptorConfigWeightComparator comparator = new AdaptorConfigWeightComparator();
+    Collections.sort(findings, comparator);
+    
+    Iterator<IFindingEntry> it = findings.iterator();
+    assertEquals("B", it.next().getFileName());
+    assertEquals("A", it.next().getFileName());
+    assertEquals("C", it.next().getFileName());
+  }
+  
+  /** Test that sorting is done by:
+   *   1. Config file order
+   *   2. Grouping
+   *   3. Trust
+   *   4. Path
+   *   5. Line
+   * 
+   * @throws IOException 
+   */
+  @Test
+  public void testConfigSortByGrouping2() throws IOException {
     File file = new File(new File("."), sortedBySfpConfig);
     assertTrue("Test file: " + file.getAbsolutePath(), file.exists());
     AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
