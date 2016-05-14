@@ -8,6 +8,8 @@
 
 package com.kdmanalytics.toif.ui.views.sort;
 
+import java.util.Comparator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -23,7 +25,7 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  * @author Ken Duck
  *        
  */
-public class FindingViewColumnComparator extends ViewerComparator {
+public class FindingViewColumnComparator extends ViewerComparator implements Comparator<IFindingEntry> {
   
   /** The column index. */
   private int columnIndex;
@@ -78,15 +80,25 @@ public class FindingViewColumnComparator extends ViewerComparator {
    */
   @Override
   public int compare(Viewer viewer, Object e1, Object e2) {
-    int result = 0;
     IFindingEntry entry1 = (IFindingEntry) e1;
     IFindingEntry entry2 = (IFindingEntry) e2;
     
+    return compare(entry1, entry2);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public int compare(IFindingEntry entry1, IFindingEntry entry2) {
+    int result = 0;
+    
     switch (columnIndex) {
       case 0: {
-        IFile file1 = entry1.getFile();
-        IFile file2 = entry2.getFile();
-        result = file1.getName().split(" ")[0].compareTo(file2.getName().split(" ")[0]);
+        String file1 = entry1.getFileName();
+        String file2 = entry2.getFileName();
+        result = file1.compareTo(file2);
         break;
       }
       case 1: {

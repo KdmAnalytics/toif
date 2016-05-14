@@ -10,8 +10,6 @@ package com.kdmanalytics.toif.ui.views.sort;
 import java.io.File;
 import java.util.Comparator;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
