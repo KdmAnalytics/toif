@@ -67,7 +67,7 @@ public class FindingGroupComparator extends ViewerComparator {
     // Tertiary sort: Confidence
     i1 = entry1.getTrust();
     i2 = entry2.getTrust();
-    diff = i1 - i2;
+    diff = i2 - i1;
     if (diff != 0) return diff;
     
     // Quaternary sort: File

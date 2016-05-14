@@ -129,6 +129,11 @@ public class AdaptorConfiguration {
   private List<String> extraColumns = new LinkedList<String>();
   
   /**
+   * Map of CWE to SFP
+   */
+  private Map<String,String> sfpMap = new HashMap<String,String>();
+  
+  /**
    * Location of the "local" config file copy. This is the working copy.
    */
   private File configFile;
@@ -441,7 +446,8 @@ public class AdaptorConfiguration {
       // does not exist in the map yet.
       if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
         data.add(row);
-        rowMap.put((String) row.get(COLUMN_CWE), rcount);
+        rowMap.put(cwe, rcount);
+        sfpMap.put(cwe, (String) row.get(COLUMN_SFP));
         ShowField showState = (ShowField) row.get(COLUMN_SHOW);
         visibilityMap.put((String) row.get(COLUMN_CWE), showState.toBoolean());
         // We just added a new row
@@ -552,6 +558,7 @@ public class AdaptorConfiguration {
     headers = null;
     columnMap.clear();
     extraColumns.clear();
+    sfpMap.clear();
   }
   
   /**
@@ -825,6 +832,7 @@ public class AdaptorConfiguration {
       int count = data.size();
       data.add(newRowList);
       rowMap.put(yourCwe, count);
+      sfpMap.put(yourCwe, (String) newRowList.get(COLUMN_SFP));
       visibilityMap.put(yourCwe, yourShow);
     } else {
       System.err.println("Cannot add a row; missing CWE column");
@@ -839,5 +847,14 @@ public class AdaptorConfiguration {
    */
   public String[] getExtraColumnNames() {
     return extraColumns.toArray(new String[extraColumns.size()]);
+  }
+
+  /** Get the SFP mapped to the specified CWE
+   * 
+   * @param cwe
+   * @return
+   */
+  public String getSfp(String cwe) {
+    return sfpMap.get(cwe);
   }
 }

@@ -7,6 +7,7 @@
  ******************************************************************************/
 package com.kdmanalytics.toif.ui.common;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -20,27 +21,58 @@ import org.eclipse.core.resources.IFile;
  *
  */
 public class FindingGroup implements IFindingEntry {
+  /**
+   * Use the configuration to get SFP values
+   */
+  private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
 
+  /**
+   * Findings contained within the group
+   */
   List<FindingEntry> entries = new LinkedList<FindingEntry>();
-  private IFile file;
+  
+  private IFile ifile;
   private int line;
   private String cwe;
   private String sfp;
   
+  /**
+   * Used for testing only
+   */
+  private File file;
+  
   public FindingGroup(IFile file, int line, String sfp, String cwe) {
-    this.file = file;
+    this.ifile = file;
     this.line = line;
-    this.sfp = sfp;
     this.cwe = cwe;
+    // Ignore the provided SFP, instead use the value found in the adaptor configuration
+    //this.sfp = sfp;
+    this.sfp = config.getSfp(cwe);
   }
   
+  /** Constructor for testing purposes only
+   * 
+   * @param file2
+   * @param line2
+   * @param sfp2
+   * @param cwe2
+   */
+  public FindingGroup(File file, int line, String sfp, String cwe) {
+    this.file = file;
+    this.line = line;
+    this.cwe = cwe;
+    // Ignore the provided SFP, instead use the value found in the adaptor configuration
+    //this.sfp = sfp;
+    this.sfp = config.getSfp(cwe);
+  }
+
   /*
    * (non-Javadoc)
    * @see com.kdmanalytics.toif.ui.common.IFindingEntry#getFile()
    */
   @Override
   public IFile getFile() {
-    return file;
+    return ifile;
   }
 
   /** Get all entries within this group
@@ -168,7 +200,11 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public String getFileName() {
-    return file.getName();
+    if (ifile != null) {
+      return ifile.getName();
+    } else {
+      return file.getName();
+    }
   }
 
   /*
@@ -177,7 +213,11 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public String getPath() {
-    return file.getProjectRelativePath().toString();
+    if (ifile != null) {
+      return ifile.getProjectRelativePath().toString();
+    } else {
+      return file.getAbsolutePath();
+    }
   }
 
   /*
@@ -187,7 +227,7 @@ public class FindingGroup implements IFindingEntry {
   @Override
   public String getSearchableText() {
     StringBuilder sb = new StringBuilder();
-    sb.append(file.getProjectRelativePath().toString());
+    sb.append(ifile.getProjectRelativePath().toString());
     sb.append(" | ");
     sb.append(line);
     sb.append(" | ");

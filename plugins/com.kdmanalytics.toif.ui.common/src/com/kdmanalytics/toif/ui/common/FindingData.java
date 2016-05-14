@@ -1,6 +1,7 @@
 
 package com.kdmanalytics.toif.ui.common;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -42,6 +42,11 @@ public class FindingData implements Comparable<FindingData>
     private int offset;
     private String cwe;
     private String sfp;
+
+    /**
+     * File is used in testing only
+     */
+    private File file;
 
     /**
      * The digest allows us to generate simple and short unique IDs for each finding.
@@ -88,16 +93,43 @@ public class FindingData implements Comparable<FindingData>
         this.line = line;
         this.offset = offset;
         this.cwe = cwe;
-        this.sfp = sfp;
+        // Ignore the provided SFP, instead use the value found in the adaptor configuration
+        //this.sfp = sfp;
+        this.sfp = config.getSfp(cwe);
     }
 
+    /** Used in testing only
+     * 
+     * @param file
+     * @param tool
+     * @param description
+     * @param line
+     * @param offset
+     * @param cwe
+     * @param sfp
+     */
+    protected void setFindingData(File file, String tool, String description, int line, int offset, String cwe, String sfp) {
+      this.file = file;
+      this.tool = tool;
+      this.description = description;
+      this.line = line;
+      this.offset = offset;
+      this.cwe = cwe;
+      // Ignore the provided SFP, instead use the value found in the adaptor configuration
+      //this.sfp = sfp;
+      this.sfp = config.getSfp(cwe);
+    }
 
     /**
      * Output a pretty string representation of the finding.
      */
     public String toString()
     {
+      if (resource != null) {
         return "[" + tool + "] " + resource.toString() + ":" + line + "," + offset + " - {" + sfp + "," + cwe + "} " + description;
+      } else {
+        return "[" + tool + "] " + file.toString() + ":" + line + "," + offset + " - {" + sfp + "," + cwe + "} " + description;
+      }
     }
 
     /**
@@ -167,7 +199,12 @@ public class FindingData implements Comparable<FindingData>
      */
     public String getFileName()
     {
-        String name = resource.getName();
+        String name = null;
+        if (resource != null) {
+          name = resource.getName();
+        } else {
+          name = file.getName();
+        }
         return name;
     }
 
@@ -177,7 +214,11 @@ public class FindingData implements Comparable<FindingData>
      */
     public String getPath()
     {
+      if(resource != null) {
         return resource.getProjectRelativePath().toString();
+      } else {
+        return file.getAbsolutePath();
+      }
     }
 
     /** Get the line number in the file with the finding

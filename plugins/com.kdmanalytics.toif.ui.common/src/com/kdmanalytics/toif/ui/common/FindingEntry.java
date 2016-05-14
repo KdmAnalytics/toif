@@ -8,6 +8,8 @@
 
 package com.kdmanalytics.toif.ui.common;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -52,6 +54,20 @@ public class FindingEntry extends FindingData implements IFindingEntry {
     } catch (CoreException e) {
       e.printStackTrace();
     }
+  }
+
+  /** This constructor is intended for testing purposes only
+   * 
+   * @param file
+   * @param tool
+   * @param descr
+   * @param line
+   * @param offset
+   * @param cwe
+   * @param sfp
+   */
+  public FindingEntry(File file, String tool, String descr, int line, int offset, String cwe, String sfp) {
+    setFindingData(file, tool, descr, line, offset, cwe, sfp);
   }
 
   /** The entry may be part of a group. This sets the group.

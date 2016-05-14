@@ -8,9 +8,8 @@
 package com.kdmanalytics.toif.ui.views.sort;
 
 import java.io.File;
+import java.util.Comparator;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
@@ -29,7 +28,7 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  * @author Ken Duck
  *
  */
-public class AdaptorConfigWeightComparator extends ViewerComparator {
+public class AdaptorConfigWeightComparator extends ViewerComparator implements Comparator<IFindingEntry>{
   /**
    * Use the adaptor configuration for ordering
    */
@@ -42,7 +41,15 @@ public class AdaptorConfigWeightComparator extends ViewerComparator {
   public int compare(Viewer viewer, Object e1, Object e2) {
     IFindingEntry entry1 = (IFindingEntry) e1;
     IFindingEntry entry2 = (IFindingEntry) e2;
-    
+    return compare(entry1, entry2);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public int compare(IFindingEntry entry1, IFindingEntry entry2) {
     String cwe1 = entry1.getCwe();
     String cwe2 = entry2.getCwe();
     
@@ -68,16 +75,14 @@ public class AdaptorConfigWeightComparator extends ViewerComparator {
     // Tertiary sort: Confidence
     i1 = entry1.getTrust();
     i2 = entry2.getTrust();
-    diff = i1 - i2;
+    diff = i2 - i1;
     if (diff != 0) return diff;
     
     // Quaternary sort: File
-    IFile if1 = entry1.getFile();
-    IFile if2 = entry2.getFile();
-    IPath p1 = if1.getFullPath();
-    IPath p2 = if2.getFullPath();
-    File f1 = p1.toFile();
-    File f2 = p2.toFile();
+    String p1 = entry1.getPath();
+    String p2 = entry2.getPath();
+    File f1 = new File(p1);
+    File f2 = new File(p2);
     diff = f1.compareTo(f2);
     if (diff != 0) return diff;
     
