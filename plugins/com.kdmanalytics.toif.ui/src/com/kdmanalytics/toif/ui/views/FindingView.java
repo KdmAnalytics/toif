@@ -244,6 +244,7 @@ public class FindingView extends ViewPart
                         {
                             currentProject = newProject;
                             viewer.setInput(newProject);
+                            viewer.refresh();
                             updateDefectCount();
                         }
 

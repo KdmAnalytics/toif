@@ -25,9 +25,6 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
@@ -42,7 +39,7 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.ViewPart;
 
-import com.kdmanalytics.toif.ui.common.FindingData;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Simple view that provides descriptive information about selected findings.
@@ -299,11 +296,13 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
   protected void handleSelection(ISelection sel) {
     if (sel instanceof IStructuredSelection) {
       for (final Object object : ((IStructuredSelection) sel).toArray()) {
-        if (object instanceof FindingData) {
+        if (object instanceof IFindingEntry) {
           if (viewer != null) {
             viewer.setInput(object);
             viewer.refresh();
             viewer.expandAll();
+            TreeColumn[] columns = viewer.getTree().getColumns();
+            columns[1].pack();
           }
         }
       }

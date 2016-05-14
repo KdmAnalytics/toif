@@ -8,8 +8,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.kdmanalytics.toif.ui.common.FindingData;
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /** Provide the contents for the defect description view
  * 
@@ -25,15 +24,15 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
     this.sfpLookup = sfpLookup;
     this.cweLookup = cweLookup;
   }
-
+  
   /*
    * (non-Javadoc)
    * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
    */
   @Override
   public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-    if (newInput instanceof FindingData) {
-      FindingData data = (FindingData) newInput;
+    if (newInput instanceof IFindingEntry) {
+      IFindingEntry data = (IFindingEntry) newInput;
       root = new DefectNode(DefectNode.ROOT_NODE, "ROOT");
       
       String sfp = data.getSfp();
@@ -71,7 +70,7 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
    * @param sfpNode
    * @param data
    */
-  private void addCweNodes(DefectNode sfpNode, FindingData data) {
+  private void addCweNodes(DefectNode sfpNode, IFindingEntry data) {
     
     // CWE node itself
     String cwe = data.getCwe();
@@ -95,9 +94,12 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
     }
     
     // Description node
-    DefectNode descriptionNode = new DefectNode(DefectNode.DESCRIPTION_NODE, "Description", data.getDescription());
-    sfpNode.addChild(descriptionNode);
-    descriptionNode.setParent(sfpNode);
+    String description = data.getDescription();
+    if(description != null && !description.trim().isEmpty()) {
+      DefectNode descriptionNode = new DefectNode(DefectNode.DESCRIPTION_NODE, "Description", data.getDescription());
+      sfpNode.addChild(descriptionNode);
+      descriptionNode.setParent(sfpNode);
+    }
     
     // More info
     try {
@@ -110,12 +112,12 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
     }
     
   }
-
+  
   public void dispose() {
   }
   
   public Object[] getElements(Object parent) {
-    if (parent instanceof FindingEntry) {
+    if (parent instanceof IFindingEntry) {
       return getChildren(root);
     }
     return getChildren(parent);
@@ -141,5 +143,5 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
     }
     return false;
   }
-
+  
 }

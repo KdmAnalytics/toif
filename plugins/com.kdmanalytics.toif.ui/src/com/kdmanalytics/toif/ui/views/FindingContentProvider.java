@@ -224,7 +224,7 @@ class FindingContentProvider implements ITreeContentProvider
                             viewer.remove(finding);
                         }
                     }
-                    viewer.add(null, newFindings.toArray());
+                    viewer.refresh();
                     for (FindingEntry finding : newFindings)
                     {
                         addEntry(finding);
