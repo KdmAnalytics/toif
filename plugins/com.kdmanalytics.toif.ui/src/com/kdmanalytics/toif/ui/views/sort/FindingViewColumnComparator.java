@@ -9,12 +9,15 @@
 package com.kdmanalytics.toif.ui.views.sort;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
@@ -26,6 +29,11 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  *        
  */
 public class FindingViewColumnComparator extends ViewerComparator implements Comparator<IFindingEntry> {
+  
+  /**
+   * Required for getting column positions
+   */
+  private AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
   
   /** The column index. */
   private int columnIndex;
@@ -39,11 +47,23 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
   private int direction = DESCENDING;
   
   /**
+   * Cache the index numbers for the extra columns
+   */
+  private List<Integer> extraColumnIndices = new LinkedList<Integer>();
+  
+  /**
    * Instantiates a new report viewer comparator.
    */
   public FindingViewColumnComparator() {
     this.columnIndex = 0;
     direction = ASCENDING;
+    
+    
+    String[] names = config.getExtraColumnNames();
+    for (String name : names) {
+      int index = config.getColumnIndex(name);
+      extraColumnIndices.add(index);
+    }
   }
   
   /**
@@ -85,14 +105,14 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
     
     return compare(entry1, entry2);
   }
-
+  
   /*
    * (non-Javadoc)
    * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
    */
   @Override
   public int compare(IFindingEntry entry1, IFindingEntry entry2) {
-    int result = 0;
+    Integer result = null;
     
     switch (columnIndex) {
       case 0: {
@@ -180,6 +200,37 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         String desc2 = entry2.getDescription();
         result = desc1.compareTo(desc2);
         break;
+      }
+      
+      // Remaining columns are defined by the config
+      default: {
+        int index = columnIndex - 7;
+        if (index < extraColumnIndices.size()) {
+          // Get the config index matching this column
+          index = extraColumnIndices.get(index);
+          String cwe1 = entry1.getCwe();
+          String value1 = (String)config.getCell(cwe1, index);
+          String cwe2 = entry2.getCwe();
+          String value2 = (String)config.getCell(cwe2, index);
+          
+          // Should we use numeric compare
+          try {
+            Long int1 = (Long.valueOf(value1));
+            Long int2 = (Long.valueOf(value2));
+            result = int1.compareTo(int2);
+          } catch (NumberFormatException e) {}
+          if (result == null) {
+            try {
+              Double d1 = (Double.valueOf(value1));
+              Double d2 = (Double.valueOf(value2));
+              result = d1.compareTo(d2);
+            } catch (NumberFormatException e) {}
+          }
+          if (result == null) {
+            result = value1.compareTo(value2);
+            break;
+          }
+        }
       }
     }
     
