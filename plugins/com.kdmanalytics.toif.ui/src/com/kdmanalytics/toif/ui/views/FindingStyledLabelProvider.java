@@ -229,7 +229,12 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    */
   public void update(final ViewerCell cell) {
     final IFindingEntry entry = (IFindingEntry) cell.getElement();
-    final StyledString styledString = new StyledString(getColumnText(entry, cell.getColumnIndex()));
+    int index = cell.getColumnIndex();
+    String text = getColumnText(entry, index);
+    if (text == null) {
+      text = "";
+    }
+    final StyledString styledString = new StyledString(text);
     
     Boolean citing = entry.getCiting();
     if (citing != null) {
