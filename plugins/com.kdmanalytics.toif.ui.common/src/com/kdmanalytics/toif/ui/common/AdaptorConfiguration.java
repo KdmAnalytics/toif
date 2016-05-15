@@ -45,7 +45,30 @@ public class AdaptorConfiguration {
   
   
   private static final String FILENAME = "AllAdaptorConfiguration.csv";
+  
+  /**
+   * Placeholders for other sample config names used for testing
+   */
+  @SuppressWarnings("unused")
   private static final String EXTRA_COLUMNS_FILENAME = "AppendedColumn.csv";
+  @SuppressWarnings("unused")
+  private static final String NEW_ROW_FILENAME = "NewRow.csv";
+  @SuppressWarnings("unused")
+  private static final String REPALCE_SFP_FILENAME = "ReplaceSfpConfig.csv";
+  
+  private static String DEFAULT_RESOURCE_NAME = FILENAME;
+  
+  // Some debug code that is used to load different "default" files and
+  // therefore test the configuration upgrade capability in the UI.
+  static {
+    String configName = System.getenv("TOIF_ADAPTOR_CONFIG");
+    if (configName != null) {
+      configName = configName.trim();
+      if (!configName.isEmpty()) {
+        DEFAULT_RESOURCE_NAME = configName;
+      }
+    }
+  }
   
   // Delimiter used in CSV file
   private static final String NEW_LINE_SEPARATOR = "\n";
@@ -215,8 +238,15 @@ public class AdaptorConfiguration {
    */
   private void loadDefaults() {
     try {
-      loadResource("/resources/" + FILENAME);
-//      loadResource("/resources/" + EXTRA_COLUMNS_FILENAME);
+      boolean success = loadResource("/resources/" + DEFAULT_RESOURCE_NAME);
+      // If this load fails, check if the default resource is pointing at a file
+      if (!success) {
+        File file = new File(DEFAULT_RESOURCE_NAME);
+        if (file.exists()) {
+          load(file);
+        }
+      }
+      //      loadResource("/resources/" + EXTRA_COLUMNS_FILENAME);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -246,14 +276,20 @@ public class AdaptorConfiguration {
    * @param path
    * @throws IOException
    */
-  public void loadResource(String path) throws IOException {
+  public boolean loadResource(String path) throws IOException {
     InputStream is = null;
     try {
       is = getClass().getResourceAsStream(path);
-      load(is);
+      if (is != null) {
+        load(is);
+        return true;
+      }
     } finally {
-      if (is != null) is.close();
+      if (is != null) {
+        is.close();
+      }
     }
+    return false;
   }
   
   /**
@@ -344,11 +380,40 @@ public class AdaptorConfiguration {
       if (!hasCwe(yourCwe)) {
         addRow(yourHeaders, yourRow);
       } else {
+        // Copy all new cells, but also replace all "extra" cells
+        // from the original as well. "Extra" columns/cells can be
+        // upgraded by the system data because they are not user
+        // editable.
+        // 
         // This code is not particularly efficient
-        for (String name : newNames) {
-          int yourIndex = config.getColumnIndex(name);
+        for (String name : getExtraColumnNames()) {
+          Integer yourIndex = config.getColumnIndex(name);
+          if (yourIndex != null) {
+            Object yourCell = config.getCell(yourCwe, yourIndex);
+            int myIndex = getColumnIndex(name);
+            setCell(yourCwe, myIndex, yourCell);
+          }
+        }
+        {
+          // Replace SFP
+          int yourIndex = config.getColumnIndex(COLUMN_SFP_STRING);
           Object yourCell = config.getCell(yourCwe, yourIndex);
-          int myIndex = getColumnIndex(name);
+          int myIndex = getColumnIndex(COLUMN_SFP_STRING);
+          setCell(yourCwe, myIndex, yourCell);
+          sfpMap.put(yourCwe, (String) yourCell);
+        }
+        {
+          // Replace "Count C/C++"
+          int yourIndex = config.getColumnIndex(COLUMN_COUNT_C_STRING);
+          Object yourCell = config.getCell(yourCwe, yourIndex);
+          int myIndex = getColumnIndex(COLUMN_COUNT_C_STRING);
+          setCell(yourCwe, myIndex, yourCell);
+        }
+        {
+          // Replace "Count Java"
+          int yourIndex = config.getColumnIndex(COLUMN_COUNT_JAVA_STRING);
+          Object yourCell = config.getCell(yourCwe, yourIndex);
+          int myIndex = getColumnIndex(COLUMN_COUNT_JAVA_STRING);
           setCell(yourCwe, myIndex, yourCell);
         }
       }
@@ -752,7 +817,7 @@ public class AdaptorConfiguration {
    * @param name
    * @return
    */
-  public int getColumnIndex(String name) {
+  public Integer getColumnIndex(String name) {
     return columnMap.get(name.toLowerCase());
   }
   
@@ -782,8 +847,20 @@ public class AdaptorConfiguration {
    */
   private void setCell(String cwe, int index, Object yourCell) {
     List<Object> row = getRow(cwe);
-    row.remove(index);
-    row.add(index, yourCell);
+    Object value = row.get(index);
+    boolean changed = false;
+    if (value == null) {
+      if (yourCell != null) {
+        changed = true;
+      }
+    } else {
+      changed = !value.equals(yourCell);
+    }
+    if (changed) {
+      row.remove(index);
+      row.add(index, yourCell);
+      this.dirty = true;
+    }
   }
   
   /**
@@ -848,7 +925,7 @@ public class AdaptorConfiguration {
   public String[] getExtraColumnNames() {
     return extraColumns.toArray(new String[extraColumns.size()]);
   }
-
+  
   /** Get the SFP mapped to the specified CWE
    * 
    * @param cwe

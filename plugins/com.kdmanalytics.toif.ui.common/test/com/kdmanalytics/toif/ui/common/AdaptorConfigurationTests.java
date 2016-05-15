@@ -19,7 +19,8 @@ public class AdaptorConfigurationTests {
   private static final String simpleConfig = "/resources/SimpleConfig.csv";
   private static final String appendConfig = "/resources/AppendedColumn.csv";
   private static final String newRowConfig = "/resources/NewRow.csv";
-  
+  private static final String replaceSfpConfig = "/resources/ReplaceSfpConfig.csv";
+
   @Before
   public void before() {
     //AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
@@ -122,6 +123,33 @@ public class AdaptorConfigurationTests {
     // Check for edited data
   }
   
+  /** Load the default file then merge the a file with a new row
+   * 
+   * @throws IOException
+   */
+  @Test
+  public void replaceSfp() throws IOException {
+    // First load the default configuration
+    File file = new File(new File("."), simpleConfig);
+    assertTrue("Test file: " + file.getAbsolutePath(), file.exists());
+    AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+    assertTrue(config.isEmpty());
+    config.load(file);
+    assertFalse(config.isEmpty());
+
+    // Edit a few values
+    
+    // Merge the new row data
+    file = new File(new File("."), replaceSfpConfig);
+    assertTrue("Test file: " + file.getAbsolutePath(), file.exists());
+    config.load(file);
+    
+    // Check for extra column data
+    assertReplacedSfps(config);
+    
+    // Check for edited data
+  }
+  
   /** Tests that look at default values
    * 
    * @param config
@@ -140,6 +168,25 @@ public class AdaptorConfigurationTests {
     
     assertEquals(0, config.getTrust("CWE-190", "cppcheck"));
     assertEquals(0, config.getTrust("CWE-190", "findbugs"));
+  }
+
+  /** Tests that look at default values
+   * 
+   * @param config
+   */
+  private void assertReplacedSfps(AdaptorConfiguration config) {
+    assertEquals(0, config.getSfpColumnIndex());
+    assertEquals(1, config.getCweColumnIndex());
+    assertEquals(2, config.getShowColumnIndex());
+    
+    assertEquals(0, config.getIndex("CWE-190"));
+    assertEquals(1, config.getIndex("CWE-194"));
+    assertEquals(2, config.getIndex("CWE-195"));
+    
+    assertEquals("SFP-99", config.getSfp("CWE-190"));
+    assertEquals("SFP-99", config.getSfp("CWE-194"));
+    assertEquals("SFP-99", config.getSfp("CWE-195"));
+    assertEquals("SFP-1", config.getSfp("CWE-197"));
   }
 
   /** Check for extra column data

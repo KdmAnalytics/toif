@@ -92,8 +92,12 @@ public class SaveColumnOrderAction extends Action {
       for (String token : tokens) {
         try {
           int i = Integer.parseInt(token);
-          neworder[j++] = i;
-          unused.remove(i);
+          if (i < neworder.length) {
+            if (j < neworder.length) {
+              neworder[j++] = i;
+              unused.remove(i);
+            }
+          }
         } catch (NumberFormatException e) {}
       }
       

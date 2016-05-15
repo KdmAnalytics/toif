@@ -25,7 +25,7 @@ public class AConfigStyledLabelProvider extends StyledCellLabelProvider {
   
   private int cweIndex;
   private int sfpIndex;
-
+  
   public AConfigStyledLabelProvider(AdaptorConfiguration config) {
     this.config = config;
     
@@ -42,10 +42,10 @@ public class AConfigStyledLabelProvider extends StyledCellLabelProvider {
     @SuppressWarnings("unchecked")
     final List<Object> entry = (List<Object>) cell.getElement();
     final StyledString styledString = new StyledString(getColumnText(entry, cell.getColumnIndex()));
-  
+    
     cell.setText(styledString.toString());
     cell.setStyleRanges(styledString.getStyleRanges());
-//    cell.setImage(getImage(entry, cell.getColumnIndex()));
+    //    cell.setImage(getImage(entry, cell.getColumnIndex()));
   }
   
   /** Get appropriately styled text for the given column
@@ -57,13 +57,23 @@ public class AConfigStyledLabelProvider extends StyledCellLabelProvider {
    * @return
    */
   private String getColumnText(List<Object> entry, int index) {
-    String text = entry.get(index).toString();
-    if(index == sfpIndex || index == cweIndex) {
-      text = fixSfpCweIdentifier(text);
+    String text = null;
+    if (index < entry.size()) {
+      Object o = entry.get(index);
+      if (o != null) {
+        text = o.toString();
+      } else {
+        text = "";
+      }
+      if(index == sfpIndex || index == cweIndex) {
+        text = fixSfpCweIdentifier(text);
+      }
+    } else {
+      text = "";
     }
     return text;
   }
-
+  
   /** CWE and SFP identifiers should not have single hyphens in them.
    * 
    * @param name
@@ -72,5 +82,5 @@ public class AConfigStyledLabelProvider extends StyledCellLabelProvider {
   private String fixSfpCweIdentifier(String name) {
     return name.replaceAll("([^-])-([^-])", "$1$2");
   }
-
+  
 }
