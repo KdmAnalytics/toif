@@ -44,7 +44,7 @@ import org.eclipse.core.runtime.IPath;
 public class AdaptorConfiguration {
   
   
-  private static final String FILENAME = "AllAdaptorConfiguration.csv";
+  private static final String FILENAME = "TOIF_Findings_Configuration.csv";
   
   /**
    * Placeholders for other sample config names used for testing

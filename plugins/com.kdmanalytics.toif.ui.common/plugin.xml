@@ -172,7 +172,7 @@
             category="com.kdmanalytics.toif.preferences.Toif"
             class="com.kdmanalytics.toif.ui.common.preferences.AConfigPreferences"
             id="com.kdmanalytics.toif.ui.common.page2"
-            name="Adaptor Configuration">
+            name="TOIF Findings Configuration">
       </page>
    </extension>
 </plugin>
