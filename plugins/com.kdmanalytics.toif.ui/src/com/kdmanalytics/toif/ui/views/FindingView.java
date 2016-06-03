@@ -96,6 +96,8 @@ import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
 import com.kdmanalytics.toif.ui.common.IAdaptorConfigurationListener;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
+import com.kdmanalytics.toif.ui.internal.filters.AndFilter;
+import com.kdmanalytics.toif.ui.internal.filters.ConfiguredVisibilityFilter;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
 import com.kdmanalytics.toif.ui.views.sort.AConfigWeightSortAction;
@@ -1225,12 +1227,34 @@ public class FindingView extends ViewPart
                 }
 
                 // Indicate if there are any filters active
-                if(viewer.getFilters() == null || viewer.getFilters().length == 0)
-                {
+                // Ignore the ConfiguredVisibilityFilter, it doesn't count
+                boolean hasEnabledFilter = false;
+                ViewerFilter[] filters = viewer.getFilters();
+                if (filters != null) {
+                  for (ViewerFilter filter : filters) {
+                    if (filter instanceof AndFilter) {
+                      // The "AndFilter" contains many child filters
+                      ViewerFilter[] children = ((AndFilter)filter).getFilters();
+                      for (ViewerFilter child : children) {
+                        // Ignore the ConfiguredVisibilityFilter, it doesn't count
+                        if (!(child instanceof ConfiguredVisibilityFilter)) {
+                          hasEnabledFilter = true;
+                          break;
+                        }
+                      }
+                    } else {
+                      hasEnabledFilter = true;
+                    }
+                    // If there is already one enabled filter found, then that is enough
+                    if (hasEnabledFilter) {
+                      break;
+                    }
+                  }
+                }
+                if(!hasEnabledFilter) {
                     filterLabel.setText("");
                 }
-                else
-                {
+                else {
                     filterLabel.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
                     filterLabel.setText("(Filter(s) active)");
                 }
