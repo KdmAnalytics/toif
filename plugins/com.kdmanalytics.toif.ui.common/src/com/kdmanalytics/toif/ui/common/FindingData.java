@@ -505,17 +505,32 @@ public class FindingData implements Comparable<FindingData>
             FindingData finding = (FindingData)o;
             if(finding.line != line) return false;
             if(finding.offset != offset) return false;
-            if(!finding.resource.equals(resource)) return false;
-            if(!finding.tool.equals(tool)) return false;
-            if(!finding.description.equals(description)) return false;
-            if(!finding.cwe.equals(cwe)) return false;
-            if(!finding.sfp.equals(sfp)) return false;
+            if(!equals(finding.resource, resource)) return false;
+            if(!equals(finding.tool, tool)) return false;
+            if(!equals(finding.description, description)) return false;
+            if(!equals(finding.cwe, cwe)) return false;
+            if(!equals(finding.sfp, sfp)) return false;
             return true;
         }
         else
         {
             return false;
         }
+    }
+
+    /** Return true if the objects are equal. Handles nulls.
+     * 
+     * @param o1
+     * @param o2
+     * @return
+     */
+    private boolean equals(Object o1, Object o2) {
+      if (o1 != null) {
+        return o1.equals(o2);
+      } else {
+        if (o2 != null) return false;
+      }
+      return true;
     }
 
     /*

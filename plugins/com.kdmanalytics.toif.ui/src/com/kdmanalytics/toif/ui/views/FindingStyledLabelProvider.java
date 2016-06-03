@@ -133,10 +133,18 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
         return entry.getTool();
       }
       case 3: {
-        return fixSfpCweIdentifier(entry.getSfp());
+        String sfp = entry.getSfp();
+        if (sfp != null) {
+        return fixSfpCweIdentifier(sfp);
+        }
+        return null;
       }
       case 4: {
-        return fixSfpCweIdentifier(entry.getCwe());
+        String cwe = entry.getCwe();
+        if (cwe != null) {
+          return fixSfpCweIdentifier(cwe);
+        }
+        return null;
       }
       case 5: {
         return Integer.toString(entry.getTrust());
