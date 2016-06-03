@@ -287,10 +287,13 @@ class FindingContentProvider implements ITreeContentProvider
      */
     @Override
     public Object[] getChildren(Object parent) {
+      System.err.println("GET CHILDREN: " + parent.getClass().getSimpleName());
       if (parent instanceof FindingGroup) {
-        return ((FindingGroup)parent).getFindingEntryArray();
+        Object[] children = ((FindingGroup)parent).getFindingEntryArray();
+        System.err.println("  * " + children.length);
+        return children;
       }
-      else {
+      if (parent instanceof IProject) {
         // Make sure the findings are only fully instantiated *once*
         if(findings.isEmpty())
         {
@@ -306,8 +309,10 @@ class FindingContentProvider implements ITreeContentProvider
                 }
             }
         }
+        System.err.println("  o " + getEntries().length);
         return getEntries();
       }
+      return new Object[0];
     }
 
     @Override
