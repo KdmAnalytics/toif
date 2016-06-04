@@ -245,7 +245,6 @@ class FindingContentProvider implements ITreeContentProvider
                 if (list1 == null && newFindings == null) return true;
                 if(list1 == null) return false;
                 if(newFindings == null) return false;
-                if(list1.size() != newFindings.size()) return false;
                 
                 List<FindingEntry> c1 = new LinkedList<FindingEntry>();
                 List<FindingEntry> c2 = new LinkedList<FindingEntry>();
@@ -265,6 +264,8 @@ class FindingContentProvider implements ITreeContentProvider
                     c2.addAll(((FindingGroup)entry).getFindingEntries());
                   }
                 }
+                
+                if(c1.size() != c2.size()) return false;
 
                 Collections.sort(c1);
                 Collections.sort(c2);      
@@ -287,10 +288,8 @@ class FindingContentProvider implements ITreeContentProvider
      */
     @Override
     public Object[] getChildren(Object parent) {
-      System.err.println("GET CHILDREN: " + parent.getClass().getSimpleName());
       if (parent instanceof FindingGroup) {
         Object[] children = ((FindingGroup)parent).getFindingEntryArray();
-        System.err.println("  * " + children.length);
         return children;
       }
       if (parent instanceof IProject) {
@@ -309,7 +308,6 @@ class FindingContentProvider implements ITreeContentProvider
                 }
             }
         }
-        System.err.println("  o " + getEntries().length);
         return getEntries();
       }
       return new Object[0];
