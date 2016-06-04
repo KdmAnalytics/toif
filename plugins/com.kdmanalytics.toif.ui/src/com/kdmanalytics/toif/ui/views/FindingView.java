@@ -152,7 +152,10 @@ public class FindingView extends ViewPart
     private static final String FILTER_KEY = "filter";
     
     /** The Constant SORT_KEY. */
-    private static final String SORT_KEY = "sort";
+    private static final String SORT_KEY1 = "sort1";
+
+    /** The Constant SORT_KEY. */
+    private static final String SORT_KEY2 = "sort2";
 
     /** The Constant FILTER_KEY. */
     private static final String NOT_WEAKNESS_KEY = "not_weakness";
@@ -437,10 +440,16 @@ public class FindingView extends ViewPart
             imgReg.put(FILTER_KEY, ImageDescriptor.createFromURL(url));
         }
         
-        if(imgReg.get(SORT_KEY) == null)
+        if(imgReg.get(SORT_KEY1) == null)
         {
-          final URL url = this.getClass().getResource("/icons/table_sort.png");
-          imgReg.put(SORT_KEY, ImageDescriptor.createFromURL(url));
+          final URL url = this.getClass().getResource("/icons/flag_green.png");
+          imgReg.put(SORT_KEY1, ImageDescriptor.createFromURL(url));
+        }
+
+        if(imgReg.get(SORT_KEY2) == null)
+        {
+          final URL url = this.getClass().getResource("/icons/flag_orange.png");
+          imgReg.put(SORT_KEY2, ImageDescriptor.createFromURL(url));
         }
 
         if (imgReg.get(NOT_WEAKNESS_KEY) == null)
@@ -789,12 +798,12 @@ public class FindingView extends ViewPart
         aConfigSortActionButton = new AConfigWeightSortAction(this, viewer);
         aConfigSortActionButton.setText("User defined sort order");
         aConfigSortActionButton.setToolTipText("User defined sort order");
-        aConfigSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        aConfigSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY1));
 
         findingGroupSortActionButton = new FindingGroupSortAction(this, viewer);
-        findingGroupSortActionButton.setText("Duplicate sort order");
-        findingGroupSortActionButton.setToolTipText("Duplicate sort order");
-        findingGroupSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        findingGroupSortActionButton.setText("Sort by Multiple Findings");
+        findingGroupSortActionButton.setToolTipText("Sort by Multiple Findings");
+        findingGroupSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY2));
 
         // Export Action
         descriptionAction = new Action()
@@ -917,11 +926,11 @@ public class FindingView extends ViewPart
         // Sort actions
         aConfigSortAction = new AConfigWeightSortAction(this, viewer);
         aConfigSortAction.setText("User defined");
-        aConfigSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        aConfigSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY1));
         
         findingGroupSortAction = new FindingGroupSortAction(this, viewer);
         findingGroupSortAction.setText("Duplicates");
-        findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY));
+        findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY2));
         
         // Column ordering action
         preserveColumnOrderAction = new SaveColumnOrderAction(this, viewer);
