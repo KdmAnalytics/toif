@@ -138,7 +138,11 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
       switch(i) {
         case 1: width = 70; break;
       }
-      TableViewerColumn col = createTableViewerColumn(viewer, header.get(i), width, 0, true);
+      String headerName = header.get(i);
+      if ("show?".equalsIgnoreCase(headerName)) {
+        headerName = "Show";
+      }
+      TableViewerColumn col = createTableViewerColumn(viewer, headerName, width, 0, true);
       col.setLabelProvider(new AConfigStyledLabelProvider(config));
       if (config.getShowColumnIndex() == i) {
         col.setEditingSupport(new ShowEditingSupport(viewer, config));

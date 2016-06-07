@@ -80,7 +80,8 @@ public class AdaptorConfiguration {
   
   private static final String COLUMN_CWE_STRING = "cwe";
   
-  private static final String COLUMN_SHOW_STRING = "show?";
+  private static final String COLUMN_SHOW_STRING = "show";
+  private static final String COLUMN_SHOW_STRING_OLD = "show?";
   
   private static final String COLUMN_CPPCHECK_STRING = "cppcheck";
   
@@ -473,6 +474,7 @@ public class AdaptorConfiguration {
       if (COLUMN_SFP_STRING.equalsIgnoreCase(text)) COLUMN_SFP = i;
       else if (COLUMN_CWE_STRING.equalsIgnoreCase(text)) COLUMN_CWE = i;
       else if (COLUMN_SHOW_STRING.equalsIgnoreCase(text)) COLUMN_SHOW = i;
+      else if (COLUMN_SHOW_STRING_OLD.equalsIgnoreCase(text)) COLUMN_SHOW = i;
       else if (COLUMN_CPPCHECK_STRING.equalsIgnoreCase(text)) COLUMN_CPPCHECK = i;
       else if (COLUMN_RATS_STRING.equalsIgnoreCase(text)) COLUMN_RATS = i;
       else if (COLUMN_SPLINT_STRING.equalsIgnoreCase(text)) COLUMN_SPLINT = i;
@@ -838,6 +840,22 @@ public class AdaptorConfiguration {
     return null;
   }
   
+  /** Get the cell value for the specified data row and column index
+   * 
+   * @param row
+   * @param col
+   * @return
+   */
+  public Object getCell(int row, int col) {
+    List<?> rowData = data.get(row);
+    if (rowData != null) {
+      if (rowData.size() > col) {
+        return rowData.get(col);
+      }
+    }
+    return null;
+  }
+  
   /**
    * Set the value of the cell at the specified cwe/index
    * 
@@ -891,10 +909,16 @@ public class AdaptorConfiguration {
     for (int i = 0; i < rowHeaders.size(); i++) {
       String name = rowHeaders.get(i);
       Object cell = row.get(i);
-      if ("cwe".equalsIgnoreCase(name)) {
+      if (COLUMN_CWE_STRING.equalsIgnoreCase(name)) {
         yourCwe = (String) cell;
       }
-      if ("show?".equalsIgnoreCase(name)) {
+      if (COLUMN_SHOW_STRING.equalsIgnoreCase(name)) {
+        Boolean b = ((ShowField) cell).toBoolean();
+        if (b == false) {
+          yourShow = false;
+        }
+      }
+      if (COLUMN_SHOW_STRING_OLD.equalsIgnoreCase(name)) {
         Boolean b = ((ShowField) cell).toBoolean();
         if (b == false) {
           yourShow = false;

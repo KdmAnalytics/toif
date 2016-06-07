@@ -345,6 +345,7 @@ public class FindingView extends ViewPart
           @Override
           public void configChanged() {
             viewer.refresh();
+            updateDefectCount();
           }
         };
         AdaptorConfiguration.getAdaptorConfiguration().addConfigurationListsner(configListener);
@@ -1236,7 +1237,7 @@ public class FindingView extends ViewPart
                 }
 
                 // Indicate if there are any filters active
-                // Ignore the ConfiguredVisibilityFilter, it doesn't count
+                // Check to see if ConfiguredVisibilityFilter has anything set
                 boolean hasEnabledFilter = false;
                 ViewerFilter[] filters = viewer.getFilters();
                 if (filters != null) {
@@ -1245,8 +1246,13 @@ public class FindingView extends ViewPart
                       // The "AndFilter" contains many child filters
                       ViewerFilter[] children = ((AndFilter)filter).getFilters();
                       for (ViewerFilter child : children) {
-                        // Ignore the ConfiguredVisibilityFilter, it doesn't count
-                        if (!(child instanceof ConfiguredVisibilityFilter)) {
+                        // Check to see if ConfiguredVisibilityFilter has anything set
+                        if (child instanceof ConfiguredVisibilityFilter) {
+                          if(((ConfiguredVisibilityFilter)child).size() > 0) {
+                            hasEnabledFilter = true;
+                            break;
+                          }
+                        } else {
                           hasEnabledFilter = true;
                           break;
                         }
