@@ -80,6 +80,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -94,6 +95,7 @@ import com.kdmanalytics.etoif.ccr.CoverageClaimGenerator;
 import com.kdmanalytics.toif.ui.Activator;
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
 import com.kdmanalytics.toif.ui.common.IAdaptorConfigurationListener;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.filters.AndFilter;
@@ -1315,9 +1317,23 @@ public class FindingView extends ViewPart
             @Override
             public void run()
             {
-                final int totalEntries = contentProvider.getEntries().length;
-                final int visibleEntries = viewer.getTree().getItemCount();
-
+//                final int totalEntries = contentProvider.getEntries().length;
+//                final int visibleEntries = viewer.getTree().getItemCount();
+                
+                final int totalEntries = contentProvider.getFindingEntries().length;
+                
+                // Count the children
+                int visibleEntries = 0;
+                TreeItem[] items = viewer.getTree().getItems();
+                for (TreeItem item : items) {
+                  Object object = item.getData();
+                  if (object instanceof FindingGroup) {
+                    visibleEntries += ((FindingGroup)object).size();
+                  } else {
+                    visibleEntries++;
+                  }
+                }
+                
                 setLabel("Number of Defects: " + visibleEntries + " (" + (totalEntries - visibleEntries) + " filtered from view)");
             }
         });

@@ -323,5 +323,13 @@ public class FindingGroup implements IFindingEntry {
   public int getKdmLine() {
     return line;
   }
+
+  /** Get the number of contained entries
+   * 
+   * @return
+   */
+  public int size() {
+    return entries.size();
+  }
   
 }
