@@ -29,7 +29,7 @@ public class FindingGroup implements IFindingEntry {
   /**
    * Findings contained within the group
    */
-  List<FindingEntry> entries = new LinkedList<FindingEntry>();
+  List<IFindingEntry> entries = new LinkedList<IFindingEntry>();
   
   private IFile ifile;
   private int line;
@@ -79,7 +79,7 @@ public class FindingGroup implements IFindingEntry {
    * 
    * @return
    */
-  public Collection<? extends FindingEntry> getFindingEntries() {
+  public Collection<IFindingEntry> getFindingEntries() {
     return entries;
   }
 
@@ -159,7 +159,7 @@ public class FindingGroup implements IFindingEntry {
   @Override
   public int getTrust() {
     int trust = 0;
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       trust = Math.max(trust, entry.getTrust());
     }
     return trust;
@@ -182,7 +182,7 @@ public class FindingGroup implements IFindingEntry {
   public Boolean getCiting() {
     boolean first = true;
     Boolean citing = null;
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       Boolean eCiting = entry.getCiting();
       
       // On the first pass we just accept whatever value we get
@@ -260,7 +260,7 @@ public class FindingGroup implements IFindingEntry {
    */
   private String getEntryDescription() {
     StringBuilder sb = new StringBuilder();
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       sb.append(" | ");
       sb.append(entry.getDescription());
     }
@@ -273,7 +273,7 @@ public class FindingGroup implements IFindingEntry {
    */
   private String getTools() {
     StringBuilder sb = new StringBuilder();
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       sb.append(" | ");
       sb.append(entry.getTool());
     }
@@ -286,7 +286,7 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public void cite(Boolean b) {
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       entry.cite(b);
     }
   }
@@ -297,7 +297,7 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public void setTrust(int val) {
-    for(FindingEntry entry: entries) {
+    for(IFindingEntry entry: entries) {
       entry.setTrust(val);
     }
   }
@@ -309,8 +309,8 @@ public class FindingGroup implements IFindingEntry {
   @Override
   public Collection<String> getTypeIds() {
     List<String> results = new ArrayList<String>(entries.size());
-    for(FindingEntry entry: entries) {
-      results.add(entry.getTypeId());
+    for(IFindingEntry entry: entries) {
+      results.add(((FindingEntry)entry).getTypeId());
     }
     return results;
   }

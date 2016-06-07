@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +33,10 @@ import com.kdmanalytics.toif.ui.common.IFindingEntry;
  * Provide generic operations that might be run against a selection of findings.
  * 
  * @author Ken Duck
- *        
+ * 
  */
 public class FindingSelection {
+  
   
   private static final Object NO_CWE = "CWE--1";
   
@@ -112,8 +114,8 @@ public class FindingSelection {
     for (IFindingEntry finding : selection) {
       if (finding instanceof FindingEntry) {
         // If this finding is part of a group, then cite the entire group
-        FindingGroup parent = ((FindingEntry)finding).getParent();
-        if(parent != null) {
+        FindingGroup parent = ((FindingEntry) finding).getParent();
+        if (parent != null) {
           finding = parent;
         }
       }
@@ -191,9 +193,26 @@ public class FindingSelection {
   public void exportTsv(File file) throws IOException {
     PrintWriter out = new PrintWriter(new FileWriter(file));
     try {
-      out.println("SFP\tCWE\tCiting Status\tTrust\tResource\tLine Number\tKDM Line Number\tSCA tool\tWeakness Description");
+      out.println("SFP\tCWE\tCiting Status\tConfidence\tResource\tLine Number\tKDM Line Number\tSCA tool\tWeakness Description");
       
-      for (IFindingEntry finding : selection) {
+      exportFindings(out, selection);
+    } finally {
+      if (out != null) out.close();
+    }
+  }
+  
+  /**
+   * Export all findings in the list
+   * 
+   * @param out
+   * @param selection
+   */
+  private void exportFindings(PrintWriter out, Collection<IFindingEntry> selection) {
+    for (IFindingEntry finding : selection) {
+      if (finding instanceof FindingGroup) {
+        Collection<IFindingEntry> children = ((FindingGroup)finding).getFindingEntries();
+        exportFindings(out, children);
+      } else {
         out.print(finding.getSfp());
         out.print('\t');
         out.print(finding.getCwe());
@@ -213,8 +232,6 @@ public class FindingSelection {
         out.print(finding.getDescription());
         out.println();
       }
-    } finally {
-      if (out != null) out.close();
     }
   }
   

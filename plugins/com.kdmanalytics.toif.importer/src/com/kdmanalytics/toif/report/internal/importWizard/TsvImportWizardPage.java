@@ -355,6 +355,12 @@ public class TsvImportWizardPage extends WizardPage implements Listener, ISelect
                   trust = Integer.parseInt(cell);
                 } catch (NumberFormatException e) {}
               }
+            } else if ("Confidence".equals(colName)) {
+              if (cell != null && !cell.trim().isEmpty()) {
+                try {
+                  trust = Integer.parseInt(cell);
+                } catch (NumberFormatException e) {}
+              }
             } else if ("Line Number".equals(colName)) {
               if (cell != null && !cell.trim().isEmpty()) {
                 try {

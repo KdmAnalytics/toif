@@ -253,7 +253,10 @@ class FindingContentProvider implements ITreeContentProvider
                   if (entry instanceof FindingEntry) {
                     c1.add((FindingEntry)entry);
                   } else {
-                    c1.addAll(((FindingGroup)entry).getFindingEntries());
+                    Collection<IFindingEntry> children = ((FindingGroup)entry).getFindingEntries();
+                    for (IFindingEntry child : children) {
+                      c1.add((FindingEntry)child);
+                    }
                   }
                 }
 
@@ -261,7 +264,10 @@ class FindingContentProvider implements ITreeContentProvider
                   if (entry instanceof FindingEntry) {
                     c2.add((FindingEntry)entry);
                   } else {
-                    c2.addAll(((FindingGroup)entry).getFindingEntries());
+                    Collection<IFindingEntry> children = ((FindingGroup)entry).getFindingEntries();
+                    for (IFindingEntry child : children) {
+                      c2.add((FindingEntry)child);
+                    }
                   }
                 }
                 
@@ -337,7 +343,10 @@ class FindingContentProvider implements ITreeContentProvider
         if (entry instanceof FindingEntry) {
           results.add((FindingEntry)entry);
         } else {
-          results.addAll(((FindingGroup)entry).getFindingEntries());
+          Collection<IFindingEntry> children = ((FindingGroup)entry).getFindingEntries();
+          for (IFindingEntry child : children) {
+            results.add((FindingEntry)child);
+          }
         }
       }
       return results.toArray(new FindingEntry[results.size()]);
