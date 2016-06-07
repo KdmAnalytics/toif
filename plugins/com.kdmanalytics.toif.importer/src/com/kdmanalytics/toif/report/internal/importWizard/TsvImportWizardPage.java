@@ -408,11 +408,10 @@ public class TsvImportWizardPage extends WizardPage implements Listener, ISelect
           
           if (ifile != null) {
             // Create an associated finding. This will allow us to
-            // set the trust and citing status for the finding. If the
+            // set the citing status for the finding. If the
             // finding does not actually exist in the database this information
             // is still stored in case the finding exists in the future.
             FindingData finding = new FindingData(ifile, tool, description, line, offset, cwe, sfp);
-            finding.setTrust(trust);
             if (status != null) {
               finding.cite(status);
             }
