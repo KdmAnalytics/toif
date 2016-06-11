@@ -16,5 +16,6 @@
 
   <modules>
       <module>com.kdmanalytics.toif.product</module>
+      <module>com.kdmanalytics.toif.convert.product</module>
   </modules>
 </project>

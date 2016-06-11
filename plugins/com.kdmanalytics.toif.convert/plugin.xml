@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="com.kdmanalytics.toif.convert.ConvertApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="CONVERT_RCP"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.kdmanalytics.toif.convert.application"
+            name="com.kdmanalytics.toif.rcp.product">
+         <property
+               name="appName"
+               value="com.kdmanalytics.toif.rcp.product">
+         </property>
+      </product>
+   </extension>
+
+</plugin>

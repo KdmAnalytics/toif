@@ -33,5 +33,6 @@
     <module>com.kdmanalytics.toif.importer</module>
     <module>com.kdmanalytics.toif.cmd</module>
     <module>com.kdmanalytics.kdm.repositoryMerger</module>
+    <module>com.kdmanalytics.toif.convert</module>
   </modules>
 </project>

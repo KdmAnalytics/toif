@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Convert
+Bundle-SymbolicName: com.kdmanalytics.toif.convert;singleton:=true
+Bundle-Version: 2.3.0.qualifier
+Bundle-Vendor: KDM Analytics Inc.
+Eclipse-RegisterBuddy: com.lexicalscope.jewelcli
+Require-Bundle: org.slf4j.api;bundle-version="1.7.2",
+ org.eclipse.core.runtime,
+ com.google.guava;bundle-version="14.0.1",
+ com.lexicalscope.jewelcli;bundle-version="0.8.5"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
