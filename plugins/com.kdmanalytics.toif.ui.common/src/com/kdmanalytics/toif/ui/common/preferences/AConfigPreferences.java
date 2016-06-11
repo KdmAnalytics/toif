@@ -8,19 +8,30 @@
 
 package com.kdmanalytics.toif.ui.common.preferences;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbench;
@@ -39,6 +50,8 @@ import com.kdmanalytics.toif.ui.common.dnd.ConfigDropListener;
  */
 public class AConfigPreferences extends PreferencePage implements IWorkbenchPreferencePage {
   
+  private static final String IMPORT_KEY = "import";
+  private static final String EXPORT_KEY = "export";
   
   /**
    * 
@@ -63,6 +76,23 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
   @Override
   public void init(IWorkbench workbench) {
     setPreferenceStore(Activator.getDefault().getPreferenceStore());
+    
+    // Load images
+    loadImagesIntoRegistry();
+  }
+  
+  private void loadImagesIntoRegistry() {
+    final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
+    if (imgReg.get(IMPORT_KEY) == null)
+    {
+      final URL url = this.getClass().getResource("/icons/application_get.png");
+      imgReg.put(IMPORT_KEY, ImageDescriptor.createFromURL(url));
+    }
+    if (imgReg.get(EXPORT_KEY) == null)
+    {
+      final URL url = this.getClass().getResource("/icons/application_put.png");
+      imgReg.put(EXPORT_KEY, ImageDescriptor.createFromURL(url));
+    }
   }
   
   /*
@@ -77,12 +107,85 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     Composite composite = new Composite(parent, SWT.NONE);
     
     GridLayout layout = new GridLayout();
-    layout.numColumns = 3;
+    layout.numColumns = 4;
     composite.setLayout(layout);
     
     addTable(composite);
     
+    Composite buttonBar = new Composite(composite, SWT.NONE);
+    buttonBar.setLayout(new FillLayout(SWT.VERTICAL));
+    buttonBar.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true));
+    
+    final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
+    
+    Button button = new Button(buttonBar, SWT.PUSH);
+    button.setToolTipText("Import");
+    button.setImage(imgReg.get(IMPORT_KEY));
+    button.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        importConfig();
+      }
+    });
+    
+    button = new Button(buttonBar, SWT.PUSH);
+    button.setToolTipText("Export");
+    button.setImage(imgReg.get(EXPORT_KEY));
+    button.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        exportConfig();
+      }
+    });
+    
     return composite;
+  }
+  
+  /**
+   * Export the configuration to a user selected file
+   */
+  protected void exportConfig() {
+    FileDialog dialog = new FileDialog(viewer.getControl().getShell(), SWT.SAVE);
+    dialog.setFilterExtensions(new String [] {"*.csv"});
+    String result = dialog.open();
+    if (result != null) {
+      try
+      {
+        File file = new File(result);
+        config.export(file);
+      }
+      catch (IOException e)
+      {
+        // show error dialog
+        ErrorDialog.openError(viewer.getControl().getShell(), "Error", e.getMessage(), null);
+        e.printStackTrace();
+      }
+    }
+  }
+  
+  /**
+   * Import a new configuration, replacing the current user data
+   */
+  protected void importConfig() {
+    FileDialog dialog = new FileDialog(viewer.getControl().getShell(), SWT.OPEN);
+    dialog.setFilterExtensions(new String [] {"*.csv"});
+    String result = dialog.open();
+    if (result != null) {
+      try
+      {
+        File file = new File(result);
+        config.clear();
+        config.load(file);
+        config.loadDefaults();
+        viewer.refresh();
+      }
+      catch (IOException e)
+      {
+        // show error dialog
+        ErrorDialog.openError(viewer.getControl().getShell(), "Error", e.getMessage(), null);
+        e.printStackTrace();
+      }
+    }
   }
   
   /**
@@ -101,7 +204,6 @@ public class AConfigPreferences extends PreferencePage implements IWorkbenchPref
     Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer()};
     viewer.addDragSupport(ops, transfers, new ConfigDragListener(viewer));
     viewer.addDropSupport(ops, transfers, new ConfigDropListener(viewer));
-    //viewer.addDropSupport(ops, transfers, new GadgetTreeDropAdapter(viewer));
     
     // viewer.setComparator(new FindingViewerComparator());
     //

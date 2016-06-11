@@ -237,7 +237,7 @@ public class AdaptorConfiguration {
    * 
    * @return True if the default definitions changed the config set.
    */
-  private void loadDefaults() {
+  public void loadDefaults() {
     try {
       boolean success = loadResource("/resources/" + DEFAULT_RESOURCE_NAME);
       // If this load fails, check if the default resource is pointing at a file
@@ -564,22 +564,7 @@ public class AdaptorConfiguration {
   public synchronized void save() {
     if (dirty) {
       try {
-        OutputStream os = null;
-        CSVPrinter printer = null;
-        try {
-          os = new FileOutputStream(configFile);
-          // Create the CSVFormat object with "\n" as a record delimiter
-          CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
-          OutputStreamWriter out = new OutputStreamWriter(os);
-          printer = new CSVPrinter(out, csvFileFormat);
-          printer.printRecord(headers);
-          for (List<?> row : data) {
-            printer.printRecord(row);
-          }
-        } finally {
-          if (printer != null) printer.close();
-          if (os != null) os.close();
-        }
+        export(configFile);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -626,6 +611,7 @@ public class AdaptorConfiguration {
     columnMap.clear();
     extraColumns.clear();
     sfpMap.clear();
+    this.dirty = true;
   }
   
   /**
@@ -957,5 +943,29 @@ public class AdaptorConfiguration {
    */
   public String getSfp(String cwe) {
     return sfpMap.get(cwe);
+  }
+  
+  /** Export to the specified file
+   * 
+   * @param file
+   * @throws IOException
+   */
+  public void export(File file) throws IOException {
+    OutputStream os = null;
+    CSVPrinter printer = null;
+    try {
+      os = new FileOutputStream(file);
+      // Create the CSVFormat object with "\n" as a record delimiter
+      CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+      OutputStreamWriter out = new OutputStreamWriter(os);
+      printer = new CSVPrinter(out, csvFileFormat);
+      printer.printRecord(headers);
+      for (List<?> row : data) {
+        printer.printRecord(row);
+      }
+    } finally {
+      if (printer != null) printer.close();
+      if (os != null) os.close();
+    }
   }
 }
