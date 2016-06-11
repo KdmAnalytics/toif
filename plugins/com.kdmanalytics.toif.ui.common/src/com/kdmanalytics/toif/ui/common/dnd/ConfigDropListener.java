@@ -6,8 +6,12 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 
@@ -42,6 +46,9 @@ public class ConfigDropListener extends ViewerDropAdapter {
   public void drop(DropTargetEvent event) {
     location = this.determineLocation(event);
     Object o = determineTarget(event);
+    System.err.println("DROP " + event.x + "," + event.y + " " + event.getSource());
+    DropTarget target = (DropTarget)event.getSource();
+    Control control = target.getControl();
     
     List<?> row = (List<?>)o;
     insertionIndex = config.getSize();
@@ -50,19 +57,32 @@ public class ConfigDropListener extends ViewerDropAdapter {
       insertionIndex = config.getIndex(cwe);
     }
     
+    
+    
     switch (location) {
-      case 1:
+      case LOCATION_BEFORE:
+        System.err.println("  ^ " + location);
         // translatedLocation = "Dropped before the target ";
         break;
-      case 2:
+      case LOCATION_AFTER:
+        System.err.println("  v " + location);
         // translatedLocation = "Dropped after the target ";
         insertionIndex++;
         break;
-      case 3:
+      case LOCATION_ON:
+        System.err.println("  x " + location);
         // translatedLocation = "Dropped on the target ";
         break;
-      case 4:
-        // translatedLocation = "Dropped into nothing ";
+      case LOCATION_NONE:
+        System.err.println("  o " + location);
+        // Was this dropped on 'none' above the table? If so then
+        // adjust the location and insertion index
+        Point cursorLocation = Display.getCurrent().getCursorLocation();
+        Point relativeCursorLocation = control.toControl(cursorLocation);
+        if (relativeCursorLocation.y < 50) {
+          location = LOCATION_BEFORE;
+          insertionIndex = 0;
+        }
         break;
     }
 
@@ -80,7 +100,7 @@ public class ConfigDropListener extends ViewerDropAdapter {
       List<?> row = (List<?>)objs[i];
       int idx = config.remove(row);
       // Adjust the insertion index
-      if (idx <= insertionIndex) {
+      if (idx <= insertionIndex && insertionIndex != 0) {
         insertionIndex--;
       }
       config.add(insertionIndex, row);
