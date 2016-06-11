@@ -46,7 +46,6 @@ public class ConfigDropListener extends ViewerDropAdapter {
   public void drop(DropTargetEvent event) {
     location = this.determineLocation(event);
     Object o = determineTarget(event);
-    System.err.println("DROP " + event.x + "," + event.y + " " + event.getSource());
     DropTarget target = (DropTarget)event.getSource();
     Control control = target.getControl();
     
@@ -61,20 +60,16 @@ public class ConfigDropListener extends ViewerDropAdapter {
     
     switch (location) {
       case LOCATION_BEFORE:
-        System.err.println("  ^ " + location);
         // translatedLocation = "Dropped before the target ";
         break;
       case LOCATION_AFTER:
-        System.err.println("  v " + location);
         // translatedLocation = "Dropped after the target ";
         insertionIndex++;
         break;
       case LOCATION_ON:
-        System.err.println("  x " + location);
         // translatedLocation = "Dropped on the target ";
         break;
       case LOCATION_NONE:
-        System.err.println("  o " + location);
         // Was this dropped on 'none' above the table? If so then
         // adjust the location and insertion index
         Point cursorLocation = Display.getCurrent().getCursorLocation();
