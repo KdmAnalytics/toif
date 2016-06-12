@@ -16,10 +16,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="com.kdmanalytics.toif.convert.application"
-            name="com.kdmanalytics.toif.rcp.product">
+            name="com.kdmanalytics.toif.convert.product">
          <property
                name="appName"
-               value="com.kdmanalytics.toif.rcp.product">
+               value="com.kdmanalytics.toif.convert.product">
          </property>
       </product>
    </extension>

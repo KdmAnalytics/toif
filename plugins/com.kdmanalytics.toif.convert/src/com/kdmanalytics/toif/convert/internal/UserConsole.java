@@ -15,14 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
+import com.kdmanalytics.toif.report.items.IFindingEntry;
 import com.lexicalscope.jewel.cli.Cli;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.HelpRequestedException;
 
-public class UserConsole {
+public class UserConsole implements IToifImportListener {
   
   private static final Logger LOG = LoggerFactory.getLogger(UserConsole.class);
-
+  
   
   private String args[] = null;
   
@@ -58,7 +59,8 @@ public class UserConsole {
   }
   
   private void doVersion(ConvertCli cmdCli) {
-    System.err.println("VERSION");
+    BuildInformation bi = new BuildInformation(this);
+    System.out.println("Version=" + bi.getVersion());
   }
   
   /** Do argument validation and run the conversion
@@ -92,7 +94,23 @@ public class UserConsole {
       return;
     }
     
-    System.err.println("ADAPTOR");
+    // Run the import
+    ToifImporter importer = new ToifImporter();
+    importer.addFindingListener(this);
+    try {
+      importer.run(ifile);
+    } catch (IOException e) {
+      LOG.error("Exception running conversion: " + e.getMessage());
+    }
     
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.importer.IToifImportListener#add(com.kdmanalytics.toif.report.items.IFindingEntry)
+   */
+  @Override
+  public void add(IFindingEntry finding) {
+    System.err.println(finding);
   }
 }
