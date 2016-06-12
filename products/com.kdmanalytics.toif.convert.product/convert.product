@@ -17,7 +17,7 @@
 
    <windowImages/>
 
-   <launcher name="convert">
+   <launcher name="tsvoutput">
       <solaris/>
       <win useIco="false">
          <bmp/>
@@ -117,6 +117,7 @@
 
    <features>
       <feature id="com.kdmanalytics.toif.3rdparty.feature"/>
+      <feature id="com.kdmanalytics.toif.core.feature"/>
       <feature id="com.kdmanalytics.toif.convert.feature"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.emf.common"/>
