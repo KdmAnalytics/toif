@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2016 KDM Analytics, Inc. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Open
+ * Source Initiative OSI - Open Software License v3.0 which accompanies this
+ * distribution, and is available at
+ * http://www.opensource.org/licenses/osl-3.0.php/
+ ******************************************************************************/
 package com.kdmanalytics.toif.convert.internal;
 
 import java.io.File;
@@ -84,11 +91,26 @@ public class ToifImporter {
   }
   
   public void run(File ifile) throws IOException {
+    for (IToifImportListener listener : listeners) {
+      listener.event(new ToifImportEvent(ToifImportEvent.IMPORT_REPO_START));
+    }
     // Load the KDM data into a repository
     File root = importRepository(ifile);
     
+    for (IToifImportListener listener : listeners) {
+      listener.event(new ToifImportEvent(ToifImportEvent.IMPORT_REPO_DONE));
+    }
+    
+    for (IToifImportListener listener : listeners) {
+      listener.event(new ToifImportEvent(ToifImportEvent.IMPORT_FINDINGS_START));
+    }
+
     // Look through the repository for findings
     findingScanner(root);
+    
+    for (IToifImportListener listener : listeners) {
+      listener.event(new ToifImportEvent(ToifImportEvent.IMPORT_FINDINGS_DONE));
+    }
     
     // Delete the temporary repository
     FileUtils.deleteDirectory(root);

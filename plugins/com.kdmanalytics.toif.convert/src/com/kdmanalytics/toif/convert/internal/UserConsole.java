@@ -33,6 +33,11 @@ public class UserConsole implements IToifImportListener {
   
   private String args[] = null;
   
+  /**
+   * Used to print informative progress messages
+   */
+  private int count = 0;
+  
   public UserConsole() {
   }
   
@@ -125,6 +130,14 @@ public class UserConsole implements IToifImportListener {
    */
   @Override
   public void add(IFindingEntry finding) {
+    count++;
+    if (count % 1000 == 0) {
+      System.out.println("");
+      System.out.print("  ");
+    }
+    if (count % 100 == 0) {
+      System.out.print(".");
+    }
     // Exporting the data to a tsv file
     out.print(finding.getSfp());
     out.print('\t');
@@ -143,5 +156,29 @@ public class UserConsole implements IToifImportListener {
     out.print('\t');
     out.print(finding.getDescription());
     out.println();
+  }
+
+  /** Provide some progress information
+   * 
+   * @see com.kdmanalytics.toif.convert.internal.IToifImportListener#event(com.kdmanalytics.toif.convert.internal.ToifImportEvent)
+   */
+  @Override
+  public void event(ToifImportEvent toifImportEvent) {
+    switch (toifImportEvent.getType()) {
+      case ToifImportEvent.IMPORT_REPO_START:
+        System.out.println("Importing KDM TOIF file...");
+        break;
+      case ToifImportEvent.IMPORT_FINDINGS_START:
+        System.out.print("Importing findings...");
+        break;
+      case ToifImportEvent.IMPORT_REPO_DONE:
+        System.out.println("  done.");
+        break;
+      case ToifImportEvent.IMPORT_FINDINGS_DONE:
+        System.out.println();
+        System.out.println("  done.");
+        break;
+    }
+    System.out.flush();
   }
 }

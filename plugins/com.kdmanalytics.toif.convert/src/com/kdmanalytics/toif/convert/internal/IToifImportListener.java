@@ -9,5 +9,11 @@ public interface IToifImportListener {
    * @param finding
    */
   void add(IFindingEntry finding);
+
+  /** Import events allow the tracking of import progress
+   * 
+   * @param toifImportEvent
+   */
+  void event(ToifImportEvent toifImportEvent);
   
 }
