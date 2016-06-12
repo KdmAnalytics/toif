@@ -52,6 +52,16 @@ public class FindingEntry extends ReportItem implements IFindingEntry {
   
   private List<Trace> traces = new ArrayList<Trace>();
   
+  /**
+   * Owner file path
+   */
+  private String path;
+
+  /**
+   * Finding line number
+   */
+  private int lineno;
+  
   public FindingEntry() {
     isOk = Citing.UNKNOWN;
   }
@@ -331,6 +341,40 @@ public class FindingEntry extends ReportItem implements IFindingEntry {
   public void setTraces(List<Trace> tracesList) {
     this.traces = tracesList;
     
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.report.items.IFindingEntry#getLine()
+   */
+  @Override
+  public int getLine() {
+    return lineno;
+  }
+  
+  /** Set the line number for the finding
+   * 
+   * @param lineNumber
+   */
+  public void setLineNumber(int lineNumber) {
+    lineno = lineNumber;
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.report.items.IFindingEntry#getPath()
+   */
+  @Override
+  public String getPath() {
+    return path;
+  }
+  
+  /** Set the path for the finding
+   * 
+   * @param path
+   */
+  public void setPath(String path) {
+    this.path = path;
   }
   
 }

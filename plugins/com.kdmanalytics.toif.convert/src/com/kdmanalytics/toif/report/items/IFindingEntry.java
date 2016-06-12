@@ -134,5 +134,17 @@ public interface IFindingEntry extends IReportItem {
   List<Trace> getTraces();
   
   void setTraces(List<Trace> tracesList);
+
+  /** Get the end point line number
+   * 
+   * @return
+   */
+  int getLine();
+
+  /** Get the end point path
+   * 
+   * @return
+   */
+  String getPath();
   
 }

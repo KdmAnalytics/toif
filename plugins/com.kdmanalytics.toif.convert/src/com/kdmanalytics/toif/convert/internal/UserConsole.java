@@ -9,7 +9,9 @@ package com.kdmanalytics.toif.convert.internal;
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,10 @@ public class UserConsole implements IToifImportListener {
   
   private static final Logger LOG = LoggerFactory.getLogger(UserConsole.class);
   
+  /**
+   * Output stream
+   */
+  private PrintWriter out;
   
   private String args[] = null;
   
@@ -94,23 +100,48 @@ public class UserConsole implements IToifImportListener {
       return;
     }
     
-    // Run the import
-    ToifImporter importer = new ToifImporter();
-    importer.addFindingListener(this);
+    // Prepare the output
     try {
+      out = new PrintWriter(new FileWriter(ofile));
+      out.println("SFP\tCWE\tCiting Status\tConfidence\tResource\tLine Number\tKDM Line Number\tSCA tool\tWeakness Description");
+      
+      
+      // Run the import. There is a callback that gets called with the findings
+      ToifImporter importer = new ToifImporter();
+      importer.addFindingListener(this);
       importer.run(ifile);
+      
     } catch (IOException e) {
       LOG.error("Exception running conversion: " + e.getMessage());
     }
-    
+    finally {
+      if (out != null) out.close();
+    }
   }
-
+  
   /*
    * (non-Javadoc)
    * @see com.kdmanalytics.toif.importer.IToifImportListener#add(com.kdmanalytics.toif.report.items.IFindingEntry)
    */
   @Override
   public void add(IFindingEntry finding) {
-    System.err.println(finding);
+    // Exporting the data to a tsv file
+    out.print(finding.getSfp());
+    out.print('\t');
+    out.print(finding.getCwe());
+    out.print('\t');
+    out.print('\t');
+    out.print(finding.getTrust());
+    out.print('\t');
+    out.print(finding.getPath());
+    out.print('\t');
+    out.print(finding.getLine());
+    out.print('\t');
+    out.print(finding.getLine());
+    out.print('\t');
+    out.print(finding.getTool());
+    out.print('\t');
+    out.print(finding.getDescription());
+    out.println();
   }
 }

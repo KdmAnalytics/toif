@@ -470,6 +470,12 @@ public class ToifImporter {
       entry.setTraces(getTraces(finding));
       entry.setCwe(getCwe(finding));
       entry.setSfp(getSfp(finding));
+      entry.setPath(ccl.getPath());
+      try {
+        entry.setLineNumber(Integer.parseInt(ccl.getLineNumber()));
+      } catch (NumberFormatException e) {
+        e.printStackTrace();
+      }
       if (!tool.addFinding(entry)) {
         System.err.println("  - " + ccl.getPath() + " " + ccl.getLineNumber());
       }
