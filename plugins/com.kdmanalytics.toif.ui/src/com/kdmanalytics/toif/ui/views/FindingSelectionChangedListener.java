@@ -83,8 +83,8 @@ public class FindingSelectionChangedListener extends FindingSelection implements
       
       // Update myself
       updateThese.add(object);
+      viewer.refresh(object);
     }
-    viewer.update(updateThese.toArray(), null);
   }
   
   /**
