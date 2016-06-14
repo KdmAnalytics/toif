@@ -15,7 +15,7 @@ import java.util.Set;
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
 
-@CommandLineInterface(application="toif")
+@CommandLineInterface(application="tsvoutput")
 public interface ConvertCli {
   
   @Option(description = "Display Convert version and exit")
