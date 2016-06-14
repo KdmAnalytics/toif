@@ -65,7 +65,10 @@ public class UserConsole implements IToifImportListener {
     }
     
     // Are we doing Version?
-    if (cmdCli.isVersion()) doVersion(cmdCli);
+    if (cmdCli.isVersion()) {
+      doVersion(cmdCli);
+      return;
+    }
     run(cmdCli);
   }
   
