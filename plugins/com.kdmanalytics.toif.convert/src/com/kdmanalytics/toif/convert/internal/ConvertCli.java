@@ -18,7 +18,7 @@ import com.lexicalscope.jewel.cli.Option;
 @CommandLineInterface(application="tsvoutput")
 public interface ConvertCli {
   
-  @Option(description = "Display Convert version and exit")
+  @Option(description = "Display tsvoutput version and exit")
   boolean isVersion();
   
   @Option(shortName = "i", description = "Defines the path to the kdm file to be converted")
