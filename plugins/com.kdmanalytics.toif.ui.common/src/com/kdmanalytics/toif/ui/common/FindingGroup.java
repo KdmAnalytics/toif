@@ -140,7 +140,17 @@ public class FindingGroup implements IFindingEntry {
    */
   @Override
   public String getTool() {
-    return "MULTIPLE";
+    String tool = null;
+    for(IFindingEntry entry: entries) {
+      if (tool == null) {
+        tool = entry.getTool();
+      } else {
+        if (!tool.equals(entry.getTool())) {
+          return "MULTIPLE";
+        }
+      }
+    }
+    return tool;
   }
 
   /*

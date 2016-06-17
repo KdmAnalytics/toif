@@ -42,12 +42,8 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
     if (element instanceof IFindingEntry) {
-      // If this is a group, then by definition it satisfies the filter
-      if (element instanceof FindingGroup) {
-        return true;
-      }
 
-      return doesLocationContainTwoSameSFP((FindingEntry) element);
+      return doesLocationContainTwoSameSFP((IFindingEntry) element);
     }
     return false;
   }
@@ -62,7 +58,7 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
    *          
    * @return true if there is two SFP's at the same location
    */
-  private boolean doesLocationContainTwoSameSFP(FindingEntry targetEntry) {
+  private boolean doesLocationContainTwoSameSFP(IFindingEntry targetEntry) {
     IFile file = targetEntry.getFile();
     int targetLine = targetEntry.getLineNumber();
     String toolNameToExclude = targetEntry.getTool();

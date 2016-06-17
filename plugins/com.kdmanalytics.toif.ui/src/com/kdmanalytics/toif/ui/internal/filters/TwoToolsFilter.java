@@ -41,11 +41,6 @@ public class TwoToolsFilter extends AbstractTwoToolsFilter {
     if (element instanceof IFindingEntry) {
       IFindingEntry targetEntry = (IFindingEntry) element;
       
-      // If this is a group, then by definition it satisfies the filter
-      if (targetEntry instanceof FindingGroup) {
-        return true;
-      }
-      
       IFile file = targetEntry.getFile();
       int targetLine = targetEntry.getLineNumber();
       

@@ -42,11 +42,7 @@ public class CWETwoToolsFilter extends AbstractTwoToolsFilter {
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
     if (element instanceof IFindingEntry) {
-      // If this is a group, then by definition it satisfies the filter
-      if (element instanceof FindingGroup) {
-        return true;
-      }
-      FindingEntry entry = (FindingEntry) element;
+      IFindingEntry entry = (IFindingEntry) element;
       return doesLocationContainTwoSameCWE(entry);
     }
     return false;
@@ -58,7 +54,7 @@ public class CWETwoToolsFilter extends AbstractTwoToolsFilter {
    * @param targetEntry
    * @return
    */
-  private boolean doesLocationContainTwoSameCWE(FindingEntry targetEntry) {
+  private boolean doesLocationContainTwoSameCWE(IFindingEntry targetEntry) {
     IFile file = targetEntry.getFile();
     int targetLine = targetEntry.getLineNumber();
     String toolNameToExclude = targetEntry.getTool();
