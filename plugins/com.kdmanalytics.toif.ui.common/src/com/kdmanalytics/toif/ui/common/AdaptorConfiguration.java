@@ -404,6 +404,7 @@ public class AdaptorConfiguration {
           int myIndex = getColumnIndex(COLUMN_SFP_STRING);
           setCell(yourCwe, myIndex, yourCell);
           sfpMap.put(yourCwe, (String) yourCell);
+          System.err.println("PUT: " + yourCwe + " " + yourCell);
         }
         {
           // Replace "Count C/C++"
@@ -988,7 +989,11 @@ public class AdaptorConfiguration {
    * @return
    */
   public String getSfp(String cwe) {
-    return sfpMap.get(cwe);
+    String result = sfpMap.get(cwe);
+    if (result == null) {
+      return "SFP--1";
+    }
+    return result;
   }
   
   /** Export to the specified file

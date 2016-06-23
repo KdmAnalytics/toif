@@ -89,10 +89,19 @@ public class FindingData implements Comparable<FindingData>
     {
         this.resource = resource;
         this.tool = tool;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.description = description;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.line = line;
         this.offset = offset;
         this.cwe = cwe;
+        if (cwe != null) {
+          cwe = cwe.trim();
+        }
         // Ignore the provided SFP, instead use the value found in the adaptor configuration
         //this.sfp = sfp;
         this.sfp = config.getSfp(cwe);
