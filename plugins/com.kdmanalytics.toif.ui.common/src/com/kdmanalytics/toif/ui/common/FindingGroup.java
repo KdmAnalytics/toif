@@ -44,7 +44,8 @@ public class FindingGroup implements IFindingEntry {
   public FindingGroup(IFile file, int line, String sfp, String cwe) {
     this.ifile = file;
     this.line = line;
-    this.cwe = cwe;
+    
+    this.cwe = fixSfpCweIdentifier(cwe);
     // Ignore the provided SFP, instead use the value found in the adaptor configuration
     //this.sfp = sfp;
     this.sfp = config.getSfp(cwe);
@@ -60,11 +61,16 @@ public class FindingGroup implements IFindingEntry {
   public FindingGroup(File file, int line, String sfp, String cwe) {
     this.file = file;
     this.line = line;
-    this.cwe = cwe;
+    this.cwe = fixSfpCweIdentifier(cwe);
     // Ignore the provided SFP, instead use the value found in the adaptor configuration
     //this.sfp = sfp;
     this.sfp = config.getSfp(cwe);
   }
+  
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
+  }
+
 
   /*
    * (non-Javadoc)
