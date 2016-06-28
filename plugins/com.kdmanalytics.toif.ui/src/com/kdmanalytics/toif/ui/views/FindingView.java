@@ -932,7 +932,7 @@ public class FindingView extends ViewPart
         aConfigSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY1));
         
         findingGroupSortAction = new FindingGroupSortAction(this, viewer);
-        findingGroupSortAction.setText("Duplicates");
+        findingGroupSortAction.setText("Multiple");
         findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY2));
         
         // Column ordering action
