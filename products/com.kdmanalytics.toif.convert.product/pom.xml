@@ -50,7 +50,7 @@
           <products>
             <product>
               <id>com.kdmanalytics.toif.convert.product</id>
-              <attachId>toif</attachId>
+              <attachId>tsvoutput</attachId>
             </product>
           </products>
         </configuration>        

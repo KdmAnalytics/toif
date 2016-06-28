@@ -9,7 +9,7 @@
   </formats>
   <fileSets>
     <fileSet>
-      <outputDirectory>toif-${project.version}</outputDirectory>
+      <outputDirectory>tsvoutput-${project.version}</outputDirectory>
       <directory>${project.build.directory}/products/com.kdmanalytics.toif.convert.product/linux/gtk/x86_64</directory>
       <excludes>
         <exclude>**/p2/**</exclude>
