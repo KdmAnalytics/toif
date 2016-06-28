@@ -103,7 +103,7 @@ public class DefectDescViewContentProvider implements IStructuredContentProvider
     
     // More info
     try {
-      URL url = new URL("http://cwe.mitre.org/data/definitions/" + cwe.replace("CWE-", "") + ".html");
+      URL url = new URL("http://cwe.mitre.org/data/definitions/" + cwe.replace("CWE", "") + ".html");
       DefectNode moreInfoNode = new DefectNode(DefectNode.DESCRIPTION_NODE, "More info", url.toString());
       sfpNode.addChild(moreInfoNode);
       moreInfoNode.setParent(sfpNode);
