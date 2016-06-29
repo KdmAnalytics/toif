@@ -175,7 +175,7 @@ public class FindingSelection {
     for (String cwe : cwes) {
       try {
         browser = browserSupport.createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR, null, cwe, cwe);
-        URL url = new URL("http://cwe.mitre.org/data/definitions/" + cwe.replace("CWE-", "") + ".html");
+        URL url = new URL("http://cwe.mitre.org/data/definitions/" + cwe.replace("CWE", "") + ".html");
         browser.openURL(url);
       } catch (PartInitException e) {
         e.printStackTrace();
