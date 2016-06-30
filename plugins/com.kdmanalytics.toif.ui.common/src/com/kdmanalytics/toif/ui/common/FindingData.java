@@ -89,10 +89,19 @@ public class FindingData implements Comparable<FindingData>
     {
         this.resource = resource;
         this.tool = tool;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.description = description;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.line = line;
         this.offset = offset;
         this.cwe = cwe;
+        if (cwe != null) {
+          cwe = cwe.trim();
+        }
         // Ignore the provided SFP, instead use the value found in the adaptor configuration
         //this.sfp = sfp;
         this.sfp = config.getSfp(cwe);
@@ -541,12 +550,36 @@ public class FindingData implements Comparable<FindingData>
     public int compareTo(FindingData o)
     {
         if(!resource.equals(o.resource)) return resource.toString().compareTo(o.resource.toString());
-        if(!description.equals(o.description)) return description.toString().compareTo(o.description.toString());
-        if(!cwe.equals(o.cwe)) return cwe.toString().compareTo(o.cwe.toString());
-        if(!sfp.equals(o.sfp)) return sfp.toString().compareTo(o.sfp.toString());
-        if(!tool.equals(o.tool)) return tool.toString().compareTo(o.tool.toString());
+        int cmp = compare(description, o.description);
+        if (cmp != 0) return cmp;
+        cmp = compare(cwe, o.cwe);
+        if (cmp != 0) return cmp;
+        cmp = compare(sfp, o.sfp);
+        if (cmp != 0) return cmp;
+        cmp = compare(tool, o.tool);
+        if (cmp != 0) return cmp;
         if(line != o.line) return o.line - line;
         if(offset != o.offset) return o.offset - offset;
         return 0;
+    }
+    
+    /** Compare two strings, including a null check.
+     * 
+     * @param s1
+     * @param s2
+     * @return
+     */
+    private int compare(String s1, String s2) {
+      if (s1 == null) {
+        if (s2 == null) {
+          return 0;
+        } else {
+          return -1;
+        }
+      }
+      if (s2 == null) {
+        return 1;
+      }
+      return s1.compareTo(s2);
     }
 }

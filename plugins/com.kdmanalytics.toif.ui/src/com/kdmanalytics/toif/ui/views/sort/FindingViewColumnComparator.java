@@ -148,8 +148,12 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         break;
       }
       case 3: {
+        // Remove old-style prefix
         String sfp1 = entry1.getSfp().replace("SFP-", "");
         String sfp2 = entry2.getSfp().replace("SFP-", "");
+        // Remove new-style prefix
+        sfp1 = sfp1.replace("SFP", "");
+        sfp2 = sfp2.replace("SFP", "");
         int sfp1Int = 0;
         int sfp2Int = 0;
         
@@ -169,9 +173,13 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         break;
       }
       case 4: {
+        // Remove old-style prefix
         String cwe1 = entry1.getCwe().replace("CWE-", "").trim();
         String cwe2 = entry2.getCwe().replace("CWE-", "").trim();
-        
+        // Remove new-style prefix
+        cwe1 = cwe1.replace("CWE", "");
+        cwe2 = cwe2.replace("CWE", "");
+
         int cwe1Int = 0;
         int cwe2Int = 0;
         try {

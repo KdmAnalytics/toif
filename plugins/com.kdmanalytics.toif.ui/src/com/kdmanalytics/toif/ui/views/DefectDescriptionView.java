@@ -140,9 +140,11 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
         String cluster = record.get(1);
         String name = record.get(2);
         
-        sfpLookup.put("SFP-" + sfpid, new String[] {
-                                                     sfpid, name, cluster
-        });
+        if ("-1".equals(sfpid)) {
+          sfpLookup.put("SFP-" + sfpid, new String[] {sfpid, name, cluster});
+        } else {
+          sfpLookup.put("SFP" + sfpid, new String[] {sfpid, name, cluster});
+        }
       }
     } finally {
       if (in != null) {
@@ -184,10 +186,10 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
         // cweLookup.put(cweid, new String[] {cweid, name, description});
         // }
         // else
-        {
-          cweLookup.put("CWE-" + cweid, new String[] {
-                                                       cweid, name
-          });
+        if ("-1".equals(cweid)) {
+          cweLookup.put("CWE-" + cweid, new String[] {cweid, name});
+        } else {
+          cweLookup.put("CWE" + cweid, new String[] {cweid, name});
         }
       }
     } finally {

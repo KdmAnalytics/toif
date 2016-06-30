@@ -4,14 +4,14 @@
 
   <groupId>com.kdmanalytics</groupId>
   <artifactId>toif</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
+  <version>2.3.0</version>
 
   <name>Open TOIF (Tool Output Integration Framework)</name>
 
   <packaging>pom</packaging>
 
   <properties>
-    <toif-version>2.3.0-SNAPSHOT</toif-version>
+    <toif-version>2.3.0</toif-version>
     <junit-version>4.8.1</junit-version>
     <tycho-version>0.24.0</tycho-version>
   </properties>

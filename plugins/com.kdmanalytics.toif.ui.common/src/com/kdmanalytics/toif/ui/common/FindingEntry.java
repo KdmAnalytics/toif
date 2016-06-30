@@ -43,6 +43,10 @@ public class FindingEntry extends FindingData implements IFindingEntry {
       String cwe = marker.getAttribute(IToifMarker.CWE, "");
       String sfp = marker.getAttribute(IToifMarker.SFP, "");
       
+      cwe = fixSfpCweIdentifier(cwe);
+      sfp = fixSfpCweIdentifier(sfp);
+
+      
       setFindingData(resource, tool, description, line, offset, cwe, sfp);
       
       // Map<String, Object> attrs = marker.getAttributes();
@@ -54,6 +58,15 @@ public class FindingEntry extends FindingData implements IFindingEntry {
     } catch (CoreException e) {
       e.printStackTrace();
     }
+  }
+
+  /** CWE and SFP identifiers should not have single hyphens in them.
+   * 
+   * @param name
+   * @return
+   */
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
   }
 
   /** This constructor is intended for testing purposes only

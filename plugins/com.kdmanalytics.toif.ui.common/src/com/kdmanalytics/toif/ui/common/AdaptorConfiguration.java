@@ -93,9 +93,11 @@ public class AdaptorConfiguration {
   
   private static final String COLUMN_FINDBUGS_STRING = "findbugs";
   
-  private static final String COLUMN_COUNT_C_STRING = "count c/c++";
+  private static final String COLUMN_COUNT_C_STRING1 = "count c/c++";
+  private static final String COLUMN_COUNT_JAVA_STRING1 = "count java";
   
-  private static final String COLUMN_COUNT_JAVA_STRING = "count java";
+  private static final String COLUMN_COUNT_C_STRING2 = "Count of C/C++ tools";  
+  private static final String COLUMN_COUNT_JAVA_STRING2 = "Count of Java tools";
   
   /**
    * The column numbers might very well change. They are determined by the header location.
@@ -405,16 +407,16 @@ public class AdaptorConfiguration {
         }
         {
           // Replace "Count C/C++"
-          int yourIndex = config.getColumnIndex(COLUMN_COUNT_C_STRING);
+          int yourIndex = config.getColumnIndex(COLUMN_COUNT_C_STRING2);
           Object yourCell = config.getCell(yourCwe, yourIndex);
-          int myIndex = getColumnIndex(COLUMN_COUNT_C_STRING);
+          int myIndex = getColumnIndex(COLUMN_COUNT_C_STRING2);
           setCell(yourCwe, myIndex, yourCell);
         }
         {
           // Replace "Count Java"
-          int yourIndex = config.getColumnIndex(COLUMN_COUNT_JAVA_STRING);
+          int yourIndex = config.getColumnIndex(COLUMN_COUNT_JAVA_STRING2);
           Object yourCell = config.getCell(yourCwe, yourIndex);
-          int myIndex = getColumnIndex(COLUMN_COUNT_JAVA_STRING);
+          int myIndex = getColumnIndex(COLUMN_COUNT_JAVA_STRING2);
           setCell(yourCwe, myIndex, yourCell);
         }
       }
@@ -436,6 +438,14 @@ public class AdaptorConfiguration {
    * @param name
    */
   private void addColumn(String name) {
+    // Convert from old column name to new column name
+    if (COLUMN_COUNT_C_STRING1.equalsIgnoreCase(name)) {
+      name = COLUMN_COUNT_C_STRING2;
+    }
+    if (COLUMN_COUNT_JAVA_STRING1.equalsIgnoreCase(name)) {
+      name = COLUMN_COUNT_JAVA_STRING2;
+    }
+    
     int index = columnMap.size();
     columnMap.put(name.toLowerCase(), index);
     extraColumns.add(name);
@@ -480,8 +490,19 @@ public class AdaptorConfiguration {
       else if (COLUMN_SPLINT_STRING.equalsIgnoreCase(text)) COLUMN_SPLINT = i;
       else if (COLUMN_JLINT_STRING.equalsIgnoreCase(text)) COLUMN_JLINT = i;
       else if (COLUMN_FINDBUGS_STRING.equalsIgnoreCase(text)) COLUMN_FINDBUGS = i;
-      else if (COLUMN_COUNT_C_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
-      else if (COLUMN_COUNT_JAVA_STRING.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
+      
+      else if (COLUMN_COUNT_C_STRING1.equalsIgnoreCase(text)) {
+        COLUMN_COUNT_C = i;
+        // Convert to new name
+        text = COLUMN_COUNT_C_STRING2;
+      }
+      else if (COLUMN_COUNT_JAVA_STRING1.equalsIgnoreCase(text)) {
+        COLUMN_COUNT_JAVA = i;
+        // Convert to new name
+        text = COLUMN_COUNT_JAVA_STRING2;
+      }
+      else if (COLUMN_COUNT_C_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
+      else if (COLUMN_COUNT_JAVA_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
       else {
         extraColumns.add(text);
       }
@@ -509,6 +530,18 @@ public class AdaptorConfiguration {
     
     if (row.size() > COLUMN_CWE) {
       String cwe = (String) row.get(COLUMN_CWE);
+      
+      // Fix the CWE ID and replace the value
+      cwe = fixSfpCweIdentifier(cwe);
+      row.remove(COLUMN_CWE);
+      row.add(COLUMN_CWE, cwe);
+      
+      String sfp = (String)row.get(COLUMN_SFP);
+      // Fix the CWE ID and replace the value
+      sfp = fixSfpCweIdentifier(sfp);
+      row.remove(COLUMN_SFP);
+      row.add(COLUMN_SFP, sfp);
+      
       // Only add a new row if this is a non-empty row and the CWE
       // does not exist in the map yet.
       if (!cwe.isEmpty() && !rowMap.containsKey(cwe)) {
@@ -525,6 +558,10 @@ public class AdaptorConfiguration {
     return rcount;
   }
   
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
+  }
+
   /**
    * Convert the input text into an appropriate representative object for the cell.
    * 
@@ -894,6 +931,15 @@ public class AdaptorConfiguration {
     
     for (int i = 0; i < rowHeaders.size(); i++) {
       String name = rowHeaders.get(i);
+      
+      // Convert from old column name to new column name
+      if (COLUMN_COUNT_C_STRING1.equalsIgnoreCase(name)) {
+        name = COLUMN_COUNT_C_STRING2;
+      }
+      if (COLUMN_COUNT_JAVA_STRING1.equalsIgnoreCase(name)) {
+        name = COLUMN_COUNT_JAVA_STRING2;
+      }
+      
       Object cell = row.get(i);
       if (COLUMN_CWE_STRING.equalsIgnoreCase(name)) {
         yourCwe = (String) cell;
@@ -942,7 +988,11 @@ public class AdaptorConfiguration {
    * @return
    */
   public String getSfp(String cwe) {
-    return sfpMap.get(cwe);
+    String result = sfpMap.get(cwe);
+    if (result == null) {
+      return "SFP--1";
+    }
+    return result;
   }
   
   /** Export to the specified file

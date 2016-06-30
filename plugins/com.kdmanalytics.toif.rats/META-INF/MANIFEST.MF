@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Open TOIF Rats
 Bundle-SymbolicName: com.kdmanalytics.toif.rats;singleton:=true
-Bundle-Version: 2.3.0.qualifier
+Bundle-Version: 2.3.0
 Bundle-Activator: com.kdmanalytics.toif.rats.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.slf4j.api;bundle-version="1.7.2",

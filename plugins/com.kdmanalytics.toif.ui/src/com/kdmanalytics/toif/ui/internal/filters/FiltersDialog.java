@@ -201,7 +201,7 @@ public class FiltersDialog extends Dialog {
     
     // button.
     final Button trustButton = new Button(trustComposite, SWT.CHECK);
-    trustButton.setText("Trust above:");
+    trustButton.setText("Confidence above:");
     
     GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
     
