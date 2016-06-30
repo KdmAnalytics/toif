@@ -160,11 +160,14 @@ public class FindBugsParser extends DefaultHandler {
     }
     if ("BugInstance".equals(qName)) {
       if (file == null) {
-        System.err.println("Cannot find file for: [" + id + "] " + description);
+        if("true".equals(System.getProperty("__DEBUG_IGNORE_MISSING_FINDBUGS_FILE"))) {
+          findingCreator.create(description, id, line, offset, null, null, null, null, traces.toArray(new CodeLocation[traces.size()]));
+        } else {
+          System.err.println("Cannot find file for: [" + id + "] " + description);
+        }
       } else {
         File afile = resolver.resolve(file);
-        findingCreator.create(description, id, line, offset, null, afile, null, null, traces.toArray(
-                                                                                                     new CodeLocation[traces.size()]));
+        findingCreator.create(description, id, line, offset, null, afile, null, null, traces.toArray(new CodeLocation[traces.size()]));
       }
     }
   }

@@ -161,4 +161,18 @@
            verticalRulerPreferenceKey="myMarkerIndicationInVerticalRuler"
            verticalRulerPreferenceValue="true"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.kdmanalytics.toif.ui.common.preferences.ToifPreferences"
+            id="com.kdmanalytics.toif.preferences.Toif"
+            name="TOIF">
+      </page>
+      <page
+            category="com.kdmanalytics.toif.preferences.Toif"
+            class="com.kdmanalytics.toif.ui.common.preferences.AConfigPreferences"
+            id="com.kdmanalytics.toif.ui.common.page2"
+            name="TOIF Findings Configuration">
+      </page>
+   </extension>
 </plugin>

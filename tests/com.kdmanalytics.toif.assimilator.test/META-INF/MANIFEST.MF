@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TOIF Assimilator Test
 Bundle-SymbolicName: com.kdmanalytics.toif.assimilator.test
-Bundle-Version: 2.2.0
+Bundle-Version: 2.3.0
 Bundle-Vendor: KDM Analytics Inc.
 Fragment-Host: com.kdmanalytics.toif.assimilator;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

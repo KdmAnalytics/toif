@@ -10,7 +10,7 @@ package com.kdmanalytics.toif.ui.internal.filters;
 
 import org.eclipse.jface.viewers.Viewer;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * ViewerFilter that returns true for ToifReportEntry who's finding entries are found to be not
@@ -30,8 +30,8 @@ public class NotValidFilter extends AbstractValidFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      return !valid(((FindingEntry) element));
+    if (element instanceof IFindingEntry) {
+      return !valid(((IFindingEntry) element));
     }
     return false;
   }

@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.kdmanalytics</groupId>
     <artifactId>toif</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
   </parent>
 
   <groupId>com.kdmanalytics.toif</groupId>
@@ -16,5 +16,6 @@
 
   <modules>
       <module>com.kdmanalytics.toif.product</module>
+      <module>com.kdmanalytics.toif.convert.product</module>
   </modules>
 </project>

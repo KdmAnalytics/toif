@@ -16,9 +16,11 @@ import java.util.Set;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Tracks current selection of the Finding View.
@@ -31,7 +33,7 @@ public class FindingSelectionChangedListener extends FindingSelection implements
   /**
    * Table that owns the selection
    */
-  private TableViewer viewer = null;
+  private TreeViewer viewer = null;
   
   /*
    * (non-Javadoc)
@@ -42,14 +44,14 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    */
   @Override
   public void selectionChanged(SelectionChangedEvent event) {
-    viewer = (TableViewer) event.getSource();
+    viewer = (TreeViewer) event.getSource();
     
     IStructuredSelection selection = (IStructuredSelection) event.getSelection();
     clear();
     for (Iterator<?> it = selection.iterator(); it.hasNext();) {
       Object o = it.next();
-      if (o instanceof FindingEntry) {
-        add((FindingEntry) o);
+      if (o instanceof IFindingEntry) {
+        add((IFindingEntry) o);
       }
     }
   }
@@ -63,7 +65,26 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    */
   public void cite(Boolean b) {
     super.cite(b);
-    viewer.update(getSelectionArray(), null);
+    List<Object> updateThese = new LinkedList<Object>();
+    Object[] selected = getSelectionArray();
+    for (Object object : selected) {
+      if (object instanceof FindingEntry) {
+        // If this finding is part of a group, then change the entire group
+        FindingGroup parent = ((FindingEntry)object).getParent();
+        if(parent != null) {
+          object = parent;
+        }
+      }
+      
+      // Update all children
+      if (object instanceof FindingGroup) {
+        updateThese.addAll(((FindingGroup)object).getFindingEntries());
+      }
+      
+      // Update myself
+      updateThese.add(object);
+      viewer.refresh(object);
+    }
   }
   
   /**
@@ -78,22 +99,23 @@ public class FindingSelectionChangedListener extends FindingSelection implements
    * @return Set of finding type IDs that were affected by the trust change
    */
   public Set<String> setTrust(int val) {
-    Set<String> types = super.setTrust(val);
-    
-    // Find everybody who needs updating
-    FindingContentProvider contents = (FindingContentProvider) viewer.getContentProvider();
-    FindingEntry[] findings = contents.getEntries();
-    List<FindingEntry> updatedFindings = new LinkedList<FindingEntry>();
-    if (findings != null) {
-      for (FindingEntry finding : findings) {
-        String tid = finding.getTypeId();
-        if (types.contains(tid)) {
-          updatedFindings.add(finding);
-        }
-      }
-    }
-    viewer.update(updatedFindings.toArray(), null);
-    return types;
+//    Set<String> types = super.setTrust(val);
+//    
+//    // Find everybody who needs updating
+//    FindingContentProvider contents = (FindingContentProvider) viewer.getContentProvider();
+//    FindingEntry[] findings = contents.getEntries();
+//    List<FindingEntry> updatedFindings = new LinkedList<FindingEntry>();
+//    if (findings != null) {
+//      for (FindingEntry finding : findings) {
+//        String tid = finding.getTypeId();
+//        if (types.contains(tid)) {
+//          updatedFindings.add(finding);
+//        }
+//      }
+//    }
+//    viewer.update(updatedFindings.toArray(), null);
+//    return types;
+    throw new UnsupportedOperationException();
   }
   
 }

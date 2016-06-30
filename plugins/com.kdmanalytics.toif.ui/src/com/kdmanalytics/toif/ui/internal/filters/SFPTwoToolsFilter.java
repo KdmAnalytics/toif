@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Filter that shows only findings with the same location and the same sfp
@@ -39,8 +41,9 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      return doesLocationContainTwoSameSFP((FindingEntry) element);
+    if (element instanceof IFindingEntry) {
+
+      return doesLocationContainTwoSameSFP((IFindingEntry) element);
     }
     return false;
   }
@@ -55,7 +58,7 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
    *          
    * @return true if there is two SFP's at the same location
    */
-  private boolean doesLocationContainTwoSameSFP(FindingEntry targetEntry) {
+  private boolean doesLocationContainTwoSameSFP(IFindingEntry targetEntry) {
     IFile file = targetEntry.getFile();
     int targetLine = targetEntry.getLineNumber();
     String toolNameToExclude = targetEntry.getTool();
@@ -68,9 +71,9 @@ public class SFPTwoToolsFilter extends AbstractTwoToolsFilter {
     HashMap<String, List<String>> sfpMap = new HashMap<String, List<String>>();
     
     try {
-      List<FindingEntry> findings = getFindings(file);
+      List<IFindingEntry> findings = getFindings(file);
       
-      for (FindingEntry entry : findings) {
+      for (IFindingEntry entry : findings) {
         int line = entry.getLineNumber();
         if (line == targetLine) {
           String tool = entry.getTool();

@@ -8,6 +8,8 @@
 
 package com.kdmanalytics.toif.ui.common;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -19,8 +21,10 @@ import org.eclipse.core.runtime.CoreException;
  * @author Ken Duck
  *        
  */
-public class FindingEntry extends FindingData {
+public class FindingEntry extends FindingData implements IFindingEntry {
   
+  private FindingGroup group;
+
   /**
    * Pull the interesting information out of the marker.
    * 
@@ -39,6 +43,10 @@ public class FindingEntry extends FindingData {
       String cwe = marker.getAttribute(IToifMarker.CWE, "");
       String sfp = marker.getAttribute(IToifMarker.SFP, "");
       
+      cwe = fixSfpCweIdentifier(cwe);
+      sfp = fixSfpCweIdentifier(sfp);
+
+      
       setFindingData(resource, tool, description, line, offset, cwe, sfp);
       
       // Map<String, Object> attrs = marker.getAttributes();
@@ -50,5 +58,44 @@ public class FindingEntry extends FindingData {
     } catch (CoreException e) {
       e.printStackTrace();
     }
+  }
+
+  /** CWE and SFP identifiers should not have single hyphens in them.
+   * 
+   * @param name
+   * @return
+   */
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
+  }
+
+  /** This constructor is intended for testing purposes only
+   * 
+   * @param file
+   * @param tool
+   * @param descr
+   * @param line
+   * @param offset
+   * @param cwe
+   * @param sfp
+   */
+  public FindingEntry(File file, String tool, String descr, int line, int offset, String cwe, String sfp) {
+    setFindingData(file, tool, descr, line, offset, cwe, sfp);
+  }
+
+  /** The entry may be part of a group. This sets the group.
+   * 
+   * @param findingGroup
+   */
+  public void setParent(FindingGroup findingGroup) {
+    this.group = findingGroup;
+  }
+  
+  /**The entry may be part of a group. This gets the group.
+   * 
+   * @return
+   */
+  public FindingGroup getParent() {
+    return group;
   }
 }

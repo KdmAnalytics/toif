@@ -1,15 +1,18 @@
 
 package com.kdmanalytics.toif.ui.common;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -21,6 +24,11 @@ import org.eclipse.ui.PlatformUI;
  */
 public class FindingData implements Comparable<FindingData>
 {
+  /**
+   * Use the configuration to get trust values
+   */
+  private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+  
     /**
      * Set to false when we have performed a citing. This is used to
      * pop up a warning on the first citing of any Eclipse run.
@@ -34,6 +42,11 @@ public class FindingData implements Comparable<FindingData>
     private int offset;
     private String cwe;
     private String sfp;
+
+    /**
+     * File is used in testing only
+     */
+    private File file;
 
     /**
      * The digest allows us to generate simple and short unique IDs for each finding.
@@ -76,20 +89,56 @@ public class FindingData implements Comparable<FindingData>
     {
         this.resource = resource;
         this.tool = tool;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.description = description;
+        if (this.description != null) {
+          this.description = this.description.trim();
+        }
         this.line = line;
         this.offset = offset;
         this.cwe = cwe;
-        this.sfp = sfp;
+        if (cwe != null) {
+          cwe = cwe.trim();
+        }
+        // Ignore the provided SFP, instead use the value found in the adaptor configuration
+        //this.sfp = sfp;
+        this.sfp = config.getSfp(cwe);
     }
 
+    /** Used in testing only
+     * 
+     * @param file
+     * @param tool
+     * @param description
+     * @param line
+     * @param offset
+     * @param cwe
+     * @param sfp
+     */
+    protected void setFindingData(File file, String tool, String description, int line, int offset, String cwe, String sfp) {
+      this.file = file;
+      this.tool = tool;
+      this.description = description;
+      this.line = line;
+      this.offset = offset;
+      this.cwe = cwe;
+      // Ignore the provided SFP, instead use the value found in the adaptor configuration
+      //this.sfp = sfp;
+      this.sfp = config.getSfp(cwe);
+    }
 
     /**
      * Output a pretty string representation of the finding.
      */
     public String toString()
     {
+      if (resource != null) {
         return "[" + tool + "] " + resource.toString() + ":" + line + "," + offset + " - {" + sfp + "," + cwe + "} " + description;
+      } else {
+        return "[" + tool + "] " + file.toString() + ":" + line + "," + offset + " - {" + sfp + "," + cwe + "} " + description;
+      }
     }
 
     /**
@@ -143,6 +192,15 @@ public class FindingData implements Comparable<FindingData>
         return tool + ":" + cwe;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.kdmanalytics.toif.ui.common.IFindingEntry#getTypeId()
+     */
+    public Collection<String> getTypeIds() {
+      List<String> results = new ArrayList<String>(1);
+      results.add(getTypeId());
+      return results;
+    }
 
     /** Get the name of the file with the finding
      * 
@@ -150,7 +208,12 @@ public class FindingData implements Comparable<FindingData>
      */
     public String getFileName()
     {
-        String name = resource.getName();
+        String name = null;
+        if (resource != null) {
+          name = resource.getName();
+        } else {
+          name = file.getName();
+        }
         return name;
     }
 
@@ -160,7 +223,11 @@ public class FindingData implements Comparable<FindingData>
      */
     public String getPath()
     {
+      if(resource != null) {
         return resource.getProjectRelativePath().toString();
+      } else {
+        return file.getAbsolutePath();
+      }
     }
 
     /** Get the line number in the file with the finding
@@ -241,14 +308,17 @@ public class FindingData implements Comparable<FindingData>
      */
     public void setTrust(int val)
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        if(val < 0 || val > 100)
-        {
-            // This should never happen. It is checked at entry time.
-            throw new IllegalArgumentException("Trust value [" + val + "] must be >=0 and <=100");
-        }
-        String type = getTypeId();
-        store.setValue(Activator.PLUGIN_ID + ".trust." + type, val);
+//        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//        if(val < 0 || val > 100)
+//        {
+//            // This should never happen. It is checked at entry time.
+//            throw new IllegalArgumentException("Trust value [" + val + "] must be >=0 and <=100");
+//        }
+//        String type = getTypeId();
+//        store.setValue(Activator.PLUGIN_ID + ".trust." + type, val);
+      
+      // This method should no longer be used.
+      throw new UnsupportedOperationException();
     }
 
     /** Get the trust level for the finding
@@ -257,12 +327,15 @@ public class FindingData implements Comparable<FindingData>
      */
     public int getTrust()
     {
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        String type = getTypeId();
-        int trust = store.getInt(Activator.PLUGIN_ID + ".trust." + type);
-        // The value should always be good, it is checked at entry time.
-        if(trust >= 0 && trust <= 100) return trust;
-        return 0;
+//        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//        String type = getTypeId();
+//        int trust = store.getInt(Activator.PLUGIN_ID + ".trust." + type);
+//        // The value should always be good, it is checked at entry time.
+//        if(trust >= 0 && trust <= 100) return trust;
+//        return 0;
+      
+      // We get trust from the configuration file now
+      return config.getTrust(cwe, tool);
     }
 
 
@@ -441,17 +514,32 @@ public class FindingData implements Comparable<FindingData>
             FindingData finding = (FindingData)o;
             if(finding.line != line) return false;
             if(finding.offset != offset) return false;
-            if(!finding.resource.equals(resource)) return false;
-            if(!finding.tool.equals(tool)) return false;
-            if(!finding.description.equals(description)) return false;
-            if(!finding.cwe.equals(cwe)) return false;
-            if(!finding.sfp.equals(sfp)) return false;
+            if(!equals(finding.resource, resource)) return false;
+            if(!equals(finding.tool, tool)) return false;
+            if(!equals(finding.description, description)) return false;
+            if(!equals(finding.cwe, cwe)) return false;
+            if(!equals(finding.sfp, sfp)) return false;
             return true;
         }
         else
         {
             return false;
         }
+    }
+
+    /** Return true if the objects are equal. Handles nulls.
+     * 
+     * @param o1
+     * @param o2
+     * @return
+     */
+    private boolean equals(Object o1, Object o2) {
+      if (o1 != null) {
+        return o1.equals(o2);
+      } else {
+        if (o2 != null) return false;
+      }
+      return true;
     }
 
     /*
@@ -462,12 +550,36 @@ public class FindingData implements Comparable<FindingData>
     public int compareTo(FindingData o)
     {
         if(!resource.equals(o.resource)) return resource.toString().compareTo(o.resource.toString());
-        if(!description.equals(o.description)) return description.toString().compareTo(o.description.toString());
-        if(!cwe.equals(o.cwe)) return cwe.toString().compareTo(o.cwe.toString());
-        if(!sfp.equals(o.sfp)) return sfp.toString().compareTo(o.sfp.toString());
-        if(!tool.equals(o.tool)) return tool.toString().compareTo(o.tool.toString());
+        int cmp = compare(description, o.description);
+        if (cmp != 0) return cmp;
+        cmp = compare(cwe, o.cwe);
+        if (cmp != 0) return cmp;
+        cmp = compare(sfp, o.sfp);
+        if (cmp != 0) return cmp;
+        cmp = compare(tool, o.tool);
+        if (cmp != 0) return cmp;
         if(line != o.line) return o.line - line;
         if(offset != o.offset) return o.offset - offset;
         return 0;
+    }
+    
+    /** Compare two strings, including a null check.
+     * 
+     * @param s1
+     * @param s2
+     * @return
+     */
+    private int compare(String s1, String s2) {
+      if (s1 == null) {
+        if (s2 == null) {
+          return 0;
+        } else {
+          return -1;
+        }
+      }
+      if (s2 == null) {
+        return 1;
+      }
+      return s1.compareTo(s2);
     }
 }

@@ -33,6 +33,10 @@ public class Activator extends AbstractUIPlugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
+    
+    // Initialize the AdaptorConfiguration
+    AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+    config.init(plugin.getStateLocation());
   }
   
   /*

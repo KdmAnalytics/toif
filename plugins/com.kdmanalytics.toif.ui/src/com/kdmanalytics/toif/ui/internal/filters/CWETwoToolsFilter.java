@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * ViewerFilter that determines if there are ToifReportEntry's with two CWE's at the same location
@@ -39,8 +41,8 @@ public class CWETwoToolsFilter extends AbstractTwoToolsFilter {
    */
   @Override
   public boolean select(Viewer viewer, Object parentElement, Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry entry = (FindingEntry) element;
+    if (element instanceof IFindingEntry) {
+      IFindingEntry entry = (IFindingEntry) element;
       return doesLocationContainTwoSameCWE(entry);
     }
     return false;
@@ -52,7 +54,7 @@ public class CWETwoToolsFilter extends AbstractTwoToolsFilter {
    * @param targetEntry
    * @return
    */
-  private boolean doesLocationContainTwoSameCWE(FindingEntry targetEntry) {
+  private boolean doesLocationContainTwoSameCWE(IFindingEntry targetEntry) {
     IFile file = targetEntry.getFile();
     int targetLine = targetEntry.getLineNumber();
     String toolNameToExclude = targetEntry.getTool();
@@ -65,9 +67,9 @@ public class CWETwoToolsFilter extends AbstractTwoToolsFilter {
     HashMap<String, List<String>> cweMap = new HashMap<String, List<String>>();
     
     try {
-      List<FindingEntry> findings = getFindings(file);
+      List<IFindingEntry> findings = getFindings(file);
       
-      for (FindingEntry entry : findings) {
+      for (IFindingEntry entry : findings) {
         int line = entry.getLineNumber();
         if (line == targetLine) {
           String tool = entry.getTool();

@@ -58,8 +58,9 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -76,9 +77,10 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -91,9 +93,19 @@ import org.eclipse.ui.part.ViewPart;
 
 import com.kdmanalytics.etoif.ccr.CoverageClaimGenerator;
 import com.kdmanalytics.toif.ui.Activator;
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
+import com.kdmanalytics.toif.ui.common.IAdaptorConfigurationListener;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
+import com.kdmanalytics.toif.ui.internal.filters.AndFilter;
+import com.kdmanalytics.toif.ui.internal.filters.ConfiguredVisibilityFilter;
 import com.kdmanalytics.toif.ui.internal.filters.ResourceFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TermFilter;
+import com.kdmanalytics.toif.ui.views.sort.AConfigWeightSortAction;
+import com.kdmanalytics.toif.ui.views.sort.AdaptorConfigWeightComparator;
+import com.kdmanalytics.toif.ui.views.sort.FindingGroupSortAction;
+import com.kdmanalytics.toif.ui.views.sort.FindingViewColumnComparator;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -140,6 +152,12 @@ public class FindingView extends ViewPart
 
     /** The Constant FILTER_KEY. */
     private static final String FILTER_KEY = "filter";
+    
+    /** The Constant SORT_KEY. */
+    private static final String SORT_KEY1 = "sort1";
+
+    /** The Constant SORT_KEY. */
+    private static final String SORT_KEY2 = "sort2";
 
     /** The Constant FILTER_KEY. */
     private static final String NOT_WEAKNESS_KEY = "not_weakness";
@@ -165,13 +183,24 @@ public class FindingView extends ViewPart
     private IProject currentProject;
 
     private FindingSelectionChangedListener selection = null;
-
+    
     /**
      * Conent for table
      */
     private FindingContentProvider contentProvider;
 
-    private TableViewer viewer;
+    private TreeViewer viewer;
+    
+    // Button actions
+    private Action aConfigSortActionButton;
+    private Action findingGroupSortActionButton;
+    
+    private Action aConfigSortAction;
+    private Action findingGroupSortAction;
+    
+    // Column ordering action
+    private SaveColumnOrderAction preserveColumnOrderAction;
+
     private Action descriptionAction;
     private Action exportAction;
     private Action coverageAction;
@@ -222,6 +251,7 @@ public class FindingView extends ViewPart
                         {
                             currentProject = newProject;
                             viewer.setInput(newProject);
+                            viewer.refresh();
                             updateDefectCount();
                         }
 
@@ -232,7 +262,7 @@ public class FindingView extends ViewPart
             }
         }
     };
-
+    
     /**
      * The constructor.
      */
@@ -311,6 +341,17 @@ public class FindingView extends ViewPart
         };
 
         workspace.addResourceChangeListener(projectListener);
+        
+        // Listen for configuration changes and update the view accordingly.
+        IAdaptorConfigurationListener configListener = new IAdaptorConfigurationListener() {
+          @Override
+          public void configChanged() {
+            viewer.refresh();
+            updateDefectCount();
+          }
+        };
+        AdaptorConfiguration.getAdaptorConfiguration().addConfigurationListsner(configListener);
+
     }
 
     /**
@@ -401,6 +442,18 @@ public class FindingView extends ViewPart
             final URL url = this.getClass().getResource("/icons/filter.gif");
             imgReg.put(FILTER_KEY, ImageDescriptor.createFromURL(url));
         }
+        
+        if(imgReg.get(SORT_KEY1) == null)
+        {
+          final URL url = this.getClass().getResource("/icons/flag_green.png");
+          imgReg.put(SORT_KEY1, ImageDescriptor.createFromURL(url));
+        }
+
+        if(imgReg.get(SORT_KEY2) == null)
+        {
+          final URL url = this.getClass().getResource("/icons/flag_orange.png");
+          imgReg.put(SORT_KEY2, ImageDescriptor.createFromURL(url));
+        }
 
         if (imgReg.get(NOT_WEAKNESS_KEY) == null)
         {
@@ -449,68 +502,57 @@ public class FindingView extends ViewPart
 
         createSearchControl(composite);
 
-        viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer = new TreeViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
         contentProvider = new FindingContentProvider();
         viewer.setContentProvider(contentProvider);
-        viewer.setComparator(new FindingViewerComparator());
+        
+        // Set the default comparator. Selecting columns will change the comparator.
+        viewer.setComparator(new AdaptorConfigWeightComparator());
 
         // Listen to change events so we know what to run actions upon
         selection = new FindingSelectionChangedListener();
         viewer.addSelectionChangedListener(selection);
+        
+        // Enable the default filters
+        FilterUtility filter = new FilterUtility(this, viewer);
+        filter.applyFilters();
 
-        Table table = viewer.getTable();
+
+        Tree tree = viewer.getTree();
         GridData gridData = new GridData();
         gridData.horizontalAlignment = GridData.FILL;
         gridData.verticalAlignment = GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalSpan = 3;
-        table.setLayoutData(gridData);
+        tree.setLayoutData(gridData);
 
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+        tree.setHeaderVisible(true);
+        tree.setLinesVisible(true);
         ColumnViewerToolTipSupport.enableFor(viewer);
+        
+        String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Confidence", "Description" };
+        Integer[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
+        
+        List<String> headings = new LinkedList<String>();
+        for(String heading: titles) headings.add(heading);
+        List<Integer> boundsList = new LinkedList<Integer>();
+        for(Integer i: bounds) boundsList.add(i);
+        String[] extraHeadings = AdaptorConfiguration.getAdaptorConfiguration().getExtraColumnNames();
+        for (String heading : extraHeadings) {
+          headings.add(heading);
+          boundsList.add(70);
+        }
+        titles = headings.toArray(new String[headings.size()]);
+        bounds = boundsList.toArray(new Integer[boundsList.size()]);
 
-        String[] titles = { "File", "Location", "Tool", "SFP", "CWE", "Trust", "Description" };
-        int[] bounds = { 200, 100, 200, 70, 90, 50, 900 };
+        // Create the columns
+        for (int i = 0; i < titles.length; i++) {
+          TreeViewerColumn col = createTableViewerColumn(viewer, titles[i], bounds[i], i, true);
+          col.setLabelProvider(new FindingStyledLabelProvider());
+        }
 
-        // File Column
-        TableViewerColumn col = createTableViewerColumn(viewer, titles[0], bounds[0], 0, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Location Column
-        col = createTableViewerColumn(viewer, titles[1], bounds[1], 1, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Tool Column
-        col = createTableViewerColumn(viewer, titles[2], bounds[2], 2, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // SFP Column
-        col = createTableViewerColumn(viewer, titles[3], bounds[3], 3, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // CWE Column
-        col = createTableViewerColumn(viewer, titles[4], bounds[4], 4, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Trust Column
-        col = createTableViewerColumn(viewer, titles[5], bounds[5], 5, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        // Description Column
-        col = createTableViewerColumn(viewer, titles[6], bounds[6], 6, true);
-        col.setLabelProvider(new FindingStyledLabelProvider());
-
-        //        MenuManager menuManager = new MenuManager();
-        //        Menu menu = menuManager.createContextMenu(viewer.getTable());
-        //        
-        //        viewer.getTable().setMenu(menu);
-        //        getSite().registerContextMenu(menuManager, viewer);
-
-
-        //		viewer.setSorter(new NameSorter());
         viewer.setInput(getViewSite());
         getSite().setSelectionProvider(viewer);
 
@@ -630,10 +672,10 @@ public class FindingView extends ViewPart
      * @param enableSorting
      * @return
      */
-    private TableViewerColumn createTableViewerColumn(TableViewer viewer, final String title, final int bound, final int colNumber, boolean enableSorting)
+    private TreeViewerColumn createTableViewerColumn(TreeViewer viewer, final String title, final int bound, final int colNumber, boolean enableSorting)
     {
-        TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.LEFT);
-        final TableColumn column = viewerColumn.getColumn();
+        TreeViewerColumn viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
+        final TreeColumn column = viewerColumn.getColumn();
         column.setText(title);
         column.setWidth(bound);
         column.setResizable(true);
@@ -652,19 +694,23 @@ public class FindingView extends ViewPart
      * @param index
      * @return
      */
-    private SelectionAdapter getSelectionAdapter(final TableViewer viewer, final TableColumn column, final int index)
+    private SelectionAdapter getSelectionAdapter(final TreeViewer viewer2, final TreeColumn column, final int index)
     {
         SelectionAdapter selectionAdaptor = new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                FindingViewerComparator comparator = (FindingViewerComparator) viewer.getComparator();
-                comparator.setColumn(index);
-                int dir = comparator.getDirection();
-                viewer.getTable().setSortDirection(dir);
-                viewer.getTable().setSortColumn(column);
-                viewer.refresh();
+              ViewerComparator comparator = viewer2.getComparator();
+              if (!(comparator instanceof FindingViewColumnComparator)) {
+                comparator = new FindingViewColumnComparator();
+                viewer2.setComparator(comparator);
+              }
+              ((FindingViewColumnComparator)comparator).setColumn(index);
+              int dir = ((FindingViewColumnComparator)comparator).getDirection();
+              viewer2.getTree().setSortDirection(dir);
+              viewer2.getTree().setSortColumn(column);
+              viewer2.refresh();
             }
         };
         return selectionAdaptor;
@@ -707,6 +753,12 @@ public class FindingView extends ViewPart
     private void fillLocalPullDown(IMenuManager manager)
     {
         manager.add(filterAction);
+        
+        MenuManager menu1 = new MenuManager("Sort", "sortid");
+        menu1.add(aConfigSortAction);
+        menu1.add(findingGroupSortAction);
+        manager.add(menu1);
+        manager.add(preserveColumnOrderAction);
     }
 
     /**
@@ -718,7 +770,8 @@ public class FindingView extends ViewPart
         manager.add(notAWeaknessAction);
         manager.add(isAWeaknessAction);
         manager.add(unciteWeaknessAction);
-        manager.add(setTrustLevelAction);
+        // Remove the setTrustLevel since it should be set by the Adaptor Configuration preferences
+        //manager.add(setTrustLevelAction);
         manager.add(traceAction);
         manager.add(moreInformationAction);
     }
@@ -729,9 +782,12 @@ public class FindingView extends ViewPart
      */
     private void fillLocalToolBar(IToolBarManager manager)
     {
-        manager.add(descriptionAction);
-        manager.add(exportAction);
-        manager.add(coverageAction);
+      manager.add(aConfigSortActionButton);
+      manager.add(findingGroupSortActionButton);
+      
+      manager.add(descriptionAction);
+      manager.add(exportAction);
+      manager.add(coverageAction);
     }
 
     /**
@@ -740,6 +796,17 @@ public class FindingView extends ViewPart
     private void makeActions()
     {
         final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
+
+        // Sort Actions
+        aConfigSortActionButton = new AConfigWeightSortAction(this, viewer);
+        aConfigSortActionButton.setText("User defined sort order");
+        aConfigSortActionButton.setToolTipText("User defined sort order");
+        aConfigSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY1));
+
+        findingGroupSortActionButton = new FindingGroupSortAction(this, viewer);
+        findingGroupSortActionButton.setText("Sort by Multiple Findings");
+        findingGroupSortActionButton.setToolTipText("Sort by Multiple Findings");
+        findingGroupSortActionButton.setImageDescriptor(imgReg.getDescriptor(SORT_KEY2));
 
         // Export Action
         descriptionAction = new Action()
@@ -754,7 +821,7 @@ public class FindingView extends ViewPart
                         IWorkbenchPage page = window.getActivePage();
                         try
                         {
-                            page.showView(DefectDescriptionView.ID);
+                          page.showView(DefectDescriptionView.ID);
                         }
                         catch (PartInitException e)
                         {
@@ -833,7 +900,7 @@ public class FindingView extends ViewPart
                                 // Make and run the coverage generator on the workspace for now. We probably want to
                                 // restrict to the active project?
                                 FindingContentProvider contents = (FindingContentProvider)viewer.getContentProvider();
-                                FindingEntry[] findings = contents.getEntries();
+                                FindingEntry[] findings = contents.getFindingEntries();
                                 new CoverageClaimGenerator(findings, new File(savePath), false);
                                 return Status.OK_STATUS;
                             }
@@ -859,7 +926,20 @@ public class FindingView extends ViewPart
         filterAction.setText("Filters...");
         filterAction.setImageDescriptor(imgReg.getDescriptor(FILTER_KEY));
 
-
+        // Sort actions
+        aConfigSortAction = new AConfigWeightSortAction(this, viewer);
+        aConfigSortAction.setText("User defined");
+        aConfigSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY1));
+        
+        findingGroupSortAction = new FindingGroupSortAction(this, viewer);
+        findingGroupSortAction.setText("Multiple");
+        findingGroupSortAction.setImageDescriptor(imgReg.getDescriptor(SORT_KEY2));
+        
+        // Column ordering action
+        preserveColumnOrderAction = new SaveColumnOrderAction(this, viewer);
+        preserveColumnOrderAction.setText("Preserve column order");
+        // Restore the column order
+        preserveColumnOrderAction.restore();
 
         // Not a Weakness
         notAWeaknessAction = new Action()
@@ -871,7 +951,6 @@ public class FindingView extends ViewPart
             }
         };
         notAWeaknessAction.setText("Not a Weakness");
-        //filterAction.setToolTipText("Filters...");
         notAWeaknessAction.setImageDescriptor(imgReg.getDescriptor(NOT_WEAKNESS_KEY));
 
 
@@ -885,7 +964,6 @@ public class FindingView extends ViewPart
             }
         };
         isAWeaknessAction.setText("Is a Weakness");
-        //filterAction.setToolTipText("Filters...");
         isAWeaknessAction.setImageDescriptor(imgReg.getDescriptor(IS_WEAKNESS_KEY));
 
 
@@ -899,7 +977,6 @@ public class FindingView extends ViewPart
             }
         };
         unciteWeaknessAction.setText("Uncite Weakness");
-        //filterAction.setToolTipText("Filters...");
         unciteWeaknessAction.setImageDescriptor(imgReg.getDescriptor(UNCITE_WEAKNESS_KEY));
 
 
@@ -929,7 +1006,6 @@ public class FindingView extends ViewPart
             }
         };
         setTrustLevelAction.setText("Set Trust Level");
-        //filterAction.setToolTipText("Filters...");
         setTrustLevelAction.setImageDescriptor(imgReg.getDescriptor(SET_TRUST_KEY));
 
 
@@ -942,7 +1018,6 @@ public class FindingView extends ViewPart
             }
         };
         traceAction.setText("Trace");
-        //filterAction.setToolTipText("Filters...");
         traceAction.setImageDescriptor(imgReg.getDescriptor(TRACE_KEY));
         // Disable trace since no tools support it yet.
         traceAction.setEnabled(false);
@@ -957,7 +1032,6 @@ public class FindingView extends ViewPart
             }
         };
         moreInformationAction.setText("More Information");
-        //filterAction.setToolTipText("Filters...");
         moreInformationAction.setImageDescriptor(imgReg.getDescriptor(MORE_INFO_KEY));
 
 
@@ -969,7 +1043,7 @@ public class FindingView extends ViewPart
             public void run()
             {
                 ISelection selection = viewer.getSelection();
-                FindingEntry finding = (FindingEntry)((IStructuredSelection)selection).getFirstElement();
+                IFindingEntry finding = (IFindingEntry)((IStructuredSelection)selection).getFirstElement();
                 IFile file = finding.getFile();
 
                 if(!file.exists() || file.getProjectRelativePath().toString().startsWith(".KDM/TOIF"))
@@ -1023,7 +1097,7 @@ public class FindingView extends ViewPart
 
             // Save the findings
             FindingContentProvider contents = (FindingContentProvider)viewer.getContentProvider();
-            FindingEntry[] findings = contents.getEntries();
+            FindingEntry[] findings = contents.getFindingEntries();
             FindingSelection selection = new FindingSelection(findings, true);
 
             selection.exportTsv(saveFile.getLocation().toFile());
@@ -1165,12 +1239,39 @@ public class FindingView extends ViewPart
                 }
 
                 // Indicate if there are any filters active
-                if(viewer.getFilters() == null || viewer.getFilters().length == 0)
-                {
+                // Check to see if ConfiguredVisibilityFilter has anything set
+                boolean hasEnabledFilter = false;
+                ViewerFilter[] filters = viewer.getFilters();
+                if (filters != null) {
+                  for (ViewerFilter filter : filters) {
+                    if (filter instanceof AndFilter) {
+                      // The "AndFilter" contains many child filters
+                      ViewerFilter[] children = ((AndFilter)filter).getFilters();
+                      for (ViewerFilter child : children) {
+                        // Check to see if ConfiguredVisibilityFilter has anything set
+                        if (child instanceof ConfiguredVisibilityFilter) {
+                          if(((ConfiguredVisibilityFilter)child).size() > 0) {
+                            hasEnabledFilter = true;
+                            break;
+                          }
+                        } else {
+                          hasEnabledFilter = true;
+                          break;
+                        }
+                      }
+                    } else {
+                      hasEnabledFilter = true;
+                    }
+                    // If there is already one enabled filter found, then that is enough
+                    if (hasEnabledFilter) {
+                      break;
+                    }
+                  }
+                }
+                if(!hasEnabledFilter) {
                     filterLabel.setText("");
                 }
-                else
-                {
+                else {
                     filterLabel.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_RED));
                     filterLabel.setText("(Filter(s) active)");
                 }
@@ -1216,9 +1317,23 @@ public class FindingView extends ViewPart
             @Override
             public void run()
             {
-                final int totalEntries = contentProvider.getEntries().length;
-                final int visibleEntries = viewer.getTable().getItemCount();
-
+//                final int totalEntries = contentProvider.getEntries().length;
+//                final int visibleEntries = viewer.getTree().getItemCount();
+                
+                final int totalEntries = contentProvider.getFindingEntries().length;
+                
+                // Count the children
+                int visibleEntries = 0;
+                TreeItem[] items = viewer.getTree().getItems();
+                for (TreeItem item : items) {
+                  Object object = item.getData();
+                  if (object instanceof FindingGroup) {
+                    visibleEntries += ((FindingGroup)object).size();
+                  } else {
+                    visibleEntries++;
+                  }
+                }
+                
                 setLabel("Number of Defects: " + visibleEntries + " (" + (totalEntries - visibleEntries) + " filtered from view)");
             }
         });

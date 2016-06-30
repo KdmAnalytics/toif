@@ -6,14 +6,19 @@
  * http://www.opensource.org/licenses/osl-3.0.php/
  ******************************************************************************/
 
-package com.kdmanalytics.toif.ui.views;
+package com.kdmanalytics.toif.ui.views.sort;
+
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * Provides column sorting.
@@ -23,7 +28,12 @@ import com.kdmanalytics.toif.ui.common.FindingEntry;
  * @author Ken Duck
  *        
  */
-public class FindingViewerComparator extends ViewerComparator {
+public class FindingViewColumnComparator extends ViewerComparator implements Comparator<IFindingEntry> {
+  
+  /**
+   * Required for getting column positions
+   */
+  private AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
   
   /** The column index. */
   private int columnIndex;
@@ -37,11 +47,23 @@ public class FindingViewerComparator extends ViewerComparator {
   private int direction = DESCENDING;
   
   /**
+   * Cache the index numbers for the extra columns
+   */
+  private List<Integer> extraColumnIndices = new LinkedList<Integer>();
+  
+  /**
    * Instantiates a new report viewer comparator.
    */
-  public FindingViewerComparator() {
+  public FindingViewColumnComparator() {
     this.columnIndex = 0;
     direction = ASCENDING;
+    
+    
+    String[] names = config.getExtraColumnNames();
+    for (String name : names) {
+      int index = config.getColumnIndex(name);
+      extraColumnIndices.add(index);
+    }
   }
   
   /**
@@ -78,15 +100,25 @@ public class FindingViewerComparator extends ViewerComparator {
    */
   @Override
   public int compare(Viewer viewer, Object e1, Object e2) {
-    int result = 0;
-    FindingEntry entry1 = (FindingEntry) e1;
-    FindingEntry entry2 = (FindingEntry) e2;
+    IFindingEntry entry1 = (IFindingEntry) e1;
+    IFindingEntry entry2 = (IFindingEntry) e2;
+    
+    return compare(entry1, entry2);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public int compare(IFindingEntry entry1, IFindingEntry entry2) {
+    Integer result = null;
     
     switch (columnIndex) {
       case 0: {
-        IFile file1 = entry1.getFile();
-        IFile file2 = entry2.getFile();
-        result = file1.getName().split(" ")[0].compareTo(file2.getName().split(" ")[0]);
+        String file1 = entry1.getFileName();
+        String file2 = entry2.getFileName();
+        result = file1.compareTo(file2);
         break;
       }
       case 1: {
@@ -116,8 +148,12 @@ public class FindingViewerComparator extends ViewerComparator {
         break;
       }
       case 3: {
+        // Remove old-style prefix
         String sfp1 = entry1.getSfp().replace("SFP-", "");
         String sfp2 = entry2.getSfp().replace("SFP-", "");
+        // Remove new-style prefix
+        sfp1 = sfp1.replace("SFP", "");
+        sfp2 = sfp2.replace("SFP", "");
         int sfp1Int = 0;
         int sfp2Int = 0;
         
@@ -137,9 +173,13 @@ public class FindingViewerComparator extends ViewerComparator {
         break;
       }
       case 4: {
+        // Remove old-style prefix
         String cwe1 = entry1.getCwe().replace("CWE-", "").trim();
         String cwe2 = entry2.getCwe().replace("CWE-", "").trim();
-        
+        // Remove new-style prefix
+        cwe1 = cwe1.replace("CWE", "");
+        cwe2 = cwe2.replace("CWE", "");
+
         int cwe1Int = 0;
         int cwe2Int = 0;
         try {
@@ -168,6 +208,37 @@ public class FindingViewerComparator extends ViewerComparator {
         String desc2 = entry2.getDescription();
         result = desc1.compareTo(desc2);
         break;
+      }
+      
+      // Remaining columns are defined by the config
+      default: {
+        int index = columnIndex - 7;
+        if (index < extraColumnIndices.size()) {
+          // Get the config index matching this column
+          index = extraColumnIndices.get(index);
+          String cwe1 = entry1.getCwe();
+          String value1 = (String)config.getCell(cwe1, index);
+          String cwe2 = entry2.getCwe();
+          String value2 = (String)config.getCell(cwe2, index);
+          
+          // Should we use numeric compare
+          try {
+            Long int1 = (Long.valueOf(value1));
+            Long int2 = (Long.valueOf(value2));
+            result = int1.compareTo(int2);
+          } catch (NumberFormatException e) {}
+          if (result == null) {
+            try {
+              Double d1 = (Double.valueOf(value1));
+              Double d2 = (Double.valueOf(value2));
+              result = d1.compareTo(d2);
+            } catch (NumberFormatException e) {}
+          }
+          if (result == null) {
+            result = value1.compareTo(value2);
+            break;
+          }
+        }
       }
     }
     

@@ -9,6 +9,8 @@
 package com.kdmanalytics.toif.ui.views;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -21,7 +23,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.PlatformUI;
 
 import com.kdmanalytics.toif.ui.Activator;
-import com.kdmanalytics.toif.ui.common.FindingEntry;
+import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
+import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
  * 
@@ -62,10 +65,26 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
   private static final String WRENCH_KEY = "wrench";
   
   /**
+   * Use the configuration to get extra column values
+   */
+  private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
+  
+  /**
+   * Cache the index numbers for the extra columns
+   */
+  private List<Integer> extraColumnIndices = new LinkedList<Integer>();
+
+  /**
    * 
    */
   public FindingStyledLabelProvider() {
     loadImagesIntoRegistry();
+    
+    String[] names = config.getExtraColumnNames();
+    for (String name : names) {
+      int index = config.getColumnIndex(name);
+      extraColumnIndices.add(index);
+    }
   }
   
   /**
@@ -102,7 +121,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    * @param colIndex
    * @return
    */
-  private String getColumnText(FindingEntry entry, int colIndex) {
+  private String getColumnText(IFindingEntry entry, int colIndex) {
     switch (colIndex) {
       case 0: {
         return entry.getFileName();
@@ -114,10 +133,18 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
         return entry.getTool();
       }
       case 3: {
-        return entry.getSfp();
+        String sfp = entry.getSfp();
+        if (sfp != null) {
+        return fixSfpCweIdentifier(sfp);
+        }
+        return null;
       }
       case 4: {
-        return entry.getCwe();
+        String cwe = entry.getCwe();
+        if (cwe != null) {
+          return fixSfpCweIdentifier(cwe);
+        }
+        return null;
       }
       case 5: {
         return Integer.toString(entry.getTrust());
@@ -125,10 +152,29 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       case 6: {
         return entry.getDescription();
       }
+      default: {
+        int index = colIndex - 7;
+        if (index < extraColumnIndices.size()) {
+          // Get the config index matching this column
+          index = extraColumnIndices.get(index);
+          String cwe = entry.getCwe();
+          String value = (String)config.getCell(cwe, index);
+          return value;
+        }
+      }
     }
     return null;
   }
   
+  /** CWE and SFP identifiers should not have single hyphens in them.
+   * 
+   * @param name
+   * @return
+   */
+  private String fixSfpCweIdentifier(String name) {
+    return name.replaceAll("([^-])-([^-])", "$1$2");
+  }
+
   /**
    * Gets the image.
    * 
@@ -136,7 +182,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    *          the element
    * @return the image
    */
-  public Image getImage(FindingEntry entry, int colIndex) {
+  public Image getImage(IFindingEntry entry, int colIndex) {
     final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
     
     switch (colIndex) {
@@ -176,8 +222,8 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    */
   @Override
   public String getToolTipText(Object element) {
-    if (element instanceof FindingEntry) {
-      FindingEntry entry = ((FindingEntry) element);
+    if (element instanceof IFindingEntry) {
+      IFindingEntry entry = ((IFindingEntry) element);
       return entry.getPath();
     }
     return null;
@@ -190,8 +236,13 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    * org.eclipse.jface.viewers.StyledCellLabelProvider#update(org.eclipse.jface.viewers.ViewerCell)
    */
   public void update(final ViewerCell cell) {
-    final FindingEntry entry = (FindingEntry) cell.getElement();
-    final StyledString styledString = new StyledString(getColumnText(entry, cell.getColumnIndex()));
+    final IFindingEntry entry = (IFindingEntry) cell.getElement();
+    int index = cell.getColumnIndex();
+    String text = getColumnText(entry, index);
+    if (text == null) {
+      text = "";
+    }
+    final StyledString styledString = new StyledString(text);
     
     Boolean citing = entry.getCiting();
     if (citing != null) {

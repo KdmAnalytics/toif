@@ -155,6 +155,7 @@ public class CoverageClaimGenerator {
       if (!claims.containsKey(cweIdString)) {
         Claim claim = objFactory.createCWECoverageClaimTypeClaimsClaim();
         String cweId = cweIdString.replace("CWE-", "");
+        cweId = cweIdString.replace("CWE", "");
         claim.setCWEID(cweId);
         // use this to set any additional comments.
         claim.setCWEClaimComments("");
