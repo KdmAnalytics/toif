@@ -1,5 +1,14 @@
+stage 'SCM Checkout'
 node {
-  git url: 'https://github.com/KdmAnalytics/toif.git'
+  checkout scm
+}
+stage 'Build'
+node {
   def mvnHome = tool 'M3'
-  sh "${mvnHome}/bin/mvn -B clean verify"
+  sh "${mvnHome}/bin/mvn -B clean package"
+}
+stage 'Test'
+node {
+  def mvnHome = tool 'M3'
+  sh "${mvnHome}/bin/mvn -B verify"
 }
