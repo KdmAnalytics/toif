@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TOIF Cppcheck
 Bundle-SymbolicName: com.kdmanalytics.toif.cppcheck;singleton:=true
-Bundle-Version: 2.3.0
+Bundle-Version: 2.3.1
 Bundle-Activator: com.kdmanalytics.toif.cppcheck.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.apache.xerces;bundle-version="[2.11.0,3.0.0)",
