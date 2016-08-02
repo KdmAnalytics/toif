@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="com.kdmanalytics.toif.convert.product" uid="com.kdmanalytics.toif.convert.product" id="com.kdmanalytics.toif.convert.CONVERT_RCP" application="com.kdmanalytics.toif.convert.application" version="2.3.0" useFeatures="true" includeLaunchers="true">
+<product name="com.kdmanalytics.toif.convert.product" uid="com.kdmanalytics.toif.convert.product" id="com.kdmanalytics.toif.convert.CONVERT_RCP" application="com.kdmanalytics.toif.convert.application" version="2.3.1" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
