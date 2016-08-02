@@ -19,5 +19,4 @@ mvn clean verify
 # Note
 
 Building Linux Blade TOIF OSS package on the Windows platform results in
-the permissions executables to be incorrectly set.  The workaround is to build
-Blade TOIF OSS on the Linux Platform or change permissions of executables within the Linux package using the chmod command.
+the permissions of executables to be incorrectly set.  The workaround is to build Blade TOIF OSS on the Linux Platform or change permissions of executables within the Linux package using the chmod command.
