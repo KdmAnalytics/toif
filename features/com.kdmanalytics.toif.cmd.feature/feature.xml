@@ -2,7 +2,7 @@
 <feature
       id="com.kdmanalytics.toif.cmd.feature"
       label="TOIF Cmd Feature"
-      version="2.3.0"
+      version="2.3.1"
       provider-name="KDM Analytics Inc">
 
    <description url="http://www.kdmanalytics.com">
