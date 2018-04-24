@@ -152,7 +152,7 @@ public class DirectToifInput extends AbstractAdaptor
     @Override
     public String getAdaptorVendorAddress()
     {
-        return "3730 Richmond Rd, Suite 204, Ottawa, ON K2H 5B9";
+        return "1956 Richmond Rd, Suite 204, Ottawa, ON K2H 5B9";
     }
     
     @Override
@@ -200,7 +200,7 @@ public class DirectToifInput extends AbstractAdaptor
     @Override
     public String getGeneratorVendorAddress()
     {
-        return "3730 Richmond Rd, Suite 204, Ottawa, ON K2H 5B9";
+        return "1956 Richmond Rd, Suite 204, Ottawa, ON K2H 5B9";
     }
     
     @Override

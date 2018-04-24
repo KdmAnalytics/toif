@@ -901,7 +901,8 @@ public class FindingView extends ViewPart
                                 // restrict to the active project?
                                 FindingContentProvider contents = (FindingContentProvider)viewer.getContentProvider();
                                 FindingEntry[] findings = contents.getFindingEntries();
-                                new CoverageClaimGenerator(findings, new File(savePath), false);
+                                CoverageClaimGenerator cc = new CoverageClaimGenerator(findings, new File(savePath), false);
+                               
                                 return Status.OK_STATUS;
                             }
                         }

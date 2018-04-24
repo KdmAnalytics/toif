@@ -1006,7 +1006,9 @@ public class ToolAdaptor
         {
             if (housekeepingFile != null)
             {
-                props.load(new FileInputStream(housekeepingFile));
+                istream = new FileInputStream(housekeepingFile);
+                props.load(istream);
+                istream.close();
             }
             else
             {
@@ -1191,7 +1193,16 @@ public class ToolAdaptor
              * marshal the segment (and its contained elements) to the output
              * xml.
              */
-            m.marshal(segment, new FileOutputStream(outFile));
+            FileOutputStream ostream = new FileOutputStream(outFile);
+            m.marshal(segment, ostream);
+            try
+            {
+                ostream.close();
+            }
+            catch (IOException e)
+            {
+               LOG.error( "Unable to close stream");
+            }
             
         }
         catch (final JAXBException e)

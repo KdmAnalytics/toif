@@ -369,29 +369,42 @@ public class FindbugsAdaptor extends AbstractAdaptor {
     }
     
     // parse the output
+    String result = "";
     try {
       InputStream in = startProcess(findbugs);
       
       BufferedReader br = new BufferedReader(new InputStreamReader(in));
       
       String strLine;
+     
       
-      while ((strLine = br.readLine()) != null) {
-        if (strLine.trim().equals(FINDBUGS_VERSION)) {
-          return strLine.trim() + " (+" + SECURITYPLUGIN_VERSION + ")";
-        } else {
-          // give a warning if the versions do not match.
-          System.err.println(getAdaptorName() + ": Generator " + strLine + " found, only version " + FINDBUGS_VERSION
-                             + " has been tested");
-          return strLine.trim();
-        }
-      }
-      
+		while ((strLine = br.readLine()) != null)
+			{
+			if (strLine.trim().equals(FINDBUGS_VERSION))
+				{
+	
+				result= strLine.trim() + " (+" + SECURITYPLUGIN_VERSION + ")";
+				break;
+				}
+			else
+				{
+				// give a warning if the versions do not match.
+				System.err.println(getAdaptorName() + ": Generator "
+						+ strLine + " found, only version "
+						+ FINDBUGS_VERSION + " has been tested");
+				result =  strLine.trim();
+				break;
+				}
+			}
+		
+		br.close();
+		in.close();
+
     } catch (Exception e) {
       System.err.println("Could not run program to gather generator version. " + e);
     }
     
-    return "";
+    return result;
   }
   
   /**

@@ -1,5 +1,5 @@
 
-package com.kdmanalytics.toif.rcp.internal.util;
+package com.kdmanalytics.toif.common;
 
 /*******************************************************************************
  * Copyright (c) 2013 KDM Analytics, Inc. All rights reserved. This program and
@@ -16,6 +16,11 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
 final public class BuildInformation {
   
   private Manifest manifest = null;
@@ -23,6 +28,9 @@ final public class BuildInformation {
   private Attributes attributes = null;
   
   private File jarFile = null;
+  
+  private static final Logger LOG = LoggerFactory.getLogger(BuildInformation.class);
+  
   
   public BuildInformation() {
   }
@@ -33,23 +41,43 @@ final public class BuildInformation {
     attributes = manifest.getMainAttributes();
   }
   
-  public BuildInformation(File jarFile) {
-    JarFile jar;
-    try {
-      jar = new JarFile(jarFile);
-      manifest = jar.getManifest();
-      
-      if (manifest != null) attributes = manifest.getMainAttributes();
-      
-      this.jarFile = jarFile;
-    } catch (MalformedURLException e) {
-      // Just skip
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-  
+	public BuildInformation(File jarFile)
+		{
+		JarFile jar = null;
+		try
+			{
+			jar = new JarFile(jarFile);
+			manifest = jar.getManifest();
+		
+
+			if (manifest != null)
+				attributes = manifest.getMainAttributes();
+
+			this.jarFile = jarFile;
+			}
+		catch (MalformedURLException e)
+			{
+			// Just skip
+			}
+		catch (IOException e)
+			{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+		finally
+			{
+			if (jar != null)
+				try
+					{
+					jar.close();
+					}
+				catch (IOException e)
+					{
+					LOG.error( "unable to close jar");
+					}
+			}
+		}
+
   public boolean isValid() {
     if (manifest == null) return false;
     else return true;

@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -106,6 +107,7 @@ public class RatsAdaptor extends AbstractAdaptor {
         return parser.getElements();
       }
       
+      inputStream.close();
       return new ArrayList<Element>();
     } catch (final SAXException e) {
       e.printStackTrace();
@@ -120,7 +122,7 @@ public class RatsAdaptor extends AbstractAdaptor {
   
   @Override
   public String getAdaptorVendorAddress() {
-    return "3730 Richmond Rd, Suite 204, Ottawa, ON, K2H 5B9";
+    return "1956 Richmond Rd, Suite 204, Ottawa, ON, K2H 5B9";
   }
   
   @Override
@@ -184,6 +186,11 @@ public class RatsAdaptor extends AbstractAdaptor {
                                 "rats", "-help"
     };
     ProcessBuilder rats = new ProcessBuilder(commands);
+    
+    // Force compatibility to Windows 7 so RATS behaves on Windows 10
+    Map<String, String> env = rats.environment();
+    env.put( "__COMPAT_LAYER", "WIN7RTM");
+    
     try {
       Process ratsInstance = rats.start();
       InputStream in = ratsInstance.getInputStream();
@@ -195,14 +202,16 @@ public class RatsAdaptor extends AbstractAdaptor {
       while ((strLine = br.readLine()) != null) {
         String[] stringArray = strLine.split(" ");
         if (stringArray[1].trim().equals("v2.3")) {
+          br.close();
           return stringArray[1].trim();
         } else {
           System.err.println(getAdaptorName() + ": Generator " + stringArray[1]
                              + " found, only version v2.3 has been tested");
+          br.close();
           return stringArray[1].trim();
         }
       }
-      
+    br.close();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
