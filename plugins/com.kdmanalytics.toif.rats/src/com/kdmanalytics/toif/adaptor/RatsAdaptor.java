@@ -189,7 +189,7 @@ public class RatsAdaptor extends AbstractAdaptor {
     
     // Force compatibility to Windows 7 so RATS behaves on Windows 10
     Map<String, String> env = rats.environment();
-    env.put( "__COMPAT_LAYER", "WINRTM");
+    env.put( "__COMPAT_LAYER", "WIN7RTM");
     
     try {
       Process ratsInstance = rats.start();
