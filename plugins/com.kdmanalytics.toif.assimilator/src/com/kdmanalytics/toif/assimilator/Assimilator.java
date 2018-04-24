@@ -1098,6 +1098,15 @@ public class Assimilator {
     
     final RepositoryMerger merger = new RepositoryMerger(mergeConfig, out, RepositoryMerger.NTRIPLES, assemblyName);
     
+    try
+		{
+		is.close();
+		}
+	catch (IOException e)
+		{
+		// just leave it
+		}
+    
     return merger;
   }
   
@@ -1256,6 +1265,9 @@ public class Assimilator {
       
       tempCon.commit();
       tempCon.clear();
+      
+      inputReader.close();
+      inputStream.close();
     }
     
     catch (ParserConfigurationException | SAXException ex) {
@@ -1551,7 +1563,7 @@ public class Assimilator {
       //System.err.println("processing kdm file...");
     }
     
-    PipedInputStream in = new PipedInputStream();
+    final PipedInputStream in = new PipedInputStream();
     final PipedOutputStream out = new PipedOutputStream(in);
     final ThreadStatus status = new ThreadStatus();
     
@@ -1593,19 +1605,23 @@ public class Assimilator {
           LOG.error(msg, e);
           status.exception = new ToifException(msg, e);
         } catch (ToifException e) {
-          // RJF final String msg =
-          // "Processing Exception whilst processing kdm file. "
-          // + ". Possibly that input file is invalid XML!";
-          
-          // LOG.error(msg, e);
+         
           status.exception = e;
-        } finally {
-          if (out != null) try {
-            out.close();
-          } catch (IOException e) {
-            // Just leave it alone
-            LOG.error("unable to close stream");
-          }
+					}
+			finally
+				{
+				if (out != null)
+					try
+						{
+						out.close();
+						}
+					catch (IOException e)
+						{
+						// Just leave it alone
+						LOG.error("unable to close ostream");
+						}
+				
+				
         }
       }
     });
@@ -1629,17 +1645,28 @@ public class Assimilator {
     streamStatementsToRepo(in);
     try {
       t.join();
+      in.close();
       
-      // Check if we enoutered exception during processing and
+      // Check if we have exception during processing and
       // proxy throw if we have one
       if (status.exception != null) {
         // Leave alone if already a ToifException
-        if (status.exception instanceof ToifException) throw (ToifException) status.exception;
-        else throw new ToifException(status.exception);
+        if (status.exception instanceof ToifException) 
+        	throw (ToifException) status.exception;
+        else 
+        	throw new ToifException(status.exception);
         
       }
     } catch (InterruptedException e) {
       LOG.error("Interrupted");
+      try
+    	  {
+          in.close();
+    	  }
+      catch( Exception ex)
+    	  {
+    	  // Just skip it
+    	  }
       throw new ToifException("Interrupted");
     }
   }
@@ -1740,6 +1767,7 @@ public class Assimilator {
     
     PrintWriter w = new PrintWriter(toifOut);
     final ToifMerger toifMerger = getToifMerger(w, id, smallestBigNumber2, blacklistPath);
+    w.close();
     new Thread(new Runnable() {
       
       
@@ -1758,6 +1786,7 @@ public class Assimilator {
     }).start();
     
     streamStatementsToRepo(toifIn);
+    toifIn.close();
   }
   
   /**

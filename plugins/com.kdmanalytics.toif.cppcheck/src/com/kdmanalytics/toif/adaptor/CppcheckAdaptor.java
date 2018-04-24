@@ -82,7 +82,7 @@ public class CppcheckAdaptor extends AbstractAdaptor implements INiceable {
   public ArrayList<Element> parse(java.io.File process, AdaptorOptions options, IFileResolver resolver,
                                   boolean[] validLines, boolean unknownCWE) {
     com.kdmanalytics.toif.framework.xmlElements.entities.File file = resolver.getDefaultFile();
-    InputStream inputStream;
+    InputStream inputStream = null;
     try {
       String path = process.getAbsolutePath();
       path = path.replace(".cppcheck", "-err.cppcheck");
@@ -110,6 +110,8 @@ public class CppcheckAdaptor extends AbstractAdaptor implements INiceable {
       rdr.setContentHandler(parser);
       rdr.parse(fileerr.toURI().toURL().toString());
       
+      inputStream.close();
+      inputStream = null;
       return parser.getElements();
       
     } catch (final SAXException e) {
@@ -119,7 +121,21 @@ public class CppcheckAdaptor extends AbstractAdaptor implements INiceable {
     } catch (final InterruptedException e) {
       System.err.println(getAdaptorName() + ": Error parsing file.");
     }
+    finally
+    {
+    if (inputStream != null)
+		try
+			{
+			inputStream.close();
+			}
+		catch (IOException e)
+			{
+		    // Just leave it
+			}
+    }
     
+   
+   
     return null;
   }
   
@@ -253,15 +269,18 @@ public class CppcheckAdaptor extends AbstractAdaptor implements INiceable {
       while ((strLine = br.readLine()) != null) {
         String[] stringArray = strLine.split(" ");
         if (stringArray[1].trim().equals("1.60")) {
+          br.close();
           return stringArray[1].trim();
         } else {
           // give a warning that a different version was found.
           System.err.println(getAdaptorName() + ": Generator " + stringArray[1]
                              + " found, only version 1.60 has been tested");
+          br.close();
           return stringArray[1].trim();
         }
       }
-      
+     
+    br.close();
     } catch (IOException e) {
       e.printStackTrace();
     }

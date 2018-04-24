@@ -106,6 +106,7 @@ public class RatsAdaptor extends AbstractAdaptor {
         return parser.getElements();
       }
       
+      inputStream.close();
       return new ArrayList<Element>();
     } catch (final SAXException e) {
       e.printStackTrace();
@@ -195,14 +196,16 @@ public class RatsAdaptor extends AbstractAdaptor {
       while ((strLine = br.readLine()) != null) {
         String[] stringArray = strLine.split(" ");
         if (stringArray[1].trim().equals("v2.3")) {
+          br.close();
           return stringArray[1].trim();
         } else {
           System.err.println(getAdaptorName() + ": Generator " + stringArray[1]
                              + " found, only version v2.3 has been tested");
+          br.close();
           return stringArray[1].trim();
         }
       }
-      
+    br.close();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

@@ -1,6 +1,7 @@
 
 package com.kdmanalytics.toif.rcp.internal.cmd;
 
+import com.kdmanalytics.toif.common.BuildInformation;
 /*******************************************************************************
  * Copyright (c) 2013 KDM Analytics, Inc. All rights reserved. This program and
  * the accompanying materials are made available under the terms of the Open
@@ -12,7 +13,7 @@ import com.kdmanalytics.toif.framework.toolAdaptor.AbstractAdaptor;
 import com.kdmanalytics.toif.framework.toolAdaptor.ToolAdaptorUtil;
 import com.kdmanalytics.toif.rcp.internal.IToifCmd;
 import com.kdmanalytics.toif.rcp.internal.ToifCli;
-import com.kdmanalytics.toif.rcp.internal.util.BuildInformation;
+
 import com.kdmanalytics.toif.rcp.internal.util.CommonUtil;
 
 public class VersionCmd implements IToifCmd {

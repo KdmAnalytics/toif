@@ -481,10 +481,23 @@ public class CoverageClaimGenerator {
       
       writer.flush();
       writer.close();
+      writer = null;
       
     } catch (IOException e) {
       System.err.println("There was an exit whilst writing to the TSV file.");
       System.exit(1);
+    }
+    finally
+    {
+    if (writer != null)
+		try
+			{
+			writer.close();
+			}
+		catch (IOException e)
+			{
+			// Just leave it
+			}
     }
     
   }

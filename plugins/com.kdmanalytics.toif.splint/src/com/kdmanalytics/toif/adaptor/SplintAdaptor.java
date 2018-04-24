@@ -391,14 +391,17 @@ public class SplintAdaptor extends AbstractAdaptor {
         String[] stringArray = strLine.split(" ");
         
         if (stringArray[1].trim().equals("3.1.2")) {
+          br.close();
           return stringArray[1].trim();
         } else {
           System.err.println(getAdaptorName() + ": Generator " + stringArray[1]
                              + " found, only version 3.1.2 has been tested");
+          br.close();
           return stringArray[1].trim();
         }
       }
-      
+     
+    br.close();
     } catch (IOException e) {
       e.printStackTrace();
     }

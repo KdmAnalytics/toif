@@ -5,7 +5,9 @@ Bundle-SymbolicName: com.kdmanalytics.toif.common;singleton:=true
 Bundle-Version: 2.3.1
 Bundle-Activator: com.kdmanalytics.toif.common.Activator
 Bundle-Vendor: KDM Analytics Inc
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.slf4j.api;bundle-version="1.7.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: com.kdmanalytics.toif.common.exception
+Export-Package: com.kdmanalytics.toif.common,
+ com.kdmanalytics.toif.common.exception
