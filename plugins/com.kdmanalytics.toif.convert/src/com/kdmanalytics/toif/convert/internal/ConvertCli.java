@@ -10,7 +10,6 @@ package com.kdmanalytics.toif.convert.internal;
  ******************************************************************************/
 
 import java.io.File;
-import java.util.Set;
 
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;

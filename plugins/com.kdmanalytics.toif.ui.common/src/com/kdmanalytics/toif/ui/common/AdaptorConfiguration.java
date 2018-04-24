@@ -118,9 +118,9 @@ public class AdaptorConfiguration {
   
   private int COLUMN_FINDBUGS = 7;
   
-  private int COLUMN_COUNT_C = 8;
-  
-  private int COLUMN_COUNT_JAVA = 9;
+//  private int COLUMN_COUNT_C = 8;
+//  
+//  private int COLUMN_COUNT_JAVA = 9;
   
   private static AdaptorConfiguration instance;
   
@@ -492,17 +492,17 @@ public class AdaptorConfiguration {
       else if (COLUMN_FINDBUGS_STRING.equalsIgnoreCase(text)) COLUMN_FINDBUGS = i;
       
       else if (COLUMN_COUNT_C_STRING1.equalsIgnoreCase(text)) {
-        COLUMN_COUNT_C = i;
+//        COLUMN_COUNT_C = i;
         // Convert to new name
         text = COLUMN_COUNT_C_STRING2;
       }
       else if (COLUMN_COUNT_JAVA_STRING1.equalsIgnoreCase(text)) {
-        COLUMN_COUNT_JAVA = i;
+//        COLUMN_COUNT_JAVA = i;
         // Convert to new name
         text = COLUMN_COUNT_JAVA_STRING2;
       }
-      else if (COLUMN_COUNT_C_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
-      else if (COLUMN_COUNT_JAVA_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
+//      else if (COLUMN_COUNT_C_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_C = i;
+//      else if (COLUMN_COUNT_JAVA_STRING2.equalsIgnoreCase(text)) COLUMN_COUNT_JAVA = i;
       else {
         extraColumns.add(text);
       }

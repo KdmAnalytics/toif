@@ -551,7 +551,7 @@ public class RepositoryMerger {
           
           // Only print ActionElement names if required
           if (((format & ACTION_ELEMENT_NAMES) == 0) && KdmPredicate.NAME.toString().equals(predicateName)
-              && KdmConstants.KdmType.ACTION_ELEMENT.toString().equals(type)) {
+              && KdmConstants.KdmType.ACTION_ELEMENT.toString().equals(type.toString())) {
             continue;
           }
           

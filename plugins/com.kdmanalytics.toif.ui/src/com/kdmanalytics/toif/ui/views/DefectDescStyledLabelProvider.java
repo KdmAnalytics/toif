@@ -31,16 +31,16 @@ class DefectDescStyledLabelProvider extends StyledCellLabelProvider {
    */
   private static final Color FOREGROUND_BLUE = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(6, 69, 173));
   
-  /**
-   * 
-   */
-  private TreeViewer viewer;
+//  /**
+//   * 
+//   */
+//  private TreeViewer viewer;
   
   /**
    * 
    */
   public DefectDescStyledLabelProvider(TreeViewer viewer) {
-    this.viewer = viewer;
+//    this.viewer = viewer;
   }
   
   /**

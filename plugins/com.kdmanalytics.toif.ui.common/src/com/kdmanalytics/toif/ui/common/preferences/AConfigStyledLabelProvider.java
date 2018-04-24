@@ -21,13 +21,13 @@ public class AConfigStyledLabelProvider extends StyledCellLabelProvider {
   /**
    * Config file, used for figuring out which column is which
    */
-  private AdaptorConfiguration config;
+//  private AdaptorConfiguration config;
   
   private int cweIndex;
   private int sfpIndex;
   
   public AConfigStyledLabelProvider(AdaptorConfiguration config) {
-    this.config = config;
+//    this.config = config;
     
     sfpIndex = config.getSfpColumnIndex();
     cweIndex = config.getCweColumnIndex();

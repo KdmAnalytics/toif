@@ -15,8 +15,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.kdmanalytics.toif.ui.common.FindingEntry;
-import com.kdmanalytics.toif.ui.common.FindingGroup;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 
 /**
