@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -185,6 +186,11 @@ public class RatsAdaptor extends AbstractAdaptor {
                                 "rats", "-help"
     };
     ProcessBuilder rats = new ProcessBuilder(commands);
+    
+    // Force compatibility to Windows 7 so RATS behaves on Windows 10
+    Map<String, String> env = rats.environment();
+    env.put( "__COMPAT_LAYER", "WINRTM");
+    
     try {
       Process ratsInstance = rats.start();
       InputStream in = ratsInstance.getInputStream();
