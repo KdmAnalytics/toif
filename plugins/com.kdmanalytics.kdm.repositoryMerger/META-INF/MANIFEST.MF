@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Repository Merger
 Bundle-SymbolicName: com.kdmanalytics.kdm.repositoryMerger
-Bundle-Version: 2.3.1
+Bundle-Version: 2.4.0.qualifier
 Bundle-Activator: com.kdmanalytics.kdm.repositoryMerger.Activator
 Bundle-Vendor: KDM Analytics Inc.
 Require-Bundle: org.slf4j.api,
