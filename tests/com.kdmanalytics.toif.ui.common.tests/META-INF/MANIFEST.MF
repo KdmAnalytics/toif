@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TOIF Common UI Tests
+Bundle-SymbolicName: com.kdmanalytics.toif.ui.common.tests
+Bundle-Version: 2.4.0.qualifier
+Bundle-Vendor: KDM Analytics Inc.
+Fragment-Host: com.kdmanalytics.toif.ui.common;bundle-version="2.4.0"
+Automatic-Module-Name: com.kdmanalytics.toif.ui.common.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: com.kdmanalytics.toif.ui.common
+Require-Bundle: org.junit;bundle-version="4.11.0"

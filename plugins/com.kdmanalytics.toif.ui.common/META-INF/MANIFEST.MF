@@ -9,9 +9,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="[3.8.1,4.0.0)",
  org.eclipse.ui.editors,
- org.apache.commons.csv;bundle-version="1.2.0",
- org.junit;bundle-version="4.11.0"
+ org.apache.commons.csv;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.kdmanalytics.toif.nature,
  com.kdmanalytics.toif.ui.common
+Automatic-Module-Name: com.kdmanalytics.toif.ui.common
