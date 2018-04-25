@@ -69,7 +69,7 @@ public class FindingGroupComparator extends ViewerComparator implements Comparat
 
     // To ensure "MULTIPULE" at top of table
     String tool1 = entry1.getTool();
-    System.err.println( "tool1="+ tool1 + " entry=" + entry1);
+ 
     if ( tool1 == null ||tool1.equals("MULTIPLE"))
             tool1 = "0MULTIPLE";
 
