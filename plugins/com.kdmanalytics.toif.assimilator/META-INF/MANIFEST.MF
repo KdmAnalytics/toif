@@ -23,3 +23,4 @@ Export-Package: com.kdmanalytics.toif.assimilator; uses:="com.kdmanaly
  g,com.kdmanalytics.toif.assimilator.exceptions,com.kdmanalytics.toif.
  assimilator.toifRdfTypes;uses:="org.w3c.dom,org.openrdf.model",com.kd
  manalytics.toif.mergers;uses:="org.openrdf.model,org.w3c.dom"
+Automatic-Module-Name: com.kdmanalytics.toif.assimilator

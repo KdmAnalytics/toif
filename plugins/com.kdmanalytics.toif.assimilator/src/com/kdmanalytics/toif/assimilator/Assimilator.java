@@ -81,11 +81,11 @@ import com.kdmanalytics.toif.mergers.ToifMerger;
  * 
  */
 public class Assimilator {
-  
+
   public static void debug(Logger logger, String message) {
     logger.debug(message);
   }
-  
+
   static public void deleteDirectory(File path) {
     if (path.exists()) {
       File[] files = path.listFiles();
@@ -99,7 +99,7 @@ public class Assimilator {
     }
     return;
   }
-  
+
   /**
    * Entry point for the assimilator. Takes an array of strings. These are the repository options -r
    * <repository location>, and the unparsed options (files) that need to be assimilated.
@@ -115,100 +115,101 @@ public class Assimilator {
    *          /** do we continue if exceptions are found.
    */
   private final boolean force = true;
-  
+
   /**
    * KDM name space
    */
   private static final String KDM_NS_HOST = "http://org.omg.kdm/";
-  
+
   /**
    * the logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(Assimilator.class);
+
   /**
    * the model namespace.
    */
   private static final String MODEL_NS = "http://kdmanalytics.com/";
-  
+
   /**
    * tkdm extension
    */
   private static final String TKDM_EXTENSION = ".tkdm";
-  
+
   /**
    * kdmo file extension.
    */
   private static final String KDMO_EXTENSION = ".kdmo";
-  
+
   /**
    * The kdm extension for the kdm xml file.
    */
   private static final String KDM_EXTENSION = ".kdm";
-  
+
   /**
    * The kdm extension for the kdm keep file.
    */
   private static final String KDM_KEEP_EXTENSION = ".keep";
-  
+
   /**
    * toif extension.
    */
   private static final String TOIF_EXTENSION = ".toif.xml";
-  
+
   private static final boolean debug = false;
-  
+
   /**
    * the main repository for this assimilation. This repository contains both the tkdm and the toif
    * data together.
    */
   private Repository repository;
-  
+
   private RepositoryConnection con;
-  
+
   private ValueFactory factory;
-  
+
   /**
    * A map of all the known sourcefiles for this project.
    */
   private final Map<String, Resource> sourceFiles;
-  
+
   private File outputLocation = null;
-  
+
   private Long offset;
-  
+
   private Long nextId = 0L;
-  
+
   private Long smallestBigNumber = Long.MAX_VALUE;
-  
+
   private Set<Statement> toifPaths = new HashSet<Statement>();
-  
+
   private HashMap<String, Statement> lineNumbers = new HashMap<String, Statement>();
-  
+
   private Map<String, Statement> sourceRefStatements = new HashMap<String, Statement>();
-  
+
   private Map<String, String> kdmContains = new HashMap<String, String>();
-  
+
   /**
    * the repository option. -r, -m, or -k. [R]epository output, repository [M]igration, and [K]DM
    * ouput respectively.
    */
   private String rOption;
-  
+
   private ZipOutputStream zos;
-  
+
   private PrintWriter writer = null;
-  
+
   private boolean createZip = false;
-  
+
   // private FileOutputStream fos;
-  
+
   /**
    * constructor for the assimilator.
    */
   public Assimilator() {
     sourceFiles = new HashMap<>();
   }
-  
+
   /**
    * @param createZip2
    */
@@ -216,7 +217,7 @@ public class Assimilator {
     this.createZip = createZip;
     sourceFiles = new HashMap<>();
   }
-  
+
   /**
    * 
    * @param statement
@@ -228,9 +229,9 @@ public class Assimilator {
     } else if (repository != null) {
       addToRepository(statement);
     }
-    
+
   }
-  
+
   /**
    * add the statement to the specified kdm file. this is instead of adding to the repository.
    * 
@@ -246,18 +247,18 @@ public class Assimilator {
       subjectString = subjectString.replace("http://kdmanalytics.com/", "");
       subjectString = subjectString.replace("http://toif/", "");
     }
-    
+
     writer.write("<" + subjectString + "> ");
-    
+
     URI predicate = statement.getPredicate();
     String predicateString = predicate.toString();
     if ("-m".equals(rOption)) {
       predicateString = predicateString.replace("http://org.omg.kdm/", "");
       predicateString = predicateString.replace("http://toif/", "");
     }
-    
+
     writer.write("<" + predicateString + "> ");
-    
+
     String object = statement.getObject().toString();
     if ("-m".equals(rOption)) {
       object = object.replace("http://kdmanalytics.com/", "");
@@ -269,9 +270,9 @@ public class Assimilator {
     writer.write(object + " ");
     writer.write(" .\n");
     writer.flush();
-    
+
   }
-  
+
   /**
    * Ultimately add the statement to the repository. However, if the statement is a codeLocation
    * then try to bind it to the source-ref in the kdm model. The binding will look like this:
@@ -292,15 +293,15 @@ public class Assimilator {
     if (con == null) {
       con = repository.getConnection();
     }
-    
+
     if (debug) {
       LOG.debug("repository: " + con.getRepository());
-//      System.err.println("repository: " + con.getRepository());
+      // System.err.println("repository: " + con.getRepository());
     }
-    
+
     con.add(statement, (Resource) null);
   }
-  
+
   /**
    * main entry point mainly to aid in testing. tytpial use would be via the RPC.
    * 
@@ -312,12 +313,12 @@ public class Assimilator {
       ass.assimilate(args);
     } catch (Exception e) {
       LOG.error("running in stand alone context exception occured.", e);
-//      System.err.println("running in stand alone context, exception occured.");
-//      e.printStackTrace();
+      // System.err.println("running in stand alone context, exception occured.");
+      // e.printStackTrace();
     }
-    
+
   }
-  
+
   /**
    * Assimilate the files into one repository.
    * 
@@ -334,34 +335,34 @@ public class Assimilator {
     consoleOutput("Running, this may take some time...");
     try {
       outputLocation = getOutputLocation(args);
-      
+
       // get the tkdm files and the toif files.
       final List<File> kdmFiles = getFiles(args, KDM_EXTENSION, KDM_KEEP_EXTENSION);
       final List<File> tkdmFiles = getFiles(args, TKDM_EXTENSION, KDMO_EXTENSION);
       final List<File> toifFiles = getFiles(args, TOIF_EXTENSION);
-      
+
       repository = createRepository(outputLocation);
-      
+
       if (createZip) {
         createZipWriter();
       } else {
         createFileWriter();
       }
-      
+
       if ("-m".equals(rOption)) {
-        
+
         if (!kdmFiles.isEmpty()) {
           InputStream is = new FileInputStream(kdmFiles.get(0));
-          
+
           byte buf[] = new byte[1000];
           int count = is.read(buf);
           is.close();
-          
+
           // If the file is empty, handle it special
           if (count <= 0) {
             return false;
           }
-          
+
           // If it is a zip importer there is further processing that
           // is done on the return to determine what type of data
           // is contained within the zip file.
@@ -373,38 +374,38 @@ public class Assimilator {
         } else {
           LOG.error("There are no input kdm files");
         }
-        
+
       }
-      
+
       if (debug) {
         LOG.debug("repository is: " + repository);
       }
-      
+
       // if the migrate option has not been set. (future functionality)
       if (!"-m".equals(rOption)) {
         // get the kdm file this writes directly to the repository.
         processkdm(kdmFiles);
-        
+
         /*
          * run the tkdm merger and pipe its output to the writeStatementLine() method.
          */
         final RepositoryMerger kdmMerger = processTkdmFiles(tkdmFiles);
         setNextId(kdmMerger.getId());
-        
+
       } else {
-        
+
       }
-      
+
       String blacklistPath = getBlackListPath(args);
-      
+
       /*
        * run the toif merger and pipe its output to the writeStatementLine() method.
        */
       nextId++;
       processToifFiles(toifFiles, nextId, smallestBigNumber, blacklistPath);
-      
+
       compareLocations();
-      
+
     } catch (final AssimilatorArgumentException e) {
       final String msg = "Bad argument:";
       LOG.error("Bad argument: " + e.getMessage());
@@ -417,7 +418,7 @@ public class Assimilator {
      */
     finally {
       try {
-        
+
         con.close();
         repository.shutDown();
         if (writer != null) {
@@ -427,12 +428,12 @@ public class Assimilator {
       } catch (RepositoryException e) {
         LOG.error("There was a problem closing the connection to the repository. ", e);
       }
-      
+
       consoleOutput("Complete.");
     }
     return true;
   }
-  
+
   /**
    * process the kdm files. decides if its xml or triples.
    * 
@@ -443,9 +444,9 @@ public class Assimilator {
     if (kdmFiles.size() == 0) {
       return;
     }
-    
+
     File kdmFile = kdmFiles.get(0);
-    
+
     FileInputStream is = null;
     DataInputStream din = null;
     BufferedReader br = null;
@@ -453,9 +454,9 @@ public class Assimilator {
       is = new FileInputStream(kdmFile);
       din = new DataInputStream(is);
       br = new BufferedReader(new InputStreamReader(din));
-      
+
       String firstLine = br.readLine();
-      
+
       if (firstLine.isEmpty()) {
         return;
       } else if (firstLine.startsWith("<?xml")) {
@@ -463,7 +464,7 @@ public class Assimilator {
       } else {
         processKdmFile(kdmFiles);
       }
-      
+
     } catch (FileNotFoundException e) {
       LOG.error("kdm file not found");
       return;
@@ -476,19 +477,19 @@ public class Assimilator {
     } finally {
       try {
         if (br != null) br.close();
-        
+
         if (din != null) din.close();
-        
+
         if (is != null) is.close();
-        
+
       } catch (IOException e) {
         LOG.error("Unable to close stream: ", e);
       }
-      
+
     }
-    
+
   }
-  
+
   /**
    * @param kdmFiles
    * @throws ToifException
@@ -513,12 +514,12 @@ public class Assimilator {
           fis.close();
         }
       } catch (IOException e) {
-        //Ignore
+        // Ignore
       }
     }
-    
+
   }
-  
+
   /**
    * 
    */
@@ -529,21 +530,21 @@ public class Assimilator {
       LOG.error("The file " + outputLocation + " has not been found.");
     }
   }
-  
+
   private void consoleOutputUpdate(String consoleOutput) {
     System.out.print(consoleOutput + "\r");
     if (LOG.isDebugEnabled()) {
       LOG.debug(consoleOutput);
     }
   }
-  
+
   private void consoleOutput(String consoleOutput) {
     System.out.println(consoleOutput);
     if (LOG.isDebugEnabled()) {
       LOG.debug(consoleOutput);
     }
   }
-  
+
   /**
    * try to find matching locations in the toif and the kdm namespaces.
    * 
@@ -553,7 +554,7 @@ public class Assimilator {
    */
   private boolean compareLocations() throws RepositoryException {
     HashMap<String, Resource> bestFitMap = new HashMap<>();
-    
+
     int statements = 0;
     Map<Resource, FilePathTrie> tries = new HashMap<>();
     // for all the toif statements that are a path
@@ -567,45 +568,44 @@ public class Assimilator {
 
       float fraction = 100f / toifPaths.size();
       int percent = (int) Math.floor(fraction * statements);
-      
+
       consoleOutputUpdate("Assimilating TOIF and KDM Locations... " + percent + "%");
-      
+
       // given a toif statement
       Resource kdmResourceFile = findBestFitSourceFile(tries, toifStatement);
-      
+
       if (kdmResourceFile == null) {
         continue;
       }
-      
+
       int reductionAmount = 0;
-      
+
       while (bestFitResource == null) {
         // we tried, dont want an endless loop.
         if (reductionAmount == 100) {
           findBestKdmElementForToifStatement(toifStatement, kdmResourceFile, reductionAmount, true);
           break;
         }
-        
+
         bestFitResource = findBestKdmElementForToifStatement(toifStatement, kdmResourceFile, reductionAmount, false);
-        
-        
+
         reductionAmount++;
       }
-      
+
       if (bestFitResource == null) {
         bestFitResource = kdmResourceFile;
       }
-      
+
       Resource toifSubject = toifStatement.getSubject();
       createCommonNode(toifSubject, bestFitResource);
-      
+
     }
     consoleOutput("");
-    
+
     return false;
-    
+
   }
-  
+
   /**
    * create the common node which is a blank node. this is doubly linked to both the kdm blockunit
    * and the toif code location.
@@ -615,25 +615,25 @@ public class Assimilator {
    * @throws RepositoryException
    */
   private void createCommonNode(Resource toifSubject, Resource blockUnit) throws RepositoryException {
-    
+
     URI bnodeURI = factory.createURI("http://toif/", (offset++).toString());
     Literal typeLiteral = factory.createLiteral("CommonNode");
-    
+
     // create the blank common node.
     addStatement(new StatementImpl(bnodeURI, factory.createURI(KDM_NS_HOST + "Type"), typeLiteral));
-    
+
     // link the toif to it
     addStatement(new StatementImpl(toifSubject, factory.createURI(KDM_NS_HOST + "CommonView"), bnodeURI));
     // link the toif from it.
     addStatement(new StatementImpl(bnodeURI, factory.createURI(KDM_NS_HOST + "ToifView"), toifSubject));
-    
+
     // link the kdm to it
     addStatement(new StatementImpl(blockUnit, factory.createURI(KDM_NS_HOST + "CommonView"), bnodeURI));
     // link the kdm from it.
     addStatement(new StatementImpl(bnodeURI, factory.createURI(KDM_NS_HOST + "KdmView"), blockUnit));
-    
+
   }
-  
+
   /**
    * create the disk repository which the files will be merged into.
    * 
@@ -653,9 +653,9 @@ public class Assimilator {
       } catch (Exception e) {
         LOG.error("Exception: ", e);
       }
-      
+
     }
-    
+
     try {
       // initialize the repository.
       if (repository == null) {
@@ -663,19 +663,19 @@ public class Assimilator {
       }
       repository.initialize();
       Assimilator.debug(LOG, "Repository initialized in " + repositoryLocation.getAbsolutePath());
-      
+
       con = repository.getConnection();
       // con.clear((Resource)null);
       factory = repository.getValueFactory();
     } catch (final RepositoryException e) {
       LOG.error("Repository could not be initialized. ", e);
-//      e.printStackTrace();
+      // e.printStackTrace();
     }
-    
+
     // return the repository.
     return repository;
   }
-  
+
   /**
    * addToFile
    * 
@@ -688,19 +688,14 @@ public class Assimilator {
       ZipEntry ze = new ZipEntry(outputLocation.getName());
       zos.putNextEntry(ze);
       writer = new PrintWriter(new OutputStreamWriter(zos));
-      
+
     } catch (FileNotFoundException e) {
       LOG.error("The file " + outputLocation + " has not been found.", e);
-//      System.err.println("The file " + outputLocation + " has not been found.");
-//      e.printStackTrace();
     } catch (IOException e) {
       LOG.error("There has been a IO exception while creating the zip file.", e);
-//      
-//      System.err.println("There has been a IO exception while creating the zip file.");
-//      e.printStackTrace();
     }
   }
-  
+
   /**
    * get the value of the object.
    * 
@@ -709,11 +704,13 @@ public class Assimilator {
    * @return the value of the object.
    */
   private Value determineObjectValue(String[] elements) {
-    
+
     Value object = null;
-    
-    if (elements.length < 2) return object;
-    
+
+    if (elements.length < 2) {
+      return object;
+    }
+
     try {
       String objectString = trimForStatement(elements[2]);
       if (elements[2].startsWith("<")) {
@@ -725,13 +722,13 @@ public class Assimilator {
         object = factory.createLiteral(objectString);
       }
     } catch (ArrayIndexOutOfBoundsException e) {
-      System.err.println("index out of bouds " + e);
-      System.err.println(elements);
+      LOG.error("index out of bounds " + e);
+      LOG.error("Elements" + elements);
     }
-    
+
     return object;
   }
-  
+
   /**
    * Creates a trie (note: trie not tree) of all the known source files. The toif path is matched
    * against the tries. the tries return the longest path that they can for each kdm resource, the
@@ -747,51 +744,51 @@ public class Assimilator {
   private Resource findBestFitSourceFile(Map<Resource, FilePathTrie> tries, final Statement st) {
     Resource bestFit = null;
     int bestFitCount = 0;
-    
+
     // get the OBJECT string value
     String toifPath = st.getObject().stringValue();
-    
+
     // get rid of quotes and make a list.
     toifPath = toifPath.replace("\"", "");
     List<String> toifPathArray = Arrays.asList(toifPath.replace("\\", "/").split("/"));
-    
+
     // we need the path array starting with the file.
     Collections.reverse(toifPathArray);
-    
+
     // get the toif file name. which is the first element now.
     String toifFileName = toifPathArray.get(0);
     toifPathArray.set(0, getSourceFile(toifFileName));
-    
+
     // work with all the kdm entries in the sourcefiles, reverse their
     // contents and create a mapping of the file as key and the Trie as
     // the value. Basically making the trie for each source file.
     for (String kdmPath : sourceFiles.keySet()) {
-      
+
       // reverse the kdm path so that it starts with the file.
       List<String> kdmPathArray = Arrays.asList(kdmPath.replace("\\", "/").split("/"));
       Collections.reverse(kdmPathArray);
-      
+
       // there should be something in the path!!!
       if (kdmPathArray.isEmpty()) {
         continue;
       }
-      
+
       // the filename.
       String kdmFileName = kdmPathArray.get(0);
       Node currentKdmNode = null;
-      
+
       // get the kdm resource based on its path.
       Resource kdmResource = sourceFiles.get(kdmPath);
-      
+
       // if the filename doesn't exist, create a new trie for it.
       if (!tries.containsKey(kdmResource)) {
         FilePathTrie filePathTrie = new FilePathTrie(kdmFileName);
         tries.put(kdmResource, filePathTrie);
       }
-      
+
       // set the node as the sourcefile we are working with.
       currentKdmNode = tries.get(kdmResource).getFile();
-      
+
       // for all the directories in this sourcefile's path, add them to
       // the trie.
       for (int i = 1; i < kdmPathArray.size(); i++) {
@@ -802,12 +799,12 @@ public class Assimilator {
         currentKdmNode = trie.addParentDirectory(currentKdmNode, kdmPathArray.get(i));
       }
     }
-    
+
     for (Resource file : tries.keySet()) {
       FilePathTrie trie = tries.get(file);
       // get the longest kdm path that we can find from the tries.
       List<String> path = trie.getBestPath(toifPathArray);
-      
+
       // if this path is longer than the previous longest then set the
       // current resource (file) as the best fit.
       if (path.size() >= bestFitCount) {
@@ -815,12 +812,12 @@ public class Assimilator {
         bestFitCount = path.size();
       }
     }
-    
+
     // return the best fit.
     return bestFit;
-    
+
   }
-  
+
   /**
    * Findind the best fitting source reference.
    * 
@@ -833,33 +830,33 @@ public class Assimilator {
    */
   private Resource findBestKdmElementForToifStatement(Statement st, Resource bestFit, int reductionAmount,
                                                       boolean searchForParent) {
-    
+
     if (st == null || bestFit == null) {
       return null;
     }
-    
+
     String lineNumber = "";
-    
+
     // figure out the reference for the source ref. Extract the id.
     String sourceFileRef = bestFit.stringValue().replace("http://kdmanalytics.com/", "");
-    
+
     Statement lineNumberStatement = lineNumbers.get(st.getSubject().stringValue());
-    
+
     lineNumber = lineNumberStatement.getObject().stringValue();
-    
+
     int tempLineNumber = Integer.parseInt(lineNumber) - reductionAmount;
-    
+
     if (tempLineNumber <= 1) {
       tempLineNumber = 1;
     }
-    
+
     lineNumber = tempLineNumber + "";
-    
+
     // make the literal for the sourceRef.
     String sourceRef = sourceFileRef + ";" + lineNumber;
-    
+
     Statement statmentWithSourceRef = sourceRefStatements.get(sourceRef);
-    
+
     if (searchForParent) {
       return getParent(sourceFileRef);
     } else if (statmentWithSourceRef == null) {
@@ -868,9 +865,9 @@ public class Assimilator {
       Resource subject = statmentWithSourceRef.getSubject();
       return subject;
     }
-    
+
   }
-  
+
   /**
    * Get the blacklist string from the args. The string is the name of the top of the project.
    * 
@@ -880,21 +877,21 @@ public class Assimilator {
    */
   private String getBlackListPath(String[] args) {
     int indexOfblacklistPath = 0;
-    
+
     for (int i = 0; i < args.length; i++) {
       if ("-p".equals(args[i])) {
         indexOfblacklistPath = i;
-        
+
         String blacklist = args[indexOfblacklistPath + 1];
         blacklist = blacklist.trim();
-        
+
         return blacklist;
       }
     }
-    
+
     return "";
   }
-  
+
   /**
    * get all the files from the argument list.
    * 
@@ -906,11 +903,10 @@ public class Assimilator {
   List<File> getFiles(String[] args, final String... extensions) throws ToifException {
     checkNotNull(args);
     checkNotNull(extensions);
-    
+
     // set up a file filter.
     IOFileFilter fileFilter = new IOFileFilter() {
-      
-      
+
       @Override
       public boolean accept(File arg0) {
         for (String extension : extensions) {
@@ -918,10 +914,10 @@ public class Assimilator {
             return true;
           }
         }
-        
+
         return false;
       }
-      
+
       @Override
       public boolean accept(File arg0, String arg1) {
         for (String extension : extensions) {
@@ -929,14 +925,14 @@ public class Assimilator {
             return true;
           }
         }
-        
+
         return false;
       }
     };
-    
+
     // the files of the specific extension
     final List<File> files = new ArrayList<File>();
-    
+
     // int startIndex = 2;
     // for (String string : args)
     // {
@@ -945,30 +941,30 @@ public class Assimilator {
     // startIndex = 4;
     // }
     // }
-    
+
     // starting at the unparsed options, ie the files in the arguments.
     for (int i = 2; i < args.length; i++) {
-      
+
       if ("-p".equals(args[i])) {
         i = i += 2;
       }
-      
+
       final String path = args[i];
-      
+
       final File file = new File(path);
-      
+
       // if the file does not exist, bail.
       if (!file.exists()) {
         final String msg = "File does not exist: " + file.getName();
         LOG.error(msg);
         throw new ToifException(msg);
-        
+
       }
-      
+
       if (file.isDirectory()) {
         files.addAll(FileUtils.listFiles(file, fileFilter, TrueFileFilter.INSTANCE));
       } else {
-        
+
         /*
          * only add the file to the results list if the file has the extension and is a file.
          */
@@ -979,9 +975,9 @@ public class Assimilator {
           }
         }
       }
-      
+
     }
-    
+
     if (debug) {
       for (File file : files) {
         System.err.println(file.getName());
@@ -990,7 +986,7 @@ public class Assimilator {
     // return the list of files.
     return files;
   }
-  
+
   /**
    * Return the file that represents this repository location.
    * 
@@ -1000,20 +996,20 @@ public class Assimilator {
    */
   File getOutputLocation(final String[] args) throws AssimilatorArgumentException {
     checkNotNull(args);
-    
+
     // the location of the repository, this will be a directory.
     File location = null;
-    
+
     int indexOfROption = 0;
-    
+
     for (int i = 0; i < args.length; i++) {
       if ("-r".equals(args[i]) || "-k".equals(args[i])) {
         indexOfROption = i;
       }
     }
-    
+
     rOption = args[indexOfROption];
-    
+
     if ("-m".equals(rOption)) {
       if (args.length < 3) {
         throw new AssimilatorArgumentException("There are not enough arguments.");
@@ -1023,24 +1019,24 @@ public class Assimilator {
         throw new AssimilatorArgumentException("There are not enough arguments.");
       }
     }
-    
+
     // the repository location, following the '-r' option
     final String locationParameter = args[indexOfROption + 1];
-    
+
     if ((!rOption.equals("-r")) && (!rOption.equals("-k")) && (!rOption.equals("-m"))) {
       throw new AssimilatorArgumentException("There should be an argument which should be the '-r' or the '-k' option.");
     }
-    
+
     // if the option is merge but location is null.
     if ((locationParameter == null) && (!rOption.equals("-m"))) {
       throw new AssimilatorArgumentException("The second argument which should be the workbench repository is null.");
     }
-    
+
     // else if just the location is null.
     else if (locationParameter == null) {
       throw new AssimilatorArgumentException("The argument after the repository option, which should be the output location, is null.");
     }
-    
+
     // check to make sure that there is an -r option
     if ("-r".equals(rOption)) {
       // make sure the location of the repository is valid.
@@ -1050,11 +1046,11 @@ public class Assimilator {
     } else if ("-m".equals(rOption)) {
       location = getValidFileLocation(locationParameter);
     }
-    
+
     // return the location.
     return location;
   }
-  
+
   /**
    * get the parent of the kdm element.
    * 
@@ -1065,7 +1061,7 @@ public class Assimilator {
   private Resource getParent(String sourceFileRef) {
     return (Resource) factory.createURI("http://kdmanalytics.com/" + sourceFileRef);
   }
-  
+
   /**
    * The names need to be corrected to be able to find the source file.
    * 
@@ -1077,7 +1073,7 @@ public class Assimilator {
     newName = name.replace(".class", ".java");
     return newName;
   }
-  
+
   /**
    * create the kdm repository merger
    * 
@@ -1089,27 +1085,24 @@ public class Assimilator {
     if (assemblyName == null) {
       assemblyName = "Assembly";
     }
-    
+
     final InputStream is = Assimilator.class.getResourceAsStream("config/cxx.cfg");
-    
+
     final LinkConfig config = new LinkConfig(is);
-    
+
     final MergeConfig mergeConfig = config.getMergeConfig();
-    
+
     final RepositoryMerger merger = new RepositoryMerger(mergeConfig, out, RepositoryMerger.NTRIPLES, assemblyName);
-    
-    try
-		{
-		is.close();
-		}
-	catch (IOException e)
-		{
-		// just leave it
-		}
-    
+
+    try {
+      is.close();
+    } catch (IOException e) {
+      // just leave it
+    }
+
     return merger;
   }
-  
+
   /**
    * get the merger to merge the toif data.
    * 
@@ -1126,7 +1119,7 @@ public class Assimilator {
   ToifMerger getToifMerger(PrintWriter printWriter, Long startID, Long smallestBigNumber2, String blacklistPath) {
     return new ToifMerger(printWriter, force, startID, smallestBigNumber2, blacklistPath);
   }
-  
+
   /**
    * get a valid location for this kdm file. the method checks to see if the location can be used as
    * a kdm file and then creates the file.
@@ -1141,7 +1134,7 @@ public class Assimilator {
     if (location == null) {
       throw new AssimilatorArgumentException("Kdm file location is null");
     }
-    
+
     final File file = new File(location);
     // make the directory.
     if (!file.exists()) {
@@ -1152,7 +1145,7 @@ public class Assimilator {
       }
       Assimilator.debug(LOG, "Kdm File has been created.");
     }
-    
+
     // if the file is a directory then it is good
     if (file.isFile()) {
       return file;
@@ -1163,10 +1156,10 @@ public class Assimilator {
        * if the file is not a directory then it cant be used as a repository location.
        */
       throw new AssimilatorArgumentException("This location is not a valid file");
-      
+
     }
   }
-  
+
   /**
    * check to make sure that this is a valid repository location.
    * 
@@ -1180,7 +1173,7 @@ public class Assimilator {
     if (location == null) {
       throw new AssimilatorArgumentException("Repository location is null");
     }
-    
+
     final File file = new File(location);
     // make the direcotry
     if (file.mkdirs()) {
@@ -1188,7 +1181,7 @@ public class Assimilator {
     } else {
       Assimilator.debug(LOG, "repository directory has already been created and will be used.");
     }
-    
+
     // if the file is a directory then it is good
     if (file.isDirectory()) {
       return file;
@@ -1197,11 +1190,11 @@ public class Assimilator {
        * if the file is not a directory then it cant be used as a repository location.
        */
       throw new AssimilatorArgumentException("This location is not a valid directory");
-      
+
     }
-    
+
   }
-  
+
   /**
    * Load the kdm file. parse the input file.
    * 
@@ -1220,13 +1213,13 @@ public class Assimilator {
     PrintWriter pw = null;
     try {
       File tempFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "KDMRepository");
-      
+
       deleteDirectory(tempFile);
-      
+
       tempFile.deleteOnExit();
       Repository tempRepository = new SailRepository(new NativeStore(tempFile));
       tempRepository.initialize();
-      
+
       tempCon = tempRepository.getConnection();
       /**
        * The factory used to drive the parsing process.
@@ -1235,13 +1228,13 @@ public class Assimilator {
       SAXParserFactory factory = null;
       // Use the default (non-validating) parser
       factory = SAXParserFactory.newInstance();
-      
+
       SAXParser saxParser;
       saxParser = factory.newSAXParser();
-      
+
       // Have to parse the file once to determine the maximum id;
       KdmXmiIdHandler idHandler = new KdmXmiIdHandler();
-      
+
       // Need to set the stream to UTF-8 ti ensure that we correctly
       // handle
       // characters in Strings
@@ -1249,27 +1242,27 @@ public class Assimilator {
       InputStreamReader inputReader = new InputStreamReader(inputStream, "UTF-8");
       InputSource inputSource = new InputSource(inputReader);
       inputSource.setEncoding("UTF-8");
-      
+
       saxParser.parse(inputSource, idHandler);
-      
+
       tempCon.setAutoCommit(false); // Control commit for speed
-      
+
       pw = new PrintWriter(out);
       kdmXmlHandler = new KdmXmlHandler(pw, repository, idHandler.getMaxId());
-      
+
       // Parse the input
       saxParser.parse(xmlFile, kdmXmlHandler);
-      
+
       // Commit postLoad data
       kdmXmlHandler.postLoad();
-      
+
       tempCon.commit();
       tempCon.clear();
-      
+
       inputReader.close();
       inputStream.close();
     }
-    
+
     catch (ParserConfigurationException | SAXException ex) {
       final String msg = "Parser exception encountered:";
       LOG.error(msg, ex);
@@ -1282,12 +1275,12 @@ public class Assimilator {
       if (null != tempCon) {
         tempCon.close();
       }
-      
+
     }
     return kdmXmlHandler;
-    
+
   }
-  
+
   /**
    * load the rdf file into repository.
    * 
@@ -1303,42 +1296,42 @@ public class Assimilator {
     final ValueFactory factory = repository.getValueFactory();
     final RepositoryConnection con = repository.getConnection();
     con.setAutoCommit(false);
-    
+
     final BufferedReader in = new BufferedReader(new InputStreamReader(is));
     String line = in.readLine();
     URI lastSubject = null;
-    
+
     while (line != null) {
       count++;
-      
+
       if (line.length() <= 0) {
         line = in.readLine();
         continue;
       }
-      
+
       if (line.charAt(0) == '#') {
         line = in.readLine();
         continue;
       }
-      
+
       if (count == 1) {
         if (line.startsWith("KDM_Triple")) {
           line = in.readLine();
           continue;
         }
       }
-      
+
       URI subject = null;
       URI predicate = null;
       Value object = null;
-      
+
       try {
         final char bytes[] = line.toCharArray();
-        
+
         // Skip the initial <
         int start = 1;
         int i = 1;
-        
+
         // If the line starts with a space (indent) then reuse the last
         // subject,
         // otherwise parse the subject.
@@ -1354,14 +1347,14 @@ public class Assimilator {
             line = in.readLine();
             continue;
           }
-          
+
           subject = factory.createURI(MODEL_NS + new String(line.substring(start, i)));
-          
+
           // Buffer the subject in case we need it next time
           lastSubject = subject;
           ++i; // Skip the >
         }
-        
+
         while ((i < bytes.length) && (bytes[i] != '<')) {
           ++i;
         }
@@ -1372,7 +1365,7 @@ public class Assimilator {
         }
         ++i; // Skip the >
         start = i;
-        
+
         // Parse the predicate
         while ((i < bytes.length) && (bytes[i] != '>')) {
           ++i;
@@ -1382,9 +1375,9 @@ public class Assimilator {
           line = in.readLine();
           continue;
         }
-        
+
         predicate = factory.createURI(KDM_NS_HOST + new String(line.substring(start, i)));
-        
+
         ++i; // Skip the >
         while ((i < bytes.length) && (bytes[i] != '<') && (bytes[i] != '\"')) {
           ++i;
@@ -1394,7 +1387,7 @@ public class Assimilator {
           line = in.readLine();
           continue;
         }
-        
+
         // Parse a URI
         if (bytes[i] == '<') {
           ++i; // Skip the >
@@ -1407,9 +1400,9 @@ public class Assimilator {
             line = in.readLine();
             continue;
           }
-          
+
           object = factory.createURI(MODEL_NS + new String(line.substring(start, i)));
-          
+
         }
         // Parse a literal
         else {
@@ -1422,25 +1415,25 @@ public class Assimilator {
           String string = new String(line.substring(++i, lastIndex));
           string = string.replace("\\", "\\\\");
           object = factory.createLiteral(StringEscapeUtils.unescapeJava(string));
-          
+
         }
-        
+
         // In non-lowmem mode everything gets loaded into the
         // database
         // KdmXmlHandler.addOrWrite(con, subject, predicate, object);
         con.add(subject, predicate, object);
       } catch (final ArrayIndexOutOfBoundsException e) {
         LOG.error("Parse error on ntriples line " + count, e);
-//        e.printStackTrace();
+        // e.printStackTrace();
       }
       line = in.readLine();
     }
-    
+
     con.commit();
     con.close();
-    
+
   }
-  
+
   /**
    * Merge the tkdm files. with the kdm merger
    * 
@@ -1452,47 +1445,47 @@ public class Assimilator {
   public void mergeTkdm(RepositoryMerger kdmMerger, List<File> tkdmFiles) {
     int fileNum = 0;
     int listSize = tkdmFiles.size();
-    
+
     /*
      * for each tkdm file collected, load it into the temporary repository and merge that
      * repository.
      */
     for (final File file : tkdmFiles) {
       fileNum++;
-      
+
       int percent = 0;
-      float fraction = (float)fileNum / (float)listSize;
+      float fraction = (float) fileNum / (float) listSize;
       percent = (int) Math.floor(fraction * 100f);
-      
+
       consoleOutputUpdate("Processing TKDM files: \"" + file.toString() + "\"... " + percent + "%");
-      
+
       try {
         File temp = Files.createTempDir();
-        
+
         SailRepository tempRepository = new SailRepository(new NativeStore(temp));
-        
+
         tempRepository.initialize();
-        
+
         // load the data into the repository
         FileInputStream istream = new FileInputStream(file);
         load(tempRepository, istream);
         istream.close();
-        
+
         // merge the repository.
         kdmMerger.merge(file.getAbsolutePath(), tempRepository);
         tempRepository.shutDown();
         FileUtils.deleteDirectory(temp);
       } catch (final RepositoryException e) {
-        LOG.error("There was an exception when merging the tkdmFiles. ",e);
+        LOG.error("There was an exception when merging the tkdmFiles. ", e);
       } catch (final FileNotFoundException e) {
-        LOG.error("The Kdm file has not been found. ",e);
+        LOG.error("The Kdm file has not been found. ", e);
       } catch (final IOException e) {
-        LOG.error("There was an IO Exception when trying to merge the KDM files. ",e);
+        LOG.error("There was an IO Exception when trying to merge the KDM files. ", e);
       }
     }
     consoleOutput("");
   }
-  
+
   /**
    * merge the toif files using the toif merger
    * 
@@ -1506,7 +1499,7 @@ public class Assimilator {
   Long mergeToif(ToifMerger toifMerger, List<File> toifFiles) {
     return toifMerger.merge(toifFiles);
   }
-  
+
   /**
    * prints the contents of the repository. mainly for debug purposes.
    * 
@@ -1514,28 +1507,27 @@ public class Assimilator {
    *          the repository to print.
    */
   void printDB(Repository rep) {
-    
+
     try {
       RepositoryConnection connection = rep.getConnection();
       // get all statements.
       final RepositoryResult<Statement> statements = connection.getStatements(null, null, null, true);
-      
+
       // for all the statements.
       while (statements.hasNext()) {
         final Statement st = statements.next();
         // print statements.
         LOG.info(st.toString());
-        
+
       }
-      
+
       statements.close();
     } catch (final RepositoryException e) {
-      LOG.error("There was a repository error while printing the database. ",e);
-      //e.printStackTrace();
+      LOG.error("There was a repository error while printing the database. ", e);
     }
-    
+
   }
-  
+
   /**
    * process the kdm files.
    * 
@@ -1545,31 +1537,29 @@ public class Assimilator {
    * @throws IOException
    * @throws RepositoryException
    */
-  
+
   class ThreadStatus {
-    
-    
+
     protected Exception exception;
-    
+
     ThreadStatus() {
       exception = null;
     }
   }
-  
+
   private void processKdmXmlFile(final List<File> kdmFiles) throws FileNotFoundException, IOException,
       RepositoryException, ToifException {
     if (debug) {
       LOG.debug("processing kdm file...");
-      //System.err.println("processing kdm file...");
+      // System.err.println("processing kdm file...");
     }
-    
+
     final PipedInputStream in = new PipedInputStream();
     final PipedOutputStream out = new PipedOutputStream(in);
     final ThreadStatus status = new ThreadStatus();
-    
+
     Thread t = new Thread(new Runnable() {
-      
-      
+
       @Override
       public void run() {
         KdmXmlHandler handler = null;
@@ -1585,7 +1575,7 @@ public class Assimilator {
           }
           out.flush();
           out.close();
-          
+
           if (handler == null) {
             return;
           }
@@ -1595,114 +1585,90 @@ public class Assimilator {
         } catch (IOException e) {
           final String msg = "IO exception whilst processing kdm file. "
                              + ". Possibly an existing kdm file is in your input path!";
-          
+
           LOG.error(msg, e);
           status.exception = new ToifException(msg, e);
         } catch (RepositoryException e) {
           final String msg = "Repository Exception whilst processing kdm file. "
                              + ". Possibly an existing kdm file is in your input path!";
-          
+
           LOG.error(msg, e);
           status.exception = new ToifException(msg, e);
         } catch (ToifException e) {
-         
           status.exception = e;
-					}
-			finally
-				{
-				if (out != null)
-					try
-						{
-						out.close();
-						}
-					catch (IOException e)
-						{
-						// Just leave it alone
-						LOG.error("unable to close ostream");
-						}
-				
-				
+        } finally {
+          if (out != null) {
+            try {
+              out.close();
+            } catch (IOException e) {
+              // Just leave it alone
+              LOG.error("unable to close ostream");
+            }
+          }
         }
       }
     });
-    
+
     // ---------------------------------------------------------
     // Unable to change logic within the short time frame given so
     // adding a means to catch unknown exceptions in thread
     // ----------------------------------------------------------
     Thread.UncaughtExceptionHandler tueh = new Thread.UncaughtExceptionHandler() {
-      
-      
+
       public void uncaughtException(Thread th, Throwable ex) {
         LOG.error("Uncaught exception: " + ex);
         status.exception = (Exception) ex;
       }
     };
-    
+
     t.setUncaughtExceptionHandler(tueh);
     t.start();
-    
+
     streamStatementsToRepo(in);
     try {
       t.join();
       in.close();
-      
+
       // Check if we have exception during processing and
       // proxy throw if we have one
       if (status.exception != null) {
         // Leave alone if already a ToifException
-        if (status.exception instanceof ToifException) 
-        	throw (ToifException) status.exception;
-        else 
-        	throw new ToifException(status.exception);
-        
+        if (status.exception instanceof ToifException) {
+          throw (ToifException) status.exception;
+        } else {
+          throw new ToifException(status.exception);
+        }
       }
     } catch (InterruptedException e) {
       LOG.error("Interrupted");
-      try
-    	  {
-          in.close();
-    	  }
-      catch( Exception ex)
-    	  {
-    	  // Just skip it
-    	  }
+      try {
+        in.close();
+      } catch (Exception ex) {
+        // Just skip it
+      }
       throw new ToifException("Interrupted");
     }
   }
-  
+
   /**
    * @param kdmFiles2
    * @throws IOException
    * @throws ToifException
    */
   private void processKdmZip(List<File> kdmFiles2) throws IOException, ToifException {
-    ZipInputStream zip = null;
     File file = null;
-    try {
+    try (ZipInputStream zip = new ZipInputStream(new FileInputStream(file));) {
       file = kdmFiles2.get(0);
-      zip = new ZipInputStream(new FileInputStream(file));
       zip.getNextEntry();
-      
       // Read from the ZipInputStream as you would normally from any other
       // input stream
       LOG.info(file.getAbsolutePath());
       streamStatementsToRepo(zip);
-    }
-    
-    finally {
-      try {
-        if (zip != null) {
-          zip.close();
-        }
-      } catch (IOException e) {
-        // just leave it alone
-        if (file == null) file = new File(""); // just to be sure
-        LOG.error("unable to close zip stream" + file.getAbsolutePath());
-      }
+    } catch (IOException e) {
+      LOG.error("unable to close zip stream" + file.getAbsolutePath());
     }
   }
-  
+
   /**
    * process the tkdm files
    * 
@@ -1715,17 +1681,16 @@ public class Assimilator {
   private RepositoryMerger processTkdmFiles(final List<File> tkdmFiles) throws IOException, ToifException {
     final PipedInputStream in = new PipedInputStream();
     final PipedOutputStream out = new PipedOutputStream(in);
-    
+
     String assemblyName = "Assembly";
     int possition = outputLocation.getName().lastIndexOf(".");
     if (possition != -1) {
       assemblyName = outputLocation.getName().substring(0, possition);
     }
-    
+
     final RepositoryMerger kdmMerger = getTkdmMerger(new PrintWriter(out), assemblyName);
-    new Thread(new Runnable() {
-      
-      
+    Thread t = new Thread(new Runnable() {
+
       @Override
       public void run() {
         mergeTkdm(kdmMerger, tkdmFiles);
@@ -1733,16 +1698,17 @@ public class Assimilator {
         try {
           out.close();
         } catch (IOException e) {
-         LOG.error("", e);
-         //e.printStackTrace();
+          LOG.error("", e);
         }
       }
-    }).start();
-    
+    });
+
+    t.start();
+
     streamStatementsToRepo(in);
     return kdmMerger;
   }
-  
+
   /**
    * process the toif files.
    * 
@@ -1759,36 +1725,31 @@ public class Assimilator {
    */
   private void processToifFiles(final List<File> toifFiles, Long id, Long smallestBigNumber2, String blacklistPath)
       throws IOException, ToifException {
-    PipedInputStream toifIn = new PipedInputStream();
-    final PipedOutputStream toifOut = new PipedOutputStream(toifIn);
-    
-    // final ToifMerger toifMerger = getToifMerger(new PrintWriter(toifOut),
-    // id, smallestBigNumber2, blacklistPath);
-    
-    PrintWriter w = new PrintWriter(toifOut);
-    final ToifMerger toifMerger = getToifMerger(w, id, smallestBigNumber2, blacklistPath);
-    w.close();
-    new Thread(new Runnable() {
-      
-      
-      @Override
-      public void run() {
-        Long offset = mergeToif(toifMerger, toifFiles);
-        
-        setOffset(offset);
-        try {
-          toifOut.close();
-        } catch (IOException e) {
-          LOG.error("", e);
+
+    try (final PipedInputStream toifIn = new PipedInputStream();
+         final PipedOutputStream toifOut = new PipedOutputStream(toifIn);
+         final PrintWriter w = new PrintWriter(toifOut);) {
+
+      final ToifMerger toifMerger = getToifMerger(w, id, smallestBigNumber2, blacklistPath);
+
+      Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+          Long offset = mergeToif(toifMerger, toifFiles);
+          setOffset(offset);
+          try {
+            toifOut.close();
+          } catch (IOException e) {
+            LOG.error("", e);
+          }
         }
-      }
-      
-    }).start();
-    
-    streamStatementsToRepo(toifIn);
-    toifIn.close();
+      });
+      t.start();
+
+      streamStatementsToRepo(toifIn);
+    }
   }
-  
+
   /**
    * stores the next id
    * 
@@ -1799,9 +1760,9 @@ public class Assimilator {
     if (newId > nextId) {
       nextId = newId;
     }
-    
+
   }
-  
+
   /**
    * sets the offset
    * 
@@ -1810,9 +1771,9 @@ public class Assimilator {
    */
   private void setOffset(Long offset) {
     this.offset = offset;
-    
+
   }
-  
+
   /**
    * sets the smallest number near the end of the long scale.
    * 
@@ -1823,9 +1784,9 @@ public class Assimilator {
     if (smallest < smallestBigNumber) {
       smallestBigNumber = smallest;
     }
-    
+
   }
-  
+
   /**
    * trims the string for use with creating a url.
    * 
@@ -1836,7 +1797,7 @@ public class Assimilator {
   private String trimForStatement(String string) {
     string = string.replace(" .", "");
     string = string.replaceAll("<|>", "");
-    
+
     if (string.startsWith("\"")) {
       string = new String(string.substring(1).intern());
     }
@@ -1845,7 +1806,7 @@ public class Assimilator {
     }
     return string;
   }
-  
+
   /*********************************************************
    * Writes the stream of statements to the repository.
    * 
@@ -1855,25 +1816,20 @@ public class Assimilator {
    * @throws ToifException
    **********************************************************/
   private void streamStatementsToRepo(InputStream in) throws IOException, ToifException {
-    try {
-      // Scanner scanner = new Scanner(in);
-      // scanner.useDelimiter(" \\.\r?\n");
-      
-      BufferedReader br = new BufferedReader(new InputStreamReader(in));
-      
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
       Long count = 0L;
       String line = null;
-      
-      Set<String> containers = new HashSet<String>();
-      
+
+      Set<String> containers = new HashSet<>();
+
       // Read File Line By Line
       // while (scanner.hasNext())
       while ((line = br.readLine()) != null) {
-        
+
         if ("".equals(line)) {
           continue;
         }
-        
+
         if (line.startsWith("#")) {
           writer.write(line + "\n");
           continue;
@@ -1882,55 +1838,55 @@ public class Assimilator {
           writer.write(line + "\n");
           continue;
         }
-        
+
         // line = scanner.next();
         line = line.trim();
         // System.err.println(line);
-        
+
         if ("-m".equals(rOption) && (count % 10000 == 0)) {
           LOG.info("processing KDM file... statement: " + count + "          ");
         }
         count++;
-        
+
         String[] elements = line.split(" ", 3);
         String subjectString = trimForStatement(elements[0]);
-        
+
         String number = subjectString.replaceAll("\\D+", "");
-        
+
         if (!number.isEmpty()) {
           Long id = Long.parseLong(number);
           if (id > nextId) {
             nextId = id;
           }
         }
-        
+
         if (!subjectString.startsWith("http")) {
           subjectString = "http://kdmanalytics.com/" + subjectString;
         }
-        
+
         Resource subject = factory.createURI(subjectString);
-        
+
         // ** Add guard in case we do have element
         if (elements.length < 2) continue;
-        
+
         String predicateString = trimForStatement(elements[1]);
-        
+
         if (!predicateString.startsWith("http")) {
           predicateString = "http://org.omg.kdm/" + predicateString;
         }
-        
+
         URI predicate = factory.createURI(predicateString);
-        
+
         Value object = determineObjectValue(elements);
-        
+
         if (object == null) {
           continue;
         }
-        
+
         Statement statement = new StatementImpl(subject, predicate, object);
-        
+
         addStatement(statement);
-        
+
         // turn on storage if the type is correct. this is so that we
         // dont store more than we need.
         if ("http://org.omg.kdm/kdmType".equals(predicate.stringValue())) {
@@ -1950,7 +1906,7 @@ public class Assimilator {
             containers.add(subjectString);
           }
         }
-        
+
         // capture the toif points of interest.
         if ("http://toif/path".equals(predicate.stringValue())) {
           toifPaths.add(statement);
@@ -1958,7 +1914,7 @@ public class Assimilator {
         if ("http://toif/lineNumber".equals(predicate.stringValue())) {
           lineNumbers.put(statement.getSubject().stringValue(), statement);
         }
-        
+
         // have to capture the kdm points of interest
         String stringValue = statement.getObject().stringValue();
         if ("http://org.omg.kdm/SourceRef".equals(predicate.stringValue())) {
@@ -1973,12 +1929,7 @@ public class Assimilator {
         if ("http://org.omg.kdm/path".equals(statement.getPredicate().stringValue())) {
           sourceFiles.put(stringValue, statement.getSubject());
         }
-        
       }
-      
-      // Close file to free resource
-      if (br != null) br.close();
-      
     } catch (RepositoryException e) {
       final String msg = "Repository exception while writing the statement to the repository.";
       LOG.error(msg, e);
