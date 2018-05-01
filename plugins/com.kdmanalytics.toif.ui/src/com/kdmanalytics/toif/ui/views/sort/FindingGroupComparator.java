@@ -65,6 +65,23 @@ public class FindingGroupComparator extends ViewerComparator implements Comparat
       return 1;
     }
     
+    
+
+    // To ensure "MULTIPULE" at top of table
+    String tool1 = entry1.getTool();
+ 
+    if ( tool1 == null ||tool1.equals("MULTIPLE"))
+            tool1 = "0MULTIPLE";
+
+    String tool2 = entry2.getTool();
+    if (tool2 == null || tool2.equals("MULTIPLE"))
+            tool2 = "0MULTIPLE";
+
+    int c = tool1.compareTo(tool2);
+    if (c != 0)
+            return c;
+
+    
     // Secondary sort: Calculated weighting
     int i1 = config.getIndex(cwe1);
     int i2 = config.getIndex(cwe2);
