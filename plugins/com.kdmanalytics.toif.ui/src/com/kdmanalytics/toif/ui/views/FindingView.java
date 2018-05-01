@@ -539,11 +539,14 @@ public class FindingView extends ViewPart
         for(String heading: titles) headings.add(heading);
         List<Integer> boundsList = new LinkedList<Integer>();
         for(Integer i: bounds) boundsList.add(i);
+        /* BT-1140: Code has been here a long time but Count of columns not to be shown
+         * Here in case we need it back ASAP
         String[] extraHeadings = AdaptorConfiguration.getAdaptorConfiguration().getExtraColumnNames();
         for (String heading : extraHeadings) {
           headings.add(heading);
           boundsList.add(70);
         }
+        */
         titles = headings.toArray(new String[headings.size()]);
         bounds = boundsList.toArray(new Integer[boundsList.size()]);
 
