@@ -78,6 +78,22 @@ public class AdaptorConfigWeightComparator extends ViewerComparator implements C
     diff = i2 - i1;
     if (diff != 0) return diff;
     
+ // To ensure "MULTIPULE" at top of table
+    String tool1 = entry1.getTool();
+ 
+    if ( tool1 == null ||tool1.equals("MULTIPLE"))
+            tool1 = "0MULTIPLE";
+
+    String tool2 = entry2.getTool();
+    if (tool2 == null || tool2.equals("MULTIPLE"))
+            tool2 = "0MULTIPLE";
+
+    int c = tool1.compareTo(tool2);
+    if (c != 0)
+            return c;
+
+    
+    
     // Quaternary sort: File
     String p1 = entry1.getPath();
     String p2 = entry2.getPath();
