@@ -27,18 +27,6 @@
   </modules>
 
   <profiles>
-   <profile>
-      <id>platform-kepler</id>
-      <activation>
-        <property>
-          <name>platform-version-name</name>
-          <value>kepler</value>
-        </property>
-      </activation>
-      <properties>
-        <target-platform>kepler</target-platform>
-      </properties>
-    </profile>
     <profile>
       <id>platform-luna</id>
       <activation>
@@ -62,6 +50,30 @@
       </activation>
       <properties>
         <target-platform>mars</target-platform>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-neon</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>neon</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>neon</target-platform>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-oxygen</id>
+      <activation>
+        <property>
+          <name>platform-version-name</name>
+          <value>oxygen</value>
+        </property>
+      </activation>
+      <properties>
+        <target-platform>oxygen</target-platform>
       </properties>
     </profile>
   </profiles>
