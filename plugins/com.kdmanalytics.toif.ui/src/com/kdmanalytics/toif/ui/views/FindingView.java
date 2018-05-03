@@ -375,6 +375,7 @@ public class FindingView extends ViewPart
      */
     protected void update(final IResourceDelta delta)
     {
+    
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             @Override
             public void run()
@@ -391,10 +392,18 @@ public class FindingView extends ViewPart
                         public boolean visit(IResourceDelta delta) throws CoreException
                         {
                             IResource resource = delta.getResource();
+                            
                             if(resource instanceof IFile)
                             {
-                                FindingContentProvider content = (FindingContentProvider) viewer.getContentProvider();
-                                content.update(viewer, (IFile)resource);
+                               IFile  ifile = (IFile) resource;
+                               // Only attempt update if file access valid
+                               // Will be false on project close or delete
+                               // Defensive code. Builder(s) may fire off event when they should not :(
+                               if (ifile.exists())
+	                            	{
+	                                FindingContentProvider content = (FindingContentProvider) viewer.getContentProvider();
+	                                content.update(viewer, ifile);
+	                            	}
                             }
                             return true;
                         }
