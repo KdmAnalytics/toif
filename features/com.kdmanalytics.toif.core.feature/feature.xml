@@ -87,4 +87,12 @@ http://www.opensource.org/licenses/osl-3.0.php/
          version="0.0.0"
          fragment="true"/>
 
+   <plugin
+         id="com.kdmanalytics.toif.ui.common.config"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>

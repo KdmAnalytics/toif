@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TOIF Finding Config
+Bundle-SymbolicName: com.kdmanalytics.toif.ui.common.config
+Bundle-Version: 2.4.0.qualifier
+Fragment-Host: com.kdmanalytics.toif.ui.common;bundle-version="2.4.0"
+Automatic-Module-Name: com.kdmanalytics.toif.ui.common.config
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
