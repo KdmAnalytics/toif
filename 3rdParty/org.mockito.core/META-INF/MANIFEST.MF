@@ -72,3 +72,4 @@ Export-Package: org.mockito,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.hamcrest.core;bundle-version="1.1.0",
  org.objenesis;bundle-version="1.0.0"
+Automatic-Module-Name: org.mockito.core

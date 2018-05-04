@@ -17,3 +17,4 @@ Export-Package: org.apache.commons.lang3,
  org.apache.commons.lang3.time,
  org.apache.commons.lang3.tuple
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.apache.commons.lang3

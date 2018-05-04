@@ -9,3 +9,4 @@ Export-Package: org.apache.xml.serializer;version="2.7.1",
  org.apache.xml.serializer.dom3;version="2.7.1"
 Require-Bundle: system.bundle
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.apache.xml.serializer

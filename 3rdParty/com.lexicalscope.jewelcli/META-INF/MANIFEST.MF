@@ -44,3 +44,4 @@ Export-Package: com.lexicalscope.jewel,
  com.lexicalscope.jewelcli.internal.lamdaj.util.iterator,
  com.lexicalscope.jewelcli.internal.lang3.builder
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: com.lexicalscope.jewelcli

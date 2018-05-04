@@ -31,3 +31,4 @@ Export-Package: javax.xml;version="1.4",
  org.xml.sax.ext;version="2.0.2",
  org.xml.sax.helpers;version="2.0.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: javax.xml

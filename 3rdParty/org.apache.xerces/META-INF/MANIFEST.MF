@@ -50,3 +50,4 @@ Export-Package: META-INF.services;version="2.11.0",
  org.w3c.dom.html;version="2.11.0"
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.apache.xerces

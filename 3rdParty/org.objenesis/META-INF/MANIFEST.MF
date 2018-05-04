@@ -13,3 +13,4 @@ Export-Package: org.objenesis,
  org.objenesis.instantiator.sun,
  org.objenesis.strategy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.objenesis

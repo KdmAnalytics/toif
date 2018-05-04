@@ -14,3 +14,4 @@ Export-Package: org.apache.env;version="1.2.0",
  org.apache.xml.resolver.tools;version="1.2.0"
 Require-Bundle: system.bundle
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: org.apache.xml.resolver
