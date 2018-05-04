@@ -18,3 +18,4 @@ Require-Bundle: org.slf4j.api;bundle-version="1.7.2",
  com.kdmanalytics.toif.ui.common;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: com.kdmanalytics.toif.importer

@@ -58,3 +58,4 @@ Export-Package: com.google.common.annotations;version="14.0.1",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.annotation;resolution:=optional,
  javax.inject;resolution:=optional
+Automatic-Module-Name: com.google.guava

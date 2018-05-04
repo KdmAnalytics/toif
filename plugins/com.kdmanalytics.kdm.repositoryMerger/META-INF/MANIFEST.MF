@@ -18,3 +18,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.kdmanalytics.kdm.repositoryMerger,com.kdmanalytics
  .kdm.repositoryMerger.Utilities,com.kdmanalytics.kdm.repositoryMerger
  .linkconfig,com.kdmanalytics.kdm.repositoryMerger.ranges
+Automatic-Module-Name: com.kdmanalytics.kdm.repositoryMerger

@@ -20,3 +20,4 @@ Export-Package: com.kdmanalytics.toif.framework.files,
  com.kdmanalytics.toif.framework.utils,
  com.kdmanalytics.toif.framework.xmlElements.entities,
  com.kdmanalytics.toif.framework.xmlElements.facts
+Automatic-Module-Name: com.kdmanalytics.toif.framework

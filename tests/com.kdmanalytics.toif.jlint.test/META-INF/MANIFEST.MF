@@ -11,3 +11,4 @@ Require-Bundle: org.junit,
  org.objenesis;bundle-version="1.0.0"
 Bundle-ClassPath: libs/junit-4.12.jar,
  .
+Automatic-Module-Name: com.kdmanalytics.toif.jlint.test

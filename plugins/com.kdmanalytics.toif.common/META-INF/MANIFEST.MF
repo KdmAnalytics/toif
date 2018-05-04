@@ -11,3 +11,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.kdmanalytics.toif.common,
  com.kdmanalytics.toif.common.exception
+Automatic-Module-Name: com.kdmanalytics.toif.common

@@ -5,3 +5,4 @@ Bundle-SymbolicName: com.kdmanalytics.toif.target
 Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: KDM Analytics Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: com.kdmanalytics.toif.target

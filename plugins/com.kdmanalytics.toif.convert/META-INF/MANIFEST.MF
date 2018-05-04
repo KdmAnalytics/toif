@@ -13,3 +13,4 @@ Require-Bundle: org.slf4j.api;bundle-version="1.7.2",
  org.apache.commons.io;bundle-version="2.4.0",
  com.kdmanalytics.toif.common;bundle-version="2.3.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: com.kdmanalytics.toif.convert
