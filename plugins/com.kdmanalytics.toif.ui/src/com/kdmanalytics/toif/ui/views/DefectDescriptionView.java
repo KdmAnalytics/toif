@@ -1,17 +1,9 @@
 
 package com.kdmanalytics.toif.ui.views;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -40,6 +32,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.ViewPart;
 
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
+import com.kdmanalytics.toif.ui.internal.DescriptionMap;
 
 /**
  * Simple view that provides descriptive information about selected findings.
@@ -61,16 +54,6 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
    * Margin when drawing text
    */
   final int TEXT_MARGIN = 3;
-  
-  /**
-   * Lookup table for SFP information
-   */
-  private Map<String, String[]> sfpLookup = new HashMap<String, String[]>();
-  
-  /**
-   * Lookup table for CWE information
-   */
-  private Map<String, String[]> cweLookup = new HashMap<String, String[]>();
   
   /**
    * Cursor to change to when over a hyperlink
@@ -105,102 +88,8 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
   public DefectDescriptionView() {
     Display display = Display.getDefault();
     cursor = new Cursor(display, SWT.CURSOR_HAND);
-    
-    try {
-      loadSfpLookups();
-      loadCweLookups();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
   
-  /**
-   * SFP table lookup
-   * 
-   * @throws IOException
-   */
-  private void loadSfpLookups() throws IOException {
-    InputStreamReader in = null;
-    CSVParser parser = null;
-    try {
-      InputStream is = getClass().getResourceAsStream("/resources/sfp.csv");
-      in = new InputStreamReader(is);
-      CSVFormat format = CSVFormat.EXCEL.withDelimiter(',').withIgnoreEmptyLines();
-      
-      parser = new CSVParser(in, format);
-      
-      boolean header = true;
-      for (CSVRecord record : parser) {
-        if (header) {
-          // Ignore header
-          header = false;
-          continue;
-        }
-        String sfpid = record.get(0);
-        String cluster = record.get(1);
-        String name = record.get(2);
-        
-        if ("-1".equals(sfpid)) {
-          sfpLookup.put("SFP-" + sfpid, new String[] {sfpid, name, cluster});
-        } else {
-          sfpLookup.put("SFP" + sfpid, new String[] {sfpid, name, cluster});
-        }
-      }
-    } finally {
-      if (in != null) {
-        in.close();
-      }
-      if (parser != null) {
-        parser.close();
-      }
-    }
-  }
-  
-  /**
-   * SFP table lookup
-   * 
-   * @throws IOException
-   */
-  private void loadCweLookups() throws IOException {
-    InputStreamReader in = null;
-    CSVParser parser = null;
-    try {
-      InputStream is = getClass().getResourceAsStream("/resources/cwe.csv");
-      in = new InputStreamReader(is);
-      CSVFormat format = CSVFormat.EXCEL.withDelimiter(',').withIgnoreEmptyLines();
-      
-      parser = new CSVParser(in, format);
-      
-      boolean header = true;
-      for (CSVRecord record : parser) {
-        if (header) {
-          // Ignore header
-          header = false;
-          continue;
-        }
-        String cweid = record.get(0);
-        String name = record.get(1);
-        // if(size > 2)
-        // {
-        // String description = record.get(2);
-        // cweLookup.put(cweid, new String[] {cweid, name, description});
-        // }
-        // else
-        if ("-1".equals(cweid)) {
-          cweLookup.put("CWE-" + cweid, new String[] {cweid, name});
-        } else {
-          cweLookup.put("CWE" + cweid, new String[] {cweid, name});
-        }
-      }
-    } finally {
-      if (in != null) {
-        in.close();
-      }
-      if (parser != null) {
-        parser.close();
-      }
-    }
-  }
   
   /**
    * This is a callback that will allow us to create the viewer and initialize it.
@@ -221,7 +110,7 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
     column2.setText("Description");
     column2.setWidth(500);
     
-    viewer.setContentProvider(new DefectDescViewContentProvider(sfpLookup, cweLookup));
+    viewer.setContentProvider(new DefectDescViewContentProvider(DescriptionMap.INSTANCE.getSfpMap(), DescriptionMap.INSTANCE.getCweMap()));
     viewer.setLabelProvider(new DefectDescStyledLabelProvider(viewer));
     
     // Set the selection listener
@@ -240,55 +129,6 @@ public class DefectDescriptionView extends ViewPart implements MouseMoveListener
     // addWrapSupport(tree);
     
   }
-  
-  // The following code was an attempt to wrap the text in the table cells. The problem
-  // is that it wants every row to be the same height, which is not good.
-  //
-  //
-  // /**
-  // http://git.eclipse.org/c/platform/eclipse.platform.swt.git/tree/examples/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet231.java
-  // *
-  // * @param tree
-  // */
-  // private void addWrapSupport(Tree tree) {
-  // /*
-  // * NOTE: MeasureItem, PaintItem and EraseItem are called repeatedly. Therefore, it is critical
-  // * for performance that these methods be as efficient as possible.
-  // */
-  // tree.addListener(SWT.MeasureItem, new Listener() {
-  //
-  // @Override
-  // public void handleEvent(Event event) {
-  // TreeItem item = (TreeItem) event.item;
-  // String text = item.getText(event.index);
-  // Point size = event.gc.textExtent(text);
-  // event.width = size.x + 2 * TEXT_MARGIN;
-  // event.height = Math.max(event.height, size.y + TEXT_MARGIN);
-  // }
-  // });
-  // tree.addListener(SWT.EraseItem, new Listener() {
-  //
-  // @Override
-  // public void handleEvent(Event event) {
-  // event.detail &= ~SWT.FOREGROUND;
-  // }
-  // });
-  // tree.addListener(SWT.PaintItem, new Listener() {
-  //
-  // @Override
-  // public void handleEvent(Event event) {
-  // TreeItem item = (TreeItem) event.item;
-  // String text = item.getText(event.index);
-  // /* center column 1 vertically */
-  // int yOffset = 0;
-  // if (event.index == 1) {
-  // Point size = event.gc.textExtent(text);
-  // yOffset = Math.max(0, (event.height - size.y) / 2);
-  // }
-  // event.gc.drawText(text, event.x + TEXT_MARGIN, event.y + yOffset, true);
-  // }
-  // });
-  // }
   
   /**
    * Do something with the provided selection

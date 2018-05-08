@@ -25,68 +25,72 @@ import org.eclipse.ui.PlatformUI;
 import com.kdmanalytics.toif.ui.Activator;
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
+import com.kdmanalytics.toif.ui.internal.DescriptionMap;
 
 /**
  * 
  * @author Ken Duck
- *        
+ * 
  */
 class FindingStyledLabelProvider extends StyledCellLabelProvider {
-  
+
   /** The green. */
   private static final Color GREEN = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(220, 255, 220));
-  
+
   private static final Color WHITE = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(255, 255, 255));
-  
+
   /** The red. */
   private static final Color RED = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(255, 220, 220));
-  
+
   /** The foreground green. */
   private static final Color FOREGROUND_GREEN = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(0, 80, 0));
-  
+
   private static final Color FOREGROUND_BLACK = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(80, 80, 80));
-  
+
   /** The foreground red. */
   private static final Color FOREGROUND_RED = new Color(PlatformUI.getWorkbench().getDisplay(), new RGB(100, 0, 0));
-  
+
   /** The Constant TICK_KEY. */
   private static final String TICK_KEY = "tick";
-  
+
   /** The Constant CROSS_KEY. */
   private static final String CROSS_KEY = "cross";
-  
+
   /** The Constant PAGE_WHITE_STACK_KEY. */
   private static final String PAGE_WHITE_STACK_KEY = "page_stack";
-  
+
   /** The Constant PAGE_KEY. */
   private static final String PAGE_KEY = "page";
-  
+
   /** The Constant WRENCH_KEY. */
   private static final String WRENCH_KEY = "wrench";
-  
+
   /**
    * Use the configuration to get extra column values
    */
   private static AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
-  
+
   /**
    * Cache the index numbers for the extra columns
    */
   private List<Integer> extraColumnIndices = new LinkedList<Integer>();
 
+  private int columnIndex;
+
   /**
    * 
    */
-  public FindingStyledLabelProvider() {
+  public FindingStyledLabelProvider(int colIndex) {
+    this.columnIndex = colIndex;
     loadImagesIntoRegistry();
-    
+
     String[] names = config.getExtraColumnNames();
     for (String name : names) {
       int index = config.getColumnIndex(name);
       extraColumnIndices.add(index);
     }
   }
-  
+
   /**
    * Load images.
    */
@@ -113,7 +117,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       imgReg.put(WRENCH_KEY, ImageDescriptor.createFromURL(url));
     }
   }
-  
+
   /**
    * Get the entry text for the specified column
    * 
@@ -135,7 +139,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       case 3: {
         String sfp = entry.getSfp();
         if (sfp != null) {
-        return fixSfpCweIdentifier(sfp);
+          return fixSfpCweIdentifier(sfp);
         }
         return null;
       }
@@ -158,15 +162,16 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
           // Get the config index matching this column
           index = extraColumnIndices.get(index);
           String cwe = entry.getCwe();
-          String value = (String)config.getCell(cwe, index);
+          String value = (String) config.getCell(cwe, index);
           return value;
         }
       }
     }
     return null;
   }
-  
-  /** CWE and SFP identifiers should not have single hyphens in them.
+
+  /**
+   * CWE and SFP identifiers should not have single hyphens in them.
    * 
    * @param name
    * @return
@@ -184,7 +189,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    */
   public Image getImage(IFindingEntry entry, int colIndex) {
     final ImageRegistry imgReg = Activator.getDefault().getImageRegistry();
-    
+
     switch (colIndex) {
       case 0: {
         return imgReg.get(PAGE_WHITE_STACK_KEY);
@@ -214,7 +219,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
     }
     return null;
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -224,11 +229,65 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
   public String getToolTipText(Object element) {
     if (element instanceof IFindingEntry) {
       IFindingEntry entry = ((IFindingEntry) element);
-      return entry.getPath();
+      switch (columnIndex) {
+        case 3: {
+          String sfp = entry.getSfp();
+          if (sfp != null) {
+            String[] sfpData = DescriptionMap.INSTANCE.getSfpMap().get(sfp);
+            if (sfpData != null && sfpData.length > 1) {
+              return sfpData[1];
+            }
+          }
+          break;
+        }
+        case 4: {
+          String cwe = entry.getCwe();
+          if (cwe != null) {
+            String[] cweData = DescriptionMap.INSTANCE.getCweMap().get(cwe);
+            if (cweData != null && cweData.length > 1) {
+              return cweData[1];
+            }
+          }
+          break;
+        }
+        
+//        case 0: {
+//          return entry.getFileName();
+//        }
+//        case 1: {
+//          return entry.getLine();
+//        }
+//        case 2: {
+//          return entry.getTool();
+//        }
+//        case 3: {
+//          String sfp = entry.getSfp();
+//          if (sfp != null) {
+//            return fixSfpCweIdentifier(sfp);
+//          }
+//          return null;
+//        }
+//        case 4: {
+//          String cwe = entry.getCwe();
+//          if (cwe != null) {
+//            return fixSfpCweIdentifier(cwe);
+//          }
+//          return null;
+//        }
+//        case 5: {
+//          return Integer.toString(entry.getTrust());
+//        }
+//        case 6: {
+//          return entry.getDescription();
+//        }
+        default: {
+          return entry.getPath();
+        }
+      }
     }
     return null;
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -243,7 +302,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       text = "";
     }
     final StyledString styledString = new StyledString(text);
-    
+
     Boolean citing = entry.getCiting();
     if (citing != null) {
       if (citing) {
@@ -257,10 +316,10 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
       cell.setForeground(FOREGROUND_BLACK);
       cell.setBackground(WHITE);
     }
-    
+
     cell.setText(styledString.toString());
     cell.setStyleRanges(styledString.getStyleRanges());
     cell.setImage(getImage(entry, cell.getColumnIndex()));
   }
-  
+
 }
