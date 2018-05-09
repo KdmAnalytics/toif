@@ -58,23 +58,28 @@ public class FindingGroupSortTests {
   @Test
   public void testConfigSortByOrder() throws IOException {
     File file = new File(new File("."), sortedBySfpConfig);
+    
+    System.out.println( "FILE " + file.getAbsolutePath());
+    
     assertTrue("Test file: " + file.getAbsolutePath(), file.exists());
     AdaptorConfiguration config = AdaptorConfiguration.getAdaptorConfiguration();
     config.load(file);
     
     List<IFindingEntry> findings = new LinkedList<IFindingEntry>();
     findings.add(new FindingEntry(new File("A"), "Findbugs", "VA_FORMAT_STRING", 172, 0, "CWE-785", "SFP-9"));
-    findings.add(new FindingEntry(new File("B"), "Jlint", "shadow_local", 175, 0, "CWE-125", "SFP-8"));
+    findings.add(new FindingEntry(new File("B"), "Jlint", "shadow_local",        175, 0, "CWE-125", "SFP-8"));
     findings.add(new FindingEntry(new File("C"), "Findbugs", "VA_FORMAT_STRING", 188, 0, "CWE-114", "SFP--1"));
     findings.add(new FindingEntry(new File("D"), "Jlint", "hashcode_not_overridden", 1, 0, "CWE-131", "SFP--1"));
     
     FindingGroupComparator comparator = new FindingGroupComparator();
     Collections.sort(findings, comparator);
-    
-    //    System.err.println("SORTED________");
-    //    for (IFindingEntry finding : findings) {
-    //      System.err.println("  * " + finding.getFileName());
-    //    }
+   
+    /*
+        System.err.println("SORTED________");
+        for (IFindingEntry finding : findings) {
+          System.err.println("  * " + finding.getFileName());
+        }
+    */
     
     Iterator<IFindingEntry> it = findings.iterator();
     assertEquals("B", it.next().getFileName());
@@ -130,13 +135,20 @@ public class FindingGroupSortTests {
     config.load(file);
     
     List<IFindingEntry> findings = new LinkedList<IFindingEntry>();
-    findings.add(new FindingEntry(new File("A"), "Findbugs", "VA_FORMAT_STRING", 172, 0, "CWE-398", "SFP-9"));
-    findings.add(new FindingEntry(new File("B"), "Jlint", "shadow_local", 175, 0, "CWE-398", "SFP-8"));
+    findings.add(new FindingEntry(new File("A"), "Findbugs", "VA_FORMAT_STRING", 172, 0, "CWE-398", "SFP--1"));
+    findings.add(new FindingEntry(new File("B"), "Jlint",    "shadow_local", 175, 0,     "CWE-398", "SFP--1"));
     findings.add(new FindingEntry(new File("C"), "Findbugs", "VA_FORMAT_STRING", 188, 0, "CWE-398", "SFP--1"));
     findings.add(new FindingEntry(new File("D"), "Jlint", "hashcode_not_overridden", 1, 0, "CWE-398", "SFP--1"));
     
     FindingGroupComparator comparator = new FindingGroupComparator();
     Collections.sort(findings, comparator);
+    
+   /* 
+    System.err.println("SORTED_By Trust_______");
+    for (IFindingEntry finding : findings) {
+      System.err.println("  * " + finding.getFileName());
+    }
+   */
     
     Iterator<IFindingEntry> it = findings.iterator();
     assertEquals("B", it.next().getFileName());
@@ -209,5 +221,11 @@ public class FindingGroupSortTests {
     assertEquals(2, it.next().getLineNumber());
     assertEquals(3, it.next().getLineNumber());
     assertEquals(4, it.next().getLineNumber());
+  }
+  
+  @Test
+  public void testComplexSort() throws IOException
+  {
+  
   }
 }
