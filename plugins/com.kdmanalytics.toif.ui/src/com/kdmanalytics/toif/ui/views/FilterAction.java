@@ -9,6 +9,7 @@ import com.kdmanalytics.toif.ui.internal.filters.FiltersDialog;
 import com.kdmanalytics.toif.ui.internal.filters.InvalidSfpFilter;
 import com.kdmanalytics.toif.ui.internal.filters.IsValidFilter;
 import com.kdmanalytics.toif.ui.internal.filters.NotValidFilter;
+import com.kdmanalytics.toif.ui.internal.filters.SFPCWETwoToolsFilter;
 import com.kdmanalytics.toif.ui.internal.filters.SFPTwoToolsFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TrustFilter;
 import com.kdmanalytics.toif.ui.internal.filters.TwoToolsFilter;
@@ -57,6 +58,7 @@ public class FilterAction extends Action {
       handleTwoToolFilter(dialog, filterUtils);
       handleCWETwoToolFilter(dialog, filterUtils);
       handleSFPTwoToolFilter(dialog, filterUtils);
+      handleSFPCWETwoToolFilter(dialog, filterUtils);
       
       handleIsValidFilter(dialog, filterUtils);
       handleNotValidFilter(dialog, filterUtils);
@@ -129,6 +131,23 @@ public class FilterAction extends Action {
     }
     else {
       filterUtils.remove(SFPTwoToolsFilter.class);
+    }
+
+  }
+  
+  /**
+   * handle the same sfp filter by adding it to the filterList.
+   * 
+   * @param dialog
+   * @param filterUtils
+   */
+  private void handleSFPCWETwoToolFilter(FiltersDialog dialog, FilterUtility filterUtils) {
+    SFPCWETwoToolsFilter sfpcweTwoToolsFilter = dialog.getSFPCWETwoToolsFilter();
+    if (sfpcweTwoToolsFilter != null) {
+      filterUtils.add(sfpcweTwoToolsFilter);
+    }
+    else {
+      filterUtils.remove(SFPCWETwoToolsFilter.class);
     }
 
   }

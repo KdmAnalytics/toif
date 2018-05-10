@@ -95,9 +95,10 @@ public class FindingGroup implements IFindingEntry {
    */
   public void add(FindingEntry entry) {
     if (!ifile.equals(entry.getFile()) ||
-        line != entry.getLineNumber() ||
-        !cwe.equals(entry.getCwe()) ||
-        !sfp.equals(entry.getSfp())) {
+        line != entry.getLineNumber() //||
+ // RJF FIX       !cwe.equals(entry.getCwe()) ||
+ //       !sfp.equals(entry.getSfp())
+        ) {
       throw new IllegalArgumentException("Cannot add this entry to the group, it does not belong\n  * GROUP: " + this + "\n  * ENTRY: " + entry);
     }
     

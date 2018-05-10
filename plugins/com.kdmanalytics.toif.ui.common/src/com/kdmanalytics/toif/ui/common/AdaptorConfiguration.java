@@ -761,8 +761,10 @@ public class AdaptorConfiguration {
    * @return
    */
   public int getIndex(String cwe) {
-    if (rowMap.containsKey(cwe)) {
-      return rowMap.get(cwe);
+    // At time point we dropped use of "CWE-xxx" to "CWExxx)
+    String cweNorm = cwe.replace("CWE-", "CWE");
+    if (rowMap.containsKey(cweNorm)) {
+      return rowMap.get(cweNorm);
     }
     return data.size();
   }
@@ -807,7 +809,9 @@ public class AdaptorConfiguration {
    * @return
    */
   public int getTrust(String cwe, String tool) {
-    Integer index = rowMap.get(cwe);
+    // Seems that we changed format from "CWE-xxx" to "CWExxx"
+    // Should follow Mitre format of CWE-xxx
+    Integer index = rowMap.get(cwe.replace("CWE-", "CWE"));
     if (index != null) {
       tool = tool.toLowerCase();
       List<?> row = data.get(index);
