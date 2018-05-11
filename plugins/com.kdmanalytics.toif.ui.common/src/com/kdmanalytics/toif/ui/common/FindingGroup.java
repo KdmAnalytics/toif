@@ -108,6 +108,8 @@ public class FindingGroup implements IFindingEntry {
     }
     
     entries.add(entry);
+    
+    
     entry.setParent(this);
   }
 
@@ -142,7 +144,7 @@ public class FindingGroup implements IFindingEntry {
 		  set.add( entry.getCwe());
 		  
 	  if (set.size() == 1)
-		  return this.cwe;
+		  return set.iterator().next();
 	  else
 		  return "CWE *";
 	  }
@@ -211,7 +213,7 @@ public class FindingGroup implements IFindingEntry {
 		  set.add( entry.getSfp());
 		  
 	  if (set.size() == 1)
-		  return this.sfp;
+		  return set.iterator().next();
 	  else
 		  return "SFP *";
 	  }

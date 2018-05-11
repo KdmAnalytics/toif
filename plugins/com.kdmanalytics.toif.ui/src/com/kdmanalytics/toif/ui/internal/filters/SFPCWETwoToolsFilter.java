@@ -60,7 +60,7 @@ public class SFPCWETwoToolsFilter extends AbstractTwoToolsFilter
 		{
 		IFile file = targetEntry.getFile();
 		int targetLine = targetEntry.getLineNumber();
-		String toolNameToExclude = targetEntry.getTool();
+//		String toolNameToExclude = targetEntry.getTool();
 		String targetPattern =  targetEntry.getCwe();
 
 		// List of all tools represented at this file location

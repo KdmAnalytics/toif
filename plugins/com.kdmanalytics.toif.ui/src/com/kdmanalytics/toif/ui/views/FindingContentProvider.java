@@ -173,8 +173,9 @@ class FindingContentProvider implements ITreeContentProvider
 				else
 					{
 					it.remove();
-					// RJF FIX FindingGroup group = new FindingGroup(fe.getFile(),
-					//		fe.getLineNumber(), fe.getSfp(), fe.getCwe());
+					// BT-1158: GUI logic will replace this values as required since
+					// text value is dynamic. For example CWE * or CWE-562
+					
 					FindingGroup group = new FindingGroup(fe.getFile(),
 							fe.getLineNumber(), "SFP-000", "CWE-000");
 					
