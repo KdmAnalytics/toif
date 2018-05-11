@@ -1256,6 +1256,8 @@ public class FindingView extends ViewPart {
       }
     });
   }
+  
+  
 
   /**
    * Citing data or other information may have changed, refresh the view
@@ -1290,6 +1292,8 @@ public class FindingView extends ViewPart {
     FilterUtility filter = new FilterUtility(this, viewer);
     filter.add(new ResourceFilter(selectedFiles));
     filter.applyFilters();
+    
+    
 
     updateDefectCount();
   }
@@ -1318,4 +1322,6 @@ public class FindingView extends ViewPart {
       }
     }
   }
+
+
 }

@@ -8,6 +8,7 @@
 package com.kdmanalytics.toif.ui.common;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
 
@@ -18,36 +19,42 @@ import org.eclipse.core.resources.IFile;
  */
 public interface IFindingEntry {
 
-  IFile getFile();
+  public IFile getFile();
 
-  int getLineNumber();
+  public int getLineNumber();
 
-  String getCwe();
+  public String getCwe();
 
-  String getLine();
+  public String getLine();
 
-  String getTool();
+  public String getTool();
 
-  String getSfp();
+  public String getSfp();
 
-  int getTrust();
+  public int getTrust();
 
-  String getDescription();
+  public String getDescription();
 
-  Boolean getCiting();
+  public Boolean getCiting();
 
-  String getFileName();
+  public String getFileName();
 
-  String getPath();
+  public String getPath();
 
-  String getSearchableText();
+  public String getSearchableText();
 
-  void cite(Boolean b);
+  public void cite(Boolean b);
 
-  void setTrust(int val);
+  public void setTrust(int val);
 
-  Collection<String> getTypeIds();
+  public Collection<String> getTypeIds();
 
-  int getKdmLine();
+  public int getKdmLine();
+  
+  // Expose group membership
+  public Optional<FindingGroup> group();
+  
+  // State if entry is a group
+  public boolean isGroup();
   
 }

@@ -47,6 +47,7 @@ public class FiltersDialog extends Dialog {
   private CWETwoToolsFilter CWETwoToolsFilter = null;
   
   private SFPTwoToolsFilter SFPTwoToolsFilter = null;
+  private SFPCWETwoToolsFilter sfpCweTwoToolsFilter = null;
   
   private TrustFilter trustFilter = null;
   
@@ -96,6 +97,9 @@ public class FiltersDialog extends Dialog {
       }
       if (viewerFilter instanceof SFPTwoToolsFilter) {
         SFPTwoToolsFilter = (SFPTwoToolsFilter) viewerFilter;
+      }
+      if (viewerFilter instanceof SFPCWETwoToolsFilter) {
+         sfpCweTwoToolsFilter = (SFPCWETwoToolsFilter) viewerFilter;
       }
       if (viewerFilter instanceof InvalidSfpFilter) {
         invalidSfpFilter = (InvalidSfpFilter) viewerFilter;
@@ -190,6 +194,35 @@ public class FiltersDialog extends Dialog {
           filters.add(SFPTwoToolsFilter);
         } else {
           SFPTwoToolsFilter = null;
+        }
+      }
+    });
+    
+    // Filter 3+4
+    Composite compSFPCWETwoTools = new Composite(checkboxComposite, SWT.NONE);
+    compSFPCWETwoTools.setLayout(new GridLayout());
+    final Button samesfpcweButton = new Button(compSFPCWETwoTools, SWT.CHECK);
+    if (sfpCweTwoToolsFilter != null) {
+      samesfpcweButton.setSelection(true);
+    }
+    samesfpcweButton.setText("2+ Tools report same location. With the same SFP and CWE");
+    samesfpcweButton.addSelectionListener(new SelectionListener() {
+      
+    
+
+	@Override
+      public void widgetDefaultSelected(SelectionEvent e) {
+        // TODO Auto-generated method stub
+        
+      }
+      
+      @Override
+      public void widgetSelected(SelectionEvent e) {
+        if (samesfpcweButton.getSelection()) {
+          sfpCweTwoToolsFilter = new SFPCWETwoToolsFilter();
+          filters.add(sfpCweTwoToolsFilter);
+        } else {
+           sfpCweTwoToolsFilter = null;
         }
       }
     });
@@ -438,6 +471,16 @@ public class FiltersDialog extends Dialog {
    */
   public SFPTwoToolsFilter getSFPTwoToolsFilter() {
     return SFPTwoToolsFilter;
+  }
+  
+  
+  /**
+   * get the filter for the same sfp/cwe filter
+   * 
+   * @return
+   */
+  public SFPCWETwoToolsFilter getSFPCWETwoToolsFilter() {
+    return this.sfpCweTwoToolsFilter;
   }
   
   /**
