@@ -76,11 +76,14 @@ public class FindingGroupComparator extends ViewerComparator implements Comparat
     String tool2 = entry2.getTool();
     if (tool2 == null || tool2.equals("MULTIPLE"))
             tool2 = "0MULTIPLE";
-
-    int c = tool1.compareTo(tool2);
-    if (c != 0)
-            return c;
-
+    
+    if (tool1.matches("0MULTIPLE") || tool2.matches("0MULTIPLE")) 
+    	{
+    	int c = tool1.compareTo(tool2);
+    	if (c != 0)
+    	      return c;
+    	}
+    	
     
     // Secondary sort: Calculated weighting
     int i1 = config.getIndex(cwe1);

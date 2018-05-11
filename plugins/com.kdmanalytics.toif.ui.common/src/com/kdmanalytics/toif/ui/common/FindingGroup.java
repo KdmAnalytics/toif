@@ -10,8 +10,11 @@ package com.kdmanalytics.toif.ui.common;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 
@@ -31,10 +34,11 @@ public class FindingGroup implements IFindingEntry {
    */
   List<IFindingEntry> entries = new LinkedList<IFindingEntry>();
   
-  private IFile ifile;
-  private int line;
-  private String cwe;
-  private String sfp;
+  private final IFile ifile;
+  private final int line;
+  private final String cwe;			// The actual cwe
+  private final String sfp;			// The actual sfp
+ 
   
   /**
    * Used for testing only
@@ -59,6 +63,7 @@ public class FindingGroup implements IFindingEntry {
    * @param cwe2
    */
   public FindingGroup(File file, int line, String sfp, String cwe) {
+    this.ifile = null; // NOT USED IS TESTING
     this.file = file;
     this.line = line;
     this.cwe = fixSfpCweIdentifier(cwe);
@@ -95,13 +100,16 @@ public class FindingGroup implements IFindingEntry {
    */
   public void add(FindingEntry entry) {
     if (!ifile.equals(entry.getFile()) ||
-        line != entry.getLineNumber() ||
-        !cwe.equals(entry.getCwe()) ||
-        !sfp.equals(entry.getSfp())) {
+        line != entry.getLineNumber() //||
+ // RJF FIX       !cwe.equals(entry.getCwe()) ||
+ //       !sfp.equals(entry.getSfp())
+        ) {
       throw new IllegalArgumentException("Cannot add this entry to the group, it does not belong\n  * GROUP: " + this + "\n  * ENTRY: " + entry);
     }
     
     entries.add(entry);
+    
+    
     entry.setParent(this);
   }
 
@@ -122,6 +130,29 @@ public class FindingGroup implements IFindingEntry {
   public String getCwe() {
     return cwe;
   }
+  
+  
+  
+  public String getCweDisplay()
+  {
+  if (entries.isEmpty())
+	  return this.cwe;
+  else
+	  {
+	  Set<String> set = new HashSet<String>();
+	  for (IFindingEntry entry : entries)
+		  set.add( entry.getCwe());
+		  
+	  if (set.size() == 1)
+		  return set.iterator().next();
+	  else
+		  return "CWE *";
+	  }
+  
+  
+
+  }
+  
 
   /** Get all contained findings as an object array.
    * 
@@ -167,6 +198,27 @@ public class FindingGroup implements IFindingEntry {
   public String getSfp() {
     return sfp;
   }
+  
+ 
+  
+  // Provide SFP Display text, fallback to sfp value
+  public String getSfpDisplay()
+  {
+  if (entries.isEmpty())
+	  return this.sfp;
+  else
+	  {
+	  Set<String> set = new HashSet<String>();
+	  for (IFindingEntry entry : entries)
+		  set.add( entry.getSfp());
+		  
+	  if (set.size() == 1)
+		  return set.iterator().next();
+	  else
+		  return "SFP *";
+	  }
+  }
+  
 
   /*
    * (non-Javadoc)
@@ -347,5 +399,21 @@ public class FindingGroup implements IFindingEntry {
   public int size() {
     return entries.size();
   }
+
+  /* Groups never hold another group
+   * (non-Javadoc)
+   * @see com.kdmanalytics.toif.ui.common.IFindingEntry#group()
+   */
+@Override
+public Optional<FindingGroup> group()
+	{
+	return Optional.empty();
+	}
+
+@Override
+public boolean isGroup()
+	{
+	return true;
+	}
   
 }

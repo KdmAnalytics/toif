@@ -159,26 +159,37 @@ class FindingContentProvider implements ITreeContentProvider
         }
         List<IFindingEntry> list = findings.get(file);
         
-        boolean grouped = false;
-        for (Iterator<IFindingEntry> it = list.iterator(); it.hasNext();) {
-          IFindingEntry fe = it.next();
-          if(canGroup(fe, entry)) {
-            grouped = true;
-            if (fe instanceof FindingGroup) {
-              ((FindingGroup)fe).add(entry);
-            } else {
-              it.remove();
-              FindingGroup group = new FindingGroup(fe.getFile(), fe.getLineNumber(), fe.getSfp(), fe.getCwe());
-              group.add((FindingEntry)fe);
-              group.add(entry);
-              list.add(0, group);
-            }
-            break;
-          }
-        }
-        if (!grouped) {
-          list.add(entry);
-        }
+		boolean grouped = false;
+		for (Iterator<IFindingEntry> it = list.iterator(); it.hasNext();)
+			{
+			IFindingEntry fe = it.next();
+			if (canGroup(fe, entry))
+				{
+				grouped = true;
+				if (fe instanceof FindingGroup)
+					{
+					((FindingGroup) fe).add(entry);
+					}
+				else
+					{
+					it.remove();
+					// BT-1158: GUI logic will replace this values as required since
+					// text value is dynamic. For example CWE * or CWE-562
+					
+					FindingGroup group = new FindingGroup(fe.getFile(),
+							fe.getLineNumber(), "SFP-000", "CWE-000");
+					
+					group.add((FindingEntry) fe);
+					group.add(entry);
+					list.add(0, group);
+					}
+				break;
+				}
+			}
+		if (!grouped)
+			{
+			list.add(entry);
+			}
     }
 
     /**
@@ -190,7 +201,7 @@ class FindingContentProvider implements ITreeContentProvider
     private boolean canGroup(IFindingEntry e1, FindingEntry e2) {
       if (!e1.getFile().equals(e2.getFile())) return false;
       if (e1.getLineNumber() != e2.getLineNumber()) return false;
-      if (!e1.getCwe().equals(e2.getCwe())) return false;
+  // RJF fix    if (!e1.getCwe().equals(e2.getCwe())) return false;
       return true;
     }
 

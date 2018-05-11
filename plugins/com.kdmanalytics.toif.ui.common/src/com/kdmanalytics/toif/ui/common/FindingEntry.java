@@ -9,6 +9,7 @@
 package com.kdmanalytics.toif.ui.common;
 
 import java.io.File;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -19,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
  * from a marker.
  * 
  * @author Ken Duck
+ * @author Robert
  *        
  */
 public class FindingEntry extends FindingData implements IFindingEntry {
@@ -98,4 +100,29 @@ public class FindingEntry extends FindingData implements IFindingEntry {
   public FindingGroup getParent() {
     return group;
   }
+
+ /*
+  * Expose group memebership
+  * (non-Javadoc)
+  * @see com.kdmanalytics.toif.ui.common.IFindingEntry#group()
+  */
+@Override
+public Optional<FindingGroup> group()
+	{
+	if (this.group == null)
+		return Optional.empty();
+	else
+	    return Optional.of(group);
+	}
+
+/*
+ *  Normal entries are never a group
+ * (non-Javadoc)
+ * @see com.kdmanalytics.toif.ui.common.IFindingEntry#isGroup()
+ */
+@Override
+public boolean isGroup()
+	{
+	return false;
+	}
 }
