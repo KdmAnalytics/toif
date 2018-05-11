@@ -1335,14 +1335,14 @@ public class ToolAdaptor
         
         final String[] command = getCommands();
         
-        synchronized (this)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (String cmd : command)
-            {
-                sb.append(cmd).append(" ");
-            }
-        }
+//        synchronized (this)
+//        {
+//            StringBuilder sb = new StringBuilder();
+//            for (String cmd : command)
+//            {
+//                sb.append(cmd).append(" ");
+//            }
+//        }
         
         process = new ProcessBuilder(command);
         
