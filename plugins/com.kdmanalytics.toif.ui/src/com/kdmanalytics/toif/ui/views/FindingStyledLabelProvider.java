@@ -154,7 +154,13 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
         return Integer.toString(entry.getTrust());
       }
       case 6: {
-        return entry.getDescription();
+        String desc = entry.getDescription();
+        String[] split = desc.split(":", 2);
+        if (split.length > 1) {
+          return split[1].trim();
+        } else {
+          return entry.getDescription();
+        }
       }
       default: {
         int index = colIndex - 7;
@@ -238,7 +244,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
               return sfpData[1];
             }
           }
-          break;
+          return "";
         }
         case 4: {
           String cwe = entry.getCwe();
@@ -248,7 +254,15 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
               return cweData[1];
             }
           }
-          break;
+          return "";
+        }
+        case 6: {
+          String desc = entry.getDescription();
+          String[] split = desc.split(":", 2);
+          if (split.length > 1) {
+            return split[0].trim();
+          }
+          return "";
         }
         
 //        case 0: {
