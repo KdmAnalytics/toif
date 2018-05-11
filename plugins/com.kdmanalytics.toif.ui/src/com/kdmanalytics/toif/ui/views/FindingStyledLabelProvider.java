@@ -24,6 +24,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.kdmanalytics.toif.ui.Activator;
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.internal.DescriptionMap;
 
@@ -76,6 +77,8 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
   private List<Integer> extraColumnIndices = new LinkedList<Integer>();
 
   private int columnIndex;
+  private static final int SFP_COLUMN = 3;
+  private static final int CWE_COLUMN = 4;
 
   /**
    * 
@@ -125,34 +128,56 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
    * @param colIndex
    * @return
    */
-  private String getColumnText(IFindingEntry entry, int colIndex) {
-    switch (colIndex) {
-      case 0: {
-        return entry.getFileName();
-      }
-      case 1: {
-        return entry.getLine();
-      }
-      case 2: {
-        return entry.getTool();
-      }
-      case 3: {
-        String sfp = entry.getSfp();
-        if (sfp != null) {
-          return fixSfpCweIdentifier(sfp);
-        }
-        return null;
-      }
-      case 4: {
-        String cwe = entry.getCwe();
-        if (cwe != null) {
-          return fixSfpCweIdentifier(cwe);
-        }
-        return null;
-      }
-      case 5: {
-        return Integer.toString(entry.getTrust());
-      }
+	private String getColumnText(IFindingEntry entry, int colIndex)
+		{
+		switch (colIndex)
+			{
+			case 0:
+				{
+				return entry.getFileName();
+				}
+			case 1:
+				{
+				return entry.getLine();
+				}
+			case 2:
+				{
+				return entry.getTool();
+				}
+				
+			case SFP_COLUMN:
+				{
+				String sfp = entry.getSfp();
+				if (entry instanceof FindingGroup)
+					{
+					sfp = ((FindingGroup) entry).getSfpDisplay();
+					}
+				
+				if (sfp != null)
+					{
+					return fixSfpCweIdentifier(sfp);
+					}
+				return null;
+				}
+				
+			case CWE_COLUMN:
+				{
+				String cwe = entry.getCwe();
+				if (entry instanceof FindingGroup)
+					{
+					cwe = ((FindingGroup) entry).getCweDisplay();
+					}
+				
+				if (cwe != null)
+					{
+					return fixSfpCweIdentifier(cwe);
+					}
+				return null;
+				}
+			case 5:
+				{
+				return Integer.toString(entry.getTrust());
+				}
       case 6: {
         return entry.getDescription();
       }
@@ -230,7 +255,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
     if (element instanceof IFindingEntry) {
       IFindingEntry entry = ((IFindingEntry) element);
       switch (columnIndex) {
-        case 3: {
+        case SFP_COLUMN: {
           String sfp = entry.getSfp();
           if (sfp != null) {
             String[] sfpData = DescriptionMap.INSTANCE.getSfpMap().get(sfp);
@@ -240,7 +265,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
           }
           break;
         }
-        case 4: {
+        case CWE_COLUMN: {
           String cwe = entry.getCwe();
           if (cwe != null) {
             String[] cweData = DescriptionMap.INSTANCE.getCweMap().get(cwe);
