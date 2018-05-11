@@ -72,7 +72,7 @@ public class CppCheckParser extends DefaultHandler {
     try {
       lineNumber = Integer.parseInt(attrs.getValue("line"));
     } catch (NumberFormatException e) {
-      System.err.println("Number exception in " + attrs.getValue("line"));
+      System.err.println("Unable to parse line number of finding from value: " + attrs.getValue("line"));
     }
     
     if (lineNumber == null) {
