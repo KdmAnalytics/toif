@@ -126,6 +126,15 @@ public class FindingView extends ViewPart {
    * The ID of the view as specified by the extension.
    */
   public static final String ID = "com.kdmanalytics.toif.views.FindingView";
+  
+  // So we don't have hardcoded values in other classes for column indexes
+  public static final int FILE_COLUMN = 0;
+  public static final int LOCATION_COLUMN = 1;
+  public static final int TOOL_COLUMN = 2;
+  public static final int SFP_COLUMN = 3;
+  public static final int CWE_COLUMN = 4;
+  public static final int CONFIDENCE_COLUMN = 5;
+  public static final int DESCRIPTION_COLUMN = 6;
 
   /**
    * Time format used to make file names.
@@ -682,21 +691,21 @@ public class FindingView extends ViewPart {
    * @param index
    * @return
    */
-  private SelectionAdapter getSelectionAdapter(final TreeViewer viewer2, final TreeColumn column, final int index) {
+  private SelectionAdapter getSelectionAdapter(final TreeViewer treeView, final TreeColumn column, final int index) {
     SelectionAdapter selectionAdaptor = new SelectionAdapter() {
 
       @Override
       public void widgetSelected(SelectionEvent e) {
-        ViewerComparator comparator = viewer2.getComparator();
+        ViewerComparator comparator = treeView.getComparator();
         if (!(comparator instanceof FindingViewColumnComparator)) {
           comparator = new FindingViewColumnComparator();
-          viewer2.setComparator(comparator);
+          treeView.setComparator(comparator);
         }
         ((FindingViewColumnComparator) comparator).setColumn(index);
         int dir = ((FindingViewColumnComparator) comparator).getDirection();
-        viewer2.getTree().setSortDirection(dir);
-        viewer2.getTree().setSortColumn(column);
-        viewer2.refresh();
+        treeView.getTree().setSortDirection(dir);
+        treeView.getTree().setSortColumn(column);
+        treeView.refresh();
       }
     };
     return selectionAdaptor;

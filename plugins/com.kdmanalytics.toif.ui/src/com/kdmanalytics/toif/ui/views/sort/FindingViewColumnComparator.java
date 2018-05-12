@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
+import com.kdmanalytics.toif.ui.views.FindingView;
 
 /**
  * Provides column sorting.
@@ -115,13 +116,13 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
     Integer result = null;
     
     switch (columnIndex) {
-      case 0: {
+      case FindingView.FILE_COLUMN: {
         String file1 = entry1.getFileName();
         String file2 = entry2.getFileName();
         result = file1.compareTo(file2);
         break;
       }
-      case 1: {
+      case FindingView.LOCATION_COLUMN: {
         int line1 = 0;
         try {
           line1 = Integer.parseInt(entry1.getLine());
@@ -141,13 +142,13 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         }
         break;
       }
-      case 2: {
+      case FindingView.TOOL_COLUMN: {
         String tool1 = entry1.getTool();
         String tool2 = entry2.getTool();
         result = tool1.compareTo(tool2);
         break;
       }
-      case 3: {
+      case FindingView.SFP_COLUMN: {
         // Remove old-style prefix
         String sfp1 = entry1.getSfp().replace("SFP-", "");
         String sfp2 = entry2.getSfp().replace("SFP-", "");
@@ -172,7 +173,7 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         result = sfp1Int - sfp2Int;
         break;
       }
-      case 4: {
+      case FindingView.CWE_COLUMN: {
         // Remove old-style prefix
         String cwe1 = entry1.getCwe().replace("CWE-", "").trim();
         String cwe2 = entry2.getCwe().replace("CWE-", "").trim();
@@ -197,13 +198,13 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         
         break;
       }
-      case 5: {
+      case FindingView.CONFIDENCE_COLUMN: {
         int cwe1Int = entry1.getTrust();
         int cwe2Int = entry2.getTrust();
         result = cwe1Int - cwe2Int;
         break;
       }
-      case 6: {
+      case FindingView.DESCRIPTION_COLUMN: {
         String desc1 = entry1.getDescription();
         String desc2 = entry2.getDescription();
         result = desc1.compareTo(desc2);

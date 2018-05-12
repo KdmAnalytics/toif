@@ -77,9 +77,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
   private List<Integer> extraColumnIndices = new LinkedList<Integer>();
 
   private int columnIndex;
-  private static final int SFP_COLUMN = 3;
-  private static final int CWE_COLUMN = 4;
-
+ 
   /**
    * 
    */
@@ -132,20 +130,20 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
 		{
 		switch (colIndex)
 			{
-			case 0:
+			case FindingView.FILE_COLUMN:
 				{
 				return entry.getFileName();
 				}
-			case 1:
+			case FindingView.LOCATION_COLUMN:
 				{
 				return entry.getLine();
 				}
-			case 2:
+			case FindingView.TOOL_COLUMN:
 				{
 				return entry.getTool();
 				}
 				
-			case SFP_COLUMN:
+			case FindingView.SFP_COLUMN:
 				{
 				String sfp = entry.getSfp();
 				if (entry instanceof FindingGroup)
@@ -160,7 +158,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
 				return null;
 				}
 				
-			case CWE_COLUMN:
+			case FindingView.CWE_COLUMN:
 				{
 				String cwe = entry.getCwe();
 				if (entry instanceof FindingGroup)
@@ -174,11 +172,11 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
 					}
 				return null;
 				}
-			case 5:
+			case FindingView.CONFIDENCE_COLUMN:
 				{
 				return Integer.toString(entry.getTrust());
 				}
-      case 6: {
+      case FindingView.DESCRIPTION_COLUMN: {
         return entry.getDescription();
       }
       default: {
@@ -255,7 +253,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
     if (element instanceof IFindingEntry) {
       IFindingEntry entry = ((IFindingEntry) element);
       switch (columnIndex) {
-        case SFP_COLUMN: {
+        case FindingView.SFP_COLUMN: {
           String sfp = entry.getSfp();
           if (sfp != null) {
             String[] sfpData = DescriptionMap.INSTANCE.getSfpMap().get(sfp);
@@ -265,7 +263,7 @@ class FindingStyledLabelProvider extends StyledCellLabelProvider {
           }
           break;
         }
-        case CWE_COLUMN: {
+        case FindingView.CWE_COLUMN: {
           String cwe = entry.getCwe();
           if (cwe != null) {
             String[] cweData = DescriptionMap.INSTANCE.getCweMap().get(cwe);
