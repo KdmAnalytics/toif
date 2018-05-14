@@ -11,6 +11,7 @@ package com.kdmanalytics.toif.ui.views.sort;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
@@ -18,6 +19,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
 import com.kdmanalytics.toif.ui.common.AdaptorConfiguration;
+import com.kdmanalytics.toif.ui.common.FindingGroup;
 import com.kdmanalytics.toif.ui.common.IFindingEntry;
 import com.kdmanalytics.toif.ui.views.FindingView;
 
@@ -173,28 +175,70 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         result = sfp1Int - sfp2Int;
         break;
       }
+      
+      // Sort CWE column
       case FindingView.CWE_COLUMN: {
+        String cwe1;
+        String cwe2;
+        
+        
+        // Sorting for this column will defer to group if defined
+        Optional<FindingGroup> group1 = Optional.empty();
+        Optional<FindingGroup> group2 = Optional.empty();
+        if (entry1 instanceof FindingGroup)
+        	cwe1 = ((FindingGroup)entry1).getCweDisplay();
+        else
+			{
+			group1 = entry1.group();
+			if (group1.isPresent())
+			  	{
+			  	cwe1 = group1.get().getCweDisplay();
+			  	System.out.println( "CWE1 display="+cwe1);
+			  	}
+			  else
+			  	{
+			  	cwe1 = entry1.getCwe();
+			  	System.out.println( "CWE1 NOT display="+cwe1);
+			    }
+        	}
+      
+      
+        if (entry2 instanceof FindingGroup)
+        	cwe2 = ((FindingGroup)entry2).getCweDisplay();
+        else
+        	{
+	        group2 = entry2.group();
+	        if (group2.isPresent())
+	        	cwe2 = group2.get().getCweDisplay();
+	        else
+	        	cwe2 = entry2.getCwe();
+        	}
+      
         // Remove old-style prefix
-        String cwe1 = entry1.getCwe().replace("CWE-", "").trim();
-        String cwe2 = entry2.getCwe().replace("CWE-", "").trim();
+        cwe1 = cwe1.replace("CWE-", "").trim();
+        cwe2 = cwe2.replace("CWE-", "").trim();
+        
         // Remove new-style prefix
         cwe1 = cwe1.replace("CWE", "");
         cwe2 = cwe2.replace("CWE", "");
-
-        int cwe1Int = 0;
-        int cwe2Int = 0;
-        try {
-          cwe1Int = Integer.parseInt(cwe1);
-        } catch (NumberFormatException nfe) {
-          cwe1Int = -1;
-        }
+      
+        if (cwe1.contains("*"))
+        	cwe1 = "0";
         
-        try {
-          cwe2Int = Integer.parseInt(cwe2);
-        } catch (NumberFormatException nfe) {
-          cwe2Int = -1;
-        }
-        result = cwe1Int - cwe2Int;
+        if (cwe2.contains("*"))
+        	cwe2 = "0";
+
+
+        result = cwe1.compareToIgnoreCase(cwe2);
+        
+        // Check if we equal due to being in the same group
+        if (result == 0)
+        	{
+        	// Yes, sort on entry CWE
+        	if (group1.isPresent() && group2.isPresent())
+        		if (group1.get().equals(group2.get()))
+        			result = entry1.getCwe().compareToIgnoreCase(entry2.getCwe());		
+        	}
         
         break;
       }

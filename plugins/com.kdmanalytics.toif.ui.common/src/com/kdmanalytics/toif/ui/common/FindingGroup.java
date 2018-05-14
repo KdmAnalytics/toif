@@ -101,8 +101,6 @@ public class FindingGroup implements IFindingEntry {
   public void add(FindingEntry entry) {
     if (!ifile.equals(entry.getFile()) ||
         line != entry.getLineNumber() //||
- // RJF FIX       !cwe.equals(entry.getCwe()) ||
- //       !sfp.equals(entry.getSfp())
         ) {
       throw new IllegalArgumentException("Cannot add this entry to the group, it does not belong\n  * GROUP: " + this + "\n  * ENTRY: " + entry);
     }
@@ -142,6 +140,8 @@ public class FindingGroup implements IFindingEntry {
 	  Set<String> set = new HashSet<String>();
 	  for (IFindingEntry entry : entries)
 		  set.add( entry.getCwe());
+	  
+	  System.out.println( "CWE DISPLAY SET: " + set);
 		  
 	  if (set.size() == 1)
 		  return set.iterator().next();

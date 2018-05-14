@@ -201,7 +201,6 @@ class FindingContentProvider implements ITreeContentProvider
     private boolean canGroup(IFindingEntry e1, FindingEntry e2) {
       if (!e1.getFile().equals(e2.getFile())) return false;
       if (e1.getLineNumber() != e2.getLineNumber()) return false;
-  // RJF fix    if (!e1.getCwe().equals(e2.getCwe())) return false;
       return true;
     }
 
