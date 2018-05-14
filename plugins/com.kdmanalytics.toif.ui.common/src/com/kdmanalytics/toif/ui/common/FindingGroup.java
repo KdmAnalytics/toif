@@ -141,7 +141,6 @@ public class FindingGroup implements IFindingEntry {
 	  for (IFindingEntry entry : entries)
 		  set.add( entry.getCwe());
 	  
-	  System.out.println( "CWE DISPLAY SET: " + set);
 		  
 	  if (set.size() == 1)
 		  return set.iterator().next();

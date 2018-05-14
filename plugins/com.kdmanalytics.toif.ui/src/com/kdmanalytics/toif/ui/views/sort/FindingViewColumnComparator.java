@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.Viewer;
@@ -29,6 +31,7 @@ import com.kdmanalytics.toif.ui.views.FindingView;
  * Derived from ReportViewerComparator in design
  * 
  * @author Ken Duck
+ * @author Robert
  *        
  */
 public class FindingViewColumnComparator extends ViewerComparator implements Comparator<IFindingEntry> {
@@ -43,12 +46,14 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
   
   /** The Constant DESCENDING. */
   private static final int DESCENDING = 1;
-  
   private static final int ASCENDING = 0;
+  
   
   /** The direction. */
   private int direction = DESCENDING;
   
+  // Number pattern for regex
+  private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+|-\\d+");
   /**
    * Cache the index numbers for the extra columns
    */
@@ -113,6 +118,8 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
    * (non-Javadoc)
    * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
    */
+ 
+  
   @Override
   public int compare(IFindingEntry entry1, IFindingEntry entry2) {
     Integer result = null;
@@ -150,32 +157,63 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
         result = tool1.compareTo(tool2);
         break;
       }
-      case FindingView.SFP_COLUMN: {
-        // Remove old-style prefix
-        String sfp1 = entry1.getSfp().replace("SFP-", "");
-        String sfp2 = entry2.getSfp().replace("SFP-", "");
-        // Remove new-style prefix
-        sfp1 = sfp1.replace("SFP", "");
-        sfp2 = sfp2.replace("SFP", "");
-        int sfp1Int = 0;
-        int sfp2Int = 0;
-        
-        try {
-          sfp1Int = Integer.parseInt(sfp1);
-        } catch (NumberFormatException nfe) {
-          sfp1Int = -1;
-        }
-        
-        try {
-          sfp2Int = Integer.parseInt(sfp2);
-        } catch (NumberFormatException nfe) {
-          sfp2Int = -1;
-        }
-        
-        result = sfp1Int - sfp2Int;
-        break;
-      }
       
+      // Sort SFP column
+      case FindingView.SFP_COLUMN: 
+       {
+	   // Sorting for this column will defer to group if defined
+	   Optional<FindingGroup> group1 = Optional.empty();
+	   Optional<FindingGroup> group2 = Optional.empty(); 
+	   	   
+		// Remove old-style prefix
+		String sfp1 = "";
+		String sfp2 = "";
+		if (entry1 instanceof FindingGroup)
+        	sfp1 = ((FindingGroup)entry1).getSfpDisplay();
+        else
+			{
+			group1 = entry1.group();
+			if (group1.isPresent())
+			  	sfp1 = group1.get().getSfpDisplay();
+			  else
+			  	sfp1 = entry1.getSfp();
+        	}
+      
+      
+        if (entry2 instanceof FindingGroup)
+        	sfp2 = ((FindingGroup)entry2).getSfpDisplay();
+        else
+        	{
+	        group2 = entry2.group();
+	        if (group2.isPresent())
+	        	sfp2 = group2.get().getSfpDisplay();
+	        else
+	        	sfp2 = entry2.getSfp();
+        	}
+      
+		
+        if (sfp1.contains("*"))
+        	sfp1 = "0";
+        
+        if (sfp2.contains("*"))
+        	sfp2 = "0";
+               
+        result = extractNumber(sfp1) - extractNumber(sfp2);
+       
+        // Check if we equal due to being in the same group
+        if (result == 0)
+        	{
+        	// Yes, sort on entry CWE
+        	if (group1.isPresent() && group2.isPresent())
+        		if (group1.get().equals(group2.get()))
+        			{
+        			result = extractNumber( entry1.getSfp()) - 	extractNumber( entry2.getSfp());
+        			}
+        	}
+		
+		break;
+			}
+  
       // Sort CWE column
       case FindingView.CWE_COLUMN: {
         String cwe1;
@@ -191,15 +229,9 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
 			{
 			group1 = entry1.group();
 			if (group1.isPresent())
-			  	{
 			  	cwe1 = group1.get().getCweDisplay();
-			  	System.out.println( "CWE1 display="+cwe1);
-			  	}
 			  else
-			  	{
 			  	cwe1 = entry1.getCwe();
-			  	System.out.println( "CWE1 NOT display="+cwe1);
-			    }
         	}
       
       
@@ -294,4 +326,19 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
     
     return result;
   }
+  
+  
+  /*
+   * Attempt to extract 1st number from string and return
+   * it value; return -1 if we can't
+   */
+  private int extractNumber( final String value)
+	  {
+	  Matcher matcher = NUMBER_PATTERN.matcher(value);
+		 while( matcher.find())
+			 {
+			 return Integer.parseInt(matcher.group());	
+			 }
+		 return -1;
+	  } 
 }
