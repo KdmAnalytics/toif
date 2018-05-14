@@ -22,6 +22,5 @@
     <module>com.kdmanalytics.toif.report.feature</module>
     <module>com.kdmanalytics.toif.cmd.feature</module>
     <module>com.kdmanalytics.toif.feature</module>
-    <module>com.kdmanalytics.toif.convert.feature</module>
   </modules>
 </project>
