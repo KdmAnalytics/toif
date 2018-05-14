@@ -96,7 +96,7 @@ public class FindingViewColumnComparator extends ViewerComparator implements Com
     } else {
       // New column; do an ascending sort
       this.columnIndex = column;
-      direction = DESCENDING;
+      direction = ASCENDING;
     }
   }
   
