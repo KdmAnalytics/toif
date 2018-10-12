@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven 3.3.9'
-        jdk 'jdk8'
-    }
     stages {
         stage ('Initialize') {
             steps {
@@ -16,7 +12,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn clean -Dmaven.test.failure.ignore=true install' 
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
             }
             post {
                 success {
