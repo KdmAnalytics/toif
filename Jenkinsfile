@@ -1,11 +1,28 @@
-#!groovy
+pipeline {
+    agent any
+    tools {
+        maven 'Maven 3.3.9'
+        jdk 'jdk8'
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+        }
 
-stage 'SCM Checkout'
-node {
-  checkout scm
-}
-stage 'Build and Test'
-node {
-  def mvnHome = tool 'M3'
-  sh "${mvnHome}/bin/mvn -B clean package"
+        stage ('Build') {
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
+            }
+        }
+    }
 }
