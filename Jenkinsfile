@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent java
     stages {
         stage ('Initialize') {
             steps {
@@ -12,7 +12,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh '/usr/bin/mvn -Dmaven.test.failure.ignore=true install' 
             }
             post {
                 success {
