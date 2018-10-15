@@ -1,5 +1,5 @@
 pipeline {
-    agent java
+    agent { label 'java' }
     stages {
         stage ('Initialize') {
             steps {
