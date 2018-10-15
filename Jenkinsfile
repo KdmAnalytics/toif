@@ -16,7 +16,9 @@ pipeline {
             }
             post {
                 success {
+                    archiveArtifacts artifacts: '**/target/*.zip, **/target/*.tar.gz', fingerprint: true
                     junit '**/target/surefire-reports/**/*.xml' 
+                    
                 }
             }
         }
